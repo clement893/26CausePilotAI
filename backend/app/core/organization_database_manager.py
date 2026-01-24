@@ -462,7 +462,31 @@ class OrganizationDatabaseManager:
             logger.error(f"Database operational error testing connection: {error_msg}")
             # Provide more helpful error messages
             if "timeout" in error_msg.lower() or "timed out" in error_msg.lower():
-                return False, f"Timeout: La connexion à la base de données a pris trop de temps. Vérifiez que la base de données est accessible depuis le serveur backend et que l'URL est correcte.", None
+                host = parsed.get('host', 'unknown') if 'parsed' in locals() else 'unknown'
+                port = parsed.get('port', 'unknown') if 'parsed' in locals() else 'unknown'
+                is_railway_public = '.railway.app' in host.lower() or '.rlwy.net' in host.lower() or '.up.railway.app' in host.lower()
+                
+                if is_railway_public:
+                    return False, (
+                        f"Timeout: La connexion à la base de données Railway a pris trop de temps.\n\n"
+                        f"Host: {host}, Port: {port}\n\n"
+                        f"Solutions possibles:\n"
+                        f"1. Vérifiez que 'Public Networking' est activé pour votre service PostgreSQL sur Railway\n"
+                        f"2. Vérifiez que le port {port} est correct (Railway utilise parfois des ports non-standard)\n"
+                        f"3. Vérifiez que votre backend Railway peut accéder à Internet pour se connecter à la base de données\n"
+                        f"4. Si le backend et la DB sont dans le même projet Railway, essayez l'URL interne (.railway.internal)\n"
+                        f"5. Vérifiez les variables d'environnement Railway pour obtenir la bonne URL de connexion"
+                    ), None
+                else:
+                    return False, (
+                        f"Timeout: La connexion à la base de données a pris trop de temps.\n\n"
+                        f"Host: {host}, Port: {port}\n\n"
+                        f"Vérifiez que:\n"
+                        f"- La base de données est démarrée et accessible\n"
+                        f"- Le port {port} est correct et ouvert\n"
+                        f"- Le serveur backend peut accéder au réseau pour se connecter à {host}\n"
+                        f"- Il n'y a pas de firewall bloquant la connexion"
+                    ), None
             elif "could not translate host name" in error_msg.lower() or "name resolution" in error_msg.lower():
                 return False, f"Résolution DNS échouée: Impossible de résoudre le nom d'hôte '{parsed.get('host', 'unknown')}'. Vérifiez que l'hôte est correct et accessible.", None
             elif "connection refused" in error_msg.lower():
