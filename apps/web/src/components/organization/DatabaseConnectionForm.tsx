@@ -557,10 +557,17 @@ export function DatabaseConnectionForm({
   };
 
   const handleMigrateDatabase = async () => {
-    console.log('[DatabaseConnectionForm] handleMigrateDatabase called', { organizationId });
+    console.log('[DatabaseConnectionForm] handleMigrateDatabase called', { 
+      organizationId,
+      hasConnection: !!(currentConnectionString || connectionString),
+      currentConnectionString: currentConnectionString ? 'SET' : 'NOT SET',
+      connectionString: connectionString ? 'SET' : 'NOT SET'
+    });
+    
+    // Immediate visual feedback
     setIsMigrating(true);
     setError(null);
-    setSuccess(null);
+    setSuccess('⏳ Démarrage de la migration...');
     setTestResult(null);
 
     try {
@@ -583,23 +590,37 @@ export function DatabaseConnectionForm({
       }
     } catch (err) {
       console.error('[DatabaseConnectionForm] Migration error:', err);
+      console.error('[DatabaseConnectionForm] Error details:', {
+        name: err instanceof Error ? err.name : 'Unknown',
+        message: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+        fullError: err
+      });
+      
       let errorMessage = 'Erreur lors de la mise à jour de la base de données';
       if (err instanceof Error) {
         errorMessage = err.message;
         // Check for specific error types
-        if (err.message.includes('404')) {
+        if (err.message.includes('404') || err.message.includes('not found')) {
           errorMessage = 'Organisation non trouvée. Vérifiez que l\'ID est correct.';
-        } else if (err.message.includes('400')) {
-          errorMessage = 'Connexion à la base de données non configurée. Configurez d\'abord la connexion.';
-        } else if (err.message.includes('500')) {
+        } else if (err.message.includes('400') || err.message.includes('Bad Request')) {
+          errorMessage = 'Requête invalide. Vérifiez que la connexion à la base de données est configurée.';
+        } else if (err.message.includes('500') || err.message.includes('Internal Server Error')) {
           errorMessage = 'Erreur serveur lors de la migration. Vérifiez les logs du backend.';
-        } else if (err.message.includes('Network') || err.message.includes('fetch')) {
-          errorMessage = 'Erreur de connexion au serveur. Vérifiez votre connexion internet.';
+        } else if (err.message.includes('Network') || err.message.includes('fetch') || err.message.includes('ECONNREFUSED')) {
+          errorMessage = 'Erreur de connexion au serveur. Vérifiez votre connexion internet et que le serveur est accessible.';
+        } else if (err.message.includes('timeout') || err.message.includes('exceeded')) {
+          errorMessage = 'La migration prend trop de temps. Vérifiez que la base de données est accessible et que le serveur n\'est pas surchargé.';
         }
       } else if (typeof err === 'string') {
         errorMessage = err;
+      } else {
+        errorMessage = `Erreur inconnue: ${JSON.stringify(err)}`;
       }
+      
+      // Always set error to ensure it's displayed
       setError(errorMessage);
+      setSuccess(null);
     } finally {
       setIsMigrating(false);
       console.log('[DatabaseConnectionForm] Migration process finished');
@@ -1077,17 +1098,32 @@ export function DatabaseConnectionForm({
             ) : null}
 
             {/* Always show migrate button when connection exists */}
-            {(currentConnectionString || connectionString) && (
+            {(currentConnectionString || connectionString) ? (
               <Button
                 variant="ghost"
-                onClick={handleMigrateDatabase}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('[DatabaseConnectionForm] ⚡ Button clicked!', {
+                    organizationId,
+                    isMigrating,
+                    isTesting,
+                    isSaving,
+                    isCreating,
+                    hasConnection: !!(currentConnectionString || connectionString)
+                  });
+                  // Show immediate feedback
+                  alert('Migration démarrée - vérifiez la console (F12) pour les détails');
+                  handleMigrateDatabase();
+                }}
                 disabled={isTesting || isSaving || isCreating || isMigrating}
                 className="border border-primary/20"
+                type="button"
               >
                 {isMigrating ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Mise à jour...
+                    Mise à jour en cours...
                   </>
                 ) : (
                   <>
@@ -1096,6 +1132,10 @@ export function DatabaseConnectionForm({
                   </>
                 )}
               </Button>
+            ) : (
+              <div className="text-xs text-muted-foreground p-2">
+                ⚠️ Configurez d'abord la connexion à la base de données pour activer la migration
+              </div>
             )}
           </div>
 

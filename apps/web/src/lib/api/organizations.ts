@@ -211,10 +211,23 @@ export interface MigrateDatabaseResponse {
 export async function migrateOrganizationDatabase(
   organizationId: string
 ): Promise<MigrateDatabaseResponse> {
-  const response = await apiClient.post<MigrateDatabaseResponse>(
-    `/v1/organizations/${organizationId}/database/migrate`
-  );
-  return extractApiData(response);
+  console.log('[API] migrateOrganizationDatabase called', { organizationId });
+  try {
+    const response = await apiClient.post<MigrateDatabaseResponse>(
+      `/v1/organizations/${organizationId}/database/migrate`
+    );
+    console.log('[API] migrateOrganizationDatabase response:', response);
+    const data = extractApiData(response);
+    console.log('[API] migrateOrganizationDatabase extracted data:', data);
+    return data;
+  } catch (error) {
+    console.error('[API] migrateOrganizationDatabase error:', error);
+    // Re-throw with more context
+    if (error instanceof Error) {
+      throw new Error(`Migration failed: ${error.message}`);
+    }
+    throw error;
+  }
 }
 
 export interface DatabaseTablesResponse {
