@@ -147,6 +147,9 @@ class OrganizationDatabaseManager:
             Dictionary with parsed components (scheme, user, password, host, port, database)
         """
         try:
+            # Log the original connection string (masked) for debugging
+            logger.debug(f"Parsing connection string: {cls.mask_connection_string(connection_string)}")
+            
             # Handle both postgresql:// and postgresql+asyncpg://
             clean_url = connection_string.replace('postgresql+asyncpg://', 'postgresql://')
             
@@ -171,6 +174,9 @@ class OrganizationDatabaseManager:
             
             parsed = urlparse(clean_url)
             
+            # Log parsed components for debugging
+            logger.debug(f"Parsed URL - scheme: {parsed.scheme}, netloc: {parsed.netloc}, hostname: {parsed.hostname}, port: {parsed.port}, path: {parsed.path}")
+            
             # Additional check: if netloc contains a colon but port is None or empty,
             # manually extract and validate the port
             port = None
@@ -190,11 +196,30 @@ class OrganizationDatabaseManager:
             # Final safety check - ensure port is always an integer
             port = cls._normalize_port(port)
             
+            # Extract hostname - handle cases where netloc might not be properly parsed
+            hostname = parsed.hostname or ''
+            
+            # If hostname is empty but netloc exists, try to extract it manually
+            if not hostname and parsed.netloc:
+                # Try to extract hostname from netloc
+                if '@' in parsed.netloc:
+                    # Format: user:pass@host:port
+                    after_at = parsed.netloc.split('@', 1)[1]
+                    if ':' in after_at:
+                        hostname = after_at.split(':')[0]
+                    else:
+                        hostname = after_at
+                elif ':' in parsed.netloc:
+                    # Format: host:port
+                    hostname = parsed.netloc.split(':')[0]
+                else:
+                    hostname = parsed.netloc
+            
             result = {
                 'scheme': parsed.scheme,
                 'user': parsed.username or '',
                 'password': parsed.password or '',
-                'host': parsed.hostname or '',
+                'host': hostname,
                 'port': port,
                 'database': parsed.path.lstrip('/') if parsed.path else '',
                 'full': connection_string
@@ -202,15 +227,28 @@ class OrganizationDatabaseManager:
             
             # Validate required fields
             if not result['host']:
-                raise ValueError("Host is required in connection string")
+                raise ValueError(
+                    f"Host is required in connection string. "
+                    f"URL reçue: {cls.mask_connection_string(connection_string)}. "
+                    f"Vérifiez que l'URL est au format: postgresql://user:password@host:port/database"
+                )
             
             # Check if hostname is the same as scheme (common parsing error)
             if result['host'].lower() == parsed.scheme.lower() or result['host'].lower() in ['postgresql', 'postgres']:
+                logger.error(f"Invalid hostname detected: '{result['host']}' from URL: {cls.mask_connection_string(connection_string)}")
                 raise ValueError(
                     f"Format d'URL invalide: le nom d'hôte '{result['host']}' semble incorrect. "
-                    f"Vérifiez que votre URL de connexion est au format: "
-                    f"postgresql://user:password@host:port/database ou "
-                    f"postgresql+asyncpg://user:password@host:port/database"
+                    f"L'URL reçue semble malformée.\n\n"
+                    f"Vérifiez que votre URL de connexion est au format complet:\n"
+                    f"postgresql://user:password@host:port/database\n\n"
+                    f"Exemple Railway:\n"
+                    f"postgresql://postgres:password@containers-us-west-xxx.railway.app:5432/railway\n\n"
+                    f"Assurez-vous que l'URL contient bien:\n"
+                    f"- Le schéma (postgresql:// ou postgresql+asyncpg://)\n"
+                    f"- Le nom d'utilisateur et le mot de passe\n"
+                    f"- Le nom d'hôte (pas 'postgresql')\n"
+                    f"- Le port (généralement 5432)\n"
+                    f"- Le nom de la base de données"
                 )
             
             if not result['database']:
