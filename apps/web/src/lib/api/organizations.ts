@@ -211,22 +211,12 @@ export interface MigrateDatabaseResponse {
 export async function migrateOrganizationDatabase(
   organizationId: string
 ): Promise<MigrateDatabaseResponse> {
-  console.log('[API] 🔵 migrateOrganizationDatabase called', { organizationId });
   try {
-    console.log('[API] 🔵 Making POST request to /v1/organizations/${organizationId}/database/migrate');
     const response = await apiClient.post<MigrateDatabaseResponse>(
       `/v1/organizations/${organizationId}/database/migrate`
     );
-    console.log('[API] 🔵 Raw response received:', {
-      status: response.status,
-      statusText: response.statusText,
-      data: response.data,
-      headers: response.headers
-    });
     
-    console.log('[API] 🔵 Extracting data from response...');
     const data = extractApiData(response);
-    console.log('[API] 🔵 Extracted data:', JSON.stringify(data, null, 2));
     console.log('[API] 🔵 Data type:', typeof data);
     console.log('[API] 🔵 Data.success:', data?.success);
     console.log('[API] 🔵 Data.message:', data?.message);
