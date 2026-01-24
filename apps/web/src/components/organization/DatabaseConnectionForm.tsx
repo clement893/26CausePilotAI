@@ -189,10 +189,26 @@ export function DatabaseConnectionForm({
 
   // Helper function to parse a full connection string URL
   const parseConnectionString = (value: string): boolean => {
+    if (!value || !value.trim()) {
+      return false;
+    }
+    
+    // Decode URL-encoded characters (%20 = space, etc.)
+    let decodedValue = value;
+    try {
+      decodedValue = decodeURIComponent(value);
+    } catch (e) {
+      // If decoding fails, use original value
+      decodedValue = value;
+    }
+    
+    // Clean up: remove leading/trailing whitespace
+    decodedValue = decodedValue.trim();
+    
     // Check for URL patterns: postgresql://, postgres://, or postgresql+asyncpg://
     const isFullUrl = (
-      (value.includes('://') && (value.includes('postgresql') || value.includes('postgres'))) ||
-      (value.includes('@') && value.includes('.') && (value.includes(':') || value.match(/:\d+/)))
+      (decodedValue.includes('://') && (decodedValue.includes('postgresql') || decodedValue.includes('postgres'))) ||
+      (decodedValue.includes('@') && decodedValue.includes('.') && (decodedValue.includes(':') || decodedValue.match(/:\d+/)))
     );
     
     if (!isFullUrl) {
@@ -201,7 +217,7 @@ export function DatabaseConnectionForm({
     
     try {
       // Remove scheme prefix to get the connection part
-      let connectionPart = value.trim();
+      let connectionPart = decodedValue.trim();
       
       // Remove postgresql+asyncpg://, postgresql://, or postgres://
       connectionPart = connectionPart.replace(/^postgresql\+asyncpg:\/\//i, '');
@@ -263,8 +279,20 @@ export function DatabaseConnectionForm({
         database = afterQ.split('#')[0] ?? afterQ;
       }
       
+      // Clean up parsed values
+      hostname = hostname.trim();
+      port = port.trim();
+      database = database.trim();
+      username = username.trim();
+      password = password.trim();
+      
       // Only update if we successfully parsed hostname (must contain a dot or be a valid hostname)
       if (hostname && (hostname.includes('.') || hostname.match(/^[a-zA-Z0-9-]+$/))) {
+        // Remove any leading/trailing slashes or special characters
+        hostname = hostname.replace(/^[\/\s]+|[\/\s]+$/g, '');
+        port = port.replace(/^[\/\s:]+|[\/\s:]+$/g, '');
+        database = database.replace(/^[\/\s]+|[\/\s]+$/g, '');
+        
         setDbHost(hostname);
         setDbPort(port || '5432');
         setDbName(database);
@@ -525,7 +553,17 @@ export function DatabaseConnectionForm({
                       disabled={isSaving || isTesting || isCreating}
                       className="flex-1"
                     />
-                    {(dbHost.includes('://') || (dbHost.includes('@') && dbHost.includes('.'))) && (
+                    {(() => {
+                      // Check if dbHost looks like it might contain a full URL
+                      const decodedHost = decodeURIComponent(dbHost).trim();
+                      const looksLikeUrl = (
+                        decodedHost.includes('://') ||
+                        (decodedHost.includes('@') && decodedHost.includes('.')) ||
+                        (decodedHost.includes('postgresql') && decodedHost.includes('@')) ||
+                        (decodedHost.includes('postgres') && decodedHost.includes('@'))
+                      );
+                      return looksLikeUrl;
+                    })() && (
                       <Button
                         type="button"
                         variant="ghost"
