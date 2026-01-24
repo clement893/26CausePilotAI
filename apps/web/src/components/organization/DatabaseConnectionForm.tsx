@@ -8,7 +8,6 @@ import {
   createOrganizationDatabase,
   migrateOrganizationDatabase,
   getOrganizationDatabaseTables,
-  type DatabaseTablesResponse,
 } from '@/lib/api/organizations';
 import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2, Settings, Code, Wand2 } from 'lucide-react';
 
