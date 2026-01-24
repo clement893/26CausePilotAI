@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { Container, Card, Button, Badge, Input } from '@/components/ui';
 import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
@@ -38,7 +38,6 @@ const MODULE_LABELS: Record<string, string> = {
 };
 
 function OrganizationDetailsContent() {
-  const router = useRouter();
   const params = useParams();
   const organizationId = params.id as string;
 

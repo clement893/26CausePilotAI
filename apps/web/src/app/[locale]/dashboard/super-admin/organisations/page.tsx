@@ -4,7 +4,6 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { Container, Card, Button, Badge } from '@/components/ui';
 import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
@@ -13,7 +12,6 @@ import type { OrganizationWithStats } from '@modele/types';
 import { Building, Plus, Settings, Users, Trash2, Eye, BarChart3 } from 'lucide-react';
 
 function OrganisationsContent() {
-  const router = useRouter();
   const [organizations, setOrganizations] = useState<OrganizationWithStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
