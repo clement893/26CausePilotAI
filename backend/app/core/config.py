@@ -260,6 +260,28 @@ class Settings(BaseSettings):
         description="Base database URL for tenant databases (used in separate_db mode for pattern-based DB creation)",
     )
 
+    # Organization Database Configuration
+    ORG_DB_BASE_URL: Optional[str] = Field(
+        default=None,
+        description="Base database URL for organization databases (format: postgresql+asyncpg://user:pass@host:5432, without database name)",
+    )
+    ORG_DB_PREFIX: str = Field(
+        default="causepilot_org_",
+        description="Prefix for organization database names",
+    )
+    ORG_DB_POOL_SIZE: int = Field(
+        default=10,
+        ge=1,
+        le=50,
+        description="Database connection pool size per organization",
+    )
+    ORG_DB_MAX_OVERFLOW: int = Field(
+        default=20,
+        ge=0,
+        le=50,
+        description="Database connection pool max overflow per organization",
+    )
+
     # Stripe Configuration
     STRIPE_SECRET_KEY: str = Field(
         default="",

@@ -70,6 +70,8 @@ export interface ActiveOrganizationContext {
 export interface CreateOrganizationRequest {
   name: string;
   slug: string;
+  dbConnectionString?: string;
+  createDatabase?: boolean;
   settings?: Record<string, any>;
 }
 
@@ -106,4 +108,38 @@ export interface InviteMemberRequest {
 export interface OrganizationWithStats extends Organization {
   enabledModulesCount: number;
   totalMembers: number;
+}
+
+/**
+ * Update database connection request
+ */
+export interface UpdateDatabaseConnectionRequest {
+  dbConnectionString: string;
+  testConnection?: boolean;
+}
+
+/**
+ * Test database connection request
+ */
+export interface TestConnectionRequest {
+  dbConnectionString: string;
+}
+
+/**
+ * Test database connection response
+ */
+export interface TestConnectionResponse {
+  success: boolean;
+  message: string;
+  databaseName?: string;
+}
+
+/**
+ * Create database response
+ */
+export interface CreateDatabaseResponse {
+  success: boolean;
+  message: string;
+  dbConnectionString: string;
+  databaseName: string;
 }

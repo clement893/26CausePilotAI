@@ -13,6 +13,8 @@ from uuid import UUID
 from app.core.database import get_db
 from app.dependencies import require_superadmin, get_current_user
 from app.models import User, Organization, OrganizationModule, OrganizationMember, AVAILABLE_MODULES
+from app.core.organization_database_manager import OrganizationDatabaseManager
+from app.core.logging import logger
 from app.schemas.organization import (
     Organization as OrganizationSchema,
     OrganizationCreate,
@@ -26,6 +28,10 @@ from app.schemas.organization import (
     InviteMemberRequest,
     OrganizationMemberList,
     ActiveOrganizationContext,
+    UpdateDatabaseConnectionRequest,
+    TestConnectionRequest,
+    TestConnectionResponse,
+    CreateDatabaseResponse,
 )
 
 router = APIRouter()
@@ -61,6 +67,7 @@ async def list_organizations(
             "name": org.name,
             "slug": org.slug,
             "is_active": org.is_active,
+            "db_connection_string": org.db_connection_string,  # Include for superadmin
             "settings": org.settings or {},
             "created_at": org.created_at,
             "updated_at": org.updated_at,
@@ -80,6 +87,8 @@ async def get_organization(
 ):
     """
     Get organization by ID (SuperAdmin only)
+    
+    Returns organization with db_connection_string visible for superadmin.
     """
     query = select(Organization).where(Organization.id == organization_id)
     result = await db.execute(query)
@@ -105,8 +114,11 @@ async def create_organization(
     
     Creates organization with:
     - Unique slug
-    - Separate database connection (to be configured)
+    - Separate database connection (configured or auto-generated)
     - All modules disabled by default
+    
+    If create_database=True and db_connection_string is not provided,
+    will automatically create a database and generate the connection string.
     """
     # Check if slug already exists
     query = select(Organization).where(Organization.slug == organization_in.slug)
@@ -119,10 +131,43 @@ async def create_organization(
             detail="Organization with this slug already exists"
         )
     
-    # Create organization
-    # TODO: Generate actual database connection string
-    db_connection = f"postgresql://user:pass@localhost:5432/{organization_in.slug}"
+    # Determine database connection string
+    db_connection = organization_in.db_connection_string
     
+    # If create_database is True and no connection string provided, create database
+    if organization_in.create_database and not db_connection:
+        try:
+            success, generated_connection = await OrganizationDatabaseManager.create_organization_database(
+                organization_in.slug
+            )
+            if success:
+                db_connection = generated_connection
+                logger.info(f"Created database for organization: {organization_in.slug}")
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Failed to create organization database"
+                )
+        except ValueError as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Cannot create database automatically: {str(e)}"
+            )
+        except Exception as e:
+            logger.error(f"Error creating organization database: {e}", exc_info=True)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to create organization database: {str(e)}"
+            )
+    
+    # If still no connection string, generate a default one (but don't create DB)
+    if not db_connection:
+        db_connection = OrganizationDatabaseManager.generate_db_connection_string(organization_in.slug)
+        if not db_connection:
+            # Fallback to a placeholder
+            db_connection = f"postgresql+asyncpg://user:pass@localhost:5432/causepilot_org_{organization_in.slug}"
+    
+    # Create organization
     organization = Organization(
         name=organization_in.name,
         slug=organization_in.slug,
@@ -468,3 +513,166 @@ async def get_active_organization_context(
         "enabled_modules": enabled_modules,
         "user_role": user_role,
     }
+
+
+# ============= Organization Database Management =============
+
+@router.patch("/{organization_id}/database", response_model=OrganizationSchema)
+async def update_organization_database(
+    organization_id: UUID,
+    db_update: UpdateDatabaseConnectionRequest,
+    db: AsyncSession = Depends(get_db),
+    _: None = Depends(require_superadmin),
+):
+    """
+    Update organization database connection string (SuperAdmin only)
+    
+    Tests the connection before saving if test_connection=True (default).
+    """
+    # Check organization exists
+    query = select(Organization).where(Organization.id == organization_id)
+    result = await db.execute(query)
+    organization = result.scalar_one_or_none()
+    
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found"
+        )
+    
+    # Test connection if requested
+    if db_update.test_connection:
+        success, message, db_name = await OrganizationDatabaseManager.test_connection(
+            db_update.db_connection_string
+        )
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Connection test failed: {message}"
+            )
+        logger.info(f"Connection test successful for organization {organization_id}: {message}")
+    
+    # Update connection string
+    old_connection_string = organization.db_connection_string
+    organization.db_connection_string = db_update.db_connection_string
+    
+    # Invalidate cache for this organization
+    OrganizationDatabaseManager.invalidate_cache(organization_id)
+    
+    await db.commit()
+    await db.refresh(organization)
+    
+    logger.info(
+        f"Updated database connection for organization {organization_id} "
+        f"(old: {OrganizationDatabaseManager.mask_connection_string(old_connection_string)}, "
+        f"new: {OrganizationDatabaseManager.mask_connection_string(db_update.db_connection_string)})"
+    )
+    
+    return organization
+
+
+@router.post("/{organization_id}/database/test", response_model=TestConnectionResponse)
+async def test_organization_database(
+    organization_id: UUID,
+    test_request: TestConnectionRequest,
+    db: AsyncSession = Depends(get_db),
+    _: None = Depends(require_superadmin),
+):
+    """
+    Test a database connection string without saving it (SuperAdmin only)
+    """
+    # Check organization exists
+    query = select(Organization).where(Organization.id == organization_id)
+    result = await db.execute(query)
+    organization = result.scalar_one_or_none()
+    
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found"
+        )
+    
+    # Test connection
+    success, message, db_name = await OrganizationDatabaseManager.test_connection(
+        test_request.db_connection_string
+    )
+    
+    return TestConnectionResponse(
+        success=success,
+        message=message,
+        database_name=db_name
+    )
+
+
+@router.post("/{organization_id}/database/create", response_model=CreateDatabaseResponse)
+async def create_organization_database(
+    organization_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    _: None = Depends(require_superadmin),
+):
+    """
+    Create a new database for an organization automatically (SuperAdmin only)
+    
+    Generates the connection string based on organization slug and creates the database.
+    Updates the organization with the new connection string.
+    """
+    # Check organization exists
+    query = select(Organization).where(Organization.id == organization_id)
+    result = await db.execute(query)
+    organization = result.scalar_one_or_none()
+    
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found"
+        )
+    
+    try:
+        # Create database
+        success, connection_string = await OrganizationDatabaseManager.create_organization_database(
+            organization.slug
+        )
+        
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to create organization database"
+            )
+        
+        # Parse to get database name
+        parsed = OrganizationDatabaseManager.parse_db_connection_string(connection_string)
+        db_name = parsed['database']
+        
+        # Update organization with new connection string
+        old_connection_string = organization.db_connection_string
+        organization.db_connection_string = connection_string
+        
+        # Invalidate cache
+        OrganizationDatabaseManager.invalidate_cache(organization_id)
+        
+        await db.commit()
+        await db.refresh(organization)
+        
+        logger.info(
+            f"Created database '{db_name}' for organization {organization_id} "
+            f"({organization.slug})"
+        )
+        
+        return CreateDatabaseResponse(
+            success=True,
+            message=f"Database '{db_name}' created successfully",
+            db_connection_string=connection_string,
+            database_name=db_name
+        )
+        
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        logger.error(f"Error creating database for organization {organization_id}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create database: {str(e)}"
+        )

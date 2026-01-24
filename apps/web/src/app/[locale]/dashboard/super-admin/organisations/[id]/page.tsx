@@ -27,6 +27,7 @@ import {
   Check,
   X,
 } from 'lucide-react';
+import { DatabaseConnectionForm } from '@/components/organization/DatabaseConnectionForm';
 
 const MODULE_LABELS: Record<string, string> = {
   'base-donateur': 'Base donateur',
@@ -175,6 +176,14 @@ function OrganizationDetailsContent() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Database Configuration Section */}
+        <DatabaseConnectionForm
+          organizationId={organizationId}
+          currentConnectionString={organization.dbConnectionString}
+          organizationSlug={organization.slug}
+          onUpdate={loadOrganizationData}
+        />
+
         {/* Modules Section */}
         <Card title="Modules" className="lg:col-span-2">
           <p className="text-muted-foreground mb-4">

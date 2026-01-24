@@ -36,11 +36,13 @@ class OrganizationBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     slug: str = Field(..., min_length=1, max_length=255, pattern=r'^[a-z0-9-]+$')
     settings: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    # Note: db_connection_string is not in base, only in Organization response for superadmin
 
 
 class OrganizationCreate(OrganizationBase):
     """Create organization request"""
-    pass
+    db_connection_string: Optional[str] = Field(None, description="Optional database connection string. If not provided, will be generated automatically.")
+    create_database: bool = Field(default=False, description="Create database automatically if connection string is not provided")
     
     @validator('slug')
     def validate_slug(cls, v):
@@ -60,12 +62,14 @@ class OrganizationUpdate(BaseModel):
     slug: Optional[str] = Field(None, min_length=1, max_length=255, pattern=r'^[a-z0-9-]+$')
     is_active: Optional[bool] = None
     settings: Optional[Dict[str, Any]] = None
+    db_connection_string: Optional[str] = None  # Hidden from regular updates, use dedicated endpoint
 
 
 class Organization(OrganizationBase):
     """Organization response"""
     id: UUID
     is_active: bool
+    db_connection_string: Optional[str] = None  # Only visible to superadmin
     created_at: datetime
     updated_at: datetime
     
@@ -179,3 +183,31 @@ class OrganizationMemberList(BaseModel):
     """List of organization members"""
     items: List[OrganizationMember]
     total: int
+
+
+# ============= Database Connection Schemas =============
+
+class UpdateDatabaseConnectionRequest(BaseModel):
+    """Update organization database connection"""
+    db_connection_string: str = Field(..., min_length=1, description="PostgreSQL connection string")
+    test_connection: bool = Field(default=True, description="Test connection before saving")
+
+
+class TestConnectionRequest(BaseModel):
+    """Test database connection"""
+    db_connection_string: str = Field(..., min_length=1, description="PostgreSQL connection string to test")
+
+
+class TestConnectionResponse(BaseModel):
+    """Test connection response"""
+    success: bool
+    message: str
+    database_name: Optional[str] = None
+
+
+class CreateDatabaseResponse(BaseModel):
+    """Create database response"""
+    success: bool
+    message: str
+    db_connection_string: str
+    database_name: str

@@ -16,6 +16,10 @@ import type {
   OrganizationMember,
   InviteMemberRequest,
   ActiveOrganizationContext,
+  UpdateDatabaseConnectionRequest,
+  TestConnectionRequest,
+  TestConnectionResponse,
+  CreateDatabaseResponse,
 } from '@modele/types';
 
 // ============= Organizations CRUD =============
@@ -118,5 +122,38 @@ export async function getActiveOrganizationContext(
     : '/v1/organizations/context/active';
   
   const response = await apiClient.get<ActiveOrganizationContext>(url);
+  return extractApiData(response);
+}
+
+// ============= Organization Database Management =============
+
+export async function updateOrganizationDatabase(
+  organizationId: string,
+  data: UpdateDatabaseConnectionRequest
+): Promise<Organization> {
+  const response = await apiClient.patch<Organization>(
+    `/v1/organizations/${organizationId}/database`,
+    data
+  );
+  return extractApiData(response);
+}
+
+export async function testOrganizationDatabase(
+  organizationId: string,
+  data: TestConnectionRequest
+): Promise<TestConnectionResponse> {
+  const response = await apiClient.post<TestConnectionResponse>(
+    `/v1/organizations/${organizationId}/database/test`,
+    data
+  );
+  return extractApiData(response);
+}
+
+export async function createOrganizationDatabase(
+  organizationId: string
+): Promise<CreateDatabaseResponse> {
+  const response = await apiClient.post<CreateDatabaseResponse>(
+    `/v1/organizations/${organizationId}/database/create`
+  );
   return extractApiData(response);
 }
