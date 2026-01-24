@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { Container, Card, Button } from '@/components/ui';
+import { Container, Card, Button, LoadingSkeleton } from '@/components/ui';
 import { Plus, Target } from 'lucide-react';
 import { listCampaigns, getCampaignStats } from '@/lib/api/donors';
 import type { Campaign, CampaignStats } from '@modele/types';
@@ -58,8 +58,9 @@ export default function CampaignsPage() {
   if (orgLoading || isLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+        <div className="mb-8 h-16 animate-pulse rounded-lg bg-muted/60" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LoadingSkeleton variant="card" count={6} />
         </div>
       </Container>
     );

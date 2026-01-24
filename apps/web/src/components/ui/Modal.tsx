@@ -215,7 +215,7 @@ function Modal({
       className={clsx(
         'fixed inset-0 z-50 flex items-center justify-center',
         'p-0 md:p-4',
-        'bg-foreground/50 dark:bg-foreground/70',
+        'bg-foreground/50 dark:bg-foreground/70 backdrop-blur-sm',
         'animate-fade-in', // Overlay fade-in animation
         overlayClassName
       )}
@@ -226,9 +226,9 @@ function Modal({
         className={clsx(
           // Use glassmorphism background if enabled, otherwise use default
           hasEffect('glassmorphism') ? '' : 'bg-background',
-          'shadow-xl',
+          'shadow-2xl',
           'w-full h-full',
-          'md:w-auto md:h-auto md:rounded-lg',
+          'md:w-auto md:h-auto md:rounded-xl',
           sizeClasses[size],
           'md:max-h-[90vh] flex flex-col',
           'animate-scale-in', // Modal scale-in animation (UX/UI improvements - Batch 16)

@@ -282,6 +282,7 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
       <aside
         className={clsx(
           'fixed left-0 top-0 z-40 h-screen w-64 bg-background border-r border-border flex flex-col',
+          'shadow-[4px_0_16px_-2px_rgba(0,0,0,0.08)] dark:shadow-[4px_0_16px_-2px_rgba(0,0,0,0.25)]',
           'transition-transform duration-normal ease-smooth', // Smooth transition (UX/UI improvements - Batch 17)
           // Mobile: slide in/out from left
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'

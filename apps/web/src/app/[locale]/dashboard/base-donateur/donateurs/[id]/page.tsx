@@ -5,7 +5,7 @@ export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel } from '@/components/ui';
+import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel, LoadingSkeleton } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { getDonor, getDonorHistory, getDonorStats, listDonorDonations } from '@/lib/api/donors';
 import type { DonorWithStats, Donation, DonorHistory, DonorStats } from '@modele/types';
@@ -126,8 +126,11 @@ export default function DonorDetailPage() {
   if (orgLoading || isLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+        <div className="mb-6 h-10 w-32 animate-pulse rounded-lg bg-muted/60" />
+        <div className="mb-8 h-12 w-64 animate-pulse rounded-lg bg-muted/60" />
+        <LoadingSkeleton variant="stats" count={4} className="mb-8" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <LoadingSkeleton variant="card" count={2} />
         </div>
       </Container>
     );

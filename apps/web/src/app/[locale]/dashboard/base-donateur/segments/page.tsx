@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { Container, Card, Button, Badge, Modal, Input, Textarea } from '@/components/ui';
+import { Container, Card, Button, Badge, Modal, Input, Textarea, LoadingSkeleton } from '@/components/ui';
 import { Plus, Edit, Trash2, Users, RefreshCw, Layers } from 'lucide-react';
 import { listSegments, createSegment, updateSegment, deleteSegment, recalculateSegment } from '@/lib/api/donors';
 import type { DonorSegment, DonorSegmentCreate, DonorSegmentUpdate } from '@modele/types';
@@ -120,8 +120,9 @@ export default function SegmentsPage() {
   if (orgLoading || isLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+        <div className="mb-8 h-16 animate-pulse rounded-lg bg-muted/60" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LoadingSkeleton variant="card" count={6} />
         </div>
       </Container>
     );

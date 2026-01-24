@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { Container, Card, Button, Input, Badge } from '@/components/ui';
+import { Container, Card, Button, Input, Badge, LoadingSkeleton } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { listDonors, type ListDonorsParams } from '@/lib/api/donors';
 import type { Donor } from '@modele/types';
@@ -105,9 +105,9 @@ export default function DonateursPage() {
   if (orgLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <p className="text-muted-foreground mt-4">Chargement...</p>
+        <div className="mb-8 h-20 animate-pulse rounded-lg bg-muted/60" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LoadingSkeleton variant="card" count={6} />
         </div>
       </Container>
     );
@@ -241,16 +241,8 @@ export default function DonateursPage() {
 
       {/* Donors Grid - Modern Card Layout */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <div className="p-6">
-                <div className="h-12 w-12 rounded-full bg-muted mb-4"></div>
-                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-muted rounded w-1/2"></div>
-              </div>
-            </Card>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LoadingSkeleton variant="card" count={6} />
         </div>
       ) : donors.length === 0 ? (
         <Card className="text-center py-16">

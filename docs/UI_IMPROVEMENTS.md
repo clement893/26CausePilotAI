@@ -13,7 +13,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 | **Modals / Dropdowns** | Ombre simple | `shadow-2xl`, `backdrop-blur-sm` sur l’overlay |
 | **Sidebar** | Fond uni | Légère bordure droite ou ombre portée pour la séparer du contenu |
 
-**Implémenté :** Cards avec `rounded-xl`, `shadow-md`, hover lift + `shadow-lg`.
+**Implémenté :** Cards avec `rounded-xl`, `shadow-md`, hover lift + `shadow-lg`. **Button** : `hover:scale-[1.02]`, `active:scale-[0.98]`, `disabled:scale-100`. **Modal** : overlay `backdrop-blur-sm`, panel `shadow-2xl`, `md:rounded-xl`. **Sidebar** : ombre portée à droite (`shadow-[4px_0_16px...]`).
 
 ---
 
@@ -27,7 +27,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 | **Chargement** | Skeleton avec léger pulse au lieu d’un spinner seul |
 | **Navigation** | Item actif : fond subtle + bordure gauche colorée (déjà partiel dans la sidebar) |
 
-**Implémenté :** Utilitaire `.stagger-fade-in` + délais dans `globals.css`. Cards hover amélioré.
+**Implémenté :** Utilitaire `.stagger-fade-in` + délais dans `globals.css`. Cards hover amélioré. **Loading** : `LoadingSkeleton` (card, stats) sur donateurs (liste + détail), segments, campagnes ; header + grille de skeletons au lieu de « Chargement... ».
 
 ---
 
@@ -107,6 +107,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 3. ~~Ajouter un variant `elevated` au composant Card.~~ ✅ Fait (`elevated` → `rounded-2xl`, `shadow-lg`, `hover:shadow-xl`).
 4. ~~Uniformiser les en-têtes de page (gradient, icône, espacement).~~ ✅ Fait (donateurs, segments, campagnes).
 5. Audit accessibilité (focus, contraste) après ces changements.
+6. ~~Loading skeleton sur pages clés~~ ✅ Donateurs (liste + détail), segments, campagnes.
 
 ---
 
