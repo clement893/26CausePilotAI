@@ -112,14 +112,20 @@ export function DatabaseConnectionForm({
         let hostname = urlString;
         let port = '5432';
         if (urlString.includes(':')) {
-          const parts = urlString.split(':');
-          hostname = parts[0] ?? hostname;
-          port = parts[1] ?? '5432';
+          // Split by : and take the last part as port (in case there are multiple colons)
+          const lastColonIdx = urlString.lastIndexOf(':');
+          hostname = urlString.substring(0, lastColonIdx);
+          const portPart = urlString.substring(lastColonIdx + 1);
+          // If port contains another colon (malformed), take only the first part
+          port = portPart.includes(':') ? portPart.split(':')[0] : portPart;
+          port = port || '5432';
         }
         
         // Use parsed values or fallback to user-provided values
         const urlHost = hostname || dbHost.split('@').pop()?.split('/')[0]?.split(':')[0] || '';
-        const urlPort = port || dbPort || '5432';
+        // Prefer parsed port from URL, but if user manually entered a port, use that
+        // Only use dbPort if port wasn't extracted from URL
+        const urlPort = (port && port !== '5432') ? port : (dbPort && dbPort.trim() ? dbPort.trim() : port);
         const urlUser = dbUser && dbUser.trim() ? dbUser.trim() : 'postgres';
         const urlPassword = dbPassword && dbPassword.trim() ? dbPassword.trim() : '';
         

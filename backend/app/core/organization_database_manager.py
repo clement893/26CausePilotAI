@@ -43,6 +43,22 @@ class OrganizationDatabaseManager:
         """
         import os
         
+        # First, clean up any malformed URLs before processing
+        # This prevents issues with nested URLs
+        if "@" in url and url.count("@") > 1:
+            # Check for nested URL patterns and clean them first
+            at_positions = [i for i, char in enumerate(url) if char == '@']
+            for at_pos in reversed(at_positions):
+                after_at = url[at_pos + 1:]
+                if after_at.startswith("postgresql://") or after_at.startswith("postgres://"):
+                    # Extract the clean URL
+                    if after_at.startswith("postgresql://"):
+                        url = "postgresql+asyncpg://" + after_at[len("postgresql://"):]
+                    else:
+                        url = "postgresql+asyncpg://" + after_at[len("postgres://"):]
+                    logger.warning(f"Cleaned malformed URL before Railway conversion: {cls.mask_connection_string(url)}")
+                    break
+        
         # Check if we're on Railway
         is_railway = os.getenv("RAILWAY_ENVIRONMENT") is not None or os.getenv("RAILWAY_SERVICE_NAME") is not None
         
@@ -53,15 +69,38 @@ class OrganizationDatabaseManager:
         # Don't guess - let the user configure it correctly
         railway_pghost = os.getenv("PGHOST")
         if railway_pghost and (".railway.app" in url or ".up.railway.app" in url or ".rlwy.net" in url):
-            # We have the internal hostname from Railway, use it
-            parsed = urlparse(url)
-            hostname = parsed.hostname or ""
-            
-            if hostname and hostname != railway_pghost:
-                # Replace hostname in URL
-                new_url = url.replace(f"@{hostname}", f"@{railway_pghost}")
-                logger.info(f"Converted Railway public URL to internal using PGHOST: {hostname} -> {railway_pghost}")
-                return new_url
+            # Parse the URL properly to extract hostname
+            try:
+                # Use parse_db_connection_string to get clean components
+                parsed = cls.parse_db_connection_string(url)
+                hostname = parsed.get('host', '')
+                
+                if hostname and hostname != railway_pghost and hostname not in ['postgresql', 'postgres']:
+                    # Rebuild URL with new hostname
+                    user_pass = ''
+                    if parsed['user']:
+                        if parsed['password']:
+                            user_pass = f"{parsed['user']}:{parsed['password']}@"
+                        else:
+                            user_pass = f"{parsed['user']}@"
+                    
+                    port = parsed.get('port', 5432)
+                    db_part = f"/{parsed['database']}" if parsed.get('database') else ''
+                    new_url = f"postgresql+asyncpg://{user_pass}{railway_pghost}:{port}{db_part}"
+                    logger.info(f"Converted Railway public URL to internal using PGHOST: {hostname} -> {railway_pghost}")
+                    return new_url
+            except Exception as e:
+                logger.warning(f"Failed to parse URL for Railway conversion: {e}, using original URL")
+                # Fallback to simple replace if parsing fails
+                parsed = urlparse(url)
+                hostname = parsed.hostname or ""
+                if hostname and hostname != railway_pghost:
+                    # Use more precise replacement to avoid duplicates
+                    # Only replace the hostname part, not if it appears in password or elsewhere
+                    if f"@{hostname}:" in url or f"@{hostname}/" in url:
+                        new_url = url.replace(f"@{hostname}:", f"@{railway_pghost}:", 1).replace(f"@{hostname}/", f"@{railway_pghost}/", 1)
+                        logger.info(f"Converted Railway public URL to internal (fallback): {hostname} -> {railway_pghost}")
+                        return new_url
         
         # Don't convert if we can't reliably determine the internal hostname
         # Let the user configure the correct URL
@@ -78,6 +117,19 @@ class OrganizationDatabaseManager:
         base_url = getattr(settings, 'ORG_DB_BASE_URL', None)
         if base_url:
             base_url = str(base_url)
+            # First, clean up any malformed URLs
+            if "@" in base_url and base_url.count("@") > 1:
+                # Check for nested URL patterns and clean them
+                at_positions = [i for i, char in enumerate(base_url) if char == '@']
+                for at_pos in reversed(at_positions):
+                    after_at = base_url[at_pos + 1:]
+                    if after_at.startswith("postgresql://") or after_at.startswith("postgres://"):
+                        if after_at.startswith("postgresql://"):
+                            base_url = "postgresql+asyncpg://" + after_at[len("postgresql://"):]
+                        else:
+                            base_url = "postgresql+asyncpg://" + after_at[len("postgres://"):]
+                        logger.warning(f"Cleaned malformed ORG_DB_BASE_URL: {cls.mask_connection_string(base_url)}")
+                        break
             # Try to convert to internal URL if on Railway
             base_url = cls._convert_railway_url_to_internal(base_url)
             return base_url
@@ -85,6 +137,20 @@ class OrganizationDatabaseManager:
         # Fallback: derive from DATABASE_URL
         # Extract base URL (without database name) from DATABASE_URL
         db_url = str(settings.DATABASE_URL)
+        
+        # First, clean up any malformed URLs in DATABASE_URL
+        if "@" in db_url and db_url.count("@") > 1:
+            # Check for nested URL patterns and clean them
+            at_positions = [i for i, char in enumerate(db_url) if char == '@']
+            for at_pos in reversed(at_positions):
+                after_at = db_url[at_pos + 1:]
+                if after_at.startswith("postgresql://") or after_at.startswith("postgres://"):
+                    if after_at.startswith("postgresql://"):
+                        db_url = "postgresql+asyncpg://" + after_at[len("postgresql://"):]
+                    else:
+                        db_url = "postgresql+asyncpg://" + after_at[len("postgres://"):]
+                    logger.warning(f"Cleaned malformed DATABASE_URL: {cls.mask_connection_string(db_url)}")
+                    break
         
         # Remove the database name from the URL
         # Format: postgresql+asyncpg://user:pass@host:port/dbname?params
@@ -218,6 +284,12 @@ class OrganizationDatabaseManager:
             port_str = port_value.strip()
             if not port_str:  # Empty string after strip
                 return 5432
+            
+            # Handle malformed port strings like "25091:5432" - take the first part
+            if ':' in port_str:
+                port_str = port_str.split(':')[0].strip()
+                logger.warning(f"Detected malformed port value '{port_value}', using first part: '{port_str}'")
+            
             try:
                 port_int = int(port_str)
                 if 1 <= port_int <= 65535:
@@ -239,6 +311,12 @@ class OrganizationDatabaseManager:
             port_str = str(port_value).strip()
             if not port_str:
                 return 5432
+            
+            # Handle malformed port strings like "25091:5432" - take the first part
+            if ':' in port_str:
+                port_str = port_str.split(':')[0].strip()
+                logger.warning(f"Detected malformed port value '{port_value}', using first part: '{port_str}'")
+            
             port_int = int(port_str)
             if 1 <= port_int <= 65535:
                 return port_int
@@ -259,77 +337,90 @@ class OrganizationDatabaseManager:
             Dictionary with parsed components (scheme, user, password, host, port, database)
         """
         try:
-            # Log the original connection string (masked) for debugging
+            # Log the original connection string (masked) for debugging (only at debug level to avoid spam)
             logger.debug(f"Parsing connection string: {cls.mask_connection_string(connection_string)}")
             
-            # Detect and fix nested URLs (e.g., postgresql+asyncpg://...@postgresql://...)
-            # This can happen if DATABASE_URL is incorrectly set or user pastes full URL in host field
+            # CRITICAL: Clean up nested/malformed URLs FIRST before any other processing
             # Pattern: postgresql+asyncpg://user:pass@postgresql://user:pass@host:port/db
-            # We need to extract only the last valid URL part
+            # This happens when URLs are incorrectly concatenated
             
-            # First, check for nested postgresql+asyncpg:// URLs
+            original_string = connection_string
+            
+            # Step 1: Detect and extract the actual URL from nested patterns
+            # Look for pattern where we have multiple @ symbols and scheme indicators
+            if "@" in connection_string and connection_string.count("@") > 1:
+                # Find all positions of @
+                at_positions = [i for i, char in enumerate(connection_string) if char == '@']
+                
+                # Check each @ position to see if it's followed by a scheme
+                for at_pos in reversed(at_positions):
+                    after_at = connection_string[at_pos + 1:]
+                    # Check if this @ is followed by a PostgreSQL scheme
+                    if after_at.startswith("postgresql://") or after_at.startswith("postgres://"):
+                        # This is a nested URL - extract from here
+                        if after_at.startswith("postgresql://"):
+                            # Extract everything after "postgresql://"
+                            actual_url = "postgresql+asyncpg://" + after_at[len("postgresql://"):]
+                        else:
+                            # Extract everything after "postgres://"
+                            actual_url = "postgresql+asyncpg://" + after_at[len("postgres://"):]
+                        
+                        # Clean up: remove any remaining nested patterns
+                        # Check if the extracted URL still has nested patterns
+                        if "@" in actual_url and actual_url.count("@") > 1:
+                            # Recursively clean
+                            at_positions_clean = [i for i, char in enumerate(actual_url) if char == '@']
+                            for at_pos_clean in reversed(at_positions_clean):
+                                after_at_clean = actual_url[at_pos_clean + 1:]
+                                if after_at_clean.startswith("postgresql://") or after_at_clean.startswith("postgres://"):
+                                    if after_at_clean.startswith("postgresql://"):
+                                        actual_url = "postgresql+asyncpg://" + after_at_clean[len("postgresql://"):]
+                                    else:
+                                        actual_url = "postgresql+asyncpg://" + after_at_clean[len("postgres://"):]
+                                    break
+                        
+                        connection_string = actual_url
+                        logger.info(f"Detected and cleaned nested URL pattern. Original: {cls.mask_connection_string(original_string)}, Cleaned: {cls.mask_connection_string(connection_string)}")
+                        break
+            
+            # Step 2: Check for multiple occurrences of postgresql+asyncpg://
             if "postgresql+asyncpg://" in connection_string:
-                # Count occurrences
                 count_asyncpg = connection_string.count("postgresql+asyncpg://")
                 if count_asyncpg > 1:
                     # Find the last occurrence (should be the actual URL)
                     last_idx = connection_string.rfind("postgresql+asyncpg://")
                     if last_idx >= 0:
-                        # Extract from the last occurrence onwards
                         connection_string = connection_string[last_idx:]
-                        logger.warning(f"Detected nested asyncpg URL, extracted: {cls.mask_connection_string(connection_string)}")
-                elif count_asyncpg == 1:
-                    # Check if there's a nested postgresql:// inside
-                    # Pattern: postgresql+asyncpg://user:pass@postgresql://user:pass@host/db
-                    if "@postgresql://" in connection_string or "@postgres://" in connection_string:
-                        # Find the last @ before a postgresql:// or postgres://
-                        # Extract everything after the last @postgresql:// or @postgres://
-                        last_postgres_idx = max(
-                            connection_string.rfind("@postgresql://"),
-                            connection_string.rfind("@postgres://")
-                        )
-                        if last_postgres_idx > 0:
-                            # Extract from postgresql:// or postgres:// onwards
-                            if "@postgresql://" in connection_string[last_postgres_idx:]:
-                                actual_url_start = connection_string.find("postgresql://", last_postgres_idx)
-                            else:
-                                actual_url_start = connection_string.find("postgres://", last_postgres_idx)
-                            
-                            if actual_url_start > 0:
-                                # Rebuild with postgresql+asyncpg:// prefix
-                                connection_string = "postgresql+asyncpg://" + connection_string[actual_url_start + len("postgresql://"):]
-                                logger.warning(f"Detected nested URL pattern, extracted: {cls.mask_connection_string(connection_string)}")
+                        logger.info(f"Detected multiple asyncpg URLs, using last: {cls.mask_connection_string(connection_string)}")
             
-            # Also check for nested postgresql:// URLs (without asyncpg)
+            # Step 3: Check for nested postgresql:// inside postgresql+asyncpg://
+            if connection_string.startswith("postgresql+asyncpg://") and ("@postgresql://" in connection_string or "@postgres://" in connection_string):
+                # Find the last @postgresql:// or @postgres://
+                last_postgres_idx = max(
+                    connection_string.rfind("@postgresql://"),
+                    connection_string.rfind("@postgres://")
+                )
+                if last_postgres_idx > 0:
+                    # Extract from postgresql:// or postgres:// onwards
+                    if "@postgresql://" in connection_string[last_postgres_idx:]:
+                        actual_url_start = connection_string.find("postgresql://", last_postgres_idx)
+                        if actual_url_start > 0:
+                            connection_string = "postgresql+asyncpg://" + connection_string[actual_url_start + len("postgresql://"):]
+                    elif "@postgres://" in connection_string[last_postgres_idx:]:
+                        actual_url_start = connection_string.find("postgres://", last_postgres_idx)
+                        if actual_url_start > 0:
+                            connection_string = "postgresql+asyncpg://" + connection_string[actual_url_start + len("postgres://"):]
+                    logger.info(f"Detected nested URL inside asyncpg, extracted: {cls.mask_connection_string(connection_string)}")
+            
+            # Step 4: Check for multiple postgresql:// (without asyncpg)
             if "postgresql://" in connection_string and connection_string.count("postgresql://") > 1:
-                # Find the last occurrence of postgresql:// (should be the actual URL)
                 last_idx = connection_string.rfind("postgresql://")
                 if last_idx > 0:
-                    # Extract the actual URL starting from the last occurrence
                     connection_string = connection_string[last_idx:]
-                    logger.warning(f"Detected nested URL, extracted: {cls.mask_connection_string(connection_string)}")
-            
-            # Final cleanup: if we still have nested patterns, try to extract the cleanest URL
-            # Look for pattern: scheme://user:pass@scheme://user:pass@host:port/db
-            if "@" in connection_string and connection_string.count("@") > 1:
-                # Count @ symbols - if more than 1, we might have nested URLs
-                at_positions = [i for i, char in enumerate(connection_string) if char == '@']
-                if len(at_positions) > 1:
-                    # Check if any @ is followed by a scheme (postgresql:// or postgres://)
-                    for at_pos in reversed(at_positions):
-                        after_at = connection_string[at_pos + 1:]
-                        if after_at.startswith("postgresql://") or after_at.startswith("postgres://"):
-                            # This @ is part of a nested URL, extract from here
-                            scheme_start = after_at.find("://")
-                            if scheme_start > 0:
-                                scheme = after_at[:scheme_start]
-                                # Rebuild with postgresql+asyncpg:// if original had it
-                                if connection_string.startswith("postgresql+asyncpg://"):
-                                    connection_string = "postgresql+asyncpg://" + after_at[scheme_start + 3:]
-                                else:
-                                    connection_string = after_at
-                                logger.warning(f"Detected nested URL via @ pattern, extracted: {cls.mask_connection_string(connection_string)}")
-                            break
+                    # Convert to asyncpg format
+                    if not connection_string.startswith("postgresql+asyncpg://"):
+                        connection_string = connection_string.replace("postgresql://", "postgresql+asyncpg://", 1)
+                    logger.info(f"Detected multiple postgresql URLs, using last: {cls.mask_connection_string(connection_string)}")
             
             # Handle both postgresql:// and postgresql+asyncpg://
             clean_url = connection_string.replace('postgresql+asyncpg://', 'postgresql://')
@@ -346,11 +437,44 @@ class OrganizationDatabaseManager:
                         host_port_db = after_at.split('/', 1)
                         host_port = host_port_db[0]
                         db_part = host_port_db[1] if len(host_port_db) > 1 else ''
+                        
+                        # Clean up database path: remove duplicate port patterns (e.g., /railway:5432/db -> /db)
+                        # Pattern: /something:port/dbname should become /dbname
+                        if db_part and ':' in db_part and '/' in db_part:
+                            # Split by / to get parts
+                            db_parts = db_part.split('/')
+                            # Find the last part that doesn't contain : (should be the actual database name)
+                            actual_db = None
+                            for part in reversed(db_parts):
+                                if ':' not in part and part.strip():
+                                    actual_db = part
+                                    break
+                            if actual_db:
+                                db_part = actual_db
+                                logger.info(f"Cleaned duplicate port pattern in database path, using: {db_part}")
+                        
                         if ':' in host_port:
-                            host, port_str = host_port.split(':', 1)
+                            # Split by : and take the last part as port (in case there are multiple colons)
+                            # But first, check if there are multiple colons which might indicate a malformed port
+                            host_port_parts = host_port.rsplit(':', 1)
+                            if len(host_port_parts) == 2:
+                                host = host_port_parts[0]
+                                port_str = host_port_parts[1]
+                                # Clean up port string in case it contains multiple colons (e.g., "25091:5432")
+                                if ':' in port_str:
+                                    port_str = port_str.split(':')[0]
+                                    logger.warning(f"Detected malformed port in host_port '{host_port}', using first part: '{port_str}'")
+                            else:
+                                host = host_port
+                                port_str = ''
+                            
                             # If port is empty, add default port
                             if not port_str or port_str == '':
                                 after_at = f'{host}:5432/{db_part}' if db_part else f'{host}:5432'
+                                clean_url = f'{before_at}@{after_at}'
+                            else:
+                                # Port is present, just clean the db_part
+                                after_at = f'{host}:{port_str}/{db_part}' if db_part else f'{host}:{port_str}'
                                 clean_url = f'{before_at}@{after_at}'
             
             parsed = urlparse(clean_url)
@@ -365,12 +489,30 @@ class OrganizationDatabaseManager:
                 port = cls._normalize_port(parsed.port)
             elif parsed.netloc and ':' in parsed.netloc:
                 # Extract port from netloc manually
-                netloc_parts = parsed.netloc.rsplit(':', 1)
-                if len(netloc_parts) == 2:
-                    port_str = netloc_parts[1]
-                    port = cls._normalize_port(port_str)
+                # Handle case where netloc might be user:pass@host:port
+                if '@' in parsed.netloc:
+                    # Format: user:pass@host:port
+                    after_at = parsed.netloc.split('@', 1)[1]
+                    if ':' in after_at:
+                        # Extract port (last part after :)
+                        port_str = after_at.rsplit(':', 1)[1]
+                        # Clean up port string in case it contains multiple colons (e.g., "25091:5432")
+                        if ':' in port_str:
+                            port_str = port_str.split(':')[0]
+                        port = cls._normalize_port(port_str)
+                    else:
+                        port = 5432
                 else:
-                    port = 5432
+                    # Format: host:port
+                    netloc_parts = parsed.netloc.rsplit(':', 1)
+                    if len(netloc_parts) == 2:
+                        port_str = netloc_parts[1]
+                        # Clean up port string in case it contains multiple colons (e.g., "25091:5432")
+                        if ':' in port_str:
+                            port_str = port_str.split(':')[0]
+                        port = cls._normalize_port(port_str)
+                    else:
+                        port = 5432
             else:
                 port = 5432
             
@@ -396,13 +538,30 @@ class OrganizationDatabaseManager:
                 else:
                     hostname = parsed.netloc
             
+            # Clean up database name from path
+            # Handle cases where path might contain duplicate patterns like /railway:5432/dbname
+            database_name = parsed.path.lstrip('/') if parsed.path else ''
+            if database_name:
+                # Remove any duplicate port patterns in database name
+                # Pattern: something:port/dbname -> dbname
+                if ':' in database_name and '/' in database_name:
+                    # Split by / and find the last part without :
+                    db_parts = database_name.split('/')
+                    for part in reversed(db_parts):
+                        if ':' not in part and part.strip():
+                            database_name = part
+                            break
+                # Also handle cases where database name might have :port at the end
+                if ':' in database_name:
+                    database_name = database_name.split(':')[0]
+            
             result = {
                 'scheme': parsed.scheme,
                 'user': parsed.username or '',
                 'password': parsed.password or '',
                 'host': hostname,
                 'port': port,
-                'database': parsed.path.lstrip('/') if parsed.path else '',
+                'database': database_name,
                 'full': connection_string
             }
             
@@ -476,6 +635,23 @@ class OrganizationDatabaseManager:
         """
         if not db_connection_string:
             return db_connection_string
+        
+        # First, clean up any malformed/nested URLs before normalization
+        # This prevents issues with duplicated URLs
+        original = db_connection_string
+        if "@" in db_connection_string and db_connection_string.count("@") > 1:
+            # Check for nested URL patterns
+            at_positions = [i for i, char in enumerate(db_connection_string) if char == '@']
+            for at_pos in reversed(at_positions):
+                after_at = db_connection_string[at_pos + 1:]
+                if after_at.startswith("postgresql://") or after_at.startswith("postgres://"):
+                    # Extract the clean URL
+                    if after_at.startswith("postgresql://"):
+                        db_connection_string = "postgresql+asyncpg://" + after_at[len("postgresql://"):]
+                    else:
+                        db_connection_string = "postgresql+asyncpg://" + after_at[len("postgres://"):]
+                    logger.warning(f"Cleaned malformed URL in normalize_connection_string. Original: {cls.mask_connection_string(original)}, Cleaned: {cls.mask_connection_string(db_connection_string)}")
+                    break
         
         # Remove any existing driver specification
         normalized = db_connection_string.strip()
@@ -773,6 +949,9 @@ class OrganizationDatabaseManager:
                 raise ValueError(
                     "ORG_DB_BASE_URL must be set to create organization databases automatically"
                 )
+        
+        # Normalize and clean the connection string before using it
+        db_connection_string = cls.normalize_connection_string(db_connection_string)
         
         parsed = cls.parse_db_connection_string(db_connection_string)
         db_name = parsed['database']
