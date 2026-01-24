@@ -12,12 +12,12 @@ export default function CTA() {
           {' '}
           <h2 id="cta-heading" className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             {' '}
-            Prêt à démarrer votre projet ?{' '}
+            Prêt à transformer votre collecte de fonds ?{' '}
           </h2>{' '}
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
             {' '}
-            Rejoignez des milliers de développeurs qui utilisent ce template pour créer des
-            applications modernes et performantes.{' '}
+            Rejoignez plus de 5000 organisations qui utilisent Cause Pilot pour maximiser leur impact 
+            et augmenter leurs dons de 35% en moyenne.{' '}
           </p>{' '}
           <div
             className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -26,32 +26,31 @@ export default function CTA() {
           >
             {' '}
             <ButtonLink
-              href="/components"
-              size="lg"
-              variant="primary"
-              aria-label="Explorer les composants disponibles"
-            >
-              {' '}
-              Explorer les composants{' '}
-            </ButtonLink>{' '}
-            <ButtonLink
               href="/auth/register"
               size="lg"
-              variant="secondary"
-              aria-label="Créer un compte gratuit pour commencer"
+              variant="primary"
+              aria-label="Démarrer gratuitement"
             >
               {' '}
-              Créer un compte gratuit{' '}
+              Démarrer gratuitement{' '}
             </ButtonLink>{' '}
             <ButtonLink
-              href="https://github.com/clement893/26CausePilotAI"
-              target="_blank"
+              href="/dashboard"
               size="lg"
-              variant="outline"
-              aria-label="Voir le projet sur GitHub (ouvre dans un nouvel onglet)"
+              variant="secondary"
+              aria-label="Voir une démo de la plateforme"
             >
               {' '}
-              Voir sur GitHub{' '}
+              Voir une démo{' '}
+            </ButtonLink>{' '}
+            <ButtonLink
+              href="/pricing"
+              size="lg"
+              variant="outline"
+              aria-label="Découvrir nos tarifs"
+            >
+              {' '}
+              Découvrir nos tarifs{' '}
             </ButtonLink>{' '}
           </div>{' '}
         </div>{' '}

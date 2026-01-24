@@ -4,10 +4,10 @@ interface Stat {
   icon: string;
 }
 const stats: Stat[] = [
-  { value: '100%', label: 'TypeScript', icon: '📘' },
-  { value: '0ms', label: 'Temps de démarrage', icon: '⚡' },
-  { value: '∞', label: 'Scalabilité', icon: '📈' },
-  { value: '24/7', label: 'Support', icon: '🛠️' },
+  { value: '5000+', label: 'Organisations', icon: '🏢' },
+  { value: '+35%', label: 'Collecte moyenne', icon: '📈' },
+  { value: '2M+', label: 'Donateurs actifs', icon: '💝' },
+  { value: '24/7', label: 'Support dédié', icon: '🛠️' },
 ];
 export default function Stats() {
   return (

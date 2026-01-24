@@ -1,6 +1,6 @@
 /**
- * Home Page
- * Landing page showcasing all project features with theme components
+ * Home Page - Cause Pilot
+ * Landing page for fundraising and donor management platform powered by AI
  */
 
 'use client';
@@ -9,23 +9,22 @@ import { type ReactNode } from 'react';
 import { Hero, Stats, TechStack, CTA } from '@/components/sections';
 import { Container, Card, Badge, Grid } from '@/components/ui';
 import {
-  Shield,
+  Heart,
   Users,
-  CreditCard,
-  FileText,
   BarChart3,
-  Globe,
+  Brain,
+  Target,
+  Mail,
   Zap,
-  Lock,
-  Database,
-  Settings,
-  Layers,
-  Code,
-  Rocket,
-  Palette,
-  Server,
-  Box,
+  TrendingUp,
+  Shield,
+  Globe,
+  Sparkles,
+  DollarSign,
   CheckCircle2,
+  MessageSquare,
+  Calendar,
+  CreditCard,
 } from 'lucide-react';
 
 type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
@@ -44,145 +43,123 @@ interface FeatureCategory {
 
 const featureCategories: FeatureCategory[] = [
   {
-    title: 'Authentification & Sécurité',
-    icon: <Shield className="w-6 h-6" />,
-    description: 'Système de sécurité complet et robuste',
+    title: 'Intelligence Artificielle',
+    icon: <Brain className="w-6 h-6" />,
+    description: 'IA avancée pour optimiser vos campagnes de collecte',
+    badgeVariant: 'info',
+    iconColor: 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400',
+    features: [
+      { title: 'Prédictions de dons', description: 'Anticipez les comportements des donateurs avec l\'IA' },
+      { title: 'Segmentation intelligente', description: 'Segmentez automatiquement vos donateurs' },
+      { title: 'Recommandations personnalisées', description: 'Suggestions de campagnes adaptées' },
+      { title: 'Analyse prédictive', description: 'Identifiez les meilleurs moments pour solliciter' },
+      { title: 'Optimisation des montants', description: 'Proposez les montants de dons optimaux' },
+      { title: 'Détection des tendances', description: 'Identifiez les patterns de dons automatiquement' },
+    ],
+  },
+  {
+    title: 'Gestion des Donateurs',
+    icon: <Users className="w-6 h-6" />,
+    description: 'Base de données complète et CRM intégré',
     badgeVariant: 'success',
     iconColor: 'bg-success-50 dark:bg-success-900/20 text-success-600 dark:text-success-400',
     features: [
-      { title: 'JWT avec httpOnly cookies', description: 'Authentification sécurisée avec tokens' },
-      { title: 'OAuth (Google, GitHub, Microsoft)', description: 'Connexion sociale intégrée' },
-      { title: 'Multi-Factor Authentication (MFA)', description: '2FA avec TOTP pour une sécurité renforcée' },
-      { title: 'Role-Based Access Control (RBAC)', description: 'Système de permissions flexible' },
-      { title: 'API Key Management', description: 'Gestion sécurisée des clés API' },
-      { title: 'Security Headers', description: 'CSP, HSTS, X-Frame-Options' },
+      { title: 'Profils détaillés', description: 'Historique complet de chaque donateur' },
+      { title: 'Segmentation avancée', description: 'Créez des segments personnalisés' },
+      { title: 'Scoring des donateurs', description: 'Évaluez le potentiel de chaque donateur' },
+      { title: 'Suivi des interactions', description: 'Historique complet des communications' },
+      { title: 'Gestion des prospects', description: 'Pipeline de conversion des leads' },
+      { title: 'Fidélisation', description: 'Programmes de rétention automatisés' },
     ],
   },
   {
-    title: 'Gestion Utilisateurs & Équipes',
-    icon: <Users className="w-6 h-6" />,
-    description: 'Gestion complète des utilisateurs et équipes',
-    badgeVariant: 'info',
-    iconColor: 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400',
-    features: [
-      { title: 'Inscription & Connexion', description: 'Gestion complète des comptes utilisateurs' },
-      { title: 'Profil Utilisateur', description: 'Gestion de profil avancée' },
-      { title: 'Gestion des Équipes', description: 'Création et gestion d\'équipes multi-utilisateurs' },
-      { title: 'Multi-tenancy', description: 'Support complet du multi-tenant' },
-      { title: 'Invitations', description: 'Système d\'invitation par email' },
-      { title: 'Préférences Utilisateur', description: 'Thème, langue et paramètres personnalisés' },
-    ],
-  },
-  {
-    title: 'Facturation & Abonnements',
-    icon: <CreditCard className="w-6 h-6" />,
-    description: 'Système de paiement et abonnements complet',
-    badgeVariant: 'info',
-    iconColor: 'bg-info-50 dark:bg-info-900/20 text-info-600 dark:text-info-400',
-    features: [
-      { title: 'Intégration Stripe', description: 'Paiements sécurisés avec Stripe' },
-      { title: 'Gestion des Abonnements', description: 'Gestion complète des abonnements' },
-      { title: 'Historique des Paiements', description: 'Suivi de toutes les transactions' },
-      { title: 'Génération de Factures', description: 'Création automatique de factures' },
-      { title: 'Metering d\'Usage', description: 'Suivi de l\'utilisation des services' },
-      { title: 'Portail Client', description: 'Portail self-service pour les utilisateurs' },
-    ],
-  },
-  {
-    title: 'Gestion de Contenu',
-    icon: <FileText className="w-6 h-6" />,
-    description: 'CMS complet pour la gestion de contenu',
+    title: 'Campagnes de Fundraising',
+    icon: <Target className="w-6 h-6" />,
+    description: 'Créez et gérez vos campagnes de collecte',
     badgeVariant: 'warning',
     iconColor: 'bg-warning-50 dark:bg-warning-900/20 text-warning-600 dark:text-warning-400',
     features: [
-      { title: 'Système de Blog', description: 'Blog complet avec catégories et tags' },
-      { title: 'Page Builder', description: 'Constructeur de pages visuel' },
-      { title: 'Médiathèque', description: 'Gestion complète des médias' },
-      { title: 'Planification de Contenu', description: 'Publication programmée' },
-      { title: 'Gestion SEO', description: 'Optimisation pour les moteurs de recherche' },
-      { title: 'Gestion de Menus', description: 'Création et gestion de menus' },
+      { title: 'Campagnes multi-canaux', description: 'Email, SMS, réseaux sociaux, web' },
+      { title: 'Pages de collecte', description: 'Landing pages optimisées pour la conversion' },
+      { title: 'Dons récurrents', description: 'Gestion des abonnements mensuels' },
+      { title: 'Peer-to-peer', description: 'Campagnes de collecte collaborative' },
+      { title: 'Événements', description: 'Gestion complète d\'événements de collecte' },
+      { title: 'Challenges et défis', description: 'Gamification de la collecte de fonds' },
     ],
   },
   {
-    title: 'Formulaires & Enquêtes',
+    title: 'Analytics & Rapports',
     icon: <BarChart3 className="w-6 h-6" />,
-    description: 'Création et gestion de formulaires et enquêtes',
+    description: 'Tableaux de bord et insights en temps réel',
+    badgeVariant: 'info',
+    iconColor: 'bg-info-50 dark:bg-info-900/20 text-info-600 dark:text-info-400',
+    features: [
+      { title: 'Dashboard en temps réel', description: 'Suivi instantané de vos KPIs' },
+      { title: 'Rapports personnalisables', description: 'Créez vos propres rapports' },
+      { title: 'Analyse ROI', description: 'Mesurez le retour sur investissement' },
+      { title: 'Visualisations avancées', description: 'Graphiques et tableaux interactifs' },
+      { title: 'Exports de données', description: 'Exportez vos données en CSV, Excel, PDF' },
+      { title: 'Insights IA', description: 'Recommandations basées sur vos données' },
+    ],
+  },
+  {
+    title: 'Communication & Marketing',
+    icon: <Mail className="w-6 h-6" />,
+    description: 'Outils de communication multi-canaux',
     badgeVariant: 'default',
     iconColor: 'bg-secondary-50 dark:bg-secondary-900/20 text-secondary-600 dark:text-secondary-400',
     features: [
-      { title: 'Constructeur de Formulaires', description: 'Création de formulaires personnalisés' },
-      { title: 'Soumissions de Formulaires', description: 'Gestion des réponses' },
-      { title: 'Création d\'Enquêtes', description: 'Enquêtes interactives' },
-      { title: 'Résultats d\'Enquêtes', description: 'Analyse et visualisation des résultats' },
-      { title: 'Validation Avancée', description: 'Validation côté client et serveur' },
+      { title: 'Campagnes email', description: 'Envoyez des emails personnalisés en masse' },
+      { title: 'Templates professionnels', description: 'Bibliothèque de modèles d\'emails' },
+      { title: 'A/B Testing', description: 'Testez et optimisez vos messages' },
+      { title: 'Automatisation', description: 'Workflows automatisés de communication' },
+      { title: 'SMS & notifications', description: 'Envoyez des SMS et notifications push' },
+      { title: 'Intégration réseaux sociaux', description: 'Publiez sur tous vos canaux sociaux' },
     ],
   },
   {
-    title: 'Monitoring & Analytics',
-    icon: <BarChart3 className="w-6 h-6" />,
-    description: 'Suivi de performance et analytics',
+    title: 'Paiements & Transactions',
+    icon: <CreditCard className="w-6 h-6" />,
+    description: 'Système de paiement sécurisé et flexible',
+    badgeVariant: 'success',
+    iconColor: 'bg-success-50 dark:bg-success-900/20 text-success-600 dark:text-success-400',
+    features: [
+      { title: 'Paiements en ligne', description: 'Acceptez les dons par carte et virements' },
+      { title: 'Multi-devises', description: 'Support de toutes les devises principales' },
+      { title: 'Reçus fiscaux', description: 'Génération automatique de reçus' },
+      { title: 'Dons récurrents', description: 'Prélèvements automatiques mensuels' },
+      { title: 'Sécurité PCI-DSS', description: 'Conformité totale aux normes de sécurité' },
+      { title: 'Rapprochement bancaire', description: 'Réconciliation automatique des paiements' },
+    ],
+  },
+  {
+    title: 'Formulaires & Intégrations',
+    icon: <Sparkles className="w-6 h-6" />,
+    description: 'Formulaires intelligents et intégrations tierces',
+    badgeVariant: 'warning',
+    iconColor: 'bg-warning-50 dark:bg-warning-900/20 text-warning-600 dark:text-warning-400',
+    features: [
+      { title: 'Formulaires de dons', description: 'Créez des formulaires optimisés' },
+      { title: 'Widgets embarquables', description: 'Intégrez des formulaires sur votre site' },
+      { title: 'API complète', description: 'Intégrez avec vos outils existants' },
+      { title: 'Zapier & webhooks', description: 'Automatisez avec 5000+ applications' },
+      { title: 'Import/Export', description: 'Importez vos données existantes' },
+      { title: 'CRM sync', description: 'Synchronisez avec Salesforce, HubSpot, etc.' },
+    ],
+  },
+  {
+    title: 'Sécurité & Conformité',
+    icon: <Shield className="w-6 h-6" />,
+    description: 'Protection des données et conformité RGPD',
     badgeVariant: 'error',
     iconColor: 'bg-error-50 dark:bg-error-900/20 text-error-600 dark:text-error-400',
     features: [
-      { title: 'Monitoring de Performance', description: 'Suivi en temps réel des performances' },
-      { title: 'Error Tracking (Sentry)', description: 'Suivi des erreurs avec Sentry' },
-      { title: 'Web Vitals', description: 'Métriques Core Web Vitals' },
-      { title: 'Tableau de Bord Analytics', description: 'Visualisation des données' },
-      { title: 'Constructeur de Rapports', description: 'Création de rapports personnalisés' },
-    ],
-  },
-  {
-    title: 'Internationalisation',
-    icon: <Globe className="w-6 h-6" />,
-    description: 'Support multi-langues complet',
-    badgeVariant: 'info',
-    iconColor: 'bg-info-50 dark:bg-info-900/20 text-info-600 dark:text-info-400',
-    features: [
-      { title: 'Multi-langues (EN, FR, AR, HE)', description: 'Support de 4 langues' },
-      { title: 'Routing par Locale', description: 'Routes localisées' },
-      { title: 'Support RTL', description: 'Support Arabic et Hebrew (RTL)' },
-      { title: 'Persistance de Préférences', description: 'Mémorisation de la langue' },
-    ],
-  },
-  {
-    title: 'Temps Réel',
-    icon: <Zap className="w-6 h-6" />,
-    description: 'Fonctionnalités temps réel',
-    badgeVariant: 'warning',
-    iconColor: 'bg-warning-50 dark:bg-warning-900/20 text-warning-600 dark:text-warning-400',
-    features: [
-      { title: 'Support WebSocket', description: 'Connexions temps réel' },
-      { title: 'Notifications Temps Réel', description: 'Notifications instantanées' },
-      { title: 'Centre de Notifications', description: 'Hub centralisé des notifications' },
-      { title: 'Collaboration', description: 'Fonctionnalités de collaboration en temps réel' },
-    ],
-  },
-  {
-    title: 'ERP',
-    icon: <Box className="w-6 h-6" />,
-    description: 'Système ERP complet',
-    badgeVariant: 'info',
-    iconColor: 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400',
-    features: [
-      { title: 'Gestion Clients', description: 'CRM intégré' },
-      { title: 'Gestion des Commandes', description: 'Suivi complet des commandes' },
-      { title: 'Gestion des Factures', description: 'Facturation et comptabilité' },
-      { title: 'Gestion des Stocks', description: 'Inventaire et stock' },
-      { title: 'Rapports & Analytics', description: 'Rapports d\'entreprise' },
-    ],
-  },
-  {
-    title: 'Thème & Personnalisation',
-    icon: <Palette className="w-6 h-6" />,
-    description: 'Système de thème avancé',
-    badgeVariant: 'default',
-    iconColor: 'bg-secondary-50 dark:bg-secondary-900/20 text-secondary-600 dark:text-secondary-400',
-    features: [
-      { title: 'Thème Avancé', description: 'Système de thème complet (couleurs, typographie, espacement)' },
-      { title: 'Dark Mode', description: 'Mode sombre intégré' },
-      { title: 'Éditeur de Thème Visuel', description: 'Éditeur avec prévisualisation en direct' },
-      { title: '357 Composants UI', description: 'Bibliothèque complète de composants' },
-      { title: 'Effets Visuels', description: 'Glassmorphism, shadows, gradients' },
+      { title: 'Conformité RGPD', description: 'Respect total du RGPD et CCPA' },
+      { title: 'Chiffrement des données', description: 'Toutes les données sont chiffrées' },
+      { title: 'Authentification 2FA', description: 'Sécurité renforcée pour les comptes' },
+      { title: 'Audit logs', description: 'Traçabilité complète des actions' },
+      { title: 'Backups automatiques', description: 'Sauvegardes quotidiennes chiffrées' },
+      { title: 'Gestion des accès', description: 'Permissions granulaires par rôle' },
     ],
   },
 ];
@@ -207,10 +184,10 @@ export default function HomePage() {
               id="core-features-heading"
               className="text-4xl md:text-5xl font-bold mb-4 text-foreground"
             >
-              Tout ce dont vous avez besoin
+              Une plateforme complète de fundraising
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Un template complet avec toutes les fonctionnalités essentielles pour démarrer votre projet SaaS
+              Cause Pilot réunit tous les outils dont vous avez besoin pour gérer vos campagnes de collecte, vos donateurs et maximiser votre impact social
             </p>
           </div>
 
@@ -252,83 +229,86 @@ export default function HomePage() {
       {/* Tech Stack Section */}
       <TechStack />
 
-      {/* Additional Features Section */}
-      <section className="py-20 bg-muted/30" aria-labelledby="additional-features-heading">
+      {/* Why Choose Cause Pilot Section */}
+      <section className="py-20 bg-muted/30" aria-labelledby="why-choose-heading">
         <Container>
           <div className="text-center mb-16">
+            <Badge variant="success" className="mb-4">
+              Pourquoi Cause Pilot ?
+            </Badge>
             <h2
-              id="additional-features-heading"
+              id="why-choose-heading"
               className="text-4xl md:text-5xl font-bold mb-4 text-foreground"
             >
-              Outils Développeur
+              La plateforme la plus complète
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Tout ce qu'il faut pour développer efficacement
+              Tout ce dont vous avez besoin pour maximiser l'impact de vos campagnes de collecte
             </p>
           </div>
 
           <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
             <Card hover className="text-center">
-              <Code className="w-10 h-10 mx-auto mb-4 text-primary-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">TypeScript</h3>
+              <Brain className="w-10 h-10 mx-auto mb-4 text-primary-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">IA Avancée</h3>
               <p className="text-sm text-muted-foreground">
-                Typage statique pour un code plus sûr et maintenable
+                Optimisez vos campagnes avec l'intelligence artificielle
               </p>
             </Card>
 
             <Card hover className="text-center">
-              <Rocket className="w-10 h-10 mx-auto mb-4 text-success-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">357 Composants</h3>
+              <TrendingUp className="w-10 h-10 mx-auto mb-4 text-success-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">+35% de dons</h3>
               <p className="text-sm text-muted-foreground">
-                Bibliothèque complète de composants réutilisables
+                Augmentez vos collectes grâce à nos algorithmes
               </p>
             </Card>
 
             <Card hover className="text-center">
-              <Database className="w-10 h-10 mx-auto mb-4 text-info-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Type Generation</h3>
+              <Zap className="w-10 h-10 mx-auto mb-4 text-warning-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">Installation rapide</h3>
               <p className="text-sm text-muted-foreground">
-                Types TypeScript auto-générés depuis les schémas Pydantic
+                Démarrez en moins de 5 minutes avec notre onboarding
               </p>
             </Card>
 
             <Card hover className="text-center">
-              <Server className="w-10 h-10 mx-auto mb-4 text-warning-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Testing Suite</h3>
+              <MessageSquare className="w-10 h-10 mx-auto mb-4 text-info-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">Support 24/7</h3>
               <p className="text-sm text-muted-foreground">
-                Vitest (unit), Playwright (E2E), pytest (backend)
+                Une équipe dédiée pour vous accompagner
               </p>
             </Card>
 
             <Card hover className="text-center">
-              <Settings className="w-10 h-10 mx-auto mb-4 text-error-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Code Generation</h3>
+              <Globe className="w-10 h-10 mx-auto mb-4 text-primary-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">Multi-pays</h3>
               <p className="text-sm text-muted-foreground">
-                Outils CLI pour générer composants, pages et routes API
+                Collectez dans 40+ pays et 20+ devises
               </p>
             </Card>
 
             <Card hover className="text-center">
-              <Layers className="w-10 h-10 mx-auto mb-4 text-secondary-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Storybook</h3>
+              <DollarSign className="w-10 h-10 mx-auto mb-4 text-success-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">Frais réduits</h3>
               <p className="text-sm text-muted-foreground">
-                Documentation et tests de composants
+                Les frais les plus compétitifs du marché
               </p>
             </Card>
 
             <Card hover className="text-center">
-              <Zap className="w-10 h-10 mx-auto mb-4 text-primary-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Hot Reload</h3>
+              <Calendar className="w-10 h-10 mx-auto mb-4 text-secondary-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">Planification</h3>
               <p className="text-sm text-muted-foreground">
-                Rechargement rapide pour frontend et backend
+                Planifiez vos campagnes à l'avance
               </p>
             </Card>
 
             <Card hover className="text-center">
-              <Lock className="w-10 h-10 mx-auto mb-4 text-success-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">CI/CD Ready</h3>
+              <Shield className="w-10 h-10 mx-auto mb-4 text-error-500" />
+              <h3 className="text-lg font-semibold mb-2 text-foreground">100% Sécurisé</h3>
               <p className="text-sm text-muted-foreground">
-                Workflows GitHub Actions inclus
+                Conformité RGPD et sécurité bancaire
               </p>
             </Card>
           </Grid>

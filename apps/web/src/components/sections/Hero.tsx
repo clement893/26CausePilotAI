@@ -74,18 +74,18 @@ export default function Hero() {
         <Badge
           variant="info"
           className="mb-4 sm:mb-6 animate-fade-in"
-          aria-label="Badge: Template Full-Stack Nukleo"
+          aria-label="Badge: Fundraising propulsé par l'IA"
         >
-          🚀 Template Full-Stack Nukleo
+          ✨ Fundraising propulsé par l'IA
         </Badge>
 
         <h1
           className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.1] px-2 animate-fade-in"
           style={{ animationDelay: '0.1s' }}
         >
-          <span className="block mb-2">MODELE-NEXTJS</span>
+          <span className="block mb-2">CAUSE PILOT</span>
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 dark:from-primary-400 dark:via-primary-300 dark:to-primary-200">
-            FULLSTACK
+            AI-POWERED FUNDRAISING
           </span>
         </h1>
 
@@ -93,19 +93,19 @@ export default function Hero() {
           className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-2 font-medium animate-fade-in"
           style={{ animationDelay: '0.2s' }}
         >
-          Un template de production prêt à l'emploi avec Next.js 16, React 19, FastAPI et
-          PostgreSQL. Démarrez votre projet rapidement avec une architecture moderne.
+          La plateforme intelligente qui transforme votre manière de collecter des fonds. 
+          Gérez vos donateurs, optimisez vos campagnes et maximisez votre impact avec l'intelligence artificielle.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 sm:mb-16 px-2">
           <ButtonLink href="/auth/register" size="lg" variant="primary">
-            Commencer maintenant
+            Démarrer gratuitement
           </ButtonLink>
-          <ButtonLink href="/components" size="lg" variant="secondary">
-            Voir les composants
+          <ButtonLink href="/pricing" size="lg" variant="secondary">
+            Voir les tarifs
           </ButtonLink>
-          <ButtonLink href="/monitoring" size="lg" variant="secondary">
-            Monitoring
+          <ButtonLink href="/dashboard" size="lg" variant="secondary">
+            Voir une démo
           </ButtonLink>
           <ButtonLink href="/auth/login" size="lg" variant="outline">
             Se connecter
@@ -130,7 +130,7 @@ export default function Hero() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>TypeScript</span>
+            <span>IA Avancée</span>
           </div>
           <div className="flex items-center gap-2" role="listitem">
             <svg
@@ -145,7 +145,7 @@ export default function Hero() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>Production Ready</span>
+            <span>Conformité RGPD</span>
           </div>
           <div className="flex items-center gap-2" role="listitem">
             <svg
@@ -160,7 +160,7 @@ export default function Hero() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>Open Source</span>
+            <span>Support 24/7</span>
           </div>
         </div>
       </div>
