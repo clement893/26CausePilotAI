@@ -7,7 +7,7 @@ import {
   testOrganizationDatabase,
   createOrganizationDatabase,
 } from '@/lib/api/organizations';
-import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2, Settings, Code } from 'lucide-react';
+import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2, Settings, Code, Wand2 } from 'lucide-react';
 
 interface DatabaseConnectionFormProps {
   organizationId: string;
@@ -111,13 +111,15 @@ export function DatabaseConnectionForm({
         
         // Check if there's a @ (user:password@host)
         if (connectionPart.includes('@')) {
-          const [authPart, hostPart] = connectionPart.split('@', 2);
+          const partsAt = connectionPart.split('@', 2);
+          const authPart = partsAt[0] ?? '';
+          const hostPart = partsAt[1] ?? '';
           
           // Parse username and password
           if (authPart.includes(':')) {
-            const [user, pass] = authPart.split(':', 2);
-            username = user || username;
-            password = pass || password;
+            const partsColon = authPart.split(':', 2);
+            username = partsColon[0] ?? username;
+            password = partsColon[1] ?? password;
           } else {
             username = authPart || username;
           }
@@ -128,20 +130,22 @@ export function DatabaseConnectionForm({
         
         // Parse host:port/database
         if (connectionPart.includes('/')) {
-          const [hostPortPart, dbPart] = connectionPart.split('/', 2);
+          const partsSlash = connectionPart.split('/', 2);
+          const hostPortPart = partsSlash[0] ?? connectionPart;
+          const dbPart = partsSlash[1] ?? '';
           if (!database) {
-            database = dbPart || '';
+            database = dbPart;
           }
           connectionPart = hostPortPart;
         }
         
         // Parse host:port
         if (connectionPart.includes(':')) {
-          const [host, portPart] = connectionPart.split(':', 2);
-          hostname = host || '';
-          const parsedPort = portPart || port;
+          const partsColon = connectionPart.split(':', 2);
+          hostname = partsColon[0] ?? '';
+          const portPart = partsColon[1] ?? port;
           // Clean up port if it contains multiple colons (malformed)
-          port = parsedPort.includes(':') ? parsedPort.split(':')[0] : parsedPort;
+          port = portPart.includes(':') ? (portPart.split(':')[0] ?? port) : portPart;
         } else {
           hostname = connectionPart || '';
         }
@@ -181,6 +185,97 @@ export function DatabaseConnectionForm({
     const port = dbPort && dbPort.trim() && !isNaN(Number(dbPort)) ? dbPort.trim() : '5432';
     
     return `postgresql+asyncpg://${encodedUser}:${encodedPassword}@${dbHost}:${port}/${dbName}`;
+  };
+
+  // Helper function to parse a full connection string URL
+  const parseConnectionString = (value: string): boolean => {
+    // Check for URL patterns: postgresql://, postgres://, or postgresql+asyncpg://
+    const isFullUrl = (
+      (value.includes('://') && (value.includes('postgresql') || value.includes('postgres'))) ||
+      (value.includes('@') && value.includes('.') && (value.includes(':') || value.match(/:\d+/)))
+    );
+    
+    if (!isFullUrl) {
+      return false;
+    }
+    
+    try {
+      // Remove scheme prefix to get the connection part
+      let connectionPart = value.trim();
+      
+      // Remove postgresql+asyncpg://, postgresql://, or postgres://
+      connectionPart = connectionPart.replace(/^postgresql\+asyncpg:\/\//i, '');
+      connectionPart = connectionPart.replace(/^postgresql:\/\//i, '');
+      connectionPart = connectionPart.replace(/^postgres:\/\//i, '');
+      
+      // Parse: user:password@host:port/database
+      // Format: [user[:password]@]host[:port][/database]
+      
+      let username = 'postgres';
+      let password = '';
+      let hostname = '';
+      let port = '5432';
+      let database = '';
+      
+      // Check if there's a @ (user:password@host)
+      if (connectionPart.includes('@')) {
+        const atIndex = connectionPart.indexOf('@');
+        const authPart = connectionPart.substring(0, atIndex);
+        const hostPart = connectionPart.substring(atIndex + 1);
+        
+        // Parse username and password
+        if (authPart.includes(':')) {
+          const colonIndex = authPart.indexOf(':');
+          username = authPart.substring(0, colonIndex) || 'postgres';
+          password = authPart.substring(colonIndex + 1) || '';
+        } else {
+          username = authPart || 'postgres';
+        }
+        
+        // Parse host:port/database
+        connectionPart = hostPart;
+      }
+      
+      // Parse host:port/database
+      if (connectionPart.includes('/')) {
+        const slashIndex = connectionPart.indexOf('/');
+        const hostPortPart = connectionPart.substring(0, slashIndex);
+        database = connectionPart.substring(slashIndex + 1) || '';
+        connectionPart = hostPortPart;
+      }
+      
+      // Parse host:port
+      if (connectionPart.includes(':')) {
+        const colonIndex = connectionPart.lastIndexOf(':'); // Use lastIndexOf to handle IPv6 addresses
+        hostname = connectionPart.substring(0, colonIndex) || '';
+        const portPart = connectionPart.substring(colonIndex + 1) || '5432';
+        // Clean up port if it contains multiple colons (malformed)
+        port = portPart.includes(':') ? portPart.split(':')[0] : portPart;
+        // Remove any trailing characters that might be part of the database name
+        port = port.split('/')[0];
+      } else {
+        hostname = connectionPart || '';
+      }
+      
+      // Clean up database name (remove any trailing path or query params)
+      if (database) {
+        database = database.split('?')[0].split('#')[0];
+      }
+      
+      // Only update if we successfully parsed hostname (must contain a dot or be a valid hostname)
+      if (hostname && (hostname.includes('.') || hostname.match(/^[a-zA-Z0-9-]+$/))) {
+        setDbHost(hostname);
+        setDbPort(port || '5432');
+        setDbName(database);
+        setDbUser(username);
+        setDbPassword(password);
+        return true;
+      }
+    } catch (err) {
+      console.warn('Failed to parse connection string:', err);
+    }
+    
+    return false;
   };
 
   // Update connection string when simple form fields change
@@ -410,91 +505,46 @@ export function DatabaseConnectionForm({
                   <label htmlFor="db-host" className="text-sm font-medium text-foreground">
                     Hôte <span className="text-error-600">*</span>
                   </label>
-                  <Input
-                    id="db-host"
-                    type="text"
-                    value={dbHost}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setDbHost(value);
-                      setError(null);
-                      setSuccess(null);
-                      setTestResult(null);
-                      
-                      // Auto-detect and parse full connection string if pasted
-                      if (value.includes('://') && (value.includes('postgresql') || value.includes('postgres'))) {
-                        try {
-                          // Remove scheme prefix to get the connection part
-                          let connectionPart = value;
-                          
-                          // Remove postgresql+asyncpg://, postgresql://, or postgres://
-                          connectionPart = connectionPart.replace(/^postgresql\+asyncpg:\/\//, '');
-                          connectionPart = connectionPart.replace(/^postgresql:\/\//, '');
-                          connectionPart = connectionPart.replace(/^postgres:\/\//, '');
-                          
-                          // Parse: user:password@host:port/database
-                          // Format: [user[:password]@]host[:port][/database]
-                          
-                          let username = 'postgres';
-                          let password = '';
-                          let hostname = '';
-                          let port = '5432';
-                          let database = '';
-                          
-                          // Check if there's a @ (user:password@host)
-                          if (connectionPart.includes('@')) {
-                            const [authPart, hostPart] = connectionPart.split('@', 2);
-                            
-                            // Parse username and password
-                            if (authPart.includes(':')) {
-                              const [user, pass] = authPart.split(':', 2);
-                              username = user || 'postgres';
-                              password = pass || '';
-                            } else {
-                              username = authPart || 'postgres';
-                            }
-                            
-                            // Parse host:port/database
-                            connectionPart = hostPart;
-                          }
-                          
-                          // Parse host:port/database
-                          if (connectionPart.includes('/')) {
-                            const [hostPortPart, dbPart] = connectionPart.split('/', 2);
-                            database = dbPart || '';
-                            connectionPart = hostPortPart;
-                          }
-                          
-                          // Parse host:port
-                          if (connectionPart.includes(':')) {
-                            const [host, portPart] = connectionPart.split(':', 2);
-                            hostname = host || '';
-                            port = portPart || '5432';
-                            // Clean up port if it contains multiple colons (malformed)
-                            if (port.includes(':')) {
-                              port = port.split(':')[0];
-                            }
+                  <div className="flex gap-2">
+                    <Input
+                      id="db-host"
+                      type="text"
+                      value={dbHost}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setDbHost(value);
+                        setError(null);
+                        setSuccess(null);
+                        setTestResult(null);
+                        
+                        // Try to parse if it looks like a full URL
+                        parseConnectionString(value);
+                      }}
+                      placeholder="tramway.proxy.rlwy.net"
+                      disabled={isSaving || isTesting || isCreating}
+                      className="flex-1"
+                    />
+                    {(dbHost.includes('://') || (dbHost.includes('@') && dbHost.includes('.'))) && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const parsed = parseConnectionString(dbHost);
+                          if (parsed) {
+                            setSuccess('URL parsée avec succès !');
+                            setError(null);
                           } else {
-                            hostname = connectionPart || '';
+                            setError('Impossible de parser l\'URL. Vérifiez le format.');
                           }
-                          
-                          // Only update if we successfully parsed hostname
-                          if (hostname) {
-                            setDbHost(hostname);
-                            setDbPort(port);
-                            setDbName(database);
-                            setDbUser(username);
-                            setDbPassword(password);
-                          }
-                        } catch (err) {
-                          // If parsing fails, just use the value as-is
-                          console.warn('Failed to parse connection string from host field:', err);
-                        }
-                      }
-                    }}
-                    placeholder="tramway.proxy.rlwy.net"
-                    disabled={isSaving || isTesting || isCreating}
-                  />
+                        }}
+                        disabled={isSaving || isTesting || isCreating}
+                        title="Parser l'URL complète"
+                      >
+                        <Wand2 className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     Adresse du serveur PostgreSQL (ou collez l'URL complète pour auto-remplir)
                   </p>
