@@ -1,13 +1,14 @@
 /**
  * Home Page - Cause Pilot
- * Landing page for fundraising and donor management platform powered by AI
+ * Modern marketing landing page for fundraising and donor management platform powered by AI
  */
 
 'use client';
 
 import { type ReactNode } from 'react';
-import { Hero, Stats, TechStack, CTA } from '@/components/sections';
+import { Stats, CTA } from '@/components/sections';
 import { Container, Card, Badge, Grid } from '@/components/ui';
+import ButtonLink from '@/components/ui/ButtonLink';
 import {
   Users,
   BarChart3,
@@ -24,6 +25,10 @@ import {
   MessageSquare,
   Calendar,
   CreditCard,
+  Heart,
+  ArrowRight,
+  Star,
+  Play,
 } from 'lucide-react';
 
 type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
@@ -46,7 +51,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Brain className="w-6 h-6" />,
     description: 'IA avancée pour optimiser vos campagnes de collecte',
     badgeVariant: 'info',
-    iconColor: 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400',
+    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#1a4d2e] dark:text-emerald-400',
     features: [
       { title: 'Prédictions de dons', description: 'Anticipez les comportements des donateurs avec l\'IA' },
       { title: 'Segmentation intelligente', description: 'Segmentez automatiquement vos donateurs' },
@@ -61,7 +66,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Users className="w-6 h-6" />,
     description: 'Base de données complète et CRM intégré',
     badgeVariant: 'success',
-    iconColor: 'bg-success-50 dark:bg-success-900/20 text-success-600 dark:text-success-400',
+    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#cc5500] dark:text-orange-400',
     features: [
       { title: 'Profils détaillés', description: 'Historique complet de chaque donateur' },
       { title: 'Segmentation avancée', description: 'Créez des segments personnalisés' },
@@ -76,7 +81,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Target className="w-6 h-6" />,
     description: 'Créez et gérez vos campagnes de collecte',
     badgeVariant: 'warning',
-    iconColor: 'bg-warning-50 dark:bg-warning-900/20 text-warning-600 dark:text-warning-400',
+    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#2d5016] dark:text-emerald-400',
     features: [
       { title: 'Campagnes multi-canaux', description: 'Email, SMS, réseaux sociaux, web' },
       { title: 'Pages de collecte', description: 'Landing pages optimisées pour la conversion' },
@@ -91,7 +96,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <BarChart3 className="w-6 h-6" />,
     description: 'Tableaux de bord et insights en temps réel',
     badgeVariant: 'info',
-    iconColor: 'bg-info-50 dark:bg-info-900/20 text-info-600 dark:text-info-400',
+    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#b45309] dark:text-orange-400',
     features: [
       { title: 'Dashboard en temps réel', description: 'Suivi instantané de vos KPIs' },
       { title: 'Rapports personnalisables', description: 'Créez vos propres rapports' },
@@ -106,7 +111,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Mail className="w-6 h-6" />,
     description: 'Outils de communication multi-canaux',
     badgeVariant: 'default',
-    iconColor: 'bg-secondary-50 dark:bg-secondary-900/20 text-secondary-600 dark:text-secondary-400',
+    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#1a4d2e] dark:text-emerald-400',
     features: [
       { title: 'Campagnes email', description: 'Envoyez des emails personnalisés en masse' },
       { title: 'Templates professionnels', description: 'Bibliothèque de modèles d\'emails' },
@@ -121,7 +126,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <CreditCard className="w-6 h-6" />,
     description: 'Système de paiement sécurisé et flexible',
     badgeVariant: 'success',
-    iconColor: 'bg-success-50 dark:bg-success-900/20 text-success-600 dark:text-success-400',
+    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#cc5500] dark:text-orange-400',
     features: [
       { title: 'Paiements en ligne', description: 'Acceptez les dons par carte et virements' },
       { title: 'Multi-devises', description: 'Support de toutes les devises principales' },
@@ -136,7 +141,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Sparkles className="w-6 h-6" />,
     description: 'Formulaires intelligents et intégrations tierces',
     badgeVariant: 'warning',
-    iconColor: 'bg-warning-50 dark:bg-warning-900/20 text-warning-600 dark:text-warning-400',
+    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#2d5016] dark:text-emerald-400',
     features: [
       { title: 'Formulaires de dons', description: 'Créez des formulaires optimisés' },
       { title: 'Widgets embarquables', description: 'Intégrez des formulaires sur votre site' },
@@ -151,7 +156,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Shield className="w-6 h-6" />,
     description: 'Protection des données et conformité RGPD',
     badgeVariant: 'error',
-    iconColor: 'bg-error-50 dark:bg-error-900/20 text-error-600 dark:text-error-400',
+    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#b45309] dark:text-orange-400',
     features: [
       { title: 'Conformité RGPD', description: 'Respect total du RGPD et CCPA' },
       { title: 'Chiffrement des données', description: 'Toutes les données sont chiffrées' },
@@ -166,56 +171,126 @@ const featureCategories: FeatureCategory[] = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <Hero />
+      {/* Modern Hero Section - Dark Green & Burnt Orange Branding */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a4d2e] via-[#2d5016] to-[#153d23] dark:from-[#0f2e1a] dark:via-[#1a4d2e] dark:to-[#0a1f12]">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+        </div>
+
+        <Container className="relative z-10 text-center text-white">
+          <Badge variant="default" className="mb-6 bg-white/20 backdrop-blur-sm text-white border-white/30">
+            <Sparkles className="w-4 h-4 mr-2" />
+            Propulsé par l'Intelligence Artificielle
+          </Badge>
+
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-fade-in">
+            Transformez votre
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#cc5500] via-[#fb923c] to-[#fdba74]">
+              collecte de fonds
+            </span>
+          </h1>
+
+          <p className="text-xl sm:text-2xl md:text-3xl text-emerald-50 mb-10 max-w-4xl mx-auto font-light leading-relaxed">
+            La plateforme de fundraising la plus intelligente.
+            Augmentez vos dons de <span className="font-bold text-[#cc5500]">35% en moyenne</span> grâce à l'IA.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <ButtonLink
+              href="/auth/register"
+              size="lg"
+              variant="default"
+              className="bg-[#cc5500] text-white hover:bg-[#b34a00] text-lg px-8 py-6 shadow-2xl hover:shadow-3xl transition-all"
+            >
+              <Heart className="w-5 h-5 mr-2" />
+              Démarrer gratuitement
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </ButtonLink>
+            <ButtonLink
+              href="/dashboard"
+              size="lg"
+              variant="outline"
+              className="border-2 border-[#cc5500] text-[#cc5500] hover:bg-[#cc5500]/10 text-lg px-8 py-6 backdrop-blur-sm"
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Voir la démo
+            </ButtonLink>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-emerald-100">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-[#cc5500]" />
+              <span>Sans carte bancaire</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-[#cc5500]" />
+              <span>Installation en 5 min</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-[#cc5500]" />
+              <span>Support 24/7</span>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Trusted By Section */}
+      <section className="py-16 bg-muted/30">
+        <Container>
+          <p className="text-center text-muted-foreground mb-8 text-sm uppercase tracking-wider font-semibold">
+            Ils nous font confiance
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
+            {['Croix-Rouge', 'Unicef', 'WWF', 'Médecins Sans Frontières'].map((org, index) => (
+              <div key={index} className="text-center">
+                <div className="text-2xl font-bold text-muted-foreground">{org}</div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
 
       {/* Stats Section */}
       <Stats />
 
-      {/* Core Features Section */}
-      <section className="py-20 bg-background" aria-labelledby="core-features-heading">
+      {/* Core Value Proposition */}
+      <section className="py-24 bg-background">
         <Container>
           <div className="text-center mb-16">
             <Badge variant="info" className="mb-4">
-              Fonctionnalités Principales
+              Pourquoi Cause Pilot ?
             </Badge>
-            <h2
-              id="core-features-heading"
-              className="text-4xl md:text-5xl font-bold mb-4 text-foreground"
-            >
-              Une plateforme complète de fundraising
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
+              Une plateforme complète
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1a4d2e] to-[#2d5016]">
+                de fundraising
+              </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Cause Pilot réunit tous les outils dont vous avez besoin pour gérer vos campagnes de collecte, vos donateurs et maximiser votre impact social
+              Tout ce dont vous avez besoin pour gérer vos campagnes, vos donateurs et maximiser votre impact social
             </p>
           </div>
 
           <Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="loose">
-            {featureCategories.map((category, index) => (
-              <Card key={index} hover className="flex flex-col h-full">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className={`p-3 rounded-lg ${category.iconColor} flex-shrink-0`}>
+            {featureCategories.slice(0, 6).map((category, index) => (
+              <Card key={index} hover className="flex flex-col h-full group transition-all hover:shadow-xl">
+                <div className="mb-6">
+                  <div className={`inline-flex p-4 rounded-2xl ${category.iconColor} group-hover:scale-110 transition-transform`}>
                     {category.icon}
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-bold text-foreground">{category.title}</h3>
-                      <Badge variant={category.badgeVariant} className="text-xs">
-                        {category.features.length}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">{category.description}</p>
-                  </div>
                 </div>
-
+                <h3 className="text-2xl font-bold text-foreground mb-3">{category.title}</h3>
+                <p className="text-muted-foreground mb-6">{category.description}</p>
                 <ul className="space-y-3 flex-1">
-                  {category.features.map((feature, featureIndex) => (
+                  {category.features.slice(0, 4).map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{feature.title}</p>
-                        <p className="text-xs text-muted-foreground">{feature.description}</p>
-                      </div>
+                      <CheckCircle2 className="w-5 h-5 text-success-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-foreground">{feature.title}</span>
                     </li>
                   ))}
                 </ul>
@@ -225,89 +300,149 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Tech Stack Section */}
-      <TechStack />
-
-      {/* Why Choose Cause Pilot Section */}
-      <section className="py-20 bg-muted/30" aria-labelledby="why-choose-heading">
+      {/* Testimonials Section */}
+      <section className="py-24 bg-gradient-to-br from-emerald-50 to-orange-50 dark:from-muted dark:to-muted">
         <Container>
           <div className="text-center mb-16">
             <Badge variant="success" className="mb-4">
-              Pourquoi Cause Pilot ?
+              Témoignages
             </Badge>
-            <h2
-              id="why-choose-heading"
-              className="text-4xl md:text-5xl font-bold mb-4 text-foreground"
-            >
-              La plateforme la plus complète
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+              Ce que disent nos clients
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Tout ce dont vous avez besoin pour maximiser l'impact de vos campagnes de collecte
+              Plus de 5000 organisations nous font confiance
             </p>
           </div>
 
+          <Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="normal">
+            {[
+              {
+                name: 'Marie Dubois',
+                role: 'Directrice, Association Espoir',
+                content: 'Cause Pilot a transformé notre manière de collecter. Nous avons augmenté nos dons de 42% en seulement 6 mois!',
+                rating: 5,
+              },
+              {
+                name: 'Jean Martin',
+                role: 'Responsable Fundraising, Fondation Avenir',
+                content: 'L\'IA nous aide à mieux comprendre nos donateurs. Les prédictions sont incroyablement précises.',
+                rating: 5,
+              },
+              {
+                name: 'Sophie Laurent',
+                role: 'CEO, ONG Solidarité',
+                content: 'Interface intuitive et équipe support réactive. Un outil indispensable pour toute organisation.',
+                rating: 5,
+              },
+            ].map((testimonial, index) => (
+              <Card key={index} className="p-8">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-[#cc5500] text-[#cc5500]" />
+                  ))}
+                </div>
+                <p className="text-foreground mb-6 text-lg italic">"{testimonial.content}"</p>
+                <div>
+                  <p className="font-semibold text-foreground">{testimonial.name}</p>
+                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                </div>
+              </Card>
+            ))}
+          </Grid>
+        </Container>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-24 bg-background">
+        <Container>
+          <div className="text-center mb-16">
+            <Badge variant="warning" className="mb-4">
+              Avantages
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+              Pourquoi choisir Cause Pilot ?
+            </h2>
+          </div>
+
           <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
-            <Card hover className="text-center">
-              <Brain className="w-10 h-10 mx-auto mb-4 text-primary-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">IA Avancée</h3>
-              <p className="text-sm text-muted-foreground">
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Brain className="w-8 h-8 text-[#1a4d2e]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">IA Avancée</h3>
+              <p className="text-muted-foreground">
                 Optimisez vos campagnes avec l'intelligence artificielle
               </p>
             </Card>
 
-            <Card hover className="text-center">
-              <TrendingUp className="w-10 h-10 mx-auto mb-4 text-success-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">+35% de dons</h3>
-              <p className="text-sm text-muted-foreground">
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <TrendingUp className="w-8 h-8 text-[#cc5500]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">+35% de dons</h3>
+              <p className="text-muted-foreground">
                 Augmentez vos collectes grâce à nos algorithmes
               </p>
             </Card>
 
-            <Card hover className="text-center">
-              <Zap className="w-10 h-10 mx-auto mb-4 text-warning-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Installation rapide</h3>
-              <p className="text-sm text-muted-foreground">
-                Démarrez en moins de 5 minutes avec notre onboarding
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Zap className="w-8 h-8 text-[#2d5016]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Installation rapide</h3>
+              <p className="text-muted-foreground">
+                Démarrez en moins de 5 minutes
               </p>
             </Card>
 
-            <Card hover className="text-center">
-              <MessageSquare className="w-10 h-10 mx-auto mb-4 text-info-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Support 24/7</h3>
-              <p className="text-sm text-muted-foreground">
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <MessageSquare className="w-8 h-8 text-[#b45309]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Support 24/7</h3>
+              <p className="text-muted-foreground">
                 Une équipe dédiée pour vous accompagner
               </p>
             </Card>
 
-            <Card hover className="text-center">
-              <Globe className="w-10 h-10 mx-auto mb-4 text-primary-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Multi-pays</h3>
-              <p className="text-sm text-muted-foreground">
-                Collectez dans 40+ pays et 20+ devises
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Globe className="w-8 h-8 text-[#1a4d2e]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Multi-pays</h3>
+              <p className="text-muted-foreground">
+                Collectez dans 40+ pays
               </p>
             </Card>
 
-            <Card hover className="text-center">
-              <DollarSign className="w-10 h-10 mx-auto mb-4 text-success-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Frais réduits</h3>
-              <p className="text-sm text-muted-foreground">
-                Les frais les plus compétitifs du marché
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <DollarSign className="w-8 h-8 text-[#cc5500]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Frais réduits</h3>
+              <p className="text-muted-foreground">
+                Les tarifs les plus compétitifs
               </p>
             </Card>
 
-            <Card hover className="text-center">
-              <Calendar className="w-10 h-10 mx-auto mb-4 text-secondary-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Planification</h3>
-              <p className="text-sm text-muted-foreground">
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Calendar className="w-8 h-8 text-[#2d5016]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Planification</h3>
+              <p className="text-muted-foreground">
                 Planifiez vos campagnes à l'avance
               </p>
             </Card>
 
-            <Card hover className="text-center">
-              <Shield className="w-10 h-10 mx-auto mb-4 text-error-500" />
-              <h3 className="text-lg font-semibold mb-2 text-foreground">100% Sécurisé</h3>
-              <p className="text-sm text-muted-foreground">
-                Conformité RGPD et sécurité bancaire
+            <Card hover className="text-center p-8 group">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Shield className="w-8 h-8 text-[#b45309]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">100% Sécurisé</h3>
+              <p className="text-muted-foreground">
+                Conformité RGPD totale
               </p>
             </Card>
           </Grid>
