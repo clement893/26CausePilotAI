@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { useAuth } from '@/hooks/useAuth';
+import { checkMySuperAdminStatus } from '@/lib/api/admin';
+import { TokenStorage } from '@/lib/auth/tokenStorage';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
@@ -24,6 +26,7 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
   const [searchQuery, setSearchQuery] = useState('');
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
   const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   // Use controlled or internal state
   const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
@@ -32,8 +35,36 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
   // Check if user is admin or superadmin
   const isAdmin = user?.is_admin || false;
 
+  // Check super admin status
+  useEffect(() => {
+    const checkSuperAdminStatus = async () => {
+      if (!user) {
+        setIsSuperAdmin(false);
+        return;
+      }
+
+      try {
+        const token = TokenStorage.getToken();
+        if (token) {
+          const status = await checkMySuperAdminStatus(token);
+          setIsSuperAdmin(status.is_superadmin === true);
+        } else {
+          setIsSuperAdmin(false);
+        }
+      } catch (error) {
+        // If check fails, assume not super admin
+        setIsSuperAdmin(false);
+      }
+    };
+
+    checkSuperAdminStatus();
+  }, [user]);
+
   // Get navigation configuration
-  const navigationConfig = useMemo(() => getNavigationConfig(isAdmin), [isAdmin]);
+  const navigationConfig = useMemo(
+    () => getNavigationConfig(isAdmin, isSuperAdmin),
+    [isAdmin, isSuperAdmin]
+  );
 
   // Toggle group open/closed
   const toggleGroup = (groupName: string) => {

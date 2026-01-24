@@ -24,6 +24,16 @@ import {
   Network,
   Building2,
   MessageSquare,
+  Heart,
+  FileEdit,
+  Megaphone,
+  UsersRound,
+  BarChart3,
+  Brain,
+  Mail,
+  Share2,
+  PieChart,
+  Building,
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -49,7 +59,7 @@ export interface NavigationConfig {
  * Get default navigation structure
  * Can be customized based on user permissions
  */
-export function getNavigationConfig(isAdmin: boolean): NavigationConfig {
+export function getNavigationConfig(isAdmin: boolean, isSuperAdmin: boolean = false): NavigationConfig {
   const config: NavigationConfig = {
     items: [
       // Dashboard (non-grouped)
@@ -58,97 +68,130 @@ export function getNavigationConfig(isAdmin: boolean): NavigationConfig {
         href: '/dashboard',
         icon: <LayoutDashboard className="w-5 h-5" />,
       },
-      // Gestion (collapsible group)
+      // Base donateur (collapsible group)
       {
-        name: 'Gestion',
-        icon: <Users className="w-5 h-5" />,
+        name: 'Base donateur',
+        icon: <Heart className="w-5 h-5" />,
         items: [
           {
-            name: 'Utilisateurs',
-            href: '/admin/users',
+            name: 'Donateurs',
+            href: '/dashboard/base-donateur/donateurs',
             icon: <Users className="w-5 h-5" />,
           },
           {
-            name: 'Équipes',
-            href: '/admin/teams',
-            icon: <UserCog className="w-5 h-5" />,
+            name: 'Statistiques',
+            href: '/dashboard/base-donateur/statistiques',
+            icon: <BarChart3 className="w-5 h-5" />,
           },
           {
-            name: 'Rôles',
-            href: '/admin/roles',
-            icon: <Shield className="w-5 h-5" />,
+            name: 'Segments',
+            href: '/dashboard/base-donateur/segments',
+            icon: <PieChart className="w-5 h-5" />,
           },
         ],
         collapsible: true,
         defaultOpen: false,
       },
-      // Contenu (collapsible group)
+      // Formulaires (collapsible group)
       {
-        name: 'Contenu',
-        icon: <FolderKanban className="w-5 h-5" />,
+        name: 'Formulaires',
+        icon: <FileEdit className="w-5 h-5" />,
         items: [
           {
-            name: 'Pages',
-            href: '/admin/pages',
+            name: 'Formulaires',
+            href: '/dashboard/formulaires/formulaires',
             icon: <FileText className="w-5 h-5" />,
           },
           {
-            name: 'Articles',
-            href: '/admin/articles',
-            icon: <FileCheck className="w-5 h-5" />,
-          },
-          {
-            name: 'Médias',
-            href: '/admin/media',
-            icon: <Image className="w-5 h-5" />,
+            name: 'Intégrations',
+            href: '/dashboard/formulaires/integrations',
+            icon: <Network className="w-5 h-5" />,
           },
         ],
         collapsible: true,
         defaultOpen: false,
       },
-      // Réseau (collapsible group)
+      // Campagnes (collapsible group)
       {
-        name: 'Réseau',
-        icon: <Network className="w-5 h-5" />,
+        name: 'Campagnes',
+        icon: <Megaphone className="w-5 h-5" />,
         items: [
           {
-            name: 'Entreprises',
-            href: '/dashboard/reseau/entreprises',
-            icon: <Building2 className="w-5 h-5" />,
+            name: 'Campagnes',
+            href: '/dashboard/campagnes/campagnes',
+            icon: <Megaphone className="w-5 h-5" />,
           },
           {
-            name: 'Contacts',
-            href: '/dashboard/reseau/contacts',
-            icon: <User className="w-5 h-5" />,
+            name: 'Courriels',
+            href: '/dashboard/campagnes/courriels',
+            icon: <Mail className="w-5 h-5" />,
           },
           {
-            name: 'Témoignages',
-            href: '/dashboard/reseau/temoignages',
-            icon: <MessageSquare className="w-5 h-5" />,
+            name: 'Médias sociaux',
+            href: '/dashboard/campagnes/medias-sociaux',
+            icon: <Share2 className="w-5 h-5" />,
           },
         ],
         collapsible: true,
         defaultOpen: false,
       },
-      // Paramètres (collapsible group)
+      // P2P (collapsible group)
       {
-        name: 'Paramètres',
-        icon: <Settings className="w-5 h-5" />,
+        name: 'P2P',
+        icon: <UsersRound className="w-5 h-5" />,
         items: [
           {
-            name: 'Profil',
-            href: '/settings/profile',
-            icon: <User className="w-5 h-5" />,
+            name: 'Campagnes',
+            href: '/dashboard/p2p/campagnes',
+            icon: <Megaphone className="w-5 h-5" />,
           },
           {
-            name: 'Sécurité',
-            href: '/settings/security',
-            icon: <Lock className="w-5 h-5" />,
+            name: 'Paramètres',
+            href: '/dashboard/p2p/parametres',
+            icon: <Settings className="w-5 h-5" />,
+          },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+      },
+      // Analytics (collapsible group)
+      {
+        name: 'Analytics',
+        icon: <BarChart3 className="w-5 h-5" />,
+        items: [
+          {
+            name: 'Dashboard',
+            href: '/dashboard/analytics/dashboard',
+            icon: <LayoutDashboard className="w-5 h-5" />,
           },
           {
-            name: 'Préférences',
-            href: '/settings/preferences',
-            icon: <Sliders className="w-5 h-5" />,
+            name: 'Rapports',
+            href: '/dashboard/analytics/rapports',
+            icon: <FileText className="w-5 h-5" />,
+          },
+          {
+            name: 'IA',
+            href: '/dashboard/analytics/ia',
+            icon: <Brain className="w-5 h-5" />,
+          },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+      },
+      // Administration (collapsible group)
+      {
+        name: 'Administration',
+        icon: <Shield className="w-5 h-5" />,
+        items: [
+          {
+            name: 'Users',
+            href: '/dashboard/administration/users',
+            icon: <Users className="w-5 h-5" />,
+          },
+          {
+            name: 'Paramètres',
+            href: '/dashboard/administration/parametres',
+            icon: <Settings className="w-5 h-5" />,
           },
         ],
         collapsible: true,
@@ -177,6 +220,38 @@ export function getNavigationConfig(isAdmin: boolean): NavigationConfig {
           name: 'Configuration',
           href: '/admin/settings',
           icon: <Cog className="w-5 h-5" />,
+        },
+      ],
+      collapsible: true,
+      defaultOpen: false,
+    });
+  }
+
+  // Add Super Admin group only for super admins
+  if (isSuperAdmin) {
+    config.items.push({
+      name: 'SuperAdmin',
+      icon: <Shield className="w-5 h-5" />,
+      items: [
+        {
+          name: 'Organisations',
+          href: '/dashboard/super-admin/organisations',
+          icon: <Building className="w-5 h-5" />,
+        },
+        {
+          name: 'Paramètres',
+          href: '/dashboard/super-admin/parametres',
+          icon: <Settings className="w-5 h-5" />,
+        },
+        {
+          name: 'Gestion',
+          href: '/dashboard/super-admin/gestion',
+          icon: <UserCog className="w-5 h-5" />,
+        },
+        {
+          name: 'Dashboard',
+          href: '/dashboard/super-admin/dashboard',
+          icon: <LayoutDashboard className="w-5 h-5" />,
         },
       ],
       collapsible: true,
