@@ -7,30 +7,22 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { Container, Card, Badge, Button } from '@/components/ui';
 import {
   TrendingUp,
-  TrendingDown,
   DollarSign,
   Users,
   Target,
-  Mail,
-  Calendar,
   Download,
   RefreshCw,
   ArrowUpRight,
   ArrowDownRight,
   Activity,
-  PieChart,
   BarChart3,
   Zap,
   Heart,
   Gift,
   Bell,
-  Settings,
 } from 'lucide-react';
 
 // Mock data

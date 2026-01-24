@@ -7,11 +7,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Container, Card, Badge, Button, Input } from '@/components/ui';
 import {
   Users,
   Search,
@@ -24,7 +20,6 @@ import {
   DollarSign,
   TrendingUp,
   Heart,
-  Star,
   MoreVertical,
   UserPlus,
   ArrowUpRight,
@@ -242,7 +237,7 @@ export default function DemoDonorsPage() {
                 type="text"
                 placeholder="Search donors by name or email..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
             </div>
