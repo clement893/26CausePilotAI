@@ -367,7 +367,7 @@ class OrganizationDatabaseManager:
         return normalized
     
     @classmethod
-    async def test_connection(cls, db_connection_string: str, timeout: int = 30) -> tuple[bool, str, Optional[str]]:
+    async def test_connection(cls, db_connection_string: str, timeout: int = 120) -> tuple[bool, str, Optional[str]]:
         """
         Test a database connection string.
         

@@ -128,7 +128,22 @@ export function DatabaseConnectionForm({
         setError(result.message);
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur lors du test de connexion';
+      let errorMessage = err instanceof Error ? err.message : 'Erreur lors du test de connexion';
+      
+      // Provide more helpful error messages for timeout errors
+      if (errorMessage.includes('timeout') || errorMessage.includes('exceeded')) {
+        errorMessage = `Timeout: La connexion à la base de données prend trop de temps (plus de 2 minutes).\n\n` +
+          `Causes possibles:\n` +
+          `- La base de données est inaccessible depuis le serveur backend\n` +
+          `- Le réseau est lent ou instable\n` +
+          `- Les paramètres de connexion sont incorrects\n` +
+          `- Le firewall bloque la connexion\n\n` +
+          `Vérifiez que:\n` +
+          `- L'URL de connexion est correcte\n` +
+          `- Le serveur backend peut accéder à Internet pour se connecter à la base de données\n` +
+          `- Si vous utilisez Railway, vérifiez que "Public Networking" est activé pour votre service PostgreSQL`;
+      }
+      
       setError(errorMessage);
       setTestResult({
         success: false,
@@ -163,7 +178,17 @@ export function DatabaseConnectionForm({
       setTestResult(null);
       onUpdate(); // Refresh parent component
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la sauvegarde';
+      let errorMessage = err instanceof Error ? err.message : 'Erreur lors de la sauvegarde';
+      
+      // Provide more helpful error messages for timeout errors
+      if (errorMessage.includes('timeout') || errorMessage.includes('exceeded')) {
+        errorMessage = `Timeout: Le test de connexion prend trop de temps (plus de 2 minutes).\n\n` +
+          `La connexion n'a pas été sauvegardée. Vérifiez que:\n` +
+          `- L'URL de connexion est correcte\n` +
+          `- Le serveur backend peut accéder à Internet pour se connecter à la base de données\n` +
+          `- Si vous utilisez Railway, vérifiez que "Public Networking" est activé pour votre service PostgreSQL`;
+      }
+      
       setError(errorMessage);
     } finally {
       setIsSaving(false);

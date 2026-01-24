@@ -557,10 +557,11 @@ async def update_organization_database(
         db_update.db_connection_string
     )
     
-    # Test connection if requested
+    # Test connection if requested (with longer timeout for external databases)
     if db_update.test_connection:
         success, message, db_name = await OrganizationDatabaseManager.test_connection(
-            normalized_connection_string
+            normalized_connection_string,
+            timeout=120  # 120 seconds for external DB connections
         )
         if not success:
             raise HTTPException(
@@ -609,9 +610,10 @@ async def test_organization_database(
             detail="Organization not found"
         )
     
-    # Test connection
+    # Test connection with longer timeout for external databases (120 seconds)
     success, message, db_name = await OrganizationDatabaseManager.test_connection(
-        test_request.db_connection_string
+        test_request.db_connection_string,
+        timeout=120  # 120 seconds for external DB connections
     )
     
     return TestConnectionResponse(
