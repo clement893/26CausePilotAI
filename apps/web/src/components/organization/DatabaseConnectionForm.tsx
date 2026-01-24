@@ -433,21 +433,38 @@ export function DatabaseConnectionForm({
         testConnection: true, // Test before saving
       });
 
-      setSuccess('Chaîne de connexion mise à jour avec succès');
+      // Extract database name from connection string
+      const dbName = finalConnectionString.split('/').pop()?.split('?')[0] || 'unknown';
+      
+      setSuccess(`✅ Base de données connectée avec succès ! (${dbName})`);
       setTestResult({
         success: true,
-        message: 'Connexion sauvegardée et testée avec succès',
-        databaseName: result.dbConnectionString ? 
-          finalConnectionString.split('/').pop()?.split('?')[0] : undefined
+        message: `Connexion sauvegardée et testée avec succès. Base de données: ${dbName}`,
+        databaseName: dbName
       });
       
-      // Update current connection string
+      // Update current connection string locally to reflect the saved state
       setConnectionString(finalConnectionString);
+      
+      // Update the form fields to match the saved connection
+      if (useSimpleMode) {
+        // Re-parse the connection string to update form fields
+        parseConnectionString(finalConnectionString);
+      }
       
       // Reload tables after saving
       await loadTables();
       
-      onUpdate(); // Refresh parent component
+      // Refresh parent component to get updated connection string
+      onUpdate();
+      
+      // Scroll to success message
+      setTimeout(() => {
+        const successElement = document.querySelector('[data-success-message]');
+        if (successElement) {
+          successElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 100);
     } catch (err: any) {
       console.error('Error saving database connection:', err);
       
@@ -583,12 +600,21 @@ export function DatabaseConnectionForm({
     }
   };
 
+  // Update connectionString when currentConnectionString changes from props
+  useEffect(() => {
+    if (currentConnectionString && currentConnectionString !== connectionString) {
+      setConnectionString(currentConnectionString);
+    }
+  }, [currentConnectionString]);
+  
   // Load tables when connection string is available
   useEffect(() => {
-    if (currentConnectionString) {
+    const activeConnectionString = currentConnectionString || connectionString;
+    if (activeConnectionString) {
       loadTables();
     }
-  }, [currentConnectionString, organizationId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentConnectionString, connectionString, organizationId]);
 
   return (
     <Card title="Configuration Base de Données" className="space-y-4">
@@ -600,17 +626,22 @@ export function DatabaseConnectionForm({
           </p>
 
           {/* Current Status */}
-          {currentConnectionString && (
-            <div className="mb-4 p-3 rounded-lg bg-muted/30 border border-border">
+          {(currentConnectionString || connectionString) && (
+            <div className="mb-4 p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Database className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm font-medium text-foreground">Connexion actuelle</span>
+                  <CheckCircle2 className="w-5 h-5 text-success-600 dark:text-success-400" />
+                  <span className="text-sm font-medium text-success-700 dark:text-success-300">
+                    Base de données connectée
+                  </span>
                 </div>
-                <Badge variant="success">Configurée</Badge>
+                <Badge variant="success">✅ Configurée</Badge>
               </div>
-              <p className="text-xs text-muted-foreground mt-2 font-mono">
-                {maskConnectionString(currentConnectionString)}
+              <p className="text-xs text-success-600 dark:text-success-400 mt-2 font-mono">
+                {maskConnectionString(currentConnectionString || connectionString)}
+              </p>
+              <p className="text-xs text-success-600 dark:text-success-400 mt-1">
+                La connexion est active. Utilisez le bouton "Mettre à jour la BD" ci-dessous pour créer les tables.
               </p>
             </div>
           )}
@@ -880,11 +911,18 @@ export function DatabaseConnectionForm({
 
           {/* Success Message */}
           {success && (
-            <Alert variant="success" className="flex items-start gap-2">
+            <Alert 
+              variant="success" 
+              className="flex items-start gap-2"
+              data-success-message
+            >
               <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
-                <p className="font-medium">Succès</p>
+                <p className="font-medium">✅ Succès - Base de données connectée</p>
                 <p className="text-sm mt-1">{success}</p>
+                <p className="text-xs mt-2 text-muted-foreground">
+                  Vous pouvez maintenant utiliser le bouton "Mettre à jour la BD" pour créer les tables.
+                </p>
               </div>
             </Alert>
           )}
@@ -958,11 +996,12 @@ export function DatabaseConnectionForm({
               </Button>
             )}
 
-            {currentConnectionString && (
+            {(currentConnectionString || connectionString) && (
               <Button
                 variant="ghost"
                 onClick={handleMigrateDatabase}
                 disabled={isTesting || isSaving || isCreating || isMigrating}
+                className="border border-primary/20"
               >
                 {isMigrating ? (
                   <>
@@ -1042,7 +1081,7 @@ export function DatabaseConnectionForm({
           </div>
 
           {/* Database Tables List */}
-          {currentConnectionString && (
+          {(currentConnectionString || connectionString) && (
             <div className="mt-6 space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-medium text-foreground">
