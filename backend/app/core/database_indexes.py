@@ -145,10 +145,11 @@ async def create_recommended_indexes(session: AsyncSession) -> dict:
                 logger.info(f"Index {index_def['name']} already exists, skipping")
                 continue
             
-            # Create index concurrently (non-blocking)
+            # Create index (without CONCURRENTLY to avoid transaction issues)
+            # CONCURRENTLY cannot run inside a transaction block
             columns_str = ", ".join(index_def["columns"])
             create_sql = f"""
-            CREATE INDEX CONCURRENTLY IF NOT EXISTS {index_def['name']}
+            CREATE INDEX IF NOT EXISTS {index_def['name']}
             ON {index_def['table']} ({columns_str})
             """
             
