@@ -75,12 +75,19 @@ function extractFastApiData<T>(response: unknown): T {
  * The backend will always return TemplateTheme (ID 32) if no theme is active.
  */
 export async function getActiveTheme(): Promise<ThemeConfigResponse> {
-  const response = await apiClient.get<ThemeConfigResponse>('/v1/themes/active', {
-    timeout: 5000, // 5 second timeout
-  });
+  try {
+    const response = await apiClient.get<ThemeConfigResponse>('/v1/themes/active', {
+      timeout: 30000, // Increased to 30s - theme loading shouldn't block critical features
+    });
 
-  // FastAPI returns data directly
-  return extractFastApiData<ThemeConfigResponse>(response);
+    // FastAPI returns data directly
+    return extractFastApiData<ThemeConfigResponse>(response);
+  } catch (error) {
+    // Don't let theme loading errors block the app
+    console.warn('[Theme] Failed to load active theme, using default:', error);
+    // Return a default theme config so the app can continue
+    throw error; // Re-throw to let caller handle gracefully
+  }
 }
 
 /**

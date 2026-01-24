@@ -4,7 +4,7 @@ Organization Schemas
 Pydantic schemas for API requests/responses.
 """
 
-from pydantic import BaseModel, Field, EmailStr, validator
+from pydantic import BaseModel, Field, EmailStr, validator, ConfigDict
 from typing import Optional, Dict, Any, List, Union
 from datetime import datetime
 from uuid import UUID
@@ -161,8 +161,13 @@ class OrganizationMember(OrganizationMemberBase):
 class ActiveOrganizationContext(BaseModel):
     """Active organization context for users"""
     organization: Optional[Organization] = None
-    enabled_modules: List[str] = Field(default_factory=list)
-    user_role: Optional[str] = None
+    enabled_modules: List[str] = Field(default_factory=list, alias="enabledModules")
+    user_role: Optional[str] = Field(None, alias="userRole")
+    
+    model_config = ConfigDict(
+        populate_by_name=True,  # Allow both snake_case and camelCase
+        from_attributes=True
+    )
 
 
 # ============= List Responses =============

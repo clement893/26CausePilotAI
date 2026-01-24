@@ -62,12 +62,25 @@ export function getNavigationConfig(
   isSuperAdmin: boolean = false,
   enabledModules: ModuleKey[] = []
 ): NavigationConfig {
+  // Debug log
+  console.log('[getNavigationConfig] Called with:', {
+    isAdmin,
+    isSuperAdmin,
+    enabledModules,
+    enabledModulesLength: enabledModules.length,
+  });
+  
   // Helper to check if module is enabled
   const isModuleEnabled = (moduleKey: ModuleKey): boolean => {
     // SuperAdmins see all modules
-    if (isSuperAdmin) return true;
+    if (isSuperAdmin) {
+      console.log(`[getNavigationConfig] Module ${moduleKey} enabled (superadmin)`);
+      return true;
+    }
     // Regular users see only enabled modules
-    return enabledModules.includes(moduleKey);
+    const enabled = enabledModules.includes(moduleKey);
+    console.log(`[getNavigationConfig] Module ${moduleKey} ${enabled ? 'enabled' : 'disabled'} (regular user)`);
+    return enabled;
   };
 
   const config: NavigationConfig = {
@@ -259,7 +272,9 @@ export function getNavigationConfig(
   }
 
   // Add Super Admin group only for super admins
+  // IMPORTANT: This should appear even without an active organization
   if (isSuperAdmin) {
+    console.log('[getNavigationConfig] Adding SuperAdmin menu (isSuperAdmin=true)');
     config.items.push({
       name: 'SuperAdmin',
       icon: <Shield className="w-5 h-5" />,
@@ -288,6 +303,8 @@ export function getNavigationConfig(
       collapsible: true,
       defaultOpen: false,
     });
+  } else {
+    console.log('[getNavigationConfig] NOT adding SuperAdmin menu (isSuperAdmin=false)');
   }
 
   return config;

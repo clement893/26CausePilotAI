@@ -495,6 +495,8 @@ async def get_active_organization_context(
         user_role = membership.role
     else:
         # SuperAdmin - get specified or any organization
+        user_role = "superadmin"  # Superadmins always have superadmin role
+        
         if organization_id:
             org_query = select(Organization).where(Organization.id == organization_id)
         else:
@@ -502,10 +504,13 @@ async def get_active_organization_context(
         
         org_result = await db.execute(org_query)
         organization = org_result.scalar_one_or_none()
-        user_role = "superadmin"
     
+    # If no organization found, still return superadmin role if user is superadmin
     if not organization:
-        return {"organization": None, "enabled_modules": [], "user_role": None}
+        if is_super:
+            return {"organization": None, "enabled_modules": [], "user_role": "superadmin"}
+        else:
+            return {"organization": None, "enabled_modules": [], "user_role": None}
     
     # Get enabled modules
     modules_query = select(OrganizationModule).where(

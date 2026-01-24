@@ -116,6 +116,16 @@ export const useOrganizationStore = create<OrganizationState>()(
             userRole: context.userRole,
           });
 
+          // Debug: Log the context to console for troubleshooting
+          console.log('[OrganizationStore] Context loaded:', {
+            hasOrg: !!context.organization,
+            orgId: context.organization?.id,
+            orgName: context.organization?.name,
+            enabledModules: context.enabledModules,
+            enabledModulesLength: context.enabledModules?.length || 0,
+            userRole: context.userRole,
+          });
+
           set({
             activeOrganization: context.organization,
             enabledModules: context.enabledModules as ModuleKey[],

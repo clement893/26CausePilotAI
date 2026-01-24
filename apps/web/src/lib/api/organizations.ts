@@ -121,8 +121,31 @@ export async function getActiveOrganizationContext(
     ? `/v1/organizations/context/active?organization_id=${organizationId}`
     : '/v1/organizations/context/active';
   
-  const response = await apiClient.get<ActiveOrganizationContext>(url);
-  return extractApiData(response);
+  const response = await apiClient.get<ActiveOrganizationContext | any>(url);
+  const data = extractApiData(response);
+  
+  // Debug: Log API response
+  console.log('[API] getActiveOrganizationContext response:', {
+    url,
+    rawResponse: response,
+    extractedData: data,
+    enabledModules: data.enabledModules,
+    enabled_modules: (data as any).enabled_modules,
+    enabledModulesLength: data.enabledModules?.length || 0,
+  });
+  
+  // Transform snake_case to camelCase if needed
+  // FastAPI returns snake_case, but TypeScript expects camelCase
+  if ((data as any).enabled_modules && !data.enabledModules) {
+    return {
+      ...data,
+      enabledModules: (data as any).enabled_modules || [],
+      organization: data.organization,
+      userRole: data.userRole || (data as any).user_role,
+    };
+  }
+  
+  return data;
 }
 
 // ============= Organization Database Management =============

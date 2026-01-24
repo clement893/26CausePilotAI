@@ -29,6 +29,13 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  
+  // Debug: Log component mount
+  console.log('[Sidebar] Component mounted/rendered', {
+    hasUser: !!user,
+    userEmail: user?.email,
+    pathname,
+  });
 
   // Use controlled or internal state
   const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
@@ -38,7 +45,10 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
   const isAdmin = user?.is_admin || false;
 
   // Get organization context
-  const { enabledModules, loadActiveContext } = useOrganization();
+  const { enabledModules, loadActiveContext, userRole } = useOrganization();
+  
+  // Also check userRole from organization context as fallback for superadmin detection
+  const isSuperAdminFromOrg = userRole === 'superadmin';
 
   // Check super admin status
   useEffect(() => {
@@ -52,12 +62,21 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
         const token = TokenStorage.getToken();
         if (token) {
           const status = await checkMySuperAdminStatus(token);
-          setIsSuperAdmin(status.is_superadmin === true);
+          const isSuper = status.is_superadmin === true;
+          console.log('[Sidebar] SuperAdmin status check:', {
+            userEmail: user.email,
+            is_superadmin: status.is_superadmin,
+            isSuper,
+            statusResponse: status,
+          });
+          setIsSuperAdmin(isSuper);
         } else {
+          console.log('[Sidebar] No token available for superadmin check');
           setIsSuperAdmin(false);
         }
       } catch (error) {
         // If check fails, assume not super admin
+        console.error('[Sidebar] Failed to check superadmin status:', error);
         setIsSuperAdmin(false);
       }
     };
@@ -73,10 +92,36 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
   }, [user]);
 
   // Get navigation configuration with enabled modules
-  const navigationConfig = useMemo(
-    () => getNavigationConfig(isAdmin, isSuperAdmin, enabledModules),
-    [isAdmin, isSuperAdmin, enabledModules]
-  );
+  // Use isSuperAdmin OR isSuperAdminFromOrg to ensure superadmins see all modules
+  // IMPORTANT: Superadmins should see the SuperAdmin menu even without an organization
+  const effectiveIsSuperAdmin = isSuperAdmin || isSuperAdminFromOrg;
+  
+  const navigationConfig = useMemo(() => {
+    // Debug: Log enabled modules to understand why menu items are missing
+    const config = getNavigationConfig(isAdmin, effectiveIsSuperAdmin, enabledModules || []);
+    console.log('[Sidebar] Navigation config:', {
+      isAdmin,
+      isSuperAdmin,
+      isSuperAdminFromOrg,
+      effectiveIsSuperAdmin,
+      userRole,
+      enabledModules,
+      enabledModulesLength: enabledModules?.length || 0,
+      hasActiveOrg: !!enabledModules,
+      configItemsCount: config.items.length,
+      configItems: config.items.map(item => ({
+        name: 'name' in item ? item.name : 'unknown',
+        hasItems: 'items' in item,
+        itemsCount: 'items' in item ? item.items.length : 0,
+        moduleKey: 'moduleKey' in item ? item.moduleKey : undefined,
+      })),
+      superAdminMenuPresent: config.items.some(item => 
+        'name' in item && item.name === 'SuperAdmin'
+      ),
+    });
+    
+    return config;
+  }, [isAdmin, effectiveIsSuperAdmin, enabledModules, isSuperAdmin, isSuperAdminFromOrg, userRole]);
 
   // Toggle group open/closed
   const toggleGroup = (groupName: string) => {
