@@ -4,18 +4,20 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState } from 'react';
-import { Container, Card, Button, Input } from '@/components/ui';
+import { Container, Card, Button, Input, Tooltip, useToast } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { createDonor } from '@/lib/api/donors';
 import { migrateOrganizationDatabase } from '@/lib/api/organizations';
+import { errorLogger } from '@/lib/logger/errorLogger';
 import type { DonorCreate } from '@modele/types';
-import { ArrowLeft, Database, Loader2, User, Mail } from 'lucide-react';
+import { ArrowLeft, Database, Loader2, User, Mail, Info, AlertCircle } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
 export default function NewDonorPage() {
   const locale = useLocale();
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
+  const { success, error: showErrorToast, info, warning } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMigrating, setIsMigrating] = useState(false);
   const [migrationSuccess, setMigrationSuccess] = useState<string | null>(null);
@@ -47,14 +49,25 @@ export default function NewDonorPage() {
 
       await createDonor(activeOrganization.id, formData);
 
-      // Redirect to donors list with full reload to ensure fresh data
-      window.location.href = `/${locale}/dashboard/base-donateur/donateurs`;
+      // Show success toast
+      success('Donateur créé avec succès !', { duration: 3000 });
+      
+      // Small delay before redirect to show toast
+      setTimeout(() => {
+        window.location.href = `/${locale}/dashboard/base-donateur/donateurs`;
+      }, 500);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Échec de la création du donateur';
+      const errorMessage = errorLogger.getUserFriendlyMessage(err);
       setError(errorMessage);
       
+      // Log error
+      errorLogger.error('Failed to create donor', err instanceof Error ? err : new Error(String(err)), {
+        organizationId: activeOrganization?.id,
+        formData: { ...formData, email: formData.email }, // Don't log full form data for privacy
+      });
+      
       // Check if error is related to missing database tables
-      const errorLower = errorMessage.toLowerCase();
+      const errorLower = String(err).toLowerCase();
       const isDatabaseError = 
         errorLower.includes('database') || 
         errorLower.includes('table') ||
@@ -64,6 +77,9 @@ export default function NewDonorPage() {
         errorLower.includes('schema');
       
       setShowMigrationButton(isDatabaseError);
+      
+      // Show error toast
+      showErrorToast(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -95,14 +111,25 @@ export default function NewDonorPage() {
         setMigrationSuccess(successMessage);
         setShowMigrationButton(false);
         setError(null);
+        success('Migrations exécutées avec succès !', { duration: 6000 });
       } else {
-        setError(result.message || 'Erreur lors de la mise à jour de la base de données');
+        const errorMessage = result.message || 'Erreur lors de la mise à jour de la base de données';
+        setError(errorMessage);
         setShowMigrationButton(true);
+        showErrorToast(errorMessage);
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la mise à jour de la base de données';
+      const errorMessage = errorLogger.getUserFriendlyMessage(err);
       setError(errorMessage);
       setShowMigrationButton(true);
+      
+      // Log error
+      errorLogger.error('Failed to migrate database', err instanceof Error ? err : new Error(String(err)), {
+        organizationId: activeOrganization?.id,
+      });
+      
+      // Show error toast
+      showErrorToast(errorMessage);
     } finally {
       setIsMigrating(false);
     }
@@ -145,47 +172,65 @@ export default function NewDonorPage() {
 
       {/* Database Migration Alert */}
       {error && showMigrationButton && (
-        <Card className="mb-6 border-warning bg-warning/10">
+        <Card className="mb-6 border-warning bg-warning/10 animate-in fade-in slide-in-from-top-2">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h3 className="font-semibold text-warning mb-2">Migration de base de données requise</h3>
+              <div className="flex items-center gap-2 mb-2">
+                <AlertCircle className="w-5 h-5 text-warning" />
+                <h3 className="font-semibold text-warning">Migration de base de données requise</h3>
+              </div>
               <p className="text-sm text-muted-foreground mb-4">
                 Les tables de la base de données doivent être créées avant de pouvoir ajouter des donateurs.
-                {error && <span className="block mt-2 text-destructive text-xs">{error}</span>}
+                {error && <span className="block mt-2 text-destructive text-xs font-medium">{error}</span>}
               </p>
-              <Button
-                onClick={handleMigrateDatabase}
-                disabled={isMigrating || !activeOrganization}
-                className="bg-warning text-warning-foreground hover:bg-warning/90"
-              >
-                {isMigrating ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Mise à jour en cours...
-                  </>
-                ) : (
-                  <>
-                    <Database className="w-4 h-4 mr-2" />
-                    Mettre à jour la BD
-                  </>
-                )}
-              </Button>
+              <Tooltip content="Exécute les migrations Alembic pour créer les tables nécessaires">
+                <Button
+                  onClick={handleMigrateDatabase}
+                  disabled={isMigrating || !activeOrganization}
+                  className="bg-warning text-warning-foreground hover:bg-warning/90"
+                >
+                  {isMigrating ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Mise à jour en cours...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4 mr-2" />
+                      Mettre à jour la BD
+                    </>
+                  )}
+                </Button>
+              </Tooltip>
             </div>
           </div>
         </Card>
       )}
 
       {migrationSuccess && (
-        <Card className="mb-6 border-success bg-success/10">
-          <p className="text-success">{migrationSuccess}</p>
+        <Card className="mb-6 border-success bg-success/10 animate-in fade-in slide-in-from-top-2">
+          <div className="p-4 flex items-start gap-3">
+            <div className="w-5 h-5 rounded-full bg-success flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-success-foreground text-xs font-bold">✓</span>
+            </div>
+            <p className="text-success font-medium">{migrationSuccess}</p>
+          </div>
         </Card>
       )}
 
       <Card className="border-2 border-border/50 shadow-lg">
         <form onSubmit={handleSubmit} className="space-y-8">
-          {error && !error.includes('Database tables not found') && (
+          {error && !error.includes('Database tables not found') && !showMigrationButton && (
             <div className="p-4 bg-destructive/10 border-2 border-destructive rounded-lg animate-in fade-in slide-in-from-top-2">
-              <p className="text-destructive font-medium">{error}</p>
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-destructive font-medium">{error}</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Vérifiez les informations saisies et réessayez.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
@@ -200,9 +245,14 @@ export default function NewDonorPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-semibold text-foreground">
-                  Email <span className="text-destructive">*</span>
-                </label>
+                <div className="flex items-center gap-2">
+                  <label htmlFor="email" className="block text-sm font-semibold text-foreground">
+                    Email <span className="text-destructive">*</span>
+                  </label>
+                  <Tooltip content="L'email doit être unique et sera utilisé pour les communications">
+                    <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                  </Tooltip>
+                </div>
                 <Input
                   id="email"
                   type="email"

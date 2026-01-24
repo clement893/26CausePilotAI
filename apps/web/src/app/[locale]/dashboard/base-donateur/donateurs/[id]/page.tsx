@@ -5,11 +5,12 @@ export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel, LoadingSkeleton } from '@/components/ui';
+import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel, LoadingSkeleton, Tooltip, useToast } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { getDonor, getDonorHistory, getDonorStats, listDonorDonations } from '@/lib/api/donors';
+import { errorLogger } from '@/lib/logger/errorLogger';
 import type { DonorWithStats, Donation, DonorHistory, DonorStats } from '@modele/types';
-import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity, Tag, Users, MessageSquare, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity, Tag, Users, MessageSquare, TrendingUp, AlertCircle, Info } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import type { ColorVariant } from '@/components/ui/types';
 import { TagSelector, SegmentSelector, CommunicationList } from '@/components/donors';
@@ -18,6 +19,7 @@ export default function DonorDetailPage() {
   const params = useParams();
   const donorId = params.id as string;
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
+  const { error: showErrorToast, info } = useToast();
   const [donor, setDonor] = useState<DonorWithStats | null>(null);
   const [donations, setDonations] = useState<Donation[]>([]);
   const [history, setHistory] = useState<DonorHistory | null>(null);
@@ -63,8 +65,20 @@ export default function DonorDetailPage() {
       // Load stats
       const statsData = await getDonorStats(activeOrganization.id, donorId);
       setStats(statsData);
+      
+      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load donor data');
+      const errorMessage = errorLogger.getUserFriendlyMessage(err);
+      setError(errorMessage);
+      
+      // Log error
+      errorLogger.error('Failed to load donor data', err instanceof Error ? err : new Error(String(err)), {
+        organizationId: activeOrganization?.id,
+        donorId,
+      });
+      
+      // Show error toast
+      showErrorToast(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -139,11 +153,18 @@ export default function DonorDetailPage() {
   if (error || !donor) {
     return (
       <Container className="py-8 lg:py-12">
-        <Card>
+        <Card className="border-destructive">
           <div className="text-center py-12">
-            <p className="text-destructive">{error || 'Donateur non trouvé'}</p>
+            <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
+              <AlertCircle className="w-8 h-8 text-destructive" />
+            </div>
+            <h3 className="text-xl font-semibold text-foreground mb-2">
+              {error ? 'Erreur de chargement' : 'Donateur non trouvé'}
+            </h3>
+            <p className="text-destructive mb-6">{error || 'Le donateur demandé n\'existe pas ou a été supprimé.'}</p>
             <Link href="/dashboard/base-donateur/donateurs">
-              <Button variant="outline" className="mt-4">
+              <Button variant="outline" className="shadow-sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour à la liste
               </Button>
             </Link>
@@ -157,12 +178,14 @@ export default function DonorDetailPage() {
     <Container className="py-8 lg:py-12">
       {/* Header */}
       <div className="mb-8">
-        <Link href="/dashboard/base-donateur/donateurs">
-          <Button variant="ghost" className="mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour à la liste
-          </Button>
-        </Link>
+        <Tooltip content="Retourner à la liste des donateurs">
+          <Link href="/dashboard/base-donateur/donateurs">
+            <Button variant="ghost" className="mb-4">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Retour à la liste
+            </Button>
+          </Link>
+        </Tooltip>
         <div className="flex justify-between items-start">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -170,11 +193,18 @@ export default function DonorDetailPage() {
                 ? `${donor.first_name || ''} ${donor.last_name || ''}`.trim()
                 : donor.email}
             </h1>
-            <p className="text-muted-foreground">{donor.email}</p>
+            <div className="flex items-center gap-2">
+              <p className="text-muted-foreground">{donor.email}</p>
+              <Tooltip content={donor.is_active ? 'Ce donateur est actif et peut recevoir des communications' : 'Ce donateur est inactif'}>
+                <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+              </Tooltip>
+            </div>
           </div>
-          <Badge variant={donor.is_active ? 'success' : 'info'}>
-            {donor.is_active ? 'Actif' : 'Inactif'}
-          </Badge>
+          <Tooltip content={donor.is_active ? 'Donateur actif' : 'Donateur inactif'}>
+            <Badge variant={donor.is_active ? 'success' : 'info'}>
+              {donor.is_active ? 'Actif' : 'Inactif'}
+            </Badge>
+          </Tooltip>
         </div>
       </div>
 

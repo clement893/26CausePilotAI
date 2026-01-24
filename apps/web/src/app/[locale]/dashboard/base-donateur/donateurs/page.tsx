@@ -4,17 +4,19 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { Container, Card, Button, Input, Badge, LoadingSkeleton } from '@/components/ui';
+import { Container, Card, Button, Input, Badge, LoadingSkeleton, Tooltip, useToast } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { listDonors, type ListDonorsParams, seedExampleDonors } from '@/lib/api/donors';
 import { checkMySuperAdminStatus } from '@/lib/api/admin';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
+import { errorLogger } from '@/lib/logger/errorLogger';
 import type { Donor } from '@modele/types';
-import { Search, Plus, Mail, Phone, DollarSign, Calendar, User, TrendingUp, Sparkles, Database } from 'lucide-react';
+import { Search, Plus, Mail, Phone, DollarSign, Calendar, User, TrendingUp, Sparkles, Database, Info, AlertCircle } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 
 export default function DonateursPage() {
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
+  const { success, error: showErrorToast, info, warning } = useToast();
   const [donors, setDonors] = useState<Donor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -77,9 +79,27 @@ export default function DonateursPage() {
         total: response.total,
         totalPages: response.total_pages,
       });
+      setError(null);
+      
+      // Show info toast if no donors found
+      if (response.items.length === 0 && !searchTerm) {
+        info('Aucun donateur trouvé. Commencez par ajouter votre premier donateur.');
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load donors');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load donors';
+      const userFriendlyMessage = errorLogger.getUserFriendlyMessage(err);
+      
+      setError(userFriendlyMessage);
       setDonors([]);
+      
+      // Log error
+      errorLogger.error('Failed to load donors', err instanceof Error ? err : new Error(errorMessage), {
+        organizationId: activeOrganization?.id,
+        params,
+      });
+      
+      // Show error toast
+      showErrorToast(userFriendlyMessage);
     } finally {
       setIsLoading(false);
     }
@@ -105,17 +125,28 @@ export default function DonateursPage() {
       const result = await seedExampleDonors(activeOrganization.id, 10);
 
       if (result.success) {
-        setSeedSuccess(
-          `${result.donors_created} donateurs créés avec ${result.donations_created} dons !`
-        );
+        const successMessage = `${result.donors_created} donateurs créés avec ${result.donations_created} dons !`;
+        setSeedSuccess(successMessage);
+        success(successMessage, { duration: 6000 });
+        
         // Reload donors list
         await loadDonors();
       } else {
-        setError(result.message || 'Erreur lors de la création des donateurs exemples');
+        const errorMessage = result.message || 'Erreur lors de la création des donateurs exemples';
+        setError(errorMessage);
+        showErrorToast(errorMessage);
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la création des donateurs exemples';
+      const errorMessage = errorLogger.getUserFriendlyMessage(err);
       setError(errorMessage);
+      
+      // Log error
+      errorLogger.error('Failed to seed example donors', err instanceof Error ? err : new Error(String(err)), {
+        organizationId: activeOrganization?.id,
+      });
+      
+      // Show error toast
+      showErrorToast(errorMessage);
     } finally {
       setIsSeeding(false);
     }
@@ -193,22 +224,26 @@ export default function DonateursPage() {
         </div>
         <div className="flex gap-3">
           {isSuperAdmin && (
-            <Button
-              variant="outline"
-              onClick={handleSeedDonors}
-              disabled={isSeeding || !activeOrganization}
-              className="shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105"
-            >
-              <Database className="w-4 h-4 mr-2" />
-              {isSeeding ? 'Création...' : 'Seed exemples'}
-            </Button>
+            <Tooltip content="Créer 10 donateurs exemples avec des données de test (SuperAdmin uniquement)">
+              <Button
+                variant="outline"
+                onClick={handleSeedDonors}
+                disabled={isSeeding || !activeOrganization}
+                className="shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105"
+              >
+                <Database className="w-4 h-4 mr-2" />
+                {isSeeding ? 'Création...' : 'Seed exemples'}
+              </Button>
+            </Tooltip>
           )}
-          <Link href="/dashboard/base-donateur/donateurs/new">
-            <Button className="shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-              <Plus className="w-4 h-4 mr-2" />
-              Nouveau donateur
-            </Button>
-          </Link>
+          <Tooltip content="Ajouter un nouveau donateur à votre base de données">
+            <Link href="/dashboard/base-donateur/donateurs/new">
+              <Button className="shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+                <Plus className="w-4 h-4 mr-2" />
+                Nouveau donateur
+              </Button>
+            </Link>
+          </Tooltip>
         </div>
       </div>
 
@@ -275,38 +310,61 @@ export default function DonateursPage() {
         <div className="p-4 space-y-4">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-            <Input
-              type="text"
-              placeholder="Rechercher par nom, email..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-12 h-12 text-base border-2 focus:border-primary transition-colors"
-            />
+            <Tooltip content="Recherchez par nom, prénom ou adresse email">
+              <Input
+                type="text"
+                placeholder="Rechercher par nom, email..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-12 h-12 text-base border-2 focus:border-primary transition-colors"
+              />
+            </Tooltip>
           </div>
 
           <div className="flex gap-3">
-            <select
-              value={filters.isActive === undefined ? 'all' : filters.isActive.toString()}
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  isActive: e.target.value === 'all' ? undefined : e.target.value === 'true',
-                })
-              }
-              className="px-4 py-2 border-2 rounded-lg bg-background text-foreground focus:border-primary focus:outline-none transition-colors"
-            >
-              <option value="all">Tous les statuts</option>
-              <option value="true">Actifs uniquement</option>
-              <option value="false">Inactifs uniquement</option>
-            </select>
+            <Tooltip content="Filtrez les donateurs par statut actif/inactif">
+              <select
+                value={filters.isActive === undefined ? 'all' : filters.isActive.toString()}
+                onChange={(e) => {
+                  const newFilter = e.target.value === 'all' ? undefined : e.target.value === 'true';
+                  setFilters({
+                    ...filters,
+                    isActive: newFilter,
+                  });
+                  if (newFilter !== undefined) {
+                    info(`Filtre appliqué: ${newFilter ? 'Actifs uniquement' : 'Inactifs uniquement'}`);
+                  }
+                }}
+                className="px-4 py-2 border-2 rounded-lg bg-background text-foreground focus:border-primary focus:outline-none transition-colors"
+              >
+                <option value="all">Tous les statuts</option>
+                <option value="true">Actifs uniquement</option>
+                <option value="false">Inactifs uniquement</option>
+              </select>
+            </Tooltip>
           </div>
         </div>
       </Card>
 
       {/* Error Message */}
       {error && (
-        <Card className="mb-6 border-destructive bg-destructive/10">
-          <p className="text-destructive p-4">{error}</p>
+        <Card className="mb-6 border-destructive bg-destructive/10 animate-in fade-in slide-in-from-top-2">
+          <div className="p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
+            <div className="flex-1">
+              <p className="text-destructive font-medium">{error}</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Si le problème persiste, vérifiez votre connexion ou contactez le support.
+              </p>
+            </div>
+            <button
+              onClick={() => setError(null)}
+              className="text-destructive hover:text-destructive/80 transition-colors"
+              aria-label="Fermer"
+            >
+              ×
+            </button>
+          </div>
         </Card>
       )}
 
