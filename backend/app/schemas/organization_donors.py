@@ -394,7 +394,7 @@ class DonorCommunication(DonorCommunicationBase):
     opened_at: Optional[datetime] = None
     clicked_at: Optional[datetime] = None
     sent_by: Optional[int] = None
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    metadata: Dict[str, Any] = Field(default_factory=dict, validation_alias="communication_metadata")
     created_at: datetime
     
     class Config:

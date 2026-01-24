@@ -1507,10 +1507,12 @@ async def update_communication(
     
     from datetime import datetime, timezone
     
-    # Update fields
+    # Update fields (map schema 'metadata' -> model 'communication_metadata')
     update_data = communication_data.model_dump(exclude_unset=True)
+    if "metadata" in update_data:
+        update_data["communication_metadata"] = update_data.pop("metadata")
     for field, value in update_data.items():
-        if field.endswith('_at') and value:
+        if field.endswith("_at") and value:
             setattr(communication, field, value if isinstance(value, datetime) else datetime.fromisoformat(value))
         else:
             setattr(communication, field, value)

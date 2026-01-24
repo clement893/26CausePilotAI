@@ -53,7 +53,8 @@ class DonorCommunication(Base):
     sent_by = Column(Integer, nullable=True)  # FK to users.id in main DB
     
     # Metadata (email provider response, SMS delivery status, etc.)
-    metadata = Column(JSON, default=dict)
+    # Python attr 'communication_metadata' to avoid SQLAlchemy reserved 'metadata'
+    communication_metadata = Column(JSON, name="metadata", default=dict)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     
