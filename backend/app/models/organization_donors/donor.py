@@ -71,8 +71,11 @@ class Donor(Base):
     donations = relationship("Donation", back_populates="donor", cascade="all, delete-orphan")
     payment_methods = relationship("PaymentMethod", back_populates="donor", cascade="all, delete-orphan")
     notes = relationship("DonorNote", back_populates="donor", cascade="all, delete-orphan")
-    # communications = relationship("DonorCommunication", back_populates="donor", cascade="all, delete-orphan")  # TODO: Create DonorCommunication model
+    communications = relationship("DonorCommunication", back_populates="donor", cascade="all, delete-orphan")
     activities = relationship("DonorActivity", back_populates="donor", cascade="all, delete-orphan")
+    recurring_donations = relationship("RecurringDonation", back_populates="donor", cascade="all, delete-orphan")
+    segment_assignments = relationship("DonorSegmentAssignment", back_populates="donor", cascade="all, delete-orphan")
+    tag_assignments = relationship("DonorTagAssignment", back_populates="donor", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Donor(id={self.id}, email={self.email}, name={self.first_name} {self.last_name})>"

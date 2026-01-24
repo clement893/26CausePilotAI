@@ -263,3 +263,289 @@ class DonorStats(BaseModel):
     this_year_count: int
     this_month_total: Decimal
     this_month_count: int
+
+
+# ============= Donor Segment Schemas =============
+
+class DonorSegmentBase(BaseModel):
+    """Base donor segment schema"""
+    name: str = Field(..., max_length=255)
+    description: Optional[str] = None
+    criteria: Dict[str, Any] = Field(default_factory=dict)
+    is_automatic: bool = False
+    color: Optional[str] = Field(None, max_length=7, pattern=r'^#[0-9A-Fa-f]{6}$')
+
+
+class DonorSegmentCreate(DonorSegmentBase):
+    """Create donor segment request"""
+    pass
+
+
+class DonorSegmentUpdate(BaseModel):
+    """Update donor segment request"""
+    name: Optional[str] = Field(None, max_length=255)
+    description: Optional[str] = None
+    criteria: Optional[Dict[str, Any]] = None
+    is_automatic: Optional[bool] = None
+    color: Optional[str] = Field(None, max_length=7, pattern=r'^#[0-9A-Fa-f]{6}$')
+
+
+class DonorSegment(DonorSegmentBase):
+    """Donor segment response"""
+    id: UUID
+    organization_id: UUID
+    donor_count: int
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class DonorSegmentAssignment(BaseModel):
+    """Donor segment assignment"""
+    id: UUID
+    donor_id: UUID
+    segment_id: UUID
+    assigned_at: datetime
+    assigned_by: Optional[int] = None
+    
+    class Config:
+        from_attributes = True
+
+
+# ============= Donor Tag Schemas =============
+
+class DonorTagBase(BaseModel):
+    """Base donor tag schema"""
+    name: str = Field(..., max_length=100)
+    description: Optional[str] = None
+    color: Optional[str] = Field(None, max_length=7, pattern=r'^#[0-9A-Fa-f]{6}$')
+    icon: Optional[str] = Field(None, max_length=50)
+
+
+class DonorTagCreate(DonorTagBase):
+    """Create donor tag request"""
+    pass
+
+
+class DonorTagUpdate(BaseModel):
+    """Update donor tag request"""
+    name: Optional[str] = Field(None, max_length=100)
+    description: Optional[str] = None
+    color: Optional[str] = Field(None, max_length=7, pattern=r'^#[0-9A-Fa-f]{6}$')
+    icon: Optional[str] = Field(None, max_length=50)
+
+
+class DonorTag(DonorTagBase):
+    """Donor tag response"""
+    id: UUID
+    organization_id: UUID
+    donor_count: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class DonorTagAssignment(BaseModel):
+    """Donor tag assignment"""
+    id: UUID
+    donor_id: UUID
+    tag_id: UUID
+    assigned_at: datetime
+    assigned_by: Optional[int] = None
+    
+    class Config:
+        from_attributes = True
+
+
+# ============= Donor Communication Schemas =============
+
+class DonorCommunicationBase(BaseModel):
+    """Base donor communication schema"""
+    communication_type: str = Field(..., pattern=r'^(email|sms|letter|phone|in_person)$')
+    subject: Optional[str] = Field(None, max_length=255)
+    content: str = Field(..., min_length=1)
+    status: str = Field(default='sent', pattern=r'^(sent|delivered|opened|clicked|bounced|failed)$')
+
+
+class DonorCommunicationCreate(DonorCommunicationBase):
+    """Create donor communication request"""
+    pass
+
+
+class DonorCommunicationUpdate(BaseModel):
+    """Update donor communication request"""
+    status: Optional[str] = Field(None, pattern=r'^(sent|delivered|opened|clicked|bounced|failed)$')
+    delivered_at: Optional[datetime] = None
+    opened_at: Optional[datetime] = None
+    clicked_at: Optional[datetime] = None
+    metadata: Optional[Dict[str, Any]] = None
+
+
+class DonorCommunication(DonorCommunicationBase):
+    """Donor communication response"""
+    id: UUID
+    donor_id: UUID
+    organization_id: UUID
+    sent_at: Optional[datetime] = None
+    delivered_at: Optional[datetime] = None
+    opened_at: Optional[datetime] = None
+    clicked_at: Optional[datetime] = None
+    sent_by: Optional[int] = None
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+# ============= Campaign Schemas =============
+
+class CampaignBase(BaseModel):
+    """Base campaign schema"""
+    name: str = Field(..., max_length=255)
+    description: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    goal_amount: Optional[Decimal] = Field(None, gt=0)
+    goal_donors: Optional[int] = Field(None, gt=0)
+    status: str = Field(default='draft', pattern=r'^(draft|active|paused|completed|cancelled)$')
+    image_url: Optional[str] = Field(None, max_length=500)
+    external_url: Optional[str] = Field(None, max_length=500)
+
+
+class CampaignCreate(CampaignBase):
+    """Create campaign request"""
+    pass
+
+
+class CampaignUpdate(BaseModel):
+    """Update campaign request"""
+    name: Optional[str] = Field(None, max_length=255)
+    description: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    goal_amount: Optional[Decimal] = Field(None, gt=0)
+    goal_donors: Optional[int] = Field(None, gt=0)
+    status: Optional[str] = Field(None, pattern=r'^(draft|active|paused|completed|cancelled)$')
+    image_url: Optional[str] = Field(None, max_length=500)
+    external_url: Optional[str] = Field(None, max_length=500)
+
+
+class Campaign(CampaignBase):
+    """Campaign response"""
+    id: UUID
+    organization_id: UUID
+    total_raised: Decimal
+    donor_count: int
+    donation_count: int
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class CampaignStats(BaseModel):
+    """Campaign statistics"""
+    total_raised: Decimal
+    donor_count: int
+    donation_count: int
+    progress_percentage: float
+    days_remaining: Optional[int] = None
+    is_active: bool
+
+
+# ============= Recurring Donation Schemas =============
+
+class RecurringDonationBase(BaseModel):
+    """Base recurring donation schema"""
+    amount: Decimal = Field(..., gt=0)
+    currency: str = Field(default='CAD', max_length=3)
+    frequency: str = Field(..., pattern=r'^(weekly|monthly|quarterly|yearly)$')
+    payment_method_id: UUID
+    start_date: datetime
+    end_date: Optional[datetime] = None
+
+
+class RecurringDonationCreate(RecurringDonationBase):
+    """Create recurring donation request"""
+    pass
+
+
+class RecurringDonationUpdate(BaseModel):
+    """Update recurring donation request"""
+    amount: Optional[Decimal] = Field(None, gt=0)
+    currency: Optional[str] = Field(None, max_length=3)
+    frequency: Optional[str] = Field(None, pattern=r'^(weekly|monthly|quarterly|yearly)$')
+    payment_method_id: Optional[UUID] = None
+    status: Optional[str] = Field(None, pattern=r'^(active|paused|cancelled|failed)$')
+    end_date: Optional[datetime] = None
+
+
+class RecurringDonation(RecurringDonationBase):
+    """Recurring donation response"""
+    id: UUID
+    donor_id: UUID
+    organization_id: UUID
+    next_payment_date: datetime
+    status: str
+    total_payments: int
+    total_amount: Decimal
+    last_payment_date: Optional[datetime] = None
+    consecutive_failures: int
+    last_failure_reason: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+# ============= List Responses (Extended) =============
+
+class DonorSegmentList(BaseModel):
+    """List of donor segments"""
+    items: List[DonorSegment]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
+
+class DonorTagList(BaseModel):
+    """List of donor tags"""
+    items: List[DonorTag]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
+
+class DonorCommunicationList(BaseModel):
+    """List of donor communications"""
+    items: List[DonorCommunication]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
+
+class CampaignList(BaseModel):
+    """List of campaigns"""
+    items: List[Campaign]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
+
+class RecurringDonationList(BaseModel):
+    """List of recurring donations"""
+    items: List[RecurringDonation]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int

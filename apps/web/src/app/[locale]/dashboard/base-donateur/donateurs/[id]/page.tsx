@@ -7,11 +7,12 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
-import { getDonor, getDonorHistory, getDonorStats, listDonorDonations } from '@/lib/api/donors';
+import { getDonor, getDonorHistory, getDonorStats, listDonorDonations, getSegmentDonors } from '@/lib/api/donors';
 import type { DonorWithStats, Donation, DonorHistory, DonorStats } from '@modele/types';
-import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity, Tag, Users, MessageSquare } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import type { ColorVariant } from '@/components/ui/types';
+import { TagSelector, SegmentSelector, CommunicationList } from '@/components/donors';
 
 export default function DonorDetailPage() {
   const params = useParams();
@@ -211,6 +212,18 @@ export default function DonorDetailPage() {
         <TabList>
           <Tab value="overview">Vue d'ensemble</Tab>
           <Tab value="donations">Dons ({donations.length})</Tab>
+          <Tab value="tags">
+            <Tag className="w-4 h-4 mr-2" />
+            Tags
+          </Tab>
+          <Tab value="segments">
+            <Users className="w-4 h-4 mr-2" />
+            Segments
+          </Tab>
+          <Tab value="communications">
+            <MessageSquare className="w-4 h-4 mr-2" />
+            Communications
+          </Tab>
           <Tab value="history">Historique</Tab>
         </TabList>
 
@@ -375,6 +388,49 @@ export default function DonorDetailPage() {
               </div>
             )}
           </Card>
+          </TabPanel>
+
+          {/* Tags Tab */}
+          <TabPanel value="tags">
+            <Card>
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Gestion des Tags</h2>
+                <TagSelector
+                  donorId={donorId}
+                  assignedTagIds={donor.tags || []}
+                  onTagsChange={(tagIds) => {
+                    // Optionally reload donor data
+                    loadDonorData();
+                  }}
+                />
+              </div>
+            </Card>
+          </TabPanel>
+
+          {/* Segments Tab */}
+          <TabPanel value="segments">
+            <Card>
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Segments</h2>
+                <SegmentSelector
+                  donorId={donorId}
+                  selectedSegmentIds={[]} // TODO: Load from API
+                  onSegmentsChange={(segmentIds) => {
+                    console.log('Segments changed:', segmentIds);
+                  }}
+                />
+              </div>
+            </Card>
+          </TabPanel>
+
+          {/* Communications Tab */}
+          <TabPanel value="communications">
+            <Card>
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Historique des Communications</h2>
+                <CommunicationList donorId={donorId} />
+              </div>
+            </Card>
           </TabPanel>
 
           {/* History Tab */}

@@ -234,3 +234,230 @@ export interface DonorStats {
   this_month_total: string;
   this_month_count: number;
 }
+
+// ============= Donor Tag Types =============
+
+export interface DonorTag {
+  id: string;
+  organization_id: string;
+  name: string;
+  description?: string;
+  color?: string; // Hex color
+  icon?: string;
+  donor_count: number;
+  created_at: string;
+}
+
+export interface DonorTagCreate {
+  name: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+}
+
+export interface DonorTagUpdate {
+  name?: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+}
+
+export interface DonorTagList {
+  items: DonorTag[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+// ============= Donor Segment Types =============
+
+export interface DonorSegment {
+  id: string;
+  organization_id: string;
+  name: string;
+  description?: string;
+  criteria: Record<string, any>;
+  is_automatic: boolean;
+  color?: string; // Hex color
+  donor_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DonorSegmentCreate {
+  name: string;
+  description?: string;
+  criteria?: Record<string, any>;
+  is_automatic?: boolean;
+  color?: string;
+}
+
+export interface DonorSegmentUpdate {
+  name?: string;
+  description?: string;
+  criteria?: Record<string, any>;
+  is_automatic?: boolean;
+  color?: string;
+}
+
+export interface DonorSegmentList {
+  items: DonorSegment[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+// ============= Donor Communication Types =============
+
+export interface DonorCommunication {
+  id: string;
+  donor_id: string;
+  organization_id: string;
+  communication_type: 'email' | 'sms' | 'letter' | 'phone' | 'in_person';
+  subject?: string;
+  content: string;
+  status: 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed';
+  sent_at?: string;
+  delivered_at?: string;
+  opened_at?: string;
+  clicked_at?: string;
+  sent_by?: number;
+  metadata: Record<string, any>;
+  created_at: string;
+}
+
+export interface DonorCommunicationCreate {
+  communication_type: 'email' | 'sms' | 'letter' | 'phone' | 'in_person';
+  subject?: string;
+  content: string;
+  status?: 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed';
+}
+
+export interface DonorCommunicationUpdate {
+  status?: 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed';
+  delivered_at?: string;
+  opened_at?: string;
+  clicked_at?: string;
+  metadata?: Record<string, any>;
+}
+
+export interface DonorCommunicationList {
+  items: DonorCommunication[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+// ============= Campaign Types =============
+
+export interface Campaign {
+  id: string;
+  organization_id: string;
+  name: string;
+  description?: string;
+  start_date?: string;
+  end_date?: string;
+  goal_amount?: string; // Decimal as string
+  goal_donors?: number;
+  status: 'draft' | 'active' | 'paused' | 'completed' | 'cancelled';
+  total_raised: string; // Decimal as string
+  donor_count: number;
+  donation_count: number;
+  image_url?: string;
+  external_url?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CampaignCreate {
+  name: string;
+  description?: string;
+  start_date?: string;
+  end_date?: string;
+  goal_amount?: string;
+  goal_donors?: number;
+  status?: 'draft' | 'active' | 'paused' | 'completed' | 'cancelled';
+  image_url?: string;
+  external_url?: string;
+}
+
+export interface CampaignUpdate {
+  name?: string;
+  description?: string;
+  start_date?: string;
+  end_date?: string;
+  goal_amount?: string;
+  goal_donors?: number;
+  status?: 'draft' | 'active' | 'paused' | 'completed' | 'cancelled';
+  image_url?: string;
+  external_url?: string;
+}
+
+export interface CampaignList {
+  items: Campaign[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+export interface CampaignStats {
+  total_raised: string;
+  donor_count: number;
+  donation_count: number;
+  progress_percentage: number;
+  days_remaining?: number;
+  is_active: boolean;
+}
+
+// ============= Recurring Donation Types =============
+
+export interface RecurringDonation {
+  id: string;
+  donor_id: string;
+  organization_id: string;
+  amount: string; // Decimal as string
+  currency: string;
+  frequency: 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+  payment_method_id: string;
+  start_date: string;
+  next_payment_date: string;
+  end_date?: string;
+  status: 'active' | 'paused' | 'cancelled' | 'failed';
+  total_payments: number;
+  total_amount: string; // Decimal as string
+  last_payment_date?: string;
+  consecutive_failures: number;
+  last_failure_reason?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RecurringDonationCreate {
+  amount: string;
+  currency?: string;
+  frequency: 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+  payment_method_id: string;
+  start_date: string;
+  end_date?: string;
+}
+
+export interface RecurringDonationUpdate {
+  amount?: string;
+  currency?: string;
+  frequency?: 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+  payment_method_id?: string;
+  status?: 'active' | 'paused' | 'cancelled' | 'failed';
+  end_date?: string;
+}
+
+export interface RecurringDonationList {
+  items: RecurringDonation[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}

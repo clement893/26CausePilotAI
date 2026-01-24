@@ -28,6 +28,8 @@ class Donation(Base):
         Index("idx_donations_date", "payment_date"),
         Index("idx_donations_status", "payment_status"),
         Index("idx_donations_receipt", "receipt_number"),
+        Index("idx_donations_campaign", "campaign_id"),
+        Index("idx_donations_recurring", "recurring_donation_id"),
     )
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
@@ -52,8 +54,9 @@ class Donation(Base):
     receipt_sent_date = Column(DateTime(timezone=True), nullable=True)
     
     # Campaign & Designation
-    campaign_id = Column(UUID(as_uuid=True), nullable=True)  # FK to campaigns table (future)
+    campaign_id = Column(UUID(as_uuid=True), ForeignKey("campaigns.id", ondelete="SET NULL"), nullable=True, index=True)
     designation = Column(String(255), nullable=True)  # Destination du don
+    recurring_donation_id = Column(UUID(as_uuid=True), ForeignKey("recurring_donations.id", ondelete="SET NULL"), nullable=True, index=True)
     
     # Additional Information
     notes = Column(Text, nullable=True)
@@ -71,6 +74,8 @@ class Donation(Base):
     # Relationships
     donor = relationship("Donor", back_populates="donations")
     payment_method = relationship("PaymentMethod", back_populates="donations")
+    campaign = relationship("Campaign", back_populates="donations")
+    recurring_donation = relationship("RecurringDonation", back_populates="donations")
     
     def __repr__(self):
         return f"<Donation(id={self.id}, donor={self.donor_id}, amount={self.amount}, status={self.payment_status})>"
