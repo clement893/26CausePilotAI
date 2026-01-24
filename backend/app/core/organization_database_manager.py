@@ -439,10 +439,14 @@ class OrganizationDatabaseManager:
                 if is_railway_internal:
                     return False, (
                         f"Résolution DNS échouée: Impossible de résoudre le nom d'hôte '{host}'. "
-                        f"Les URLs Railway internes (.railway.internal) ne sont accessibles que depuis les services "
-                        f"du même projet Railway. Si votre backend n'est pas dans le même projet, utilisez l'URL publique "
-                        f"de la base de données (disponible dans les variables d'environnement Railway). "
-                        f"Sinon, vérifiez que les deux services sont dans le même projet Railway."
+                        f"\n\nLes URLs Railway internes (.railway.internal) ne fonctionnent QUE si votre backend et votre base de données "
+                        f"sont dans le MÊME projet Railway.\n\n"
+                        f"SOLUTION : Utilisez l'URL PUBLIQUE de votre base de données Railway.\n"
+                        f"1. Allez dans votre service PostgreSQL sur Railway\n"
+                        f"2. Ouvrez l'onglet 'Variables' ou 'Connect'\n"
+                        f"3. Copiez l'URL publique (elle contient '.railway.app' ou '.up.railway.app' au lieu de '.railway.internal')\n"
+                        f"4. Utilisez cette URL publique dans le formulaire\n\n"
+                        f"Si vous devez absolument utiliser l'URL interne, assurez-vous que votre backend est dans le même projet Railway que la base de données."
                     ), None
                 else:
                     return False, (
