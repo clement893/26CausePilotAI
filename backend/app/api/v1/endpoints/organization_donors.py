@@ -96,70 +96,70 @@ async def list_donors(
     try:
         # Build query
         query = select(Donor)
-    
-    # Apply filters
-    if search:
+        
+        # Apply filters
+        if search:
         search_filter = or_(
             Donor.email.ilike(f"%{search}%"),
             Donor.first_name.ilike(f"%{search}%"),
             Donor.last_name.ilike(f"%{search}%"),
         )
-        query = query.where(search_filter)
-    
-    if is_active is not None:
-        query = query.where(Donor.is_active == is_active)
-    
-    if tags:
-        # Filter by tags (JSON array contains)
-        for tag in tags:
-            query = query.where(Donor.tags.contains([tag]))
-    
-    if min_total_donated is not None:
-        query = query.where(Donor.total_donated >= min_total_donated)
-    
-    if max_total_donated is not None:
-        query = query.where(Donor.total_donated <= max_total_donated)
-    
-    # Get total count - build count query with same filters
-    count_query = select(func.count(Donor.id))
-    if search:
-        search_filter = or_(
-            Donor.email.ilike(f"%{search}%"),
-            Donor.first_name.ilike(f"%{search}%"),
-            Donor.last_name.ilike(f"%{search}%"),
-        )
-        count_query = count_query.where(search_filter)
-    if is_active is not None:
-        count_query = count_query.where(Donor.is_active == is_active)
-    if tags:
-        for tag in tags:
-            count_query = count_query.where(Donor.tags.contains([tag]))
-    if min_total_donated is not None:
-        count_query = count_query.where(Donor.total_donated >= min_total_donated)
-    if max_total_donated is not None:
-        count_query = count_query.where(Donor.total_donated <= max_total_donated)
-    
-    total_result = await org_db.execute(count_query)
-    total = total_result.scalar_one() or 0
-    
-    # Apply pagination
-    offset = (page - 1) * page_size
-    query = query.order_by(Donor.created_at.desc()).offset(offset).limit(page_size)
-    
-    # Execute query
-    result = await org_db.execute(query)
-    donors = result.scalars().all()
-    
-    # Calculate total pages
-    total_pages = (total + page_size - 1) // page_size
-    
-    return {
-        "items": donors,
-        "total": total,
-        "page": page,
-        "page_size": page_size,
-        "total_pages": total_pages,
-    }
+            query = query.where(search_filter)
+        
+        if is_active is not None:
+            query = query.where(Donor.is_active == is_active)
+        
+        if tags:
+            # Filter by tags (JSON array contains)
+            for tag in tags:
+                query = query.where(Donor.tags.contains([tag]))
+        
+        if min_total_donated is not None:
+            query = query.where(Donor.total_donated >= min_total_donated)
+        
+        if max_total_donated is not None:
+            query = query.where(Donor.total_donated <= max_total_donated)
+        
+        # Get total count - build count query with same filters
+        count_query = select(func.count(Donor.id))
+        if search:
+            search_filter = or_(
+                Donor.email.ilike(f"%{search}%"),
+                Donor.first_name.ilike(f"%{search}%"),
+                Donor.last_name.ilike(f"%{search}%"),
+            )
+            count_query = count_query.where(search_filter)
+        if is_active is not None:
+            count_query = count_query.where(Donor.is_active == is_active)
+        if tags:
+            for tag in tags:
+                count_query = count_query.where(Donor.tags.contains([tag]))
+        if min_total_donated is not None:
+            count_query = count_query.where(Donor.total_donated >= min_total_donated)
+        if max_total_donated is not None:
+            count_query = count_query.where(Donor.total_donated <= max_total_donated)
+        
+        total_result = await org_db.execute(count_query)
+        total = total_result.scalar_one() or 0
+        
+        # Apply pagination
+        offset = (page - 1) * page_size
+        query = query.order_by(Donor.created_at.desc()).offset(offset).limit(page_size)
+        
+        # Execute query
+        result = await org_db.execute(query)
+        donors = result.scalars().all()
+        
+        # Calculate total pages
+        total_pages = (total + page_size - 1) // page_size
+        
+        return {
+            "items": donors,
+            "total": total,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+        }
 
 
 @router.get("/{organization_id}/donors/{donor_id}", response_model=DonorWithStats)

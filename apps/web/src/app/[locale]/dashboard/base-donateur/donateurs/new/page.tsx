@@ -9,7 +9,7 @@ import { useOrganization } from '@/hooks/useOrganization';
 import { createDonor } from '@/lib/api/donors';
 import { migrateOrganizationDatabase } from '@/lib/api/organizations';
 import type { DonorCreate } from '@modele/types';
-import { ArrowLeft, Database, Loader2 } from 'lucide-react';
+import { ArrowLeft, Database, Loader2, User, Mail } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
@@ -181,22 +181,27 @@ export default function NewDonorPage() {
         </Card>
       )}
 
-      <Card>
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <Card className="border-2 border-border/50 shadow-lg">
+        <form onSubmit={handleSubmit} className="space-y-8">
           {error && !error.includes('Database tables not found') && (
-            <div className="p-4 bg-destructive/10 border border-destructive rounded-lg">
-              <p className="text-destructive">{error}</p>
+            <div className="p-4 bg-destructive/10 border-2 border-destructive rounded-lg animate-in fade-in slide-in-from-top-2">
+              <p className="text-destructive font-medium">{error}</p>
             </div>
           )}
 
           {/* Basic Information */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Informations de base</h2>
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 pb-4 border-b">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <User className="w-5 h-5 text-primary" />
+              </div>
+              <h2 className="text-2xl font-bold">Informations de base</h2>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Email *
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-foreground">
+                  Email <span className="text-destructive">*</span>
                 </label>
                 <Input
                   id="email"
@@ -205,11 +210,12 @@ export default function NewDonorPage() {
                   value={formData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
                   placeholder="donateur@example.com"
+                  className="h-12 text-base border-2 focus:border-primary transition-colors"
                 />
               </div>
 
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <label htmlFor="phone" className="block text-sm font-semibold text-foreground">
                   Téléphone
                 </label>
                 <Input
@@ -218,13 +224,14 @@ export default function NewDonorPage() {
                   value={formData.phone || ''}
                   onChange={(e) => handleChange('phone', e.target.value)}
                   placeholder="+1 (555) 123-4567"
+                  className="h-12 text-base border-2 focus:border-primary transition-colors"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="first_name" className="block text-sm font-medium mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="first_name" className="block text-sm font-semibold text-foreground">
                   Prénom
                 </label>
                 <Input
@@ -233,11 +240,12 @@ export default function NewDonorPage() {
                   value={formData.first_name || ''}
                   onChange={(e) => handleChange('first_name', e.target.value)}
                   placeholder="Jean"
+                  className="h-12 text-base border-2 focus:border-primary transition-colors"
                 />
               </div>
 
-              <div>
-                <label htmlFor="last_name" className="block text-sm font-medium mb-2">
+              <div className="space-y-2">
+                <label htmlFor="last_name" className="block text-sm font-semibold text-foreground">
                   Nom de famille
                 </label>
                 <Input
@@ -246,25 +254,31 @@ export default function NewDonorPage() {
                   value={formData.last_name || ''}
                   onChange={(e) => handleChange('last_name', e.target.value)}
                   placeholder="Dupont"
+                  className="h-12 text-base border-2 focus:border-primary transition-colors"
                 />
               </div>
             </div>
           </div>
 
           {/* Preferences */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Préférences</h2>
+          <div className="space-y-6 pt-6 border-t">
+            <div className="flex items-center gap-3 pb-4">
+              <div className="p-2 bg-success/10 rounded-lg">
+                <Mail className="w-5 h-5 text-success" />
+              </div>
+              <h2 className="text-2xl font-bold">Préférences</h2>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="preferred_language" className="block text-sm font-medium mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="preferred_language" className="block text-sm font-semibold text-foreground">
                   Langue préférée
                 </label>
                 <select
                   id="preferred_language"
                   value={formData.preferred_language}
                   onChange={(e) => handleChange('preferred_language', e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md bg-background text-foreground"
+                  className="w-full h-12 px-4 py-2 border-2 rounded-lg bg-background text-foreground focus:border-primary focus:outline-none transition-colors"
                 >
                   <option value="fr">Français</option>
                   <option value="en">English</option>
@@ -272,70 +286,94 @@ export default function NewDonorPage() {
               </div>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="opt_in_email"
-                  checked={formData.opt_in_email}
-                  onChange={(e) => handleChange('opt_in_email', e.target.checked)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="opt_in_email" className="text-sm">
-                  Accepte de recevoir des emails
-                </label>
+            <div className="space-y-4 pt-4">
+              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="opt_in_email"
+                    checked={formData.opt_in_email}
+                    onChange={(e) => handleChange('opt_in_email', e.target.checked)}
+                    className="w-5 h-5 rounded border-2 text-primary focus:ring-2 focus:ring-primary"
+                  />
+                  <label htmlFor="opt_in_email" className="text-sm font-medium cursor-pointer flex-1">
+                    Accepte de recevoir des emails
+                  </label>
+                </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="opt_in_sms"
-                  checked={formData.opt_in_sms}
-                  onChange={(e) => handleChange('opt_in_sms', e.target.checked)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="opt_in_sms" className="text-sm">
-                  Accepte de recevoir des SMS
-                </label>
+              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="opt_in_sms"
+                    checked={formData.opt_in_sms}
+                    onChange={(e) => handleChange('opt_in_sms', e.target.checked)}
+                    className="w-5 h-5 rounded border-2 text-primary focus:ring-2 focus:ring-primary"
+                  />
+                  <label htmlFor="opt_in_sms" className="text-sm font-medium cursor-pointer flex-1">
+                    Accepte de recevoir des SMS
+                  </label>
+                </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="opt_in_postal"
-                  checked={formData.opt_in_postal}
-                  onChange={(e) => handleChange('opt_in_postal', e.target.checked)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="opt_in_postal" className="text-sm">
-                  Accepte de recevoir du courrier postal
-                </label>
+              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="opt_in_postal"
+                    checked={formData.opt_in_postal}
+                    onChange={(e) => handleChange('opt_in_postal', e.target.checked)}
+                    className="w-5 h-5 rounded border-2 text-primary focus:ring-2 focus:ring-primary"
+                  />
+                  <label htmlFor="opt_in_postal" className="text-sm font-medium cursor-pointer flex-1">
+                    Accepte de recevoir du courrier postal
+                  </label>
+                </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="is_anonymous"
-                  checked={formData.is_anonymous}
-                  onChange={(e) => handleChange('is_anonymous', e.target.checked)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="is_anonymous" className="text-sm">
-                  Donateur anonyme
-                </label>
+              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="is_anonymous"
+                    checked={formData.is_anonymous}
+                    onChange={(e) => handleChange('is_anonymous', e.target.checked)}
+                    className="w-5 h-5 rounded border-2 text-primary focus:ring-2 focus:ring-primary"
+                  />
+                  <label htmlFor="is_anonymous" className="text-sm font-medium cursor-pointer flex-1">
+                    Donateur anonyme
+                  </label>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end gap-4 pt-6 border-t">
             <Link href="/dashboard/base-donateur/donateurs">
-              <Button type="button" variant="outline" disabled={isSubmitting}>
+              <Button 
+                type="button" 
+                variant="outline" 
+                disabled={isSubmitting}
+                className="min-w-[120px] hover:scale-105 transition-transform"
+              >
                 Annuler
               </Button>
             </Link>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Création...' : 'Créer le donateur'}
+            <Button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="min-w-[180px] shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Création...
+                </>
+              ) : (
+                'Créer le donateur'
+              )}
             </Button>
           </div>
         </form>

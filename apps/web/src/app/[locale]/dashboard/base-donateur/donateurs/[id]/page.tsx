@@ -9,7 +9,7 @@ import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel
 import { useOrganization } from '@/hooks/useOrganization';
 import { getDonor, getDonorHistory, getDonorStats, listDonorDonations } from '@/lib/api/donors';
 import type { DonorWithStats, Donation, DonorHistory, DonorStats } from '@modele/types';
-import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity, Tag, Users, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity, Tag, Users, MessageSquare, TrendingUp } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import type { ColorVariant } from '@/components/ui/types';
 import { TagSelector, SegmentSelector, CommunicationList } from '@/components/donors';
@@ -175,32 +175,52 @@ export default function DonorDetailPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <Card>
-          <div className="p-4">
-            <p className="text-sm text-muted-foreground mb-1">Total donné</p>
-            <p className="text-2xl font-bold">{formatCurrency(donor.total_donated)}</p>
+      {/* Stats Cards - Modern Design */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <Card className="border-l-4 border-l-primary bg-gradient-to-br from-primary/10 via-primary/5 to-transparent hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 bg-primary/20 rounded-lg">
+                <DollarSign className="w-6 h-6 text-primary" />
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mb-2 font-medium">Total donné</p>
+            <p className="text-3xl font-bold text-primary">{formatCurrency(donor.total_donated)}</p>
           </div>
         </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-sm text-muted-foreground mb-1">Nombre de dons</p>
-            <p className="text-2xl font-bold">{donor.donation_count}</p>
+        <Card className="border-l-4 border-l-success bg-gradient-to-br from-success/10 via-success/5 to-transparent hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 bg-success/20 rounded-lg">
+                <Activity className="w-6 h-6 text-success" />
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mb-2 font-medium">Nombre de dons</p>
+            <p className="text-3xl font-bold text-success">{donor.donation_count}</p>
           </div>
         </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-sm text-muted-foreground mb-1">Don moyen</p>
-            <p className="text-2xl font-bold">
+        <Card className="border-l-4 border-l-warning bg-gradient-to-br from-warning/10 via-warning/5 to-transparent hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 bg-warning/20 rounded-lg">
+                <TrendingUp className="w-6 h-6 text-warning" />
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mb-2 font-medium">Don moyen</p>
+            <p className="text-3xl font-bold text-warning">
               {stats?.average_donation ? formatCurrency(stats.average_donation) : '-'}
             </p>
           </div>
         </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-sm text-muted-foreground mb-1">Dernier don</p>
-            <p className="text-2xl font-bold">
+        <Card className="border-l-4 border-l-info bg-gradient-to-br from-info/10 via-info/5 to-transparent hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 bg-info/20 rounded-lg">
+                <Calendar className="w-6 h-6 text-info" />
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mb-2 font-medium">Dernier don</p>
+            <p className="text-lg font-bold text-info">
               {donor.last_donation_date ? formatDate(donor.last_donation_date) : 'Aucun'}
             </p>
           </div>
@@ -334,60 +354,65 @@ export default function DonorDetailPage() {
 
           {/* Donations Tab */}
           <TabPanel value="donations">
-          <Card>
             {donations.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">Aucun don enregistré</p>
-              </div>
+              <Card>
+                <div className="text-center py-16">
+                  <div className="mx-auto w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-4">
+                    <DollarSign className="w-10 h-10 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Aucun don enregistré</h3>
+                  <p className="text-muted-foreground">Les dons de ce donateur apparaîtront ici</p>
+                </div>
+              </Card>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left p-4 font-semibold">Date</th>
-                      <th className="text-left p-4 font-semibold">Montant</th>
-                      <th className="text-left p-4 font-semibold">Type</th>
-                      <th className="text-left p-4 font-semibold">Statut</th>
-                      <th className="text-left p-4 font-semibold">Reçu fiscal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {donations.map((donation) => (
-                      <tr key={donation.id} className="border-b hover:bg-muted/50">
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-muted-foreground" />
-                            <span>{formatDate(donation.payment_date || donation.created_at)}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {donations.map((donation) => (
+                  <Card
+                    key={donation.id}
+                    className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] border-l-4 border-l-primary"
+                  >
+                    <div className="p-5">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded-lg">
+                            <DollarSign className="w-5 h-5 text-primary" />
                           </div>
-                        </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <DollarSign className="w-4 h-4 text-muted-foreground" />
-                            <span className="font-semibold">{formatCurrency(donation.amount)}</span>
+                          <div>
+                            <p className="text-2xl font-bold text-primary">
+                              {formatCurrency(donation.amount)}
+                            </p>
+                            <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                              <Calendar className="w-3 h-3" />
+                              {formatDate(donation.payment_date || donation.created_at)}
+                            </p>
                           </div>
-                        </td>
-                        <td className="p-4">
-                          <span className="text-sm capitalize">{donation.donation_type.replace('_', ' ')}</span>
-                        </td>
-                        <td className="p-4">
-                          <Badge variant={getStatusBadgeVariant(donation.payment_status)}>
-                            {getStatusLabel(donation.payment_status)}
-                          </Badge>
-                        </td>
-                        <td className="p-4">
+                        </div>
+                        <Badge variant={getStatusBadgeVariant(donation.payment_status)} className="shadow-sm">
+                          {getStatusLabel(donation.payment_status)}
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3 pt-4 border-t">
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">Type</p>
+                          <p className="text-sm font-medium capitalize">
+                            {donation.donation_type.replace('_', ' ')}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">Reçu fiscal</p>
                           {donation.receipt_sent ? (
-                            <Badge variant="default">Envoyé</Badge>
+                            <Badge variant="default" className="text-xs">Envoyé</Badge>
                           ) : (
-                            <span className="text-muted-foreground text-sm">Non envoyé</span>
+                            <span className="text-sm text-muted-foreground">Non envoyé</span>
                           )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
               </div>
             )}
-          </Card>
           </TabPanel>
 
           {/* Tags Tab */}

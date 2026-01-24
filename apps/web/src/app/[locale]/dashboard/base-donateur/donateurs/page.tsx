@@ -8,7 +8,7 @@ import { Container, Card, Button, Input, Badge } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { listDonors, type ListDonorsParams } from '@/lib/api/donors';
 import type { Donor } from '@modele/types';
-import { Search, Plus, Mail, Phone, DollarSign, Calendar } from 'lucide-react';
+import { Search, Plus, Mail, Phone, DollarSign, Calendar, User, TrendingUp, Sparkles } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 
 export default function DonateursPage() {
@@ -82,11 +82,32 @@ export default function DonateursPage() {
     return new Date(dateString).toLocaleDateString('fr-CA');
   };
 
+  const getInitials = (donor: Donor) => {
+    if (donor.first_name && donor.last_name) {
+      return `${donor.first_name[0]}${donor.last_name[0]}`.toUpperCase();
+    }
+    if (donor.first_name) {
+      return donor.first_name[0].toUpperCase();
+    }
+    if (donor.last_name) {
+      return donor.last_name[0].toUpperCase();
+    }
+    return donor.email[0].toUpperCase();
+  };
+
+  const getDonorName = (donor: Donor) => {
+    if (donor.first_name || donor.last_name) {
+      return `${donor.first_name || ''} ${donor.last_name || ''}`.trim();
+    }
+    return donor.email;
+  };
+
   if (orgLoading) {
     return (
       <Container className="py-8 lg:py-12">
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <p className="text-muted-foreground mt-4">Chargement...</p>
         </div>
       </Container>
     );
@@ -106,34 +127,93 @@ export default function DonateursPage() {
 
   return (
     <Container className="py-8 lg:py-12">
+      {/* Header with gradient */}
       <div className="mb-8 flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Donateurs</h1>
-          <p className="text-muted-foreground">Gérez votre base de données de donateurs</p>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg">
+              <Sparkles className="w-6 h-6 text-primary" />
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              Donateurs
+            </h1>
+          </div>
+          <p className="text-muted-foreground text-lg">Gérez votre base de données de donateurs</p>
         </div>
         <Link href="/dashboard/base-donateur/donateurs/new">
-          <Button>
+          <Button className="shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
             <Plus className="w-4 h-4 mr-2" />
             Nouveau donateur
           </Button>
         </Link>
       </div>
 
-      {/* Search and Filters */}
-      <Card className="mb-6">
-        <div className="space-y-4">
+      {/* Stats Summary */}
+      {!isLoading && donors.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <Card className="border-l-4 border-l-primary bg-gradient-to-r from-primary/5 to-transparent">
+            <div className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Total donateurs</p>
+                  <p className="text-2xl font-bold">{pagination.total}</p>
+                </div>
+                <div className="p-3 bg-primary/10 rounded-full">
+                  <User className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+            </div>
+          </Card>
+          <Card className="border-l-4 border-l-success bg-gradient-to-r from-success/5 to-transparent">
+            <div className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Donateurs actifs</p>
+                  <p className="text-2xl font-bold">
+                    {donors.filter(d => d.is_active).length}
+                  </p>
+                </div>
+                <div className="p-3 bg-success/10 rounded-full">
+                  <TrendingUp className="w-6 h-6 text-success" />
+                </div>
+              </div>
+            </div>
+          </Card>
+          <Card className="border-l-4 border-l-warning bg-gradient-to-r from-warning/5 to-transparent">
+            <div className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Total donné</p>
+                  <p className="text-2xl font-bold">
+                    {formatCurrency(
+                      donors.reduce((sum, d) => sum + parseFloat(d.total_donated || '0'), 0).toString()
+                    )}
+                  </p>
+                </div>
+                <div className="p-3 bg-warning/10 rounded-full">
+                  <DollarSign className="w-6 h-6 text-warning" />
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Search and Filters - Modern Design */}
+      <Card className="mb-6 border-2 border-border/50 shadow-sm">
+        <div className="p-4 space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <Input
               type="text"
               placeholder="Rechercher par nom, email..."
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10"
+              className="pl-12 h-12 text-base border-2 focus:border-primary transition-colors"
             />
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <select
               value={filters.isActive === undefined ? 'all' : filters.isActive.toString()}
               onChange={(e) =>
@@ -142,7 +222,7 @@ export default function DonateursPage() {
                   isActive: e.target.value === 'all' ? undefined : e.target.value === 'true',
                 })
               }
-              className="px-3 py-2 border rounded-md bg-background text-foreground"
+              className="px-4 py-2 border-2 rounded-lg bg-background text-foreground focus:border-primary focus:outline-none transition-colors"
             >
               <option value="all">Tous les statuts</option>
               <option value="true">Actifs uniquement</option>
@@ -154,127 +234,162 @@ export default function DonateursPage() {
 
       {/* Error Message */}
       {error && (
-        <Card className="mb-6 border-destructive">
-          <p className="text-destructive">{error}</p>
+        <Card className="mb-6 border-destructive bg-destructive/10">
+          <p className="text-destructive p-4">{error}</p>
         </Card>
       )}
 
-      {/* Donors List */}
-      <Card>
-        {isLoading ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">Chargement des donateurs...</p>
+      {/* Donors Grid - Modern Card Layout */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <div className="p-6">
+                <div className="h-12 w-12 rounded-full bg-muted mb-4"></div>
+                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-muted rounded w-1/2"></div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      ) : donors.length === 0 ? (
+        <Card className="text-center py-16">
+          <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
+            <User className="w-12 h-12 text-muted-foreground" />
           </div>
-        ) : donors.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">Aucun donateur trouvé</p>
-          </div>
-        ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-4 font-semibold">Nom</th>
-                    <th className="text-left p-4 font-semibold">Email</th>
-                    <th className="text-left p-4 font-semibold">Téléphone</th>
-                    <th className="text-right p-4 font-semibold">Total donné</th>
-                    <th className="text-right p-4 font-semibold">Dons</th>
-                    <th className="text-left p-4 font-semibold">Dernier don</th>
-                    <th className="text-left p-4 font-semibold">Statut</th>
-                    <th className="text-right p-4 font-semibold">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {donors.map((donor) => (
-                    <tr key={donor.id} className="border-b hover:bg-muted/50">
-                      <td className="p-4">
-                        <div className="font-medium">
-                          {donor.first_name || donor.last_name
-                            ? `${donor.first_name || ''} ${donor.last_name || ''}`.trim()
-                            : donor.email}
+          <h3 className="text-xl font-semibold mb-2">Aucun donateur trouvé</h3>
+          <p className="text-muted-foreground mb-6">
+            {searchTerm ? 'Essayez avec d\'autres termes de recherche' : 'Commencez par ajouter votre premier donateur'}
+          </p>
+          {!searchTerm && (
+            <Link href="/dashboard/base-donateur/donateurs/new">
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Ajouter un donateur
+              </Button>
+            </Link>
+          )}
+        </Card>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            {donors.map((donor, index) => (
+              <Link
+                key={donor.id}
+                href={`/dashboard/base-donateur/donateurs/${donor.id}`}
+                className="group"
+              >
+                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-primary/50 cursor-pointer border-2 border-transparent">
+                  <div className="p-6">
+                    {/* Avatar and Name */}
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="relative">
+                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
+                          {getInitials(donor)}
                         </div>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <Mail className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm">{donor.email}</span>
-                        </div>
-                      </td>
-                      <td className="p-4">
-                        {donor.phone ? (
-                          <div className="flex items-center gap-2">
-                            <Phone className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">{donor.phone}</span>
+                        {donor.is_active && (
+                          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-success rounded-full border-2 border-background flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full"></div>
                           </div>
-                        ) : (
-                          <span className="text-muted-foreground text-sm">-</span>
                         )}
-                      </td>
-                      <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <DollarSign className="w-4 h-4 text-muted-foreground" />
-                          <span className="font-semibold">{formatCurrency(donor.total_donated)}</span>
-                        </div>
-                      </td>
-                      <td className="p-4 text-right">
-                        <span>{donor.donation_count}</span>
-                      </td>
-                      <td className="p-4">
-                        {donor.last_donation_date ? (
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">{formatDate(donor.last_donation_date)}</span>
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground text-sm">Aucun don</span>
-                        )}
-                      </td>
-                      <td className="p-4">
-                        <Badge variant={donor.is_active ? 'success' : 'info'}>
-                          {donor.is_active ? 'Actif' : 'Inactif'}
-                        </Badge>
-                      </td>
-                      <td className="p-4 text-right">
-                        <Link href={`/dashboard/base-donateur/donateurs/${donor.id}`}>
-                          <Button variant="outline" size="sm">
-                            Voir
-                          </Button>
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-lg truncate group-hover:text-primary transition-colors">
+                          {getDonorName(donor)}
+                        </h3>
+                        <p className="text-sm text-muted-foreground truncate flex items-center gap-1 mt-1">
+                          <Mail className="w-3 h-3" />
+                          {donor.email}
+                        </p>
+                      </div>
+                    </div>
 
-            {/* Pagination */}
-            {pagination.totalPages > 1 && (
-              <div className="mt-6 flex justify-between items-center">
+                    {/* Stats */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg group-hover:bg-muted transition-colors">
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <DollarSign className="w-4 h-4" />
+                          <span className="text-sm">Total donné</span>
+                        </div>
+                        <span className="font-bold text-primary">
+                          {formatCurrency(donor.total_donated)}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="p-2 bg-muted/30 rounded text-center">
+                          <p className="text-xs text-muted-foreground mb-1">Dons</p>
+                          <p className="font-semibold">{donor.donation_count || 0}</p>
+                        </div>
+                        {donor.phone && (
+                          <div className="p-2 bg-muted/30 rounded text-center">
+                            <p className="text-xs text-muted-foreground mb-1 flex items-center justify-center gap-1">
+                              <Phone className="w-3 h-3" />
+                              Téléphone
+                            </p>
+                            <p className="font-semibold text-sm truncate">{donor.phone}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {donor.last_donation_date && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t">
+                          <Calendar className="w-4 h-4" />
+                          <span>Dernier don: {formatDate(donor.last_donation_date)}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Status Badge */}
+                    <div className="mt-4 flex justify-end">
+                      <Badge variant={donor.is_active ? 'success' : 'info'} className="shadow-sm">
+                        {donor.is_active ? 'Actif' : 'Inactif'}
+                      </Badge>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+
+          {/* Pagination - Modern Design */}
+          {pagination.totalPages > 1 && (
+            <Card className="border-2 border-border/50">
+              <div className="p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-sm text-muted-foreground">
-                  Page {pagination.page} sur {pagination.totalPages} ({pagination.total} donateurs)
+                  Affichage de <span className="font-semibold text-foreground">
+                    {(pagination.page - 1) * pagination.pageSize + 1}
+                  </span> à <span className="font-semibold text-foreground">
+                    {Math.min(pagination.page * pagination.pageSize, pagination.total)}
+                  </span> sur <span className="font-semibold text-foreground">{pagination.total}</span> donateurs
                 </p>
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
                     disabled={pagination.page === 1}
                     onClick={() => setPagination({ ...pagination, page: pagination.page - 1 })}
+                    className="transition-all hover:scale-105"
                   >
                     Précédent
                   </Button>
+                  <div className="px-4 py-2 bg-muted rounded-lg">
+                    <span className="font-semibold">{pagination.page}</span>
+                    <span className="text-muted-foreground"> / {pagination.totalPages}</span>
+                  </div>
                   <Button
                     variant="outline"
                     disabled={pagination.page === pagination.totalPages}
                     onClick={() => setPagination({ ...pagination, page: pagination.page + 1 })}
+                    className="transition-all hover:scale-105"
                   >
                     Suivant
                   </Button>
                 </div>
               </div>
-            )}
-          </>
-        )}
-      </Card>
+            </Card>
+          )}
+        </>
+      )}
     </Container>
   );
 }

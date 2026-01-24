@@ -91,29 +91,37 @@ export function SegmentSelector({
 
   return (
     <div className={className}>
-      <div className="flex flex-wrap gap-2">
-        {segments.map(segment => {
-          const isSelected = selectedSegments.some(s => s.id === segment.id);
-          return (
-            <Badge
-              key={segment.id}
-              variant="default"
-              style={isSelected && segment.color ? { backgroundColor: segment.color, color: 'white' } : undefined}
-              className={`flex items-center gap-1 cursor-pointer ${readOnly ? 'cursor-default' : ''}`}
-              onClick={() => handleToggleSegment(segment.id)}
-            >
-              <Users className="w-3 h-3" />
-              {segment.name}
-              {segment.is_automatic && (
-                <span className="text-xs opacity-75">(auto)</span>
-              )}
-            </Badge>
-          );
-        })}
-      </div>
-
-      {segments.length === 0 && (
-        <p className="text-sm text-gray-500">No segments available</p>
+      {segments.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {segments.map(segment => {
+            const isSelected = selectedSegments.some(s => s.id === segment.id);
+            return (
+              <Badge
+                key={segment.id}
+                variant="default"
+                style={isSelected && segment.color ? { backgroundColor: segment.color, color: 'white' } : undefined}
+                className={`
+                  flex items-center gap-2 px-3 py-1.5 text-sm font-medium shadow-sm
+                  transition-all duration-200
+                  ${readOnly ? 'cursor-default' : 'cursor-pointer hover:scale-105 hover:shadow-md'}
+                  ${isSelected ? 'ring-2 ring-offset-2 ring-offset-background' : ''}
+                `}
+                onClick={() => handleToggleSegment(segment.id)}
+              >
+                <Users className={`w-3.5 h-3.5 ${isSelected ? 'animate-pulse' : ''}`} />
+                <span>{segment.name}</span>
+                {segment.is_automatic && (
+                  <span className="text-xs opacity-75 bg-black/10 px-1.5 py-0.5 rounded">auto</span>
+                )}
+              </Badge>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="text-center py-8 border-2 border-dashed border-muted rounded-lg">
+          <Users className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+          <p className="text-sm text-muted-foreground">Aucun segment disponible</p>
+        </div>
       )}
     </div>
   );
