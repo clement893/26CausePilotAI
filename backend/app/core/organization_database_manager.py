@@ -102,13 +102,23 @@ class OrganizationDatabaseManager:
             clean_url = connection_string.replace('postgresql+asyncpg://', 'postgresql://')
             parsed = urlparse(clean_url)
             
+            # Safely parse port - handle None, empty string, or invalid values
+            port = 5432  # Default PostgreSQL port
+            if parsed.port is not None:
+                try:
+                    port = int(parsed.port)
+                except (ValueError, TypeError):
+                    port = 5432  # Use default if port is invalid
+            elif parsed.port == '':
+                port = 5432  # Use default if port is empty string
+            
             result = {
                 'scheme': parsed.scheme,
-                'user': parsed.username,
-                'password': parsed.password,
-                'host': parsed.hostname,
-                'port': parsed.port or 5432,
-                'database': parsed.path.lstrip('/'),
+                'user': parsed.username or '',
+                'password': parsed.password or '',
+                'host': parsed.hostname or '',
+                'port': port,
+                'database': parsed.path.lstrip('/') if parsed.path else '',
                 'full': connection_string
             }
             
@@ -122,7 +132,7 @@ class OrganizationDatabaseManager:
         except ValueError:
             raise
         except Exception as e:
-            logger.error(f"Failed to parse connection string: {e}")
+            logger.error(f"Failed to parse connection string: {e}", exc_info=True)
             raise ValueError(f"Invalid connection string format: {e}")
     
     @classmethod

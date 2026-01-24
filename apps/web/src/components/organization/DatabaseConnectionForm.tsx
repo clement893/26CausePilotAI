@@ -47,14 +47,19 @@ export function DatabaseConnectionForm({
   useEffect(() => {
     if (currentConnectionString && useSimpleMode) {
       try {
-        const url = new URL(currentConnectionString.replace(/^postgresql\+?asyncpg?:\/\//, 'http://'));
-        setDbHost(url.hostname);
-        setDbPort(url.port || '5432');
-        setDbName(url.pathname.replace(/^\//, ''));
+        // Normalize URL for parsing
+        let urlString = currentConnectionString.replace(/^postgresql\+?asyncpg?:\/\//, 'http://');
+        const url = new URL(urlString);
+        
+        setDbHost(url.hostname || '');
+        // Ensure port is valid - default to 5432 if empty
+        setDbPort(url.port && url.port.trim() ? url.port.trim() : '5432');
+        setDbName(url.pathname.replace(/^\//, '') || '');
         setDbUser(url.username || 'postgres');
         setDbPassword(url.password || '');
       } catch (e) {
         // If parsing fails, keep simple mode but don't fill fields
+        console.warn('Failed to parse connection string:', e);
       }
     }
   }, [currentConnectionString, useSimpleMode]);
@@ -72,7 +77,8 @@ export function DatabaseConnectionForm({
     // Encode password and user to handle special characters
     const encodedUser = encodeURIComponent(dbUser);
     const encodedPassword = encodeURIComponent(dbPassword);
-    const port = dbPort || '5432';
+    // Ensure port is valid - default to 5432 if empty or invalid
+    const port = dbPort && dbPort.trim() && !isNaN(Number(dbPort)) ? dbPort.trim() : '5432';
     
     return `postgresql+asyncpg://${encodedUser}:${encodedPassword}@${dbHost}:${port}/${dbName}`;
   };
