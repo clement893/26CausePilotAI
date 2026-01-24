@@ -159,7 +159,7 @@ class PaymentMethodBase(BaseModel):
     brand: Optional[str] = Field(None, max_length=50)
     is_default: bool = False
     is_active: bool = True
-    extra_data: Dict[str, Any] = Field(default_factory=dict, alias='metadata', serialization_alias='metadata')
+    extra_data: Dict[str, Any] = Field(default_factory=dict, alias='metadata')
 
 
 class PaymentMethodCreate(PaymentMethodBase):

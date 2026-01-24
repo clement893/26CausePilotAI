@@ -10,7 +10,6 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_, or_
-from sqlalchemy.orm import selectinload
 from decimal import Decimal
 
 from app.core.database import get_db
