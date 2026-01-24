@@ -9,11 +9,11 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import Sidebar from '@/components/ui/Sidebar';
+import Sidebar from '@/components/layout/Sidebar';
 import Button from '@/components/ui/Button';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
 import NotificationBellConnected from '@/components/notifications/NotificationBellConnected';
-import { LayoutDashboard, FolderKanban, LogOut, Menu, Shield, Home } from 'lucide-react';
+import { LogOut, Menu, Home } from 'lucide-react';
 import { clsx } from 'clsx';
 
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
@@ -27,37 +27,6 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
     logout();
     router.push('/');
   };
-
-  // Check if user is admin or superadmin
-  const isAdmin = user?.is_admin;
-
-  const sidebarItems = [
-    {
-      label: 'Dashboard',
-      href: '/dashboard',
-      icon: <LayoutDashboard className="w-5 h-5" />,
-    },
-    {
-      label: 'Projets',
-      href: '/dashboard/projects',
-      icon: <FolderKanban className="w-5 h-5" />,
-    },
-    {
-      label: 'Super Admin',
-      href: '/dashboard/become-superadmin',
-      icon: <Shield className="w-5 h-5" />,
-    },
-    // Admin link - only visible to admins and superadmins
-    ...(isAdmin
-      ? [
-          {
-            label: 'Administration',
-            href: '/admin',
-            icon: <Shield className="w-5 h-5" />,
-          },
-        ]
-      : []),
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-muted dark:to-muted">
@@ -82,53 +51,13 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {/* Mobile Sidebar Overlay */}
-      {mobileMenuOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* Mobile Sidebar */}
-      <aside
-        className={clsx(
-          'lg:hidden fixed top-0 left-0 h-full z-50 transform transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        )}
-      >
-        <Sidebar
-          items={sidebarItems}
-          currentPath={pathname}
-          className="h-full"
-          user={user}
-          isMobile={true}
-          onClose={() => setMobileMenuOpen(false)}
-          onHomeClick={() => {
-            router.push('/');
-            setMobileMenuOpen(false);
-          }}
-          themeToggleComponent={<ThemeToggleWithIcon />}
-          onLogoutClick={() => {
-            handleLogout();
-            setMobileMenuOpen(false);
-          }}
-        />
-      </aside>
+      {/* Desktop & Mobile Sidebar */}
+      <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* Desktop Layout */}
       <div className="flex h-screen pt-0 lg:pt-0">
-        {/* Desktop Sidebar */}
-        <aside className="hidden lg:block">
-          <Sidebar
-            items={sidebarItems}
-            currentPath={pathname}
-            collapsed={sidebarCollapsed}
-            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="h-screen sticky top-0"
-            user={user}
-          />
-        </aside>
+        {/* Sidebar space (sidebar is fixed on desktop) */}
+        <div className="hidden md:block w-64 flex-shrink-0" />
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0">
