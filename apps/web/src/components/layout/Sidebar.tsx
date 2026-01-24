@@ -357,7 +357,22 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
           </div>
           <div className="flex items-center justify-between gap-2">
             <ThemeToggleWithIcon />
-            <Button size="sm" variant="ghost" onClick={logout} className="flex-1">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              onClick={async () => {
+                try {
+                  await logout();
+                } catch (error) {
+                  console.error('Logout error:', error);
+                  // Force redirect even if logout fails
+                  if (typeof window !== 'undefined') {
+                    window.location.href = '/auth/login';
+                  }
+                }
+              }} 
+              className="flex-1"
+            >
               Déconnexion
             </Button>
           </div>

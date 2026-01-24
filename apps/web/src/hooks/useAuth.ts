@@ -92,15 +92,47 @@ export function useAuth() {
    */
   const handleLogout = useCallback(async () => {
     try {
-      await authAPI.logout();
+      // Try to call logout API with timeout (5 seconds max)
+      const logoutPromise = authAPI.logout();
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Logout timeout')), 5000)
+      );
+      
+      await Promise.race([logoutPromise, timeoutPromise]);
     } catch (err) {
-      // Ignore logout errors but log them
-      logger.error('Logout error', err instanceof Error ? err : new Error(String(err)));
+      // Ignore logout errors but log them - we'll still clear tokens
+      logger.warn('Logout API error (continuing with local logout)', {
+        error: err instanceof Error ? err.message : String(err),
+      });
     } finally {
-      // Clear tokens securely
-      await TokenStorage.removeTokens();
-      logout();
-      router.push('/auth/login');
+      // Always clear tokens and state, even if API call fails
+      try {
+        // Clear tokens first
+        await TokenStorage.removeTokens();
+        
+        // Clear auth store
+        logout();
+        
+        // Clear organization context
+        const { useOrganizationStore } = await import('@/lib/store/organizationStore');
+        useOrganizationStore.getState().clearOrganization();
+        
+        // Force hard redirect to login page to ensure all state is cleared
+        // Using window.location.href ensures a full page reload and clears all state
+        if (typeof window !== 'undefined') {
+          window.location.href = '/auth/login';
+        } else {
+          router.push('/auth/login');
+        }
+      } catch (clearError) {
+        logger.error('Error during logout cleanup', clearError);
+        // Even if cleanup fails, force redirect
+        if (typeof window !== 'undefined') {
+          window.location.href = '/auth/login';
+        } else {
+          router.push('/auth/login');
+        }
+      }
     }
   }, [logout, router]);
 
