@@ -4,6 +4,9 @@ All SQLAlchemy models are imported here
 """
 
 from app.models.user import User
+from app.models.organization import Organization
+from app.models.organization_module import OrganizationModule, AVAILABLE_MODULES
+from app.models.organization_member import OrganizationMember, MEMBER_ROLES
 from app.models.role import Role, Permission, RolePermission, UserRole, UserPermission
 from app.models.team import Team, TeamMember
 from app.models.invitation import Invitation

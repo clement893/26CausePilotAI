@@ -154,3 +154,6 @@ export * from "./theme-font";
 
 // Portal types
 export * from "./portal";
+
+// Organization types
+export * from "./organization";
