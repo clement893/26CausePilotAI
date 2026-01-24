@@ -2065,9 +2065,6 @@ async def seed_example_donors(
     Creates example donors with realistic data including donations, tags, and activities.
     """
     from app.core.logging import logger
-    from datetime import datetime, timedelta
-    from random import choice, randint, uniform
-    import uuid
     
     # Sample data for generating realistic donors
     first_names = [
