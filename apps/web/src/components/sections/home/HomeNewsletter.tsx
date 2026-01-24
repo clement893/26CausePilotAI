@@ -6,10 +6,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Container, Badge, Button, Input } from '@/components/ui';
 import { Mail, CheckCircle2 } from 'lucide-react';
 
 export function HomeNewsletter() {
@@ -53,7 +50,7 @@ export function HomeNewsletter() {
                     type="email"
                     placeholder="name@organization.org"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                     required
                     className="w-full px-6 py-4 text-lg"
                   />

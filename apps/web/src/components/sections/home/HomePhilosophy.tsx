@@ -5,10 +5,9 @@
 
 'use client';
 
-import { Container } from '@/components/ui/Container';
-import { Badge } from '@/components/ui/Badge';
+import { Container, Badge } from '@/components/ui';
 import ButtonLink from '@/components/ui/ButtonLink';
-import { CheckCircle2, ArrowRight, Target, Mail, Users } from 'lucide-react';
+import { ArrowRight, Target, Mail, Users } from 'lucide-react';
 
 const keyPoints = [
   {

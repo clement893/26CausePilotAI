@@ -5,9 +5,7 @@
 
 'use client';
 
-import { Container } from '@/components/ui/Container';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Container, Card, Badge } from '@/components/ui';
 import { Brain, Users, Zap, Heart, BarChart3, Shield } from 'lucide-react';
 
 const features = [
