@@ -172,7 +172,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Modern Hero Section - Dark Green & Burnt Orange Branding */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a4d2e] via-[#2d5016] to-[#153d23] dark:from-[#0f2e1a] dark:via-[#1a4d2e] dark:to-[#0a1f12]">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#1a4d2e] dark:bg-[#0f2e1a]">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
@@ -189,7 +189,7 @@ export default function HomePage() {
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-fade-in">
             Transformez votre
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#cc5500] via-[#fb923c] to-[#fdba74]">
+            <span className="text-[#cc5500]">
               collecte de fonds
             </span>
           </h1>
@@ -267,7 +267,7 @@ export default function HomePage() {
             <h2 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
               Une plateforme complète
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1a4d2e] to-[#2d5016]">
+              <span className="text-[#1a4d2e]">
                 de fundraising
               </span>
             </h2>
@@ -301,7 +301,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-gradient-to-br from-emerald-50 to-orange-50 dark:from-muted dark:to-muted">
+      <section className="py-24 bg-emerald-50 dark:bg-muted">
         <Container>
           <div className="text-center mb-16">
             <Badge variant="success" className="mb-4">
