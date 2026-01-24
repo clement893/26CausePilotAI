@@ -5,7 +5,7 @@ export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import { Container, Card, Button, Badge, Modal, Input, Textarea } from '@/components/ui';
-import { Plus, Edit, Trash2, Users, RefreshCw } from 'lucide-react';
+import { Plus, Edit, Trash2, Users, RefreshCw, Layers } from 'lucide-react';
 import { listSegments, createSegment, updateSegment, deleteSegment, recalculateSegment } from '@/lib/api/donors';
 import type { DonorSegment, DonorSegmentCreate, DonorSegmentUpdate } from '@modele/types';
 import { useOrganization } from '@/hooks/useOrganization';
@@ -139,23 +139,33 @@ export default function SegmentsPage() {
 
   return (
     <Container className="py-8 lg:py-12">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Gestion des Segments</h1>
-        <p className="text-muted-foreground">
-          Créez et gérez les segments pour organiser vos donateurs
-        </p>
-      </div>
-
-      <div className="flex justify-end mb-4">
-        <Button onClick={handleCreate} variant="primary">
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl">
+              <Layers className="w-6 h-6 text-primary" />
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              Segments
+            </h1>
+          </div>
+          <p className="text-muted-foreground text-lg">
+            Créez et gérez les segments pour organiser vos donateurs
+          </p>
+        </div>
+        <Button onClick={handleCreate} variant="primary" className="shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
           <Plus className="w-4 h-4 mr-2" />
           Créer un segment
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {segments.map(segment => (
-          <Card key={segment.id} className="p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {segments.map((segment, index) => (
+          <div
+            key={segment.id}
+            className={`stagger-fade-in opacity-0 stagger-delay-${Math.min(index + 1, 6)}`}
+          >
+            <Card className="p-6 h-full hover:shadow-lg transition-all duration-300">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-2 flex-1">
                 {segment.color && (
@@ -167,7 +177,7 @@ export default function SegmentsPage() {
                 <div className="flex-1">
                   <h3 className="font-semibold">{segment.name}</h3>
                   {segment.description && (
-                    <p className="text-sm text-gray-500 mt-1">{segment.description}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{segment.description}</p>
                   )}
                 </div>
               </div>
@@ -211,13 +221,14 @@ export default function SegmentsPage() {
               </Button>
             </div>
           </Card>
+          </div>
         ))}
       </div>
 
       {segments.length === 0 && (
-        <Card className="p-8 text-center">
-          <Users className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-          <p className="text-gray-500">Aucun segment créé. Créez votre premier segment pour commencer.</p>
+        <Card className="p-8 text-center" elevated>
+          <Users className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+          <p className="text-muted-foreground">Aucun segment créé. Créez votre premier segment pour commencer.</p>
         </Card>
       )}
 
@@ -276,8 +287,8 @@ export default function SegmentsPage() {
           </div>
 
           {formData.is_automatic && (
-            <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <div className="p-4 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground mb-2">
                 Les critères seront configurés après la création du segment.
               </p>
             </div>

@@ -96,6 +96,8 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick
   actions?: ReactNode;
   /** Enable hover effect */
   hover?: boolean;
+  /** Elevated variant: stronger shadow, rounded-2xl */
+  elevated?: boolean;
   /** Click handler */
   onClick?: () => void;
   /** Add padding to card content */
@@ -111,6 +113,7 @@ export default function Card({
   actions,
   className,
   hover = false,
+  elevated = false,
   onClick,
   padding = true,
   ...props
@@ -145,12 +148,13 @@ export default function Card({
   return (
     <div
       className={clsx(
-        'rounded-xl border shadow-md',
+        'border transition-all duration-300',
+        elevated ? 'rounded-2xl shadow-lg' : 'rounded-xl shadow-md',
         // Normal background (will be overridden by glassmorphism if enabled)
         'bg-[var(--color-background)]',
         'border-[var(--color-border)]',
-        'transition-all duration-300',
-        hover && 'hover:shadow-lg hover:-translate-y-0.5',
+        hover && 'hover:-translate-y-0.5',
+        hover && (elevated ? 'hover:shadow-xl' : 'hover:shadow-lg'),
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
         className
       )}

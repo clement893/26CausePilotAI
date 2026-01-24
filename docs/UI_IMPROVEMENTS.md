@@ -95,15 +95,17 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 3. **Dashboard layout** : zone main avec `bg-muted/20` pour un fond légèrement différencié.
 4. **Sidebar** : item actif avec `border-l-2 border-l-primary`, `bg-primary/10`, `transition-all duration-200`.
 5. **Page Donateurs** : grille `gap-6`, animation `stagger-fade-in` sur les cards, délais progressifs.
+6. **Pages Segments & Campagnes** : en-têtes unifiés (icône, gradient), stagger sur les grilles, `Card` elevated sur empty states, `text-muted-foreground` / `bg-muted`.
+7. **Card** : variant `elevated` (`rounded-2xl`, `shadow-lg`, `hover:shadow-xl`).
 
 ---
 
 ## 9. **Prochaines étapes suggérées**
 
-1. Appliquer `stagger-fade-in` aux listes (donateurs, segments, etc.).
-2. Renforcer le style des items actifs dans la Sidebar.
-3. Ajouter un variant `elevated` au composant Card.
-4. Uniformiser les en-têtes de page (gradient, icône, espacement).
+1. ~~Appliquer `stagger-fade-in` aux listes (donateurs, segments, etc.).~~ ✅ Fait (donateurs, segments, campagnes).
+2. ~~Renforcer le style des items actifs dans la Sidebar.~~ ✅ Fait.
+3. ~~Ajouter un variant `elevated` au composant Card.~~ ✅ Fait (`elevated` → `rounded-2xl`, `shadow-lg`, `hover:shadow-xl`).
+4. ~~Uniformiser les en-têtes de page (gradient, icône, espacement).~~ ✅ Fait (donateurs, segments, campagnes).
 5. Audit accessibilité (focus, contraste) après ces changements.
 
 ---
