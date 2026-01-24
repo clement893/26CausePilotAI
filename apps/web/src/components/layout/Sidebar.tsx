@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { useAuth } from '@/hooks/useAuth';
+import { useOrganization } from '@/hooks/useOrganization';
 import { checkMySuperAdminStatus } from '@/lib/api/admin';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
+import OrganizationSelector from '@/components/organization/OrganizationSelector';
 import { getNavigationConfig, type NavigationItem, type NavigationGroup } from '@/lib/navigation';
 import { clsx } from 'clsx';
 import { ChevronDown, ChevronRight, Search, X } from 'lucide-react';
@@ -34,6 +36,9 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
 
   // Check if user is admin or superadmin
   const isAdmin = user?.is_admin || false;
+
+  // Get organization context
+  const { enabledModules, loadActiveContext } = useOrganization();
 
   // Check super admin status
   useEffect(() => {
@@ -60,10 +65,17 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
     checkSuperAdminStatus();
   }, [user]);
 
-  // Get navigation configuration
+  // Load organization context when user changes
+  useEffect(() => {
+    if (user) {
+      loadActiveContext();
+    }
+  }, [user]);
+
+  // Get navigation configuration with enabled modules
   const navigationConfig = useMemo(
-    () => getNavigationConfig(isAdmin, isSuperAdmin),
-    [isAdmin, isSuperAdmin]
+    () => getNavigationConfig(isAdmin, isSuperAdmin, enabledModules),
+    [isAdmin, isSuperAdmin, enabledModules]
   );
 
   // Toggle group open/closed
@@ -246,6 +258,9 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
             <X className="w-6 h-6" />
           </button>
         </div>
+
+        {/* Organization Selector (SuperAdmin only) */}
+        {isSuperAdmin && <OrganizationSelector />}
 
         {/* Search Bar */}
         <div className="px-lg py-md border-b border-border flex-shrink-0">
