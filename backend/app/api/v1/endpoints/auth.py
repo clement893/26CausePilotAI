@@ -1192,7 +1192,24 @@ async def google_oauth_callback(
                             "timeout" in error_str.lower()
                         )
                         
-                        if is_db_connection_error and db_attempt < max_db_retries - 1:
+                        # Check if it's a missing table error (migrations not run)
+                        is_missing_table_error = (
+                            "UndefinedTableError" in error_type or
+                            "relation" in error_str.lower() and "does not exist" in error_str.lower() or
+                            "table" in error_str.lower() and "does not exist" in error_str.lower()
+                        )
+                        
+                        if is_missing_table_error:
+                            # Missing table error - migrations not run, don't retry
+                            logger.error(
+                                f"Database table missing during Google OAuth: {error_str}. "
+                                f"This usually means database migrations have not been run successfully."
+                            )
+                            raise HTTPException(
+                                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                                detail="Database tables are missing. Please ensure database migrations have been run successfully. The Google OAuth authentication succeeded, but user data could not be saved because the database schema is incomplete."
+                            )
+                        elif is_db_connection_error and db_attempt < max_db_retries - 1:
                             # Retry with exponential backoff
                             logger.warning(
                                 f"Database connection error during Google OAuth (attempt {db_attempt + 1}/{max_db_retries}): {error_str}. "
@@ -1399,6 +1416,13 @@ async def google_oauth_callback(
             "connection pool" in error_msg.lower()
         )
         
+        # Check if it's a missing table error (migrations not run)
+        is_missing_table_error = (
+            "UndefinedTableError" in error_type or
+            "relation" in error_msg.lower() and "does not exist" in error_msg.lower() or
+            "table" in error_msg.lower() and "does not exist" in error_msg.lower()
+        )
+        
         # Check if it's a DNS error that's likely from database (not Google)
         is_dns_error = "Name or service not known" in error_msg or "Errno -2" in error_msg
         
@@ -1421,11 +1445,18 @@ async def google_oauth_callback(
         
         if is_database_error:
             # Database connection error - different issue
-            logger.error(f"Database connection error during Google OAuth: {error_msg} (type: {error_type}, module: {error_module})")
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Database connection failed. Please check your database configuration and ensure the database service is available. The Google OAuth authentication succeeded, but user data could not be saved."
-            )
+            if is_missing_table_error:
+                logger.error(f"Database table missing during Google OAuth: {error_msg} (type: {error_type}, module: {error_module})")
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Database tables are missing. Please ensure database migrations have been run successfully. The Google OAuth authentication succeeded, but user data could not be saved because the database schema is incomplete."
+                )
+            else:
+                logger.error(f"Database connection error during Google OAuth: {error_msg} (type: {error_type}, module: {error_module})")
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Database connection failed. Please check your database configuration and ensure the database service is available. The Google OAuth authentication succeeded, but user data could not be saved."
+                )
         elif is_google_dns_error:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
