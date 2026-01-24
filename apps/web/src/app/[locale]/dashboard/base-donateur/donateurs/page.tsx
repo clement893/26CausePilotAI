@@ -84,15 +84,15 @@ export default function DonateursPage() {
 
   const getInitials = (donor: Donor) => {
     if (donor.first_name && donor.last_name) {
-      return `${donor.first_name[0]}${donor.last_name[0]}`.toUpperCase();
+      return `${donor.first_name[0] ?? ''}${donor.last_name[0] ?? ''}`.toUpperCase() || '?';
     }
     if (donor.first_name) {
-      return donor.first_name[0].toUpperCase();
+      return (donor.first_name[0] ?? '?').toUpperCase();
     }
     if (donor.last_name) {
-      return donor.last_name[0].toUpperCase();
+      return (donor.last_name[0] ?? '?').toUpperCase();
     }
-    return donor.email[0].toUpperCase();
+    return (donor.email[0] ?? '?').toUpperCase();
   };
 
   const getDonorName = (donor: Donor) => {
@@ -273,7 +273,7 @@ export default function DonateursPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            {donors.map((donor, index) => (
+            {donors.map((donor) => (
               <Link
                 key={donor.id}
                 href={`/dashboard/base-donateur/donateurs/${donor.id}`}
