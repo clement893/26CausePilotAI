@@ -210,7 +210,7 @@ export default function ThemePreviewPage() {
                 </div>
               </div>
             )}
-            {config.typography.fontWeight && (
+            {config.typography.fontWeight && typeof config.typography.fontWeight === 'object' && config.typography.fontWeight !== null && (
               <div>
                 <Text className="text-sm font-medium mb-2">Poids de Police</Text>
                 <div className="flex flex-wrap gap-4">
