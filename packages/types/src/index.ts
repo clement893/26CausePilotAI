@@ -157,3 +157,6 @@ export * from "./portal";
 
 // Organization types
 export * from "./organization";
+
+// Donor types
+export * from "./donor";
