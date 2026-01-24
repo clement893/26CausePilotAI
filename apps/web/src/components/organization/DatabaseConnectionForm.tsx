@@ -70,6 +70,47 @@ export function DatabaseConnectionForm({
       return connectionString;
     }
     
+    // If dbHost contains a full connection string, parse it and use user-provided values
+    if (dbHost && (dbHost.includes('://') || dbHost.includes('postgresql') || dbHost.includes('postgres'))) {
+      try {
+        // Normalize URL for parsing
+        let urlString = dbHost.replace(/^postgresql\+?asyncpg?:\/\//, 'http://');
+        if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {
+          urlString = 'http://' + urlString;
+        }
+        const url = new URL(urlString);
+        
+        // Extract components from URL
+        const urlHost = url.hostname || '';
+        const urlPort = url.port || '5432';
+        const urlUser = url.username || dbUser || 'postgres';
+        const urlPassword = url.password || dbPassword || '';
+        
+        // Use user-provided database name if set, otherwise use from URL
+        const finalDbName = dbName && dbName.trim() ? dbName.trim() : (url.pathname.replace(/^\//, '') || '');
+        
+        // Use user-provided values if they differ from URL (user may have edited them)
+        const finalUser = dbUser && dbUser.trim() ? dbUser.trim() : urlUser;
+        const finalPassword = dbPassword && dbPassword.trim() ? dbPassword.trim() : urlPassword;
+        const finalPort = dbPort && dbPort.trim() ? dbPort.trim() : urlPort;
+        const finalHost = urlHost;
+        
+        if (!finalHost || !finalDbName || !finalUser || !finalPassword) {
+          return '';
+        }
+        
+        // Encode password and user to handle special characters
+        const encodedUser = encodeURIComponent(finalUser);
+        const encodedPassword = encodeURIComponent(finalPassword);
+        const port = finalPort && !isNaN(Number(finalPort)) ? finalPort : '5432';
+        
+        return `postgresql+asyncpg://${encodedUser}:${encodedPassword}@${finalHost}:${port}/${finalDbName}`;
+      } catch (err) {
+        console.warn('Failed to parse connection string from host field:', err);
+        // Fall through to normal building
+      }
+    }
+    
     if (!dbHost || !dbName || !dbUser || !dbPassword) {
       return '';
     }
@@ -315,15 +356,49 @@ export function DatabaseConnectionForm({
                     type="text"
                     value={dbHost}
                     onChange={(e) => {
-                      setDbHost(e.target.value);
+                      const value = e.target.value;
+                      setDbHost(value);
                       setError(null);
                       setSuccess(null);
                       setTestResult(null);
+                      
+                      // Auto-detect and parse full connection string if pasted
+                      if (value.includes('://') && (value.includes('postgresql') || value.includes('postgres'))) {
+                        try {
+                          // Normalize URL for parsing
+                          let urlString = value.replace(/^postgresql\+?asyncpg?:\/\//, 'http://');
+                          if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {
+                            urlString = 'http://' + urlString;
+                          }
+                          const url = new URL(urlString);
+                          
+                          // Extract components
+                          const hostname = url.hostname || '';
+                          const port = url.port || '5432';
+                          const database = url.pathname.replace(/^\//, '') || '';
+                          const username = url.username || 'postgres';
+                          const password = url.password || '';
+                          
+                          // Only update if we successfully parsed all components
+                          if (hostname) {
+                            setDbHost(hostname);
+                            setDbPort(port);
+                            setDbName(database);
+                            setDbUser(username);
+                            setDbPassword(password);
+                          }
+                        } catch (err) {
+                          // If parsing fails, just use the value as-is
+                          console.warn('Failed to parse connection string from host field:', err);
+                        }
+                      }
                     }}
-                    placeholder="postgres-tnv2.railway.internal"
+                    placeholder="tramway.proxy.rlwy.net"
                     disabled={isSaving || isTesting || isCreating}
                   />
-                  <p className="text-xs text-muted-foreground">Adresse du serveur PostgreSQL</p>
+                  <p className="text-xs text-muted-foreground">
+                    Adresse du serveur PostgreSQL (ou collez l'URL complète pour auto-remplir)
+                  </p>
                 </div>
 
                 <div className="space-y-2">
