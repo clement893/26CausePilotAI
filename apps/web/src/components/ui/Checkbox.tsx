@@ -40,7 +40,6 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const { getSize } = useComponentConfig('checkbox');
     const sizeConfig = getSize('md');
     const size = sizeConfig?.minHeight || '1rem';
-    const borderRadius = sizeConfig?.borderRadius || '0.25rem';
 
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
@@ -59,17 +58,18 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             checked={checked}
             className={clsx(
-              'text-primary-600 dark:text-primary-400 border-border',
-              'bg-background',
-              'focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-0',
+              'text-primary-600 dark:text-primary-400 border-border rounded',
+              'bg-background transition-all duration-200',
+              'focus:ring-2 focus:ring-offset-0 focus:outline-none',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              error && 'border-error-500 dark:border-error-400',
+              error
+                ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
+                : 'focus:ring-primary/20',
               className
             )}
             style={{
               width: size,
               height: size,
-              borderRadius,
             }}
             {...props}
           />

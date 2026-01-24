@@ -115,13 +115,15 @@ export interface SettingsNavigationProps {
     return pathname?.startsWith(href);
   };
   return (
-    <div className={clsx('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4', className)}>
-      {' '}
-      {navItems.map((item) => {
+    <div className={clsx('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6', className)}>
+      {navItems.map((item, index) => {
         const active = isActive(item.href);
         return (
-          <Link key={item.id} href={item.href}>
-            {' '}
+          <Link
+            key={item.id}
+            href={item.href}
+            className={`stagger-fade-in opacity-0 stagger-delay-${Math.min(index + 1, 6)}`}
+          >
             <Card
               className={clsx(
                 'h-full transition-all duration-200',
@@ -132,9 +134,7 @@ export interface SettingsNavigationProps {
               )}
               hover
             >
-              {' '}
               <div className="flex items-start space-x-4">
-                {' '}
                 <div
                   className={clsx(
                     'flex-shrink-0 p-3 rounded-lg',
@@ -143,39 +143,33 @@ export interface SettingsNavigationProps {
                       : 'bg-muted text-muted-foreground'
                   )}
                 >
-                  {' '}
-                  {item.icon}{' '}
-                </div>{' '}
+                  {item.icon}
+                </div>
                 <div className="flex-1 min-w-0">
-                  {' '}
                   <div className="flex items-center justify-between">
-                    {' '}
                     <h3
                       className={clsx(
                         'text-lg font-semibold',
                         active ? 'text-primary-900 dark:text-primary-100' : 'text-foreground'
                       )}
                     >
-                      {' '}
-                      {item.label}{' '}
-                    </h3>{' '}
+                      {item.label}
+                    </h3>
                     {item.badge && (
                       <span className="ml-2 px-2 py-1 text-xs font-medium bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 rounded-full">
-                        {' '}
-                        {item.badge}{' '}
+                        {item.badge}
                       </span>
-                    )}{' '}
-                  </div>{' '}
+                    )}
+                  </div>
                   <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                    {' '}
-                    {item.description}{' '}
-                  </p>{' '}
-                </div>{' '}
-              </div>{' '}
-            </Card>{' '}
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            </Card>
           </Link>
         );
-      })}{' '}
+      })}
     </div>
   );
 }

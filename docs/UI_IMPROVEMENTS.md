@@ -75,7 +75,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 | **Sidebar** | Item actif : `bg-primary/10` + `border-l-2 border-primary`, `font-medium` |
 | **Empty states** | Illustration ou icône large, texte centré, CTA mis en avant |
 
-**Implémenté :** **Input** : `focus:ring-primary/20` / `focus:ring-error-500/20`, `focus:ring-offset-2`. **Textarea** : idem. **Select** : idem (focus ring, `rounded-lg`, `transition-all`). **Container** : `xl:px-12`, `2xl:px-14`. **Empty states** (donateurs, segments, campagnes, tags) : icône dans `rounded-2xl bg-primary/10`, titre + sous-titre, CTA primary avec `shadow-lg hover:shadow-xl`.
+**Implémenté :** **Input** : `focus:ring-primary/20` / `focus:ring-error-500/20`, `focus:ring-offset-2`. **Textarea**, **Select** : idem. **Checkbox** : `focus:ring-primary/20` / `focus:ring-error-500/20`, `focus:ring-offset-0`, `rounded`, `transition-all duration-200`. **Container** : `xl:px-12`, `2xl:px-14`. **Empty states** (donateurs, segments, campagnes, tags) : icône dans `rounded-2xl bg-primary/10`, titre + sous-titre, CTA primary avec `shadow-lg hover:shadow-xl`.
 
 ---
 
@@ -106,6 +106,8 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 12. **Empty states** (donateurs, segments, campagnes, tags) : icône `rounded-2xl bg-primary/10`, titre, sous-titre, CTA primary `shadow-lg`.
 13. **Page Tags** : en-tête unifié (icône Tag, gradient), LoadingSkeleton, Card no-org. **TagManager** : skeleton, stagger, empty state unifié, libellés FR.
 14. **Dashboard principal** : stagger sur la grille « Key Features » (6 cards), `h-full` sur les cards.
+15. **Checkbox** : focus ring `primary/20` / `error-500/20`, `rounded`, `transition-all duration-200`.
+16. **SettingsNavigation** : grille `gap-6`, stagger sur les cards, suppression `{' '}` inutiles.
 
 ---
 
@@ -120,6 +122,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 7. ~~Input focus, Container padding, Empty states~~ ✅ Input ring/offset, Container xl:px-12 2xl:px-14, empty states unifiés.
 8. ~~Textarea focus, Page Tags~~ ✅ Textarea focus ring, Tags header + skeleton + TagManager (stagger, empty state, FR).
 9. ~~Select focus, Dashboard Key Features stagger~~ ✅ Select focus ring, Dashboard grille Key Features avec stagger.
+10. ~~Checkbox focus, SettingsNavigation stagger~~ ✅ Checkbox focus ring + transition, Settings navigation gap-6 + stagger.
 
 ---
 
