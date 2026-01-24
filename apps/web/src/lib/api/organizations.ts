@@ -201,3 +201,33 @@ export async function createOrganizationDatabase(
   );
   return extractApiData(response);
 }
+
+export interface MigrateDatabaseResponse {
+  success: boolean;
+  message: string;
+  tables_created?: string[];
+}
+
+export async function migrateOrganizationDatabase(
+  organizationId: string
+): Promise<MigrateDatabaseResponse> {
+  const response = await apiClient.post<MigrateDatabaseResponse>(
+    `/v1/organizations/${organizationId}/database/migrate`
+  );
+  return extractApiData(response);
+}
+
+export interface DatabaseTablesResponse {
+  success: boolean;
+  tables: string[];
+  database_name?: string;
+}
+
+export async function getOrganizationDatabaseTables(
+  organizationId: string
+): Promise<DatabaseTablesResponse> {
+  const response = await apiClient.get<DatabaseTablesResponse>(
+    `/v1/organizations/${organizationId}/database/tables`
+  );
+  return extractApiData(response);
+}

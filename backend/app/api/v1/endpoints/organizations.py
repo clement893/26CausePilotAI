@@ -33,6 +33,8 @@ from app.schemas.organization import (
     TestConnectionRequest,
     TestConnectionResponse,
     CreateDatabaseResponse,
+    MigrateDatabaseResponse,
+    DatabaseTablesResponse,
 )
 
 router = APIRouter()
@@ -173,6 +175,10 @@ async def create_organization(
         if not db_connection:
             # Fallback to a placeholder
             db_connection = f"postgresql+asyncpg://user:pass@localhost:5432/causepilot_org_{organization_in.slug}"
+    
+    # Normalize connection string before saving to ensure it's clean and properly formatted
+    if db_connection:
+        db_connection = OrganizationDatabaseManager.normalize_connection_string(db_connection)
     
     # Create organization
     organization = Organization(
@@ -658,6 +664,9 @@ async def create_organization_database(
                 detail="Failed to create organization database"
             )
         
+        # Normalize connection string before saving
+        connection_string = OrganizationDatabaseManager.normalize_connection_string(connection_string)
+        
         # Parse to get database name
         parsed = OrganizationDatabaseManager.parse_db_connection_string(connection_string)
         db_name = parsed['database']
@@ -694,4 +703,118 @@ async def create_organization_database(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create database: {str(e)}"
+        )
+
+
+@router.post("/{organization_id}/database/migrate", response_model=MigrateDatabaseResponse)
+async def migrate_organization_database(
+    organization_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    _: None = Depends(require_superadmin),
+):
+    """
+    Run migrations on organization database to create/update tables (SuperAdmin only)
+    """
+    # Check organization exists
+    query = select(Organization).where(Organization.id == organization_id)
+    result = await db.execute(query)
+    organization = result.scalar_one_or_none()
+    
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found"
+        )
+    
+    if not organization.db_connection_string:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Organization database connection not configured"
+        )
+    
+    try:
+        # Run migrations
+        await OrganizationDatabaseManager.run_migrations_for_organization(
+            organization.db_connection_string
+        )
+        
+        # Get list of tables after migration
+        parsed = OrganizationDatabaseManager.parse_db_connection_string(organization.db_connection_string)
+        db_name = parsed['database']
+        
+        # List tables to show what was created
+        tables = await OrganizationDatabaseManager.list_database_tables(
+            organization.db_connection_string
+        )
+        
+        logger.info(
+            f"Ran migrations on database '{db_name}' for organization {organization_id} "
+            f"({organization.slug}). Tables: {', '.join(tables)}"
+        )
+        
+        return MigrateDatabaseResponse(
+            success=True,
+            message=f"Migrations executed successfully on database '{db_name}'",
+            tables_created=tables
+        )
+        
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        logger.error(f"Error running migrations for organization {organization_id}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to run migrations: {str(e)}"
+        )
+
+
+@router.get("/{organization_id}/database/tables", response_model=DatabaseTablesResponse)
+async def get_organization_database_tables(
+    organization_id: UUID,
+    db: AsyncSession = Depends(get_db),
+    _: None = Depends(require_superadmin),
+):
+    """
+    Get list of tables in organization database (SuperAdmin only)
+    """
+    # Check organization exists
+    query = select(Organization).where(Organization.id == organization_id)
+    result = await db.execute(query)
+    organization = result.scalar_one_or_none()
+    
+    if not organization:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Organization not found"
+        )
+    
+    if not organization.db_connection_string:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Organization database connection not configured"
+        )
+    
+    try:
+        # List tables
+        tables = await OrganizationDatabaseManager.list_database_tables(
+            organization.db_connection_string
+        )
+        
+        parsed = OrganizationDatabaseManager.parse_db_connection_string(organization.db_connection_string)
+        db_name = parsed['database']
+        
+        return DatabaseTablesResponse(
+            success=True,
+            tables=tables,
+            database_name=db_name
+        )
+        
+    except Exception as e:
+        logger.error(f"Error listing tables for organization {organization_id}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to list tables: {str(e)}"
         )

@@ -6,6 +6,9 @@ import {
   updateOrganizationDatabase,
   testOrganizationDatabase,
   createOrganizationDatabase,
+  migrateOrganizationDatabase,
+  getOrganizationDatabaseTables,
+  type DatabaseTablesResponse,
 } from '@/lib/api/organizations';
 import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2, Settings, Code, Wand2 } from 'lucide-react';
 
@@ -27,6 +30,10 @@ export function DatabaseConnectionForm({
   const [isTesting, setIsTesting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isMigrating, setIsMigrating] = useState(false);
+  const [isLoadingTables, setIsLoadingTables] = useState(false);
+  const [databaseTables, setDatabaseTables] = useState<string[]>([]);
+  const [databaseName, setDatabaseName] = useState<string | null>(null);
   const [testResult, setTestResult] = useState<{
     success: boolean;
     message: string;
@@ -463,6 +470,8 @@ export function DatabaseConnectionForm({
           `Base de données '${result.databaseName}' créée avec succès. La chaîne de connexion a été mise à jour.`
         );
         onUpdate(); // Refresh parent component
+        // Load tables after creation
+        await loadTables();
       } else {
         setError(result.message);
       }
@@ -473,6 +482,62 @@ export function DatabaseConnectionForm({
       setIsCreating(false);
     }
   };
+
+  const handleMigrateDatabase = async () => {
+    setIsMigrating(true);
+    setError(null);
+    setSuccess(null);
+    setTestResult(null);
+
+    try {
+      const result = await migrateOrganizationDatabase(organizationId);
+
+      if (result.success) {
+        setSuccess(
+          result.message + (result.tables_created && result.tables_created.length > 0 
+            ? ` Tables créées: ${result.tables_created.join(', ')}`
+            : '')
+        );
+        // Reload tables after migration
+        await loadTables();
+        onUpdate(); // Refresh parent component
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la mise à jour de la base de données';
+      setError(errorMessage);
+    } finally {
+      setIsMigrating(false);
+    }
+  };
+
+  const loadTables = async () => {
+    if (!currentConnectionString) {
+      return;
+    }
+
+    setIsLoadingTables(true);
+    try {
+      const result = await getOrganizationDatabaseTables(organizationId);
+      if (result.success) {
+        setDatabaseTables(result.tables || []);
+        setDatabaseName(result.database_name || null);
+      }
+    } catch (err) {
+      console.warn('Failed to load database tables:', err);
+      // Don't show error, just log it
+    } finally {
+      setIsLoadingTables(false);
+    }
+  };
+
+  // Load tables when connection string is available
+  useEffect(() => {
+    if (currentConnectionString) {
+      loadTables();
+    }
+  }, [currentConnectionString, organizationId]);
 
   return (
     <Card title="Configuration Base de Données" className="space-y-4">
@@ -823,7 +888,7 @@ export function DatabaseConnectionForm({
               <Button
                 variant="ghost"
                 onClick={handleCreateDatabase}
-                disabled={isTesting || isSaving || isCreating}
+                disabled={isTesting || isSaving || isCreating || isMigrating}
               >
                 {isCreating ? (
                   <>
@@ -834,6 +899,26 @@ export function DatabaseConnectionForm({
                   <>
                     <Database className="w-4 h-4 mr-2" />
                     Créer automatiquement la BD
+                  </>
+                )}
+              </Button>
+            )}
+
+            {currentConnectionString && (
+              <Button
+                variant="ghost"
+                onClick={handleMigrateDatabase}
+                disabled={isTesting || isSaving || isCreating || isMigrating}
+              >
+                {isMigrating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Mise à jour...
+                  </>
+                ) : (
+                  <>
+                    <Database className="w-4 h-4 mr-2" />
+                    Mettre à jour la BD
                   </>
                 )}
               </Button>
@@ -901,6 +986,68 @@ export function DatabaseConnectionForm({
               </div>
             )}
           </div>
+
+          {/* Database Tables List */}
+          {currentConnectionString && (
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium text-foreground">
+                  Tables de la base de données
+                  {databaseName && (
+                    <span className="text-xs text-muted-foreground ml-2">
+                      ({databaseName})
+                    </span>
+                  )}
+                </h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={loadTables}
+                  disabled={isLoadingTables}
+                >
+                  {isLoadingTables ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Chargement...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4 mr-2" />
+                      Actualiser
+                    </>
+                  )}
+                </Button>
+              </div>
+              
+              {databaseTables.length > 0 ? (
+                <div className="p-4 rounded-lg bg-muted/30 border border-border">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    {databaseTables.map((table) => (
+                      <div
+                        key={table}
+                        className="px-3 py-2 rounded-md bg-background border border-border text-sm font-mono"
+                      >
+                        {table}
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-3">
+                    {databaseTables.length} table{databaseTables.length > 1 ? 's' : ''} trouvée{databaseTables.length > 1 ? 's' : ''}
+                  </p>
+                </div>
+              ) : (
+                <div className="p-4 rounded-lg bg-muted/30 border border-border">
+                  <p className="text-sm text-muted-foreground">
+                    {isLoadingTables ? (
+                      'Chargement des tables...'
+                    ) : (
+                      'Aucune table trouvée. Cliquez sur "Mettre à jour la BD" pour créer les tables.'
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </Card>

@@ -222,3 +222,17 @@ class CreateDatabaseResponse(BaseModel):
     message: str
     db_connection_string: str
     database_name: str
+
+
+class MigrateDatabaseResponse(BaseModel):
+    """Migrate database response"""
+    success: bool
+    message: str
+    tables_created: Optional[List[str]] = None
+
+
+class DatabaseTablesResponse(BaseModel):
+    """Database tables response"""
+    success: bool
+    tables: List[str]
+    database_name: Optional[str] = None

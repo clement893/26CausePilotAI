@@ -9,7 +9,7 @@ This module handles:
 - Running migrations for organization databases
 """
 
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy import text
@@ -1039,6 +1039,58 @@ class OrganizationDatabaseManager:
             raise ValueError(f"Migration SQL error: {str(e)}") from e
         except Exception as e:
             logger.error(f"Unexpected error running migrations: {e}", exc_info=True)
+            raise
+    
+    @classmethod
+    async def list_database_tables(cls, db_connection_string: str) -> List[str]:
+        """
+        List all tables in the organization database.
+        
+        Args:
+            db_connection_string: Connection string to the organization database
+        
+        Returns:
+            List of table names
+        """
+        from typing import List
+        
+        try:
+            # Normalize connection string
+            db_connection_string = cls.normalize_connection_string(db_connection_string)
+            
+            # Create temporary engine
+            test_engine = create_async_engine(
+                db_connection_string,
+                echo=False,
+                pool_pre_ping=True,
+            )
+            
+            tables: List[str] = []
+            async with test_engine.connect() as conn:
+                # Query PostgreSQL system catalog for tables
+                result = await conn.execute(
+                    text("""
+                        SELECT table_name 
+                        FROM information_schema.tables 
+                        WHERE table_schema = 'public' 
+                        AND table_type = 'BASE TABLE'
+                        ORDER BY table_name
+                    """)
+                )
+                tables = [row[0] for row in result.fetchall()]
+            
+            await test_engine.dispose()
+            
+            parsed = cls.parse_db_connection_string(db_connection_string)
+            logger.debug(f"Found {len(tables)} tables in database {parsed['database']}")
+            
+            return tables
+            
+        except OperationalError as e:
+            logger.error(f"Database operational error listing tables: {e}", exc_info=True)
+            raise ValueError(f"Failed to connect to database: {str(e)}") from e
+        except Exception as e:
+            logger.error(f"Unexpected error listing tables: {e}", exc_info=True)
             raise
     
     @classmethod
