@@ -1029,8 +1029,26 @@ class OrganizationDatabaseManager:
             elif "postgresql://" in alembic_db_url and "+" not in alembic_db_url:
                 alembic_db_url = alembic_db_url.replace("postgresql://", "postgresql+psycopg2://")
             
-            # Create alembic config
-            alembic_cfg = Config("alembic.ini")
+            # Create alembic config - use absolute path to alembic.ini
+            import os
+            from pathlib import Path
+            
+            # Find alembic.ini - it should be in the backend directory
+            # Get the directory where this file is located (app/core/)
+            current_file = Path(__file__)
+            # Go up to backend directory
+            backend_dir = current_file.parent.parent.parent
+            alembic_ini_path = backend_dir / "alembic.ini"
+            
+            if not alembic_ini_path.exists():
+                # Fallback: try relative to current working directory
+                alembic_ini_path = Path("alembic.ini")
+                if not alembic_ini_path.exists():
+                    # Try backend/alembic.ini
+                    alembic_ini_path = Path("backend/alembic.ini")
+            
+            logger.info(f"Using Alembic config from: {alembic_ini_path.absolute()}")
+            alembic_cfg = Config(str(alembic_ini_path))
             alembic_cfg.set_main_option("sqlalchemy.url", alembic_db_url)
             
             # Try to run migrations - handle multiple heads gracefully

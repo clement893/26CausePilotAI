@@ -69,12 +69,14 @@ class Organization(OrganizationBase):
     """Organization response"""
     id: UUID
     is_active: bool
-    db_connection_string: str = Field(default="", description="Database connection string")  # Required in model, but may be empty initially
+    db_connection_string: str = Field(default="", description="Database connection string", alias="dbConnectionString")  # Required in model, but may be empty initially
     created_at: datetime
     updated_at: datetime
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,  # Accept both db_connection_string and dbConnectionString
+    )
 
 
 class OrganizationWithStats(Organization):

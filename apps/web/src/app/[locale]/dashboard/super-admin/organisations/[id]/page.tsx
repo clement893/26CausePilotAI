@@ -70,6 +70,14 @@ function OrganizationDetailsContent() {
         listOrganizationMembers(organizationId),
       ]);
 
+      // Log for debugging
+      console.log('[OrganizationPage] Received organization:', {
+        id: org.id,
+        name: org.name,
+        hasDbConnection: !!org.dbConnectionString,
+        dbConnectionPreview: org.dbConnectionString ? org.dbConnectionString.substring(0, 50) + '...' : 'none'
+      });
+
       setOrganization(org);
       setModules(modulesData?.items || []);
       setMembers(membersData?.items || []);

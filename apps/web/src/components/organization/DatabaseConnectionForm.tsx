@@ -33,7 +33,10 @@ export function DatabaseConnectionForm({
   const [isLoadingTables, setIsLoadingTables] = useState(false);
   const [databaseTables, setDatabaseTables] = useState<string[]>([]);
   const [databaseName, setDatabaseName] = useState<string | null>(null);
-  const [showEditForm, setShowEditForm] = useState(!currentConnectionString);
+  // Initialize showEditForm based on whether we have a connection string
+  // Check both currentConnectionString prop and connectionString state
+  const hasConnection = Boolean(currentConnectionString?.trim() || connectionString?.trim());
+  const [showEditForm, setShowEditForm] = useState(!hasConnection);
   const [testResult, setTestResult] = useState<{
     success: boolean;
     message: string;
@@ -604,12 +607,26 @@ export function DatabaseConnectionForm({
 
   // Update connectionString when currentConnectionString changes from props
   useEffect(() => {
-    if (currentConnectionString && currentConnectionString !== connectionString) {
+    // Log for debugging
+    if (currentConnectionString) {
+      console.log('[DatabaseConnectionForm] Received currentConnectionString:', currentConnectionString.substring(0, 50) + '...');
+    }
+    
+    if (currentConnectionString && currentConnectionString.trim() && currentConnectionString !== connectionString) {
+      console.log('[DatabaseConnectionForm] Updating connectionString from prop');
       setConnectionString(currentConnectionString);
       // Hide edit form if connection is already configured
       setShowEditForm(false);
+    } else if (!currentConnectionString && connectionString) {
+      // If currentConnectionString becomes empty but we have a local connectionString, keep it
+      // This handles the case where the prop might be temporarily undefined during reload
+      console.log('[DatabaseConnectionForm] currentConnectionString is empty but we have local connectionString, keeping it');
+    } else if (!currentConnectionString && !connectionString) {
+      // No connection at all, show form
+      console.log('[DatabaseConnectionForm] No connection found, showing form');
+      setShowEditForm(true);
     }
-  }, [currentConnectionString]);
+  }, [currentConnectionString, connectionString]);
   
   // Hide edit form when connection is successfully saved
   useEffect(() => {
