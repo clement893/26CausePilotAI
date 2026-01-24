@@ -211,15 +211,7 @@ export default async function LocaleLayout({
         <meta property="og:site_name" content={appName} />
         <meta
           property="og:locale"
-          content={
-            locale === 'fr'
-              ? 'fr_FR'
-              : locale === 'ar'
-                ? 'ar_SA'
-                : locale === 'he'
-                  ? 'he_IL'
-                  : 'en_US'
-          }
+          content={locale === 'fr' ? 'fr_FR' : 'en_US'}
         />
 
         {/* Twitter Card */}

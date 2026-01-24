@@ -58,7 +58,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Extract locale from pathname for route checking
-  const pathnameWithoutLocale = pathname.replace(/^\/(en|fr|ar|he)/, '') || '/';
+  const pathnameWithoutLocale = pathname.replace(/^\/(en|fr)/, '') || '/';
 
   // Public routes that don't require authentication
   const publicRoutes = [

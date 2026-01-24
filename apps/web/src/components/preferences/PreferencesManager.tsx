@@ -46,8 +46,6 @@ const THEME_OPTIONS: SelectOption[] = [
 const LANGUAGE_OPTIONS: SelectOption[] = [
   { label: 'English', value: 'en' },
   { label: 'Français', value: 'fr' },
-  { label: 'العربية', value: 'ar' },
-  { label: 'עברית', value: 'he' },
 ];
 
 // Timezone options (common ones)
@@ -176,8 +174,8 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
         const actualPathname = typeof window !== 'undefined' ? window.location.pathname : pathname;
 
         // Get path without locale prefix from actual URL
-        // Remove any locale prefix (en, fr, ar, he) from the beginning
-        const pathWithoutLocale = actualPathname.replace(/^\/(en|fr|ar|he)(\/|$)/, '/') || '/';
+        // Remove any locale prefix (en, fr) from the beginning
+        const pathWithoutLocale = actualPathname.replace(/^\/(en|fr)(\/|$)/, '/') || '/';
 
         // Ensure it starts with / and doesn't end with / unless it's root
         const cleanPath = pathWithoutLocale === '/' ? '/' : pathWithoutLocale.replace(/\/$/, '') || '/';

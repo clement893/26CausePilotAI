@@ -1,7 +1,6 @@
 /**
  * Locale Switcher Component (Updated for next-intl)
- * Allows users to switch between available languages
- * Supports RTL languages (Arabic, Hebrew)
+ * Allows users to switch between available languages (English, French)
  */
 'use client';
 

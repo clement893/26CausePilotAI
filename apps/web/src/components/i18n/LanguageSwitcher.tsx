@@ -1,8 +1,8 @@
 /**
  * Language Switcher Component
  *
- * Allows users to switch between available languages.
- * Supports RTL languages (Arabic, Hebrew) and uses window.location for navigation.
+ * Allows users to switch between available languages (English, French).
+ * Uses window.location for navigation.
  *
  * @example
  * ```tsx

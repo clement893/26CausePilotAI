@@ -128,7 +128,7 @@ class ApiClient {
               const isPublicPage =
                 typeof window !== 'undefined' &&
                 (window.location.pathname === '/' ||
-                  window.location.pathname.match(/^\/(en|fr|ar|he)?\/?$/) ||
+                  window.location.pathname.match(/^\/(en|fr)?\/?$/) ||
                   window.location.pathname.includes('/auth/') ||
                   window.location.pathname.includes('/components') ||
                   window.location.pathname.includes('/pricing'));
@@ -153,7 +153,7 @@ class ApiClient {
             const isPublicPage =
               typeof window !== 'undefined' &&
               (window.location.pathname === '/' ||
-                window.location.pathname.match(/^\/(en|fr|ar|he)?\/?$/) ||
+                window.location.pathname.match(/^\/(en|fr)?\/?$/) ||
                 window.location.pathname.includes('/auth/') ||
                 window.location.pathname.includes('/components') ||
                 window.location.pathname.includes('/pricing'));

@@ -155,10 +155,10 @@ export function LocaleSync({ children }: LocaleSyncProps) {
           if (
             preferredLanguage &&
             preferredLanguage !== currentLocale &&
-            ['en', 'fr', 'ar', 'he'].includes(preferredLanguage)
+            ['en', 'fr'].includes(preferredLanguage)
           ) {
             // Get path without locale prefix
-            const pathWithoutLocale = actualPathname.replace(/^\/(en|fr|ar|he)(\/|$)/, '/') || '/';
+            const pathWithoutLocale = actualPathname.replace(/^\/(en|fr)(\/|$)/, '/') || '/';
             const cleanPath =
               pathWithoutLocale === '/' ? '/' : pathWithoutLocale.replace(/\/$/, '') || '/';
 
