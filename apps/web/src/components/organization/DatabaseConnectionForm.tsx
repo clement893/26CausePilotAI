@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, Input, Alert, Badge } from '@/components/ui';
 import {
   updateOrganizationDatabase,
   testOrganizationDatabase,
   createOrganizationDatabase,
 } from '@/lib/api/organizations';
-import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2, Settings, Code } from 'lucide-react';
 
 interface DatabaseConnectionFormProps {
   organizationId: string;
@@ -34,6 +34,58 @@ export function DatabaseConnectionForm({
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [useSimpleMode, setUseSimpleMode] = useState(true);
+  
+  // Simple form fields
+  const [dbHost, setDbHost] = useState('');
+  const [dbPort, setDbPort] = useState('5432');
+  const [dbName, setDbName] = useState('');
+  const [dbUser, setDbUser] = useState('postgres');
+  const [dbPassword, setDbPassword] = useState('');
+
+  // Parse connection string to fill simple form
+  useEffect(() => {
+    if (currentConnectionString && useSimpleMode) {
+      try {
+        const url = new URL(currentConnectionString.replace(/^postgresql\+?asyncpg?:\/\//, 'http://'));
+        setDbHost(url.hostname);
+        setDbPort(url.port || '5432');
+        setDbName(url.pathname.replace(/^\//, ''));
+        setDbUser(url.username || 'postgres');
+        setDbPassword(url.password || '');
+      } catch (e) {
+        // If parsing fails, keep simple mode but don't fill fields
+      }
+    }
+  }, [currentConnectionString, useSimpleMode]);
+
+  // Build connection string from simple form fields
+  const buildConnectionString = (): string => {
+    if (!useSimpleMode) {
+      return connectionString;
+    }
+    
+    if (!dbHost || !dbName || !dbUser || !dbPassword) {
+      return '';
+    }
+    
+    // Encode password and user to handle special characters
+    const encodedUser = encodeURIComponent(dbUser);
+    const encodedPassword = encodeURIComponent(dbPassword);
+    const port = dbPort || '5432';
+    
+    return `postgresql+asyncpg://${encodedUser}:${encodedPassword}@${dbHost}:${port}/${dbName}`;
+  };
+
+  // Update connection string when simple form fields change
+  useEffect(() => {
+    if (useSimpleMode) {
+      const built = buildConnectionString();
+      if (built) {
+        setConnectionString(built);
+      }
+    }
+  }, [dbHost, dbPort, dbName, dbUser, dbPassword, useSimpleMode]);
 
   // Mask connection string for display (hide password)
   const maskConnectionString = (str: string): string => {
@@ -43,8 +95,12 @@ export function DatabaseConnectionForm({
   };
 
   const handleTestConnection = async () => {
-    if (!connectionString.trim()) {
-      setError('Veuillez entrer une chaîne de connexion');
+    const finalConnectionString = buildConnectionString();
+    
+    if (!finalConnectionString.trim()) {
+      setError(useSimpleMode 
+        ? 'Veuillez remplir tous les champs requis' 
+        : 'Veuillez entrer une chaîne de connexion');
       setTestResult(null);
       return;
     }
@@ -56,7 +112,7 @@ export function DatabaseConnectionForm({
 
     try {
       const result = await testOrganizationDatabase(organizationId, {
-        dbConnectionString: connectionString,
+        dbConnectionString: finalConnectionString,
       });
 
       setTestResult(result);
@@ -78,8 +134,12 @@ export function DatabaseConnectionForm({
   };
 
   const handleSave = async () => {
-    if (!connectionString.trim()) {
-      setError('Veuillez entrer une chaîne de connexion');
+    const finalConnectionString = buildConnectionString();
+    
+    if (!finalConnectionString.trim()) {
+      setError(useSimpleMode 
+        ? 'Veuillez remplir tous les champs requis' 
+        : 'Veuillez entrer une chaîne de connexion');
       return;
     }
 
@@ -89,7 +149,7 @@ export function DatabaseConnectionForm({
 
     try {
       await updateOrganizationDatabase(organizationId, {
-        dbConnectionString: connectionString,
+        dbConnectionString: finalConnectionString,
         testConnection: true, // Test before saving
       });
 
@@ -155,43 +215,206 @@ export function DatabaseConnectionForm({
             </div>
           )}
 
-          {/* Connection String Input */}
-          <div className="space-y-2">
-            <label htmlFor="db-connection" className="text-sm font-medium text-foreground">
-              Chaîne de connexion PostgreSQL
-            </label>
-            <div className="relative">
-              <Input
-                id="db-connection"
-                type={showPassword ? 'text' : 'password'}
-                value={connectionString}
-                onChange={(e) => {
-                  setConnectionString(e.target.value);
-                  setError(null);
-                  setSuccess(null);
-                  setTestResult(null);
-                }}
-                placeholder="postgresql+asyncpg://user:password@host:5432/database"
-                className="font-mono text-sm pr-10"
-                disabled={isSaving || isTesting || isCreating}
-              />
-              <button
+          {/* Mode Toggle */}
+          <div className="flex items-center justify-between mb-4">
+            <label className="text-sm font-medium text-foreground">Mode de configuration</label>
+            <div className="flex gap-2">
+              <Button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                variant={useSimpleMode ? 'primary' : 'ghost'}
+                size="sm"
+                onClick={() => setUseSimpleMode(true)}
                 disabled={isSaving || isTesting || isCreating}
               >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
-              </button>
+                <Settings className="w-4 h-4 mr-2" />
+                Simple
+              </Button>
+              <Button
+                type="button"
+                variant={!useSimpleMode ? 'primary' : 'ghost'}
+                size="sm"
+                onClick={() => setUseSimpleMode(false)}
+                disabled={isSaving || isTesting || isCreating}
+              >
+                <Code className="w-4 h-4 mr-2" />
+                Avancé
+              </Button>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Format: <code className="bg-muted px-1 rounded">postgresql+asyncpg://user:password@host:5432/database</code>
-            </p>
           </div>
+
+          {useSimpleMode ? (
+            /* Simple Form Mode */
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="db-host" className="text-sm font-medium text-foreground">
+                    Hôte <span className="text-error-600">*</span>
+                  </label>
+                  <Input
+                    id="db-host"
+                    type="text"
+                    value={dbHost}
+                    onChange={(e) => {
+                      setDbHost(e.target.value);
+                      setError(null);
+                      setSuccess(null);
+                      setTestResult(null);
+                    }}
+                    placeholder="postgres-tnv2.railway.internal"
+                    disabled={isSaving || isTesting || isCreating}
+                  />
+                  <p className="text-xs text-muted-foreground">Adresse du serveur PostgreSQL</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="db-port" className="text-sm font-medium text-foreground">
+                    Port
+                  </label>
+                  <Input
+                    id="db-port"
+                    type="number"
+                    value={dbPort}
+                    onChange={(e) => {
+                      setDbPort(e.target.value);
+                      setError(null);
+                      setSuccess(null);
+                      setTestResult(null);
+                    }}
+                    placeholder="5432"
+                    disabled={isSaving || isTesting || isCreating}
+                  />
+                  <p className="text-xs text-muted-foreground">Port PostgreSQL (défaut: 5432)</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="db-name" className="text-sm font-medium text-foreground">
+                  Nom de la base de données <span className="text-error-600">*</span>
+                </label>
+                <Input
+                  id="db-name"
+                  type="text"
+                  value={dbName}
+                  onChange={(e) => {
+                    setDbName(e.target.value);
+                    setError(null);
+                    setSuccess(null);
+                    setTestResult(null);
+                  }}
+                  placeholder="railway"
+                  disabled={isSaving || isTesting || isCreating}
+                />
+                <p className="text-xs text-muted-foreground">Nom de la base de données PostgreSQL</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="db-user" className="text-sm font-medium text-foreground">
+                    Utilisateur <span className="text-error-600">*</span>
+                  </label>
+                  <Input
+                    id="db-user"
+                    type="text"
+                    value={dbUser}
+                    onChange={(e) => {
+                      setDbUser(e.target.value);
+                      setError(null);
+                      setSuccess(null);
+                      setTestResult(null);
+                    }}
+                    placeholder="postgres"
+                    disabled={isSaving || isTesting || isCreating}
+                  />
+                  <p className="text-xs text-muted-foreground">Nom d'utilisateur PostgreSQL</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="db-password" className="text-sm font-medium text-foreground">
+                    Mot de passe <span className="text-error-600">*</span>
+                  </label>
+                  <div className="relative">
+                    <Input
+                      id="db-password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={dbPassword}
+                      onChange={(e) => {
+                        setDbPassword(e.target.value);
+                        setError(null);
+                        setSuccess(null);
+                        setTestResult(null);
+                      }}
+                      placeholder="••••••••"
+                      className="pr-10"
+                      disabled={isSaving || isTesting || isCreating}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      disabled={isSaving || isTesting || isCreating}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Mot de passe PostgreSQL</p>
+                </div>
+              </div>
+
+              {/* Preview of generated connection string */}
+              {buildConnectionString() && (
+                <div className="p-3 rounded-lg bg-muted/30 border border-border">
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Chaîne générée automatiquement :</p>
+                  <code className="text-xs font-mono text-foreground break-all">
+                    {maskConnectionString(buildConnectionString())}
+                  </code>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Advanced Mode - Direct Connection String */
+            <div className="space-y-2">
+              <label htmlFor="db-connection" className="text-sm font-medium text-foreground">
+                Chaîne de connexion PostgreSQL
+              </label>
+              <div className="relative">
+                <Input
+                  id="db-connection"
+                  type={showPassword ? 'text' : 'password'}
+                  value={connectionString}
+                  onChange={(e) => {
+                    setConnectionString(e.target.value);
+                    setError(null);
+                    setSuccess(null);
+                    setTestResult(null);
+                  }}
+                  placeholder="postgresql+asyncpg://user:password@host:5432/database"
+                  className="font-mono text-sm pr-10"
+                  disabled={isSaving || isTesting || isCreating}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  disabled={isSaving || isTesting || isCreating}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Format: <code className="bg-muted px-1 rounded">postgresql+asyncpg://user:password@host:5432/database</code>
+                <br />
+                Le système convertit automatiquement <code className="bg-muted px-1 rounded">postgresql://</code> en <code className="bg-muted px-1 rounded">postgresql+asyncpg://</code>
+              </p>
+            </div>
+          )}
 
           {/* Test Result */}
           {testResult && (

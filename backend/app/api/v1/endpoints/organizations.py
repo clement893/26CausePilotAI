@@ -547,10 +547,15 @@ async def update_organization_database(
             detail="Organization not found"
         )
     
+    # Normalize connection string (convert to asyncpg format if needed)
+    normalized_connection_string = OrganizationDatabaseManager.normalize_connection_string(
+        db_update.db_connection_string
+    )
+    
     # Test connection if requested
     if db_update.test_connection:
         success, message, db_name = await OrganizationDatabaseManager.test_connection(
-            db_update.db_connection_string
+            normalized_connection_string
         )
         if not success:
             raise HTTPException(
@@ -559,9 +564,9 @@ async def update_organization_database(
             )
         logger.info(f"Connection test successful for organization {organization_id}: {message}")
     
-    # Update connection string
+    # Update connection string (save normalized version)
     old_connection_string = organization.db_connection_string
-    organization.db_connection_string = db_update.db_connection_string
+    organization.db_connection_string = normalized_connection_string
     
     # Invalidate cache for this organization
     OrganizationDatabaseManager.invalidate_cache(organization_id)

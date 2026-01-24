@@ -137,6 +137,41 @@ class OrganizationDatabaseManager:
             return re.sub(r':([^:@]+)@', r':****@', connection_string)
     
     @classmethod
+    def normalize_connection_string(cls, db_connection_string: str) -> str:
+        """
+        Normalize a database connection string to use asyncpg driver.
+        
+        Args:
+            db_connection_string: PostgreSQL connection string (any format)
+        
+        Returns:
+            Normalized connection string with asyncpg driver
+        """
+        if not db_connection_string:
+            return db_connection_string
+        
+        # Remove any existing driver specification
+        normalized = db_connection_string
+        
+        # Handle different PostgreSQL URL formats
+        if normalized.startswith('postgresql+asyncpg://'):
+            return normalized  # Already correct
+        elif normalized.startswith('postgresql+psycopg2://'):
+            normalized = normalized.replace('postgresql+psycopg2://', 'postgresql+asyncpg://', 1)
+        elif normalized.startswith('postgresql://'):
+            normalized = normalized.replace('postgresql://', 'postgresql+asyncpg://', 1)
+        elif normalized.startswith('postgres://'):
+            normalized = normalized.replace('postgres://', 'postgresql+asyncpg://', 1)
+        elif not normalized.startswith(('postgresql://', 'postgresql+asyncpg://', 'postgres://')):
+            # If it doesn't start with a known prefix, try to add one
+            # This handles cases where user might paste just the connection parts
+            if '@' in normalized and ':' in normalized:
+                # Looks like it might be a connection string without prefix
+                normalized = f'postgresql+asyncpg://{normalized}'
+        
+        return normalized
+    
+    @classmethod
     async def test_connection(cls, db_connection_string: str, timeout: int = 5) -> tuple[bool, str, Optional[str]]:
         """
         Test a database connection string.
@@ -151,14 +186,14 @@ class OrganizationDatabaseManager:
         if not db_connection_string:
             return False, "Connection string is empty", None
         
-        # Validate format
-        if not db_connection_string.startswith(('postgresql://', 'postgresql+asyncpg://')):
-            return False, "Invalid connection string format. Must start with 'postgresql://' or 'postgresql+asyncpg://'", None
+        # Normalize connection string
+        db_connection_string = cls.normalize_connection_string(db_connection_string)
+        
+        # Validate format after normalization
+        if not db_connection_string.startswith('postgresql+asyncpg://'):
+            return False, "Invalid connection string format. Must be a valid PostgreSQL connection string.", None
         
         try:
-            # Ensure asyncpg driver
-            if not db_connection_string.startswith('postgresql+asyncpg://'):
-                db_connection_string = db_connection_string.replace('postgresql://', 'postgresql+asyncpg://', 1)
             
             # Create a temporary engine for testing
             test_engine = create_async_engine(
@@ -288,9 +323,8 @@ class OrganizationDatabaseManager:
             from alembic.config import Config
             from alembic import command
             
-            # Ensure asyncpg driver
-            if not db_connection_string.startswith('postgresql+asyncpg://'):
-                db_connection_string = db_connection_string.replace('postgresql://', 'postgresql+asyncpg://', 1)
+            # Normalize connection string
+            db_connection_string = cls.normalize_connection_string(db_connection_string)
             
             # Create alembic config
             alembic_cfg = Config("alembic.ini")
@@ -333,9 +367,8 @@ class OrganizationDatabaseManager:
             pass
         
         if org_id_str not in cls._engines:
-            # Ensure asyncpg driver
-            if not db_connection_string.startswith('postgresql+asyncpg://'):
-                db_connection_string = db_connection_string.replace('postgresql://', 'postgresql+asyncpg://', 1)
+            # Normalize connection string to ensure asyncpg driver
+            db_connection_string = cls.normalize_connection_string(db_connection_string)
             
             cls._engines[org_id_str] = create_async_engine(
                 db_connection_string,
