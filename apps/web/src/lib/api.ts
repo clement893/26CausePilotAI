@@ -300,7 +300,10 @@ export const authAPI = {
   },
   getGoogleAuthUrl: (redirectUrl?: string) => {
     const params = redirectUrl ? { redirect: redirectUrl } : {};
-    return apiClient.get('/v1/auth/google', { params });
+    return apiClient.get<{ auth_url: string }>('/v1/auth/google', { 
+      params,
+      timeout: 30000, // 30 seconds timeout for OAuth URL generation
+    });
   },
 };
 
