@@ -55,7 +55,7 @@ export default function ThemePreviewPage() {
           dynamiquement au thème.
         </Text>
         {theme.name && (
-          <Badge variant="primary" className="mt-4">
+          <Badge variant="info" className="mt-4">
             {theme.name}
           </Badge>
         )}
