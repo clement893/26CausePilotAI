@@ -12,6 +12,17 @@ from app.core.config import settings
 # Get database URL from settings and ensure it uses asyncpg
 DATABASE_URL = str(settings.DATABASE_URL).strip()
 
+# Detect and fix nested URLs before processing
+if DATABASE_URL.count("postgresql://") > 1 or DATABASE_URL.count("postgresql+asyncpg://") > 1:
+    import re
+    # Find all postgresql URLs and use the last (most complete) one
+    urls = re.findall(r'postgresql(?:\+asyncpg)?://[^\s]+', DATABASE_URL)
+    if urls:
+        DATABASE_URL = urls[-1]
+        # Ensure it uses asyncpg
+        if DATABASE_URL.startswith("postgresql://"):
+            DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+
 # Ensure DATABASE_URL uses asyncpg driver for async operations
 if DATABASE_URL.startswith("postgresql://") and "+" not in DATABASE_URL:
     # Plain postgresql:// URL, add asyncpg driver

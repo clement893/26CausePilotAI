@@ -126,9 +126,41 @@ class Settings(BaseSettings):
     @classmethod
     def assemble_db_connection(cls, v: str | PostgresDsn) -> str:
         if isinstance(v, str):
+            # Clean up the connection string first
+            v = v.strip()
+            
+            # Detect and fix nested URLs (e.g., postgresql+asyncpg://...@postgresql://...)
+            # This can happen if DATABASE_URL is incorrectly set
+            if "postgresql://" in v and v.count("postgresql://") > 1:
+                # Find the last occurrence of postgresql:// (should be the actual URL)
+                last_idx = v.rfind("postgresql://")
+                if last_idx > 0:
+                    # Extract the actual URL starting from the last occurrence
+                    v = v[last_idx:]
+                    # Also check if there's a nested postgresql+asyncpg://
+                    if "postgresql+asyncpg://" in v[:last_idx]:
+                        # Find the last occurrence of postgresql+asyncpg://
+                        last_asyncpg_idx = v.rfind("postgresql+asyncpg://")
+                        if last_asyncpg_idx >= 0:
+                            v = v[last_asyncpg_idx:]
+            
             # Convert postgresql:// to postgresql+asyncpg:// for async support
             if v.startswith("postgresql://") and not v.startswith("postgresql+asyncpg://"):
                 v = v.replace("postgresql://", "postgresql+asyncpg://", 1)
+            
+            # Final validation: ensure we don't have nested URLs
+            if v.count("postgresql://") > 1 or (v.count("postgresql+asyncpg://") > 1):
+                # Try to extract the last valid URL
+                import re
+                # Find all postgresql URLs
+                urls = re.findall(r'postgresql(?:\+asyncpg)?://[^\s]+', v)
+                if urls:
+                    # Use the last (most complete) URL
+                    v = urls[-1]
+                    # Ensure it uses asyncpg
+                    if v.startswith("postgresql://"):
+                        v = v.replace("postgresql://", "postgresql+asyncpg://", 1)
+            
             return v
         return str(v)
 

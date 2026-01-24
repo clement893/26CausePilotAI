@@ -150,6 +150,25 @@ class OrganizationDatabaseManager:
             # Log the original connection string (masked) for debugging
             logger.debug(f"Parsing connection string: {cls.mask_connection_string(connection_string)}")
             
+            # Detect and fix nested URLs (e.g., postgresql+asyncpg://...@postgresql://...)
+            # This can happen if DATABASE_URL is incorrectly set
+            if "postgresql://" in connection_string and connection_string.count("postgresql://") > 1:
+                # Find the last occurrence of postgresql:// (should be the actual URL)
+                last_idx = connection_string.rfind("postgresql://")
+                if last_idx > 0:
+                    # Extract the actual URL starting from the last occurrence
+                    connection_string = connection_string[last_idx:]
+                    logger.warning(f"Detected nested URL, extracted: {cls.mask_connection_string(connection_string)}")
+            
+            # Also check for nested postgresql+asyncpg://
+            if "postgresql+asyncpg://" in connection_string and connection_string.count("postgresql+asyncpg://") > 1:
+                # Find the last occurrence
+                last_idx = connection_string.rfind("postgresql+asyncpg://")
+                if last_idx >= 0:
+                    # Extract from the last occurrence
+                    connection_string = connection_string[last_idx:]
+                    logger.warning(f"Detected nested asyncpg URL, extracted: {cls.mask_connection_string(connection_string)}")
+            
             # Handle both postgresql:// and postgresql+asyncpg://
             clean_url = connection_string.replace('postgresql+asyncpg://', 'postgresql://')
             
