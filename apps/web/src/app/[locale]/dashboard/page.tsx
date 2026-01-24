@@ -18,20 +18,10 @@ import {
   CheckCircle2,
   XCircle,
   Settings,
-  Activity,
   Database,
   Shield,
   Sparkles,
   Zap,
-  TrendingUp,
-  Heart,
-  Users,
-  BarChart3,
-  Brain,
-  Target,
-  FileText,
-  Globe,
-  ArrowRight,
 } from 'lucide-react';
 
 // Lazy load TemplateAIChat to avoid circular dependency issues during build

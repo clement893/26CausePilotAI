@@ -113,7 +113,7 @@ export default function DonateursPage() {
           <h1 className="text-3xl font-bold text-foreground mb-2">Donateurs</h1>
           <p className="text-muted-foreground">Gérez votre base de données de donateurs</p>
         </div>
-        <Link href={`/${locale}/dashboard/base-donateur/donateurs/new`}>
+        <Link href="/dashboard/base-donateur/donateurs/new">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
             Nouveau donateur
@@ -238,7 +238,7 @@ export default function DonateursPage() {
                         </Badge>
                       </td>
                       <td className="p-4 text-right">
-                        <Link href={`/${locale}/dashboard/base-donateur/donateurs/${donor.id}`}>
+                        <Link href={`/dashboard/base-donateur/donateurs/${donor.id}`}>
                           <Button variant="outline" size="sm">
                             Voir
                           </Button>
