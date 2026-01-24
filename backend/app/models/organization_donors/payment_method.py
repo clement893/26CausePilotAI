@@ -45,7 +45,7 @@ class PaymentMethod(Base):
     is_active = Column(Boolean, default=True, nullable=False, index=True)
     
     # Secure Metadata (encrypted/tokenized sensitive data)
-    metadata = Column(JSON, default=dict)  # Tokenized/encrypted payment data
+    extra_data = Column(JSON, name='metadata', default=dict)  # Tokenized/encrypted payment data
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

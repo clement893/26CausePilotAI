@@ -102,7 +102,7 @@ class DonationBase(BaseModel):
     is_anonymous: bool = False
     is_tax_deductible: bool = True
     tax_receipt_amount: Optional[Decimal] = None
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    extra_data: Dict[str, Any] = Field(default_factory=dict, alias='metadata')
 
 
 class DonationCreate(DonationBase):
@@ -123,7 +123,7 @@ class DonationUpdate(BaseModel):
     is_anonymous: Optional[bool] = None
     is_tax_deductible: Optional[bool] = None
     tax_receipt_amount: Optional[Decimal] = None
-    metadata: Optional[Dict[str, Any]] = None
+    extra_data: Optional[Dict[str, Any]] = Field(None, alias='metadata')
 
 
 class Donation(DonationBase):
@@ -159,7 +159,7 @@ class PaymentMethodBase(BaseModel):
     brand: Optional[str] = Field(None, max_length=50)
     is_default: bool = False
     is_active: bool = True
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    extra_data: Dict[str, Any] = Field(default_factory=dict, alias='metadata', serialization_alias='metadata')
 
 
 class PaymentMethodCreate(PaymentMethodBase):

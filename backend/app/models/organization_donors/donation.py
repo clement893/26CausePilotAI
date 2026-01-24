@@ -62,7 +62,7 @@ class Donation(Base):
     tax_receipt_amount = Column(Numeric(12, 2), nullable=True)  # Montant pour reçu fiscal
     
     # Metadata (JSON for flexibility)
-    metadata = Column(JSON, default=dict)  # Additional data (payment gateway response, etc.)
+    extra_data = Column(JSON, name='metadata', default=dict)  # Additional data (payment gateway response, etc.)
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
