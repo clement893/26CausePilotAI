@@ -212,21 +212,24 @@ export default function ThemePreviewPage() {
             )}
             {(() => {
               const fontWeight = config.typography.fontWeight;
-              return fontWeight && typeof fontWeight === 'object' && fontWeight !== null && (
-                <div>
-                  <Text className="text-sm font-medium mb-2">Poids de Police</Text>
-                  <div className="flex flex-wrap gap-4">
-                    {Object.entries(fontWeight).map(([key, value]) => (
-                    <div key={key} className="p-3 bg-muted rounded">
-                      <Text className="text-xs font-medium mb-1 capitalize">{key}</Text>
-                      <Text className="font-mono" style={{ fontWeight: String(value) }}>
-                        {String(value)}
-                      </Text>
+              if (fontWeight && typeof fontWeight === 'object' && fontWeight !== null) {
+                return (
+                  <div>
+                    <Text className="text-sm font-medium mb-2">Poids de Police</Text>
+                    <div className="flex flex-wrap gap-4">
+                      {Object.entries(fontWeight).map(([key, value]) => (
+                        <div key={key} className="p-3 bg-muted rounded">
+                          <Text className="text-xs font-medium mb-1 capitalize">{key}</Text>
+                          <Text className="font-mono" style={{ fontWeight: String(value) }}>
+                            {String(value)}
+                          </Text>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-              );
+                  </div>
+                );
+              }
+              return null;
             })()}
           </div>
         </Card>
