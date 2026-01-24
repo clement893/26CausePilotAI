@@ -59,6 +59,12 @@ def upgrade() -> None:
         END $$;
     """)
 
+    # Create enum types as PostgreSQL ENUM objects (create_type=False to avoid duplicate creation)
+    planinterval_enum = postgresql.ENUM('MONTH', 'YEAR', 'WEEK', 'DAY', name='planinterval', create_type=False)
+    planstatus_enum = postgresql.ENUM('ACTIVE', 'INACTIVE', 'ARCHIVED', name='planstatus', create_type=False)
+    subscriptionstatus_enum = postgresql.ENUM('ACTIVE', 'CANCELED', 'PAST_DUE', 'UNPAID', 'TRIALING', 'INCOMPLETE', 'INCOMPLETE_EXPIRED', name='subscriptionstatus', create_type=False)
+    invoicestatus_enum = postgresql.ENUM('DRAFT', 'OPEN', 'PAID', 'VOID', 'UNCOLLECTIBLE', name='invoicestatus', create_type=False)
+
     # Create plans table
     if 'plans' not in tables:
         op.create_table(
@@ -68,12 +74,12 @@ def upgrade() -> None:
         sa.Column('description', sa.Text(), nullable=True),
         sa.Column('amount', sa.Numeric(precision=10, scale=2), nullable=False),
         sa.Column('currency', sa.String(length=3), nullable=False, server_default='usd'),
-        sa.Column('interval', sa.Enum('MONTH', 'YEAR', 'WEEK', 'DAY', name='planinterval'), nullable=False, server_default='MONTH'),
+        sa.Column('interval', planinterval_enum, nullable=False, server_default='MONTH'),
         sa.Column('interval_count', sa.Integer(), nullable=False, server_default='1'),
         sa.Column('stripe_price_id', sa.String(length=255), nullable=True),
         sa.Column('stripe_product_id', sa.String(length=255), nullable=True),
         sa.Column('features', sa.Text(), nullable=True),
-        sa.Column('status', sa.Enum('ACTIVE', 'INACTIVE', 'ARCHIVED', name='planstatus'), nullable=False, server_default='ACTIVE'),
+        sa.Column('status', planstatus_enum, nullable=False, server_default='ACTIVE'),
         sa.Column('is_popular', sa.Boolean(), nullable=False, server_default='false'),
         sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
         sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
@@ -106,7 +112,7 @@ def upgrade() -> None:
         sa.Column('stripe_subscription_id', sa.String(length=255), nullable=True),
         sa.Column('stripe_customer_id', sa.String(length=255), nullable=True),
         sa.Column('stripe_payment_method_id', sa.String(length=255), nullable=True),
-        sa.Column('status', sa.Enum('ACTIVE', 'CANCELED', 'PAST_DUE', 'UNPAID', 'TRIALING', 'INCOMPLETE', 'INCOMPLETE_EXPIRED', name='subscriptionstatus'), nullable=False, server_default='INCOMPLETE'),
+        sa.Column('status', subscriptionstatus_enum, nullable=False, server_default='INCOMPLETE'),
         sa.Column('current_period_start', sa.DateTime(timezone=True), nullable=True),
         sa.Column('current_period_end', sa.DateTime(timezone=True), nullable=True),
         sa.Column('cancel_at_period_end', sa.Boolean(), nullable=False, server_default='false'),
@@ -156,7 +162,7 @@ def upgrade() -> None:
         sa.Column('amount_due', sa.Numeric(precision=10, scale=2), nullable=False),
         sa.Column('amount_paid', sa.Numeric(precision=10, scale=2), nullable=False, server_default='0'),
         sa.Column('currency', sa.String(length=3), nullable=False, server_default='usd'),
-        sa.Column('status', sa.Enum('DRAFT', 'OPEN', 'PAID', 'VOID', 'UNCOLLECTIBLE', name='invoicestatus'), nullable=False, server_default='DRAFT'),
+        sa.Column('status', invoicestatus_enum, nullable=False, server_default='DRAFT'),
         sa.Column('due_date', sa.DateTime(timezone=True), nullable=True),
         sa.Column('paid_at', sa.DateTime(timezone=True), nullable=True),
         sa.Column('invoice_pdf_url', sa.String(length=500), nullable=True),
