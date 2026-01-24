@@ -87,6 +87,55 @@ class OrganizationDatabaseManager:
             return f"{base_url}/{db_name}"
     
     @classmethod
+    def _normalize_port(cls, port_value) -> int:
+        """
+        Safely normalize a port value to an integer.
+        
+        Args:
+            port_value: Port value (int, str, None, or empty string)
+        
+        Returns:
+            Integer port (defaults to 5432 if invalid)
+        """
+        # Handle None
+        if port_value is None:
+            return 5432
+        
+        # Handle empty string explicitly
+        if isinstance(port_value, str):
+            port_str = port_value.strip()
+            if not port_str:  # Empty string after strip
+                return 5432
+            try:
+                port_int = int(port_str)
+                if 1 <= port_int <= 65535:
+                    return port_int
+                return 5432
+            except (ValueError, TypeError) as e:
+                logger.warning(f"Failed to convert port string '{port_value}' to int: {e}")
+                return 5432
+        
+        # Handle integer
+        if isinstance(port_value, int):
+            if 1 <= port_value <= 65535:
+                return port_value
+            return 5432
+        
+        # Try to convert other types
+        try:
+            # Convert to string first, then to int (handles edge cases)
+            port_str = str(port_value).strip()
+            if not port_str:
+                return 5432
+            port_int = int(port_str)
+            if 1 <= port_int <= 65535:
+                return port_int
+            return 5432
+        except (ValueError, TypeError) as e:
+            logger.warning(f"Failed to convert port value '{port_value}' (type: {type(port_value)}) to int: {e}")
+            return 5432
+    
+    @classmethod
     def parse_db_connection_string(cls, connection_string: str) -> dict:
         """
         Parse a database connection string and extract components.
@@ -100,31 +149,46 @@ class OrganizationDatabaseManager:
         try:
             # Handle both postgresql:// and postgresql+asyncpg://
             clean_url = connection_string.replace('postgresql+asyncpg://', 'postgresql://')
+            
+            # Fix malformed URLs: if there's a colon after host but no port (e.g., host:/db)
+            # This can happen when user pastes URL with trailing colon
+            if '@' in clean_url:
+                parts = clean_url.split('@', 1)
+                if len(parts) == 2:
+                    before_at = parts[0]
+                    after_at = parts[1]
+                    # Check for pattern like host:/db or host:/
+                    if ':' in after_at and '/' in after_at:
+                        host_port_db = after_at.split('/', 1)
+                        host_port = host_port_db[0]
+                        db_part = host_port_db[1] if len(host_port_db) > 1 else ''
+                        if ':' in host_port:
+                            host, port_str = host_port.split(':', 1)
+                            # If port is empty, add default port
+                            if not port_str or port_str == '':
+                                after_at = f'{host}:5432/{db_part}' if db_part else f'{host}:5432'
+                                clean_url = f'{before_at}@{after_at}'
+            
             parsed = urlparse(clean_url)
             
-            # Safely parse port - handle None, empty string, or invalid values
-            # urlparse.port can be None (not specified) or an integer (if specified)
-            # But if URL has ':' without port number, port might be in netloc as empty string
-            port = 5432  # Default PostgreSQL port
+            # Additional check: if netloc contains a colon but port is None or empty,
+            # manually extract and validate the port
+            port = None
             if parsed.port is not None:
-                # parsed.port is always an integer or None from urlparse, but check anyway
-                if isinstance(parsed.port, int):
-                    port = parsed.port
-                elif isinstance(parsed.port, str):
-                    # Handle string port (shouldn't happen with urlparse, but be safe)
-                    port_str = parsed.port.strip()
-                    if port_str:
-                        try:
-                            port = int(port_str)
-                        except (ValueError, TypeError):
-                            port = 5432
-                    else:
-                        port = 5432
+                port = cls._normalize_port(parsed.port)
+            elif parsed.netloc and ':' in parsed.netloc:
+                # Extract port from netloc manually
+                netloc_parts = parsed.netloc.rsplit(':', 1)
+                if len(netloc_parts) == 2:
+                    port_str = netloc_parts[1]
+                    port = cls._normalize_port(port_str)
                 else:
-                    try:
-                        port = int(parsed.port)
-                    except (ValueError, TypeError):
-                        port = 5432
+                    port = 5432
+            else:
+                port = 5432
+            
+            # Final safety check - ensure port is always an integer
+            port = cls._normalize_port(port)
             
             result = {
                 'scheme': parsed.scheme,
@@ -185,11 +249,12 @@ class OrganizationDatabaseManager:
             return db_connection_string
         
         # Remove any existing driver specification
-        normalized = db_connection_string
+        normalized = db_connection_string.strip()
         
         # Handle different PostgreSQL URL formats
         if normalized.startswith('postgresql+asyncpg://'):
-            return normalized  # Already correct
+            # Already correct format, but validate and fix port if needed
+            pass
         elif normalized.startswith('postgresql+psycopg2://'):
             normalized = normalized.replace('postgresql+psycopg2://', 'postgresql+asyncpg://', 1)
         elif normalized.startswith('postgresql://'):
@@ -202,6 +267,54 @@ class OrganizationDatabaseManager:
             if '@' in normalized and ':' in normalized:
                 # Looks like it might be a connection string without prefix
                 normalized = f'postgresql+asyncpg://{normalized}'
+        
+        # Validate and fix malformed URLs (e.g., host: without port)
+        # Parse to check for issues and ensure port is always present
+        try:
+            # Use parse_db_connection_string to validate and fix the URL
+            parsed = cls.parse_db_connection_string(normalized)
+            # Reconstruct URL with guaranteed valid port
+            port = parsed['port']
+            if not isinstance(port, int) or port < 1 or port > 65535:
+                port = 5432
+            
+            # Reconstruct the URL with the validated port
+            user_pass = ''
+            if parsed['user']:
+                if parsed['password']:
+                    user_pass = f"{parsed['user']}:{parsed['password']}@"
+                else:
+                    user_pass = f"{parsed['user']}@"
+            
+            db_part = f"/{parsed['database']}" if parsed['database'] else ''
+            normalized = f"postgresql+asyncpg://{user_pass}{parsed['host']}:{port}{db_part}"
+        except Exception as e:
+            # If parsing fails, try manual fix for common patterns
+            logger.warning(f"Failed to parse URL in normalize_connection_string: {e}, attempting manual fix")
+            # Try to fix common malformed patterns manually
+            if '@' in normalized:
+                parts = normalized.split('@', 1)
+                if len(parts) == 2:
+                    before_at = parts[0]
+                    after_at = parts[1]
+                    # Check for host:/db pattern
+                    if ':' in after_at:
+                        host_port_db = after_at.split('/', 1)
+                        host_port = host_port_db[0]
+                        db_part = '/' + host_port_db[1] if len(host_port_db) > 1 and host_port_db[1] else ''
+                        if ':' in host_port:
+                            host, port_str = host_port.split(':', 1)
+                            if not port_str or port_str == '' or port_str.startswith('/'):
+                                # Port is empty, add default
+                                normalized = f'{before_at}@{host}:5432{db_part}'
+                        else:
+                            # No port at all, add default
+                            normalized = f'{before_at}@{host_port}:5432{db_part}'
+                    elif '/' in after_at:
+                        # No port specified, add default
+                        host_part = after_at.split('/')[0]
+                        db_part = '/' + after_at.split('/', 1)[1] if '/' in after_at else ''
+                        normalized = f'{before_at}@{host_part}:5432{db_part}'
         
         return normalized
     
@@ -227,13 +340,33 @@ class OrganizationDatabaseManager:
         if not db_connection_string.startswith('postgresql+asyncpg://'):
             return False, "Format de chaîne de connexion invalide. Doit être une chaîne de connexion PostgreSQL valide.", None
         
-        # Parse to get host for better error messages
+        # Parse to validate and ensure port is valid
         try:
             parsed = cls.parse_db_connection_string(db_connection_string)
+            # Reconstruct URL with guaranteed valid port to avoid asyncpg parsing issues
+            port = parsed['port']
+            if not isinstance(port, int) or port < 1 or port > 65535:
+                port = 5432
+            
+            user_pass = ''
+            if parsed['user']:
+                if parsed['password']:
+                    user_pass = f"{parsed['user']}:{parsed['password']}@"
+                else:
+                    user_pass = f"{parsed['user']}@"
+            
+            db_part = f"/{parsed['database']}" if parsed['database'] else ''
+            # Reconstruct URL with validated components to ensure asyncpg can parse it
+            db_connection_string = f"postgresql+asyncpg://{user_pass}{parsed['host']}:{port}{db_part}"
         except ValueError as e:
             return False, f"Format de chaîne de connexion invalide: {str(e)}", None
+        except Exception as e:
+            logger.error(f"Error parsing connection string in test_connection: {e}", exc_info=True)
+            return False, f"Erreur lors de l'analyse de la chaîne de connexion: {str(e)}", None
         
         try:
+            # Log the connection string (masked) for debugging
+            logger.debug(f"Testing connection with URL: {cls.mask_connection_string(db_connection_string)}")
             
             # Create a temporary engine for testing
             test_engine = create_async_engine(
@@ -320,12 +453,7 @@ class OrganizationDatabaseManager:
         
         # Get admin connection (connect to 'postgres' database)
         # Ensure port is always an integer (parsed['port'] should already be int from parse_db_connection_string)
-        port = parsed['port']
-        if not isinstance(port, int):
-            try:
-                port = int(str(port).strip()) if str(port).strip() else 5432
-            except (ValueError, TypeError):
-                port = 5432
+        port = cls._normalize_port(parsed['port'])
         admin_url = f"postgresql+asyncpg://{parsed['user']}:{parsed['password']}@{parsed['host']}:{port}/postgres"
         
         try:
