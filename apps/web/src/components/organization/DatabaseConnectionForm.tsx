@@ -576,13 +576,31 @@ export function DatabaseConnectionForm({
       console.log('[DatabaseConnectionForm] Migration result:', result);
 
       if (result.success) {
-        const successMsg = result.message + (result.tables_created && result.tables_created.length > 0 
-          ? ` Tables créées: ${result.tables_created.join(', ')}`
-          : '');
+        const tablesCreated = result.tables_created || [];
+        const successMsg = result.message + (tablesCreated.length > 0 
+          ? `\n\n✅ ${tablesCreated.length} table(s) trouvée(s): ${tablesCreated.join(', ')}`
+          : '\n\n⚠️ Aucune table trouvée. Vérifiez que les migrations ont bien créé les tables.');
         console.log('[DatabaseConnectionForm] Migration successful:', successMsg);
-        setSuccess(successMsg);
-        // Reload tables after migration
+        console.log('[DatabaseConnectionForm] Tables created:', tablesCreated);
+        
+        // Reload tables after migration to get the latest list
+        console.log('[DatabaseConnectionForm] Reloading tables after migration...');
         await loadTables();
+        
+        // Build success message with tables from migration result
+        const finalTables = tablesCreated.length > 0 ? tablesCreated : [];
+        const finalSuccessMsg = result.message + (finalTables.length > 0 
+          ? `\n\n✅ ${finalTables.length} table(s) trouvée(s) dans la base de données:\n${finalTables.map(t => `   • ${t}`).join('\n')}`
+          : '\n\n⚠️ Aucune table trouvée après migration. Les tables devraient apparaître ci-dessous après rechargement.');
+        
+        console.log('[DatabaseConnectionForm] Migration completed. Tables:', finalTables);
+        setSuccess(finalSuccessMsg);
+        
+        // Also update the tables list if we got tables from the migration
+        if (finalTables.length > 0) {
+          setDatabaseTables(finalTables);
+        }
+        
         onUpdate(); // Refresh parent component
       } else {
         console.error('[DatabaseConnectionForm] Migration failed:', result.message);
@@ -628,19 +646,27 @@ export function DatabaseConnectionForm({
   };
 
   const loadTables = async () => {
-    if (!currentConnectionString) {
+    const activeConnectionString = currentConnectionString || connectionString;
+    if (!activeConnectionString) {
+      console.log('[DatabaseConnectionForm] loadTables: No connection string available');
       return;
     }
 
+    console.log('[DatabaseConnectionForm] loadTables: Loading tables for organization', organizationId);
     setIsLoadingTables(true);
     try {
       const result = await getOrganizationDatabaseTables(organizationId);
+      console.log('[DatabaseConnectionForm] loadTables: Result', result);
       if (result.success) {
-        setDatabaseTables(result.tables || []);
+        const tables = result.tables || [];
+        console.log('[DatabaseConnectionForm] loadTables: Found', tables.length, 'tables:', tables);
+        setDatabaseTables(tables);
         setDatabaseName(result.database_name || null);
+      } else {
+        console.warn('[DatabaseConnectionForm] loadTables: API returned success=false', result);
       }
     } catch (err) {
-      console.warn('Failed to load database tables:', err);
+      console.error('[DatabaseConnectionForm] loadTables: Error loading tables', err);
       // Don't show error, just log it
     } finally {
       setIsLoadingTables(false);
@@ -671,14 +697,20 @@ export function DatabaseConnectionForm({
   }, [currentConnectionString, connectionString]);
   
   // Hide edit form when connection is successfully saved
+  // Note: Don't auto-clear migration success messages - let user see the results
   useEffect(() => {
     if (success && (currentConnectionString || connectionString)) {
       setShowEditForm(false);
-      // Clear success message after 5 seconds
-      const timer = setTimeout(() => {
-        setSuccess(null);
-      }, 5000);
-      return () => clearTimeout(timer);
+      // Only auto-clear success messages for connection saves, not migrations
+      // Migration messages should persist so user can see what tables were created
+      const isMigrationMessage = success.includes('Migrations executed') || success.includes('table');
+      if (!isMigrationMessage) {
+        // Clear success message after 5 seconds for non-migration messages
+        const timer = setTimeout(() => {
+          setSuccess(null);
+        }, 5000);
+        return () => clearTimeout(timer);
+      }
     }
     return undefined;
   }, [success, currentConnectionString, connectionString]);
