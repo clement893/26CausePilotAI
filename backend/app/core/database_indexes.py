@@ -3,6 +3,7 @@ Database Index Management
 Creates and manages database indexes for optimal query performance
 """
 
+from typing import Optional
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.logging import logger

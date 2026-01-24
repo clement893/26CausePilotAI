@@ -3,6 +3,8 @@ Authentication Endpoints
 """
 
 import asyncio
+import base64
+import json
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 from urllib.parse import urlencode, urlparse
