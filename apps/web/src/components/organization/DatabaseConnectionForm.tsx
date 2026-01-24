@@ -618,6 +618,7 @@ export function DatabaseConnectionForm({
       }, 5000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [success, currentConnectionString, connectionString]);
   
   // Load tables when connection string is available
