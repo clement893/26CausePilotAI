@@ -7,9 +7,6 @@ import { useAuthStore } from '@/lib/store';
 import { bootstrapSuperAdmin, makeSuperAdmin, checkSuperAdminStatus } from '@/lib/api/admin';
 import { Shield, Key, Mail, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
-// Force dynamic rendering - disable static generation
-// Note: generateStaticParams() cannot be used in Client Components
-// These exports work for Client Components to prevent static generation
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
@@ -142,12 +139,12 @@ function BecomeSuperAdminContent() {
             <Card>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-foreground font-medium">Email:</span>
+                  <span className="text-muted-foreground font-medium">Email:</span>
                   <span className="text-foreground">{user.email}</span>
                 </div>
                 {isSuperAdmin !== null && (
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground font-medium">Statut Superadmin:</span>
+                    <span className="text-muted-foreground font-medium">Statut Superadmin:</span>
                     <Badge variant={isSuperAdmin ? 'success' : 'default'}>
                       {isSuperAdmin ? (
                         <>
@@ -286,7 +283,7 @@ function BecomeSuperAdminContent() {
           <Card>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   <Mail className="w-4 h-4 inline mr-1" />
                   Email de l'utilisateur à vérifier
                 </label>
