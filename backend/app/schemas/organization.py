@@ -189,13 +189,19 @@ class OrganizationMemberList(BaseModel):
 
 class UpdateDatabaseConnectionRequest(BaseModel):
     """Update organization database connection"""
-    db_connection_string: str = Field(..., min_length=1, description="PostgreSQL connection string")
-    test_connection: bool = Field(default=True, description="Test connection before saving")
+    db_connection_string: str = Field(..., min_length=1, description="PostgreSQL connection string", alias="dbConnectionString")
+    test_connection: bool = Field(default=True, description="Test connection before saving", alias="testConnection")
+    
+    class Config:
+        populate_by_name = True  # Accept both db_connection_string and dbConnectionString
 
 
 class TestConnectionRequest(BaseModel):
     """Test database connection"""
-    db_connection_string: str = Field(..., min_length=1, description="PostgreSQL connection string to test")
+    db_connection_string: str = Field(..., min_length=1, description="PostgreSQL connection string to test", alias="dbConnectionString")
+    
+    class Config:
+        populate_by_name = True  # Accept both db_connection_string and dbConnectionString
 
 
 class TestConnectionResponse(BaseModel):

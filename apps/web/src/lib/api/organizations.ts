@@ -131,9 +131,15 @@ export async function updateOrganizationDatabase(
   organizationId: string,
   data: UpdateDatabaseConnectionRequest
 ): Promise<Organization> {
+  // Convert camelCase to snake_case for backend
+  const requestData = {
+    db_connection_string: data.dbConnectionString,
+    test_connection: data.testConnection ?? true,
+  };
+  
   const response = await apiClient.patch<Organization>(
     `/v1/organizations/${organizationId}/database`,
-    data
+    requestData
   );
   return extractApiData(response);
 }
@@ -142,9 +148,14 @@ export async function testOrganizationDatabase(
   organizationId: string,
   data: TestConnectionRequest
 ): Promise<TestConnectionResponse> {
+  // Convert camelCase to snake_case for backend
+  const requestData = {
+    db_connection_string: data.dbConnectionString,
+  };
+  
   const response = await apiClient.post<TestConnectionResponse>(
     `/v1/organizations/${organizationId}/database/test`,
-    data
+    requestData
   );
   return extractApiData(response);
 }
