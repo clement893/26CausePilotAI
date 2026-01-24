@@ -10,7 +10,6 @@ import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute
 import { listOrganizations, deleteOrganization } from '@/lib/api/organizations';
 import type { OrganizationWithStats } from '@modele/types';
 import { Building, Plus, Settings, Users, Trash2, Eye, BarChart3 } from 'lucide-react';
-import { clsx } from 'clsx';
 
 function OrganisationsContent() {
   const router = useRouter();

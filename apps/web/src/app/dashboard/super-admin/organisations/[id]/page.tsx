@@ -5,7 +5,7 @@ export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { Container, Card, Button, Badge } from '@/components/ui';
+import { Container, Card, Button, Badge, Input } from '@/components/ui';
 import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
 import {
   getOrganization,
@@ -15,14 +15,12 @@ import {
   inviteMemberToOrganization,
   removeMemberFromOrganization,
 } from '@/lib/api/organizations';
-import type { Organization, OrganizationModule, OrganizationMember } from '@modele/types';
+import type { Organization, OrganizationModule, OrganizationMember, ModuleKey } from '@modele/types';
 import {
   ArrowLeft,
   Building,
   BarChart3,
   Users,
-  Settings,
-  Mail,
   Trash2,
   Plus,
   Check,
@@ -81,7 +79,7 @@ function OrganizationDetailsContent() {
     }
   };
 
-  const handleToggleModule = async (moduleKey: string, currentlyEnabled: boolean) => {
+  const handleToggleModule = async (moduleKey: ModuleKey, currentlyEnabled: boolean) => {
     try {
       await toggleOrganizationModule(organizationId, {
         moduleKey,
@@ -200,7 +198,7 @@ function OrganizationDetailsContent() {
                 </div>
                 <Button
                   size="sm"
-                  variant={module.isEnabled ? 'default' : 'ghost'}
+                  variant={module.isEnabled ? 'primary' : 'ghost'}
                   onClick={() => handleToggleModule(module.moduleKey, module.isEnabled)}
                 >
                   {module.isEnabled ? 'Désactiver' : 'Activer'}
@@ -223,7 +221,7 @@ function OrganizationDetailsContent() {
                 <Input
                   type="email"
                   value={inviteEmail}
-                  onChange={(e) => setInviteEmail(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInviteEmail(e.target.value)}
                   placeholder="email@exemple.com"
                   required
                 />

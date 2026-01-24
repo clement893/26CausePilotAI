@@ -49,16 +49,6 @@ export interface NavigationConfig {
   items: (NavigationItem | NavigationGroup)[];
 }
 
-// Map of module keys to navigation groups
-const MODULE_NAVIGATION_MAP: Record<ModuleKey, string> = {
-  'base-donateur': 'Base donateur',
-  'formulaires': 'Formulaires',
-  'campagnes': 'Campagnes',
-  'p2p': 'P2P',
-  'analytics': 'Analytics',
-  'administration': 'Administration',
-};
-
 /**
  * Get default navigation structure
  * Can be customized based on user permissions and enabled modules

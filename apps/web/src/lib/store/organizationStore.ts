@@ -10,7 +10,6 @@ import type {
   Organization,
   OrganizationWithStats,
   ModuleKey,
-  ActiveOrganizationContext,
 } from '@modele/types';
 import {
   listOrganizations,
@@ -37,7 +36,7 @@ interface OrganizationState {
 
 export const useOrganizationStore = create<OrganizationState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       // Initial state
       activeOrganization: null,
       availableOrganizations: [],

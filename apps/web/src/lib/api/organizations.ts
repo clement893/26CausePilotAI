@@ -5,6 +5,7 @@
  */
 
 import { apiClient } from './client';
+import { extractApiData } from './utils';
 import type {
   Organization,
   OrganizationWithStats,
@@ -26,19 +27,19 @@ export async function listOrganizations(
   const response = await apiClient.get<{ items: OrganizationWithStats[]; total: number }>(
     `/v1/organizations?skip=${skip}&limit=${limit}`
   );
-  return response;
+  return extractApiData(response);
 }
 
 export async function getOrganization(organizationId: string): Promise<Organization> {
   const response = await apiClient.get<Organization>(`/v1/organizations/${organizationId}`);
-  return response;
+  return extractApiData(response);
 }
 
 export async function createOrganization(
   data: CreateOrganizationRequest
 ): Promise<Organization> {
   const response = await apiClient.post<Organization>('/v1/organizations', data);
-  return response;
+  return extractApiData(response);
 }
 
 export async function updateOrganization(
@@ -49,7 +50,7 @@ export async function updateOrganization(
     `/v1/organizations/${organizationId}`,
     data
   );
-  return response;
+  return extractApiData(response);
 }
 
 export async function deleteOrganization(organizationId: string): Promise<void> {
@@ -64,7 +65,7 @@ export async function listOrganizationModules(
   const response = await apiClient.get<{ items: OrganizationModule[]; total: number }>(
     `/v1/organizations/${organizationId}/modules`
   );
-  return response;
+  return extractApiData(response);
 }
 
 export async function toggleOrganizationModule(
@@ -75,7 +76,7 @@ export async function toggleOrganizationModule(
     `/v1/organizations/${organizationId}/modules/toggle`,
     data
   );
-  return response;
+  return extractApiData(response);
 }
 
 // ============= Organization Members =============
@@ -86,7 +87,7 @@ export async function listOrganizationMembers(
   const response = await apiClient.get<{ items: OrganizationMember[]; total: number }>(
     `/v1/organizations/${organizationId}/members`
   );
-  return response;
+  return extractApiData(response);
 }
 
 export async function inviteMemberToOrganization(
@@ -97,7 +98,7 @@ export async function inviteMemberToOrganization(
     `/v1/organizations/${organizationId}/members`,
     data
   );
-  return response;
+  return extractApiData(response);
 }
 
 export async function removeMemberFromOrganization(
@@ -117,5 +118,5 @@ export async function getActiveOrganizationContext(
     : '/v1/organizations/context/active';
   
   const response = await apiClient.get<ActiveOrganizationContext>(url);
-  return response;
+  return extractApiData(response);
 }
