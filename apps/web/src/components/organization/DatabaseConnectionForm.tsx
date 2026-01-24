@@ -84,11 +84,11 @@ export function DatabaseConnectionForm({
           // If after @ there's a scheme (postgresql:// or postgres://), extract only that part
           if (afterLastAt.includes('postgresql://') || afterLastAt.includes('postgres://')) {
             const schemeMatch = afterLastAt.match(/(postgresql?:\/\/[^@]+)/);
-            if (schemeMatch) {
+            if (schemeMatch?.[1]) {
               // Extract only the host part (everything after postgresql:// or postgres://)
               const hostPart = schemeMatch[1].replace(/^postgresql?:\/\//, '');
               // Use only the host part, not the full URL
-              cleanHost = hostPart.split('/')[0]; // Get host:port part only
+              cleanHost = hostPart.split('/')[0] ?? hostPart;
             }
           }
         }
@@ -100,12 +100,12 @@ export function DatabaseConnectionForm({
         
         // If it still contains @, extract only the part after the last @
         if (urlString.includes('@')) {
-          urlString = urlString.split('@').pop() || urlString;
+          urlString = urlString.split('@').pop() ?? urlString;
         }
         
         // Remove database name if present (everything after /)
         if (urlString.includes('/')) {
-          urlString = urlString.split('/')[0];
+          urlString = urlString.split('/')[0] ?? urlString;
         }
         
         // Now parse as host:port
@@ -113,8 +113,8 @@ export function DatabaseConnectionForm({
         let port = '5432';
         if (urlString.includes(':')) {
           const parts = urlString.split(':');
-          hostname = parts[0];
-          port = parts[1] || '5432';
+          hostname = parts[0] ?? hostname;
+          port = parts[1] ?? '5432';
         }
         
         // Use parsed values or fallback to user-provided values
