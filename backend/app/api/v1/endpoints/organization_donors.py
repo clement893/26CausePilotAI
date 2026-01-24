@@ -91,8 +91,11 @@ async def list_donors(
     
     Supports pagination, search, and filtering.
     """
-    # Build query
-    query = select(Donor)
+    from sqlalchemy.exc import ProgrammingError, OperationalError
+    
+    try:
+        # Build query
+        query = select(Donor)
     
     # Apply filters
     if search:
@@ -225,42 +228,63 @@ async def create_donor(
     current_user: User = Depends(get_current_user),
 ):
     """Create new donor"""
-    # Get organization_id from query param (required for now)
-    # TODO: Get from org_db context or request state
+    from sqlalchemy.exc import ProgrammingError, OperationalError
     
-    # Check if donor with email already exists
-    existing_query = select(Donor).where(Donor.email == donor_in.email)
-    existing_result = await org_db.execute(existing_query)
-    existing = existing_result.scalar_one_or_none()
-    
-    if existing:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Donor with this email already exists"
+    try:
+        # Check if donor with email already exists
+        existing_query = select(Donor).where(Donor.email == donor_in.email)
+        existing_result = await org_db.execute(existing_query)
+        existing = existing_result.scalar_one_or_none()
+        
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Donor with this email already exists"
+            )
+        
+        # Create donor
+        donor = Donor(
+            **donor_in.dict(),
+            organization_id=organization_id,
         )
-    
-    # Create donor
-    donor = Donor(
-        **donor_in.dict(),
-        organization_id=organization_id,
-    )
-    
-    org_db.add(donor)
-    await org_db.commit()
-    await org_db.refresh(donor)
-    
-    # Create activity
-    activity = DonorActivity(
-        donor_id=donor.id,
-        organization_id=organization_id,
-        activity_type='profile_created',
-        activity_data={"created_by": current_user.id},
-        performed_by=current_user.id,
-    )
-    org_db.add(activity)
-    await org_db.commit()
-    
-    return donor
+        
+        org_db.add(donor)
+        await org_db.commit()
+        await org_db.refresh(donor)
+        
+        # Create activity (only if table exists)
+        try:
+            activity = DonorActivity(
+                donor_id=donor.id,
+                organization_id=organization_id,
+                activity_type='profile_created',
+                activity_data={"created_by": current_user.id},
+                performed_by=current_user.id,
+            )
+            org_db.add(activity)
+            await org_db.commit()
+        except (ProgrammingError, OperationalError) as e:
+            # If activity table doesn't exist, log but don't fail
+            logger.warning(f"Could not create donor activity (table may not exist): {e}")
+            await org_db.rollback()
+        
+        return donor
+        
+    except (ProgrammingError, OperationalError) as e:
+        error_msg = str(e).lower()
+        if "does not exist" in error_msg or "relation" in error_msg:
+            # Table doesn't exist - migrations needed
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    "Database tables not found. Please run migrations on the organization database. "
+                    f"Use POST /api/v1/organizations/{organization_id}/database/migrate to run migrations."
+                )
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
 
 
 @router.patch("/{organization_id}/donors/{donor_id}", response_model=DonorSchema)

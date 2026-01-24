@@ -1021,9 +1021,17 @@ class OrganizationDatabaseManager:
             # Normalize connection string
             db_connection_string = cls.normalize_connection_string(db_connection_string)
             
+            # Convert asyncpg to psycopg2 for Alembic (Alembic doesn't support asyncpg)
+            # This matches what env.py does
+            alembic_db_url = db_connection_string
+            if "postgresql+asyncpg://" in alembic_db_url:
+                alembic_db_url = alembic_db_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
+            elif "postgresql://" in alembic_db_url and "+" not in alembic_db_url:
+                alembic_db_url = alembic_db_url.replace("postgresql://", "postgresql+psycopg2://")
+            
             # Create alembic config
             alembic_cfg = Config("alembic.ini")
-            alembic_cfg.set_main_option("sqlalchemy.url", db_connection_string)
+            alembic_cfg.set_main_option("sqlalchemy.url", alembic_db_url)
             
             # Run migrations
             command.upgrade(alembic_cfg, "head")

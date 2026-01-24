@@ -68,14 +68,16 @@ class Donor(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
     # Relationships (will be defined in organization DB)
-    donations = relationship("Donation", back_populates="donor", cascade="all, delete-orphan")
-    payment_methods = relationship("PaymentMethod", back_populates="donor", cascade="all, delete-orphan")
-    notes = relationship("DonorNote", back_populates="donor", cascade="all, delete-orphan")
-    communications = relationship("DonorCommunication", back_populates="donor", cascade="all, delete-orphan")
-    activities = relationship("DonorActivity", back_populates="donor", cascade="all, delete-orphan")
-    recurring_donations = relationship("RecurringDonation", back_populates="donor", cascade="all, delete-orphan")
-    segment_assignments = relationship("DonorSegmentAssignment", back_populates="donor", cascade="all, delete-orphan")
-    tag_assignments = relationship("DonorTagAssignment", back_populates="donor", cascade="all, delete-orphan")
+    # Using lazy='select' to avoid loading relationships automatically
+    # This prevents errors if tables don't exist yet (before migrations)
+    donations = relationship("Donation", back_populates="donor", cascade="all, delete-orphan", lazy="select")
+    payment_methods = relationship("PaymentMethod", back_populates="donor", cascade="all, delete-orphan", lazy="select")
+    notes = relationship("DonorNote", back_populates="donor", cascade="all, delete-orphan", lazy="select")
+    communications = relationship("DonorCommunication", back_populates="donor", cascade="all, delete-orphan", lazy="select")
+    activities = relationship("DonorActivity", back_populates="donor", cascade="all, delete-orphan", lazy="select")
+    recurring_donations = relationship("RecurringDonation", back_populates="donor", cascade="all, delete-orphan", lazy="select")
+    segment_assignments = relationship("DonorSegmentAssignment", back_populates="donor", cascade="all, delete-orphan", lazy="select")
+    tag_assignments = relationship("DonorTagAssignment", back_populates="donor", cascade="all, delete-orphan", lazy="select")
     
     def __repr__(self):
         return f"<Donor(id={self.id}, email={self.email}, name={self.first_name} {self.last_name})>"

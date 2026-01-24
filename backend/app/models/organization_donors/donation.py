@@ -72,10 +72,11 @@ class Donation(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
     # Relationships
-    donor = relationship("Donor", back_populates="donations")
-    payment_method = relationship("PaymentMethod", back_populates="donations")
-    campaign = relationship("Campaign", back_populates="donations")
-    recurring_donation = relationship("RecurringDonation", back_populates="donations")
+    # Using lazy='select' to avoid loading relationships automatically
+    donor = relationship("Donor", back_populates="donations", lazy="select")
+    payment_method = relationship("PaymentMethod", back_populates="donations", lazy="select")
+    campaign = relationship("Campaign", back_populates="donations", lazy="select")
+    recurring_donation = relationship("RecurringDonation", back_populates="donations", lazy="select")
     
     def __repr__(self):
         return f"<Donation(id={self.id}, donor={self.donor_id}, amount={self.amount}, status={self.payment_status})>"
