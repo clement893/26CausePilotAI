@@ -89,10 +89,27 @@ async def list_donors(
     if max_total_donated is not None:
         query = query.where(Donor.total_donated <= max_total_donated)
     
-    # Get total count
-    count_query = select(func.count()).select_from(query.subquery())
+    # Get total count - build count query with same filters
+    count_query = select(func.count(Donor.id))
+    if search:
+        search_filter = or_(
+            Donor.email.ilike(f"%{search}%"),
+            Donor.first_name.ilike(f"%{search}%"),
+            Donor.last_name.ilike(f"%{search}%"),
+        )
+        count_query = count_query.where(search_filter)
+    if is_active is not None:
+        count_query = count_query.where(Donor.is_active == is_active)
+    if tags:
+        for tag in tags:
+            count_query = count_query.where(Donor.tags.contains([tag]))
+    if min_total_donated is not None:
+        count_query = count_query.where(Donor.total_donated >= min_total_donated)
+    if max_total_donated is not None:
+        count_query = count_query.where(Donor.total_donated <= max_total_donated)
+    
     total_result = await org_db.execute(count_query)
-    total = total_result.scalar_one()
+    total = total_result.scalar_one() or 0
     
     # Apply pagination
     offset = (page - 1) * page_size
@@ -308,10 +325,13 @@ async def list_donor_donations(
     if payment_status:
         query = query.where(Donation.payment_status == payment_status)
     
-    # Get total count
-    count_query = select(func.count()).select_from(query.subquery())
+    # Get total count - build count query with same filters
+    count_query = select(func.count(Donation.id)).where(Donation.donor_id == donor_id)
+    if payment_status:
+        count_query = count_query.where(Donation.payment_status == payment_status)
+    
     total_result = await org_db.execute(count_query)
-    total = total_result.scalar_one()
+    total = total_result.scalar_one() or 0
     
     # Apply pagination
     offset = (page - 1) * page_size

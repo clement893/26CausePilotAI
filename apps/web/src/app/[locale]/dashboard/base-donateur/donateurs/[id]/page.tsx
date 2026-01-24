@@ -27,7 +27,7 @@ export default function DonorDetailPage() {
   const [error, setError] = useState<string | null>(null);
   
   // Update activeTab when tab changes
-  const handleTabChange = (tabId: string) => {
+  const handleTabChange = (_tabId: string) => {
     // Tab change handler
   };
 
