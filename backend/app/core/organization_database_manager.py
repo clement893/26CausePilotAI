@@ -34,9 +34,55 @@ class OrganizationDatabaseManager:
     
     @classmethod
     def get_org_db_base_url(cls) -> Optional[str]:
-        """Get base database URL for organization databases"""
+        """
+        Get base database URL for organization databases.
+        
+        If ORG_DB_BASE_URL is not set, derives it from DATABASE_URL by removing the database name.
+        """
         base_url = getattr(settings, 'ORG_DB_BASE_URL', None)
-        return str(base_url) if base_url else None
+        if base_url:
+            return str(base_url)
+        
+        # Fallback: derive from DATABASE_URL
+        # Extract base URL (without database name) from DATABASE_URL
+        db_url = str(settings.DATABASE_URL)
+        
+        # Remove the database name from the URL
+        # Format: postgresql+asyncpg://user:pass@host:port/dbname?params
+        if "/" in db_url:
+            # Find query string and fragment positions
+            query_idx = db_url.find("?")
+            fragment_idx = db_url.find("#")
+            
+            # Find the last slash before query/fragment (this is before the database name)
+            if query_idx > 0 or fragment_idx > 0:
+                # Find the minimum valid index (first occurrence of ? or #)
+                valid_indices = [idx for idx in [query_idx, fragment_idx] if idx > 0]
+                if valid_indices:
+                    end_idx = min(valid_indices)
+                    last_slash_idx = db_url.rfind("/", 0, end_idx)
+                else:
+                    last_slash_idx = db_url.rfind("/")
+            else:
+                last_slash_idx = db_url.rfind("/")
+            
+            if last_slash_idx > 0:
+                # Extract base URL without database name
+                base_without_db = db_url[:last_slash_idx]
+                # Preserve query string and fragment if they exist
+                query_part = ""
+                if query_idx > 0:
+                    query_part = db_url[query_idx:]
+                elif fragment_idx > 0:
+                    query_part = db_url[fragment_idx:]
+                
+                base_url = base_without_db + query_part
+                logger.info("Derived ORG_DB_BASE_URL from DATABASE_URL")
+                return base_url
+        
+        # If we can't parse it, return None
+        logger.warning("Could not derive ORG_DB_BASE_URL from DATABASE_URL")
+        return None
     
     @classmethod
     def get_org_db_prefix(cls) -> str:
@@ -69,7 +115,7 @@ class OrganizationDatabaseManager:
             organization_slug: Organization slug
         
         Returns:
-            Connection string or None if ORG_DB_BASE_URL is not configured
+            Connection string or None if base URL cannot be determined
         """
         base_url = cls.get_org_db_base_url()
         if not base_url:
@@ -77,14 +123,37 @@ class OrganizationDatabaseManager:
         
         db_name = cls.get_organization_db_name(organization_slug)
         
-        # Parse base URL and replace database name
-        # Format: postgresql+asyncpg://user:pass@host:port/dbname
+        # Parse base URL and add database name
+        # Format: postgresql+asyncpg://user:pass@host:port/dbname?params
+        # The base_url should already be without database name (from get_org_db_base_url)
+        
+        # Check if base_url already ends with a database name (shouldn't happen, but handle it)
         if "/" in base_url:
-            parts = base_url.rsplit("/", 1)
-            base_without_db = parts[0]
-            return f"{base_without_db}/{db_name}"
-        else:
-            return f"{base_url}/{db_name}"
+            # Check if there's a query string or fragment
+            query_idx = base_url.find("?")
+            fragment_idx = base_url.find("#")
+            
+            # Find the last slash before query/fragment
+            valid_indices = [idx for idx in [query_idx, fragment_idx] if idx > 0]
+            if valid_indices:
+                end_idx = min(valid_indices)
+                last_slash_idx = base_url.rfind("/", 0, end_idx)
+            else:
+                last_slash_idx = base_url.rfind("/")
+            
+            if last_slash_idx > 0:
+                # Extract the part before the last slash (base without db)
+                base_without_db = base_url[:last_slash_idx]
+                # Extract query string and fragment if they exist
+                query_part = ""
+                if query_idx > 0:
+                    query_part = base_url[query_idx:]
+                elif fragment_idx > 0:
+                    query_part = base_url[fragment_idx:]
+                return f"{base_without_db}/{db_name}{query_part}"
+        
+        # If no slash found, just append the database name
+        return f"{base_url}/{db_name}"
     
     @classmethod
     def _normalize_port(cls, port_value) -> int:
