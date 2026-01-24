@@ -1125,16 +1125,18 @@ async def google_oauth_callback(
             # Use a fresh database session for critical operations after Google API calls
             # The original session might be stale after long-running HTTP requests
             from app.core.database import AsyncSessionLocal
+            from sqlalchemy.exc import OperationalError, DatabaseError
             
             max_db_retries = 3
             db_retry_delay = 0.5  # Start with 0.5 seconds
             user = None
             is_new_user = False
+            last_db_error = None
             
             for db_attempt in range(max_db_retries):
-                # Create a fresh session for each attempt to ensure connection validity
-                async with AsyncSessionLocal() as fresh_db:
-                    try:
+                try:
+                    # Create a fresh session for each attempt to ensure connection validity
+                    async with AsyncSessionLocal() as fresh_db:
                         # Check if user exists
                         result = await fresh_db.execute(
                             select(User).where(User.email == email)
@@ -1173,63 +1175,67 @@ async def google_oauth_callback(
                         await fresh_db.refresh(user)
                         break  # Success, exit retry loop
                         
-                    except Exception as db_error:
-                        error_str = str(db_error)
-                        error_type = type(db_error).__name__
-                        error_module = type(db_error).__module__
-                        
-                        # Check if it's a database connection error
-                        is_db_connection_error = (
-                            "sqlalchemy" in error_module.lower() or
-                            "asyncpg" in error_module.lower() or
-                            "psycopg" in error_module.lower() or
-                            "OperationalError" in error_type or
-                            "DatabaseError" in error_type or
-                            "postgres" in error_str.lower() or
-                            "database" in error_str.lower() or
-                            "connection" in error_str.lower() or
-                            "pool" in error_str.lower() or
-                            "timeout" in error_str.lower()
+                except Exception as db_error:
+                    last_db_error = db_error
+                    error_str = str(db_error)
+                    error_type = type(db_error).__name__
+                    error_module = type(db_error).__module__
+                    
+                    # Check if it's a database connection error
+                    is_db_connection_error = (
+                        "sqlalchemy" in error_module.lower() or
+                        "asyncpg" in error_module.lower() or
+                        "psycopg" in error_module.lower() or
+                        "OperationalError" in error_type or
+                        "DatabaseError" in error_type or
+                        "postgres" in error_str.lower() or
+                        "database" in error_str.lower() or
+                        "connection" in error_str.lower() or
+                        "pool" in error_str.lower() or
+                        "timeout" in error_str.lower()
+                    )
+                    
+                    # Check if it's a missing table error (migrations not run)
+                    is_missing_table_error = (
+                        "UndefinedTableError" in error_type or
+                        "relation" in error_str.lower() and "does not exist" in error_str.lower() or
+                        "table" in error_str.lower() and "does not exist" in error_str.lower()
+                    )
+                    
+                    if is_missing_table_error:
+                        # Missing table error - migrations not run, don't retry
+                        logger.error(
+                            f"Database table missing during Google OAuth: {error_str}. "
+                            f"This usually means database migrations have not been run successfully."
                         )
-                        
-                        # Check if it's a missing table error (migrations not run)
-                        is_missing_table_error = (
-                            "UndefinedTableError" in error_type or
-                            "relation" in error_str.lower() and "does not exist" in error_str.lower() or
-                            "table" in error_str.lower() and "does not exist" in error_str.lower()
+                        raise HTTPException(
+                            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                            detail="Database tables are missing. Please ensure database migrations have been run successfully. The Google OAuth authentication succeeded, but user data could not be saved because the database schema is incomplete."
                         )
-                        
-                        if is_missing_table_error:
-                            # Missing table error - migrations not run, don't retry
-                            logger.error(
-                                f"Database table missing during Google OAuth: {error_str}. "
-                                f"This usually means database migrations have not been run successfully."
-                            )
-                            raise HTTPException(
-                                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                                detail="Database tables are missing. Please ensure database migrations have been run successfully. The Google OAuth authentication succeeded, but user data could not be saved because the database schema is incomplete."
-                            )
-                        elif is_db_connection_error and db_attempt < max_db_retries - 1:
-                            # Retry with exponential backoff
-                            logger.warning(
-                                f"Database connection error during Google OAuth (attempt {db_attempt + 1}/{max_db_retries}): {error_str}. "
-                                f"Retrying in {db_retry_delay} seconds with fresh session..."
-                            )
-                            await asyncio.sleep(db_retry_delay)
-                            db_retry_delay *= 2  # Exponential backoff
-                            
-                            # Rollback the failed transaction
-                            try:
-                                await fresh_db.rollback()
-                            except Exception:
-                                pass  # Ignore rollback errors
-                        else:
-                            # Last attempt failed or not a connection error - re-raise
-                            logger.error(
-                                f"Database error during Google OAuth (attempt {db_attempt + 1}/{max_db_retries}): {error_str}",
-                                exc_info=True
-                            )
-                            raise
+                    elif is_db_connection_error and db_attempt < max_db_retries - 1:
+                        # Retry with exponential backoff
+                        logger.warning(
+                            f"Database connection error during Google OAuth (attempt {db_attempt + 1}/{max_db_retries}): {error_str}. "
+                            f"Retrying in {db_retry_delay} seconds with fresh session..."
+                        )
+                        await asyncio.sleep(db_retry_delay)
+                        db_retry_delay *= 2  # Exponential backoff
+                        continue  # Retry
+                    else:
+                        # Last attempt failed or not a connection error - re-raise
+                        logger.error(
+                            f"Database error during Google OAuth (attempt {db_attempt + 1}/{max_db_retries}): {error_str}",
+                            exc_info=True
+                        )
+                        raise
+            
+            # If we exhausted all retries without success, check if we have an error to report
+            if user is None and last_db_error is not None:
+                logger.error(f"Failed to save user after {max_db_retries} attempts: {last_db_error}")
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Database connection failed after multiple retry attempts. Please check your database configuration and ensure the database service is available. The Google OAuth authentication succeeded, but user data could not be saved."
+                )
             
             # Create JWT token (use email as subject, consistent with login endpoint)
             access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
