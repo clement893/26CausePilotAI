@@ -21,49 +21,20 @@ def upgrade() -> None:
     inspector = sa.inspect(conn)
     tables = inspector.get_table_names()
 
-    # Check if enum types exist, create them if they don't
-    # PostgreSQL enum types are created automatically by SQLAlchemy when creating tables,
-    # but we need to check if they exist first to avoid errors
-    # Use raw SQL with DO block to avoid duplicate errors (PostgreSQL doesn't support CREATE TYPE IF NOT EXISTS)
+    # Create enum types using SQLAlchemy with checkfirst=True to avoid duplicate creation
+    # This ensures SQLAlchemy recognizes the types and won't try to create them again
+    planinterval_enum = postgresql.ENUM('MONTH', 'YEAR', 'WEEK', 'DAY', name='planinterval', create_type=True)
+    planstatus_enum = postgresql.ENUM('ACTIVE', 'INACTIVE', 'ARCHIVED', name='planstatus', create_type=True)
+    subscriptionstatus_enum = postgresql.ENUM('ACTIVE', 'CANCELED', 'PAST_DUE', 'UNPAID', 'TRIALING', 'INCOMPLETE', 'INCOMPLETE_EXPIRED', name='subscriptionstatus', create_type=True)
+    invoicestatus_enum = postgresql.ENUM('DRAFT', 'OPEN', 'PAID', 'VOID', 'UNCOLLECTIBLE', name='invoicestatus', create_type=True)
     
-    # Create enum types only if they don't exist
-    op.execute("""
-        DO $$ BEGIN
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'planinterval') THEN
-                CREATE TYPE planinterval AS ENUM ('MONTH', 'YEAR', 'WEEK', 'DAY');
-            END IF;
-        END $$;
-    """)
-    
-    op.execute("""
-        DO $$ BEGIN
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'planstatus') THEN
-                CREATE TYPE planstatus AS ENUM ('ACTIVE', 'INACTIVE', 'ARCHIVED');
-            END IF;
-        END $$;
-    """)
-    
-    op.execute("""
-        DO $$ BEGIN
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'subscriptionstatus') THEN
-                CREATE TYPE subscriptionstatus AS ENUM ('ACTIVE', 'CANCELED', 'PAST_DUE', 'UNPAID', 'TRIALING', 'INCOMPLETE', 'INCOMPLETE_EXPIRED');
-            END IF;
-        END $$;
-    """)
-    
-    op.execute("""
-        DO $$ BEGIN
-            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'invoicestatus') THEN
-                CREATE TYPE invoicestatus AS ENUM ('DRAFT', 'OPEN', 'PAID', 'VOID', 'UNCOLLECTIBLE');
-            END IF;
-        END $$;
-    """)
-
-    # Create enum types as PostgreSQL ENUM objects (create_type=False to avoid duplicate creation)
-    planinterval_enum = postgresql.ENUM('MONTH', 'YEAR', 'WEEK', 'DAY', name='planinterval', create_type=False)
-    planstatus_enum = postgresql.ENUM('ACTIVE', 'INACTIVE', 'ARCHIVED', name='planstatus', create_type=False)
-    subscriptionstatus_enum = postgresql.ENUM('ACTIVE', 'CANCELED', 'PAST_DUE', 'UNPAID', 'TRIALING', 'INCOMPLETE', 'INCOMPLETE_EXPIRED', name='subscriptionstatus', create_type=False)
-    invoicestatus_enum = postgresql.ENUM('DRAFT', 'OPEN', 'PAID', 'VOID', 'UNCOLLECTIBLE', name='invoicestatus', create_type=False)
+    # Create enum types only if they don't exist (using checkfirst)
+    # This prevents duplicate creation errors
+    bind = op.get_bind()
+    planinterval_enum.create(bind, checkfirst=True)
+    planstatus_enum.create(bind, checkfirst=True)
+    subscriptionstatus_enum.create(bind, checkfirst=True)
+    invoicestatus_enum.create(bind, checkfirst=True)
 
     # Create plans table
     if 'plans' not in tables:
