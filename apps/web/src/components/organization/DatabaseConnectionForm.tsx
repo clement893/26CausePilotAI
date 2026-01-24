@@ -571,40 +571,58 @@ export function DatabaseConnectionForm({
     setTestResult(null);
 
     try {
-      console.log('[DatabaseConnectionForm] Calling migrateOrganizationDatabase API...');
+      console.log('[DatabaseConnectionForm] ⚡ STEP 1: Calling migrateOrganizationDatabase API...', { organizationId });
+      const startTime = Date.now();
       const result = await migrateOrganizationDatabase(organizationId);
-      console.log('[DatabaseConnectionForm] Migration result:', result);
+      const duration = Date.now() - startTime;
+      console.log('[DatabaseConnectionForm] ⚡ STEP 2: Migration API returned after', duration, 'ms');
+      console.log('[DatabaseConnectionForm] ⚡ STEP 2: Migration result:', JSON.stringify(result, null, 2));
+      console.log('[DatabaseConnectionForm] ⚡ STEP 2: result.success =', result?.success);
+      console.log('[DatabaseConnectionForm] ⚡ STEP 2: result.message =', result?.message);
+      console.log('[DatabaseConnectionForm] ⚡ STEP 2: result.tables_created =', result?.tables_created);
 
-      if (result.success) {
+      console.log('[DatabaseConnectionForm] ⚡ STEP 3: Checking result.success...');
+      if (result && result.success === true) {
+        console.log('[DatabaseConnectionForm] ⚡ STEP 4: Migration was successful!');
         const tablesCreated = result.tables_created || [];
-        const successMsg = result.message + (tablesCreated.length > 0 
-          ? `\n\n✅ ${tablesCreated.length} table(s) trouvée(s): ${tablesCreated.join(', ')}`
-          : '\n\n⚠️ Aucune table trouvée. Vérifiez que les migrations ont bien créé les tables.');
-        console.log('[DatabaseConnectionForm] Migration successful:', successMsg);
-        console.log('[DatabaseConnectionForm] Tables created:', tablesCreated);
+        console.log('[DatabaseConnectionForm] ⚡ STEP 4: Tables from API:', tablesCreated);
         
         // Reload tables after migration to get the latest list
-        console.log('[DatabaseConnectionForm] Reloading tables after migration...');
+        console.log('[DatabaseConnectionForm] ⚡ STEP 5: Reloading tables after migration...');
         await loadTables();
+        console.log('[DatabaseConnectionForm] ⚡ STEP 5: Tables reloaded');
         
         // Build success message with tables from migration result
         const finalTables = tablesCreated.length > 0 ? tablesCreated : [];
-        const finalSuccessMsg = result.message + (finalTables.length > 0 
-          ? `\n\n✅ ${finalTables.length} table(s) trouvée(s) dans la base de données:\n${finalTables.map(t => `   • ${t}`).join('\n')}`
-          : '\n\n⚠️ Aucune table trouvée après migration. Les tables devraient apparaître ci-dessous après rechargement.');
+        const finalSuccessMsg = `✅ Migration réussie!\n\n${result.message || 'Les migrations ont été exécutées avec succès.'}` + (finalTables.length > 0 
+          ? `\n\n📊 ${finalTables.length} table(s) trouvée(s) dans la base de données:\n${finalTables.map(t => `   • ${t}`).join('\n')}`
+          : '\n\n⚠️ Aucune table trouvée après migration. Vérifiez les logs du backend.');
         
-        console.log('[DatabaseConnectionForm] Migration completed. Tables:', finalTables);
+        console.log('[DatabaseConnectionForm] ⚡ STEP 6: Setting success message:', finalSuccessMsg);
+        console.log('[DatabaseConnectionForm] ⚡ STEP 6: Final tables:', finalTables);
+        
+        // Set success message - this should persist
         setSuccess(finalSuccessMsg);
+        setIsMigrating(false); // Stop loading state
         
         // Also update the tables list if we got tables from the migration
         if (finalTables.length > 0) {
+          console.log('[DatabaseConnectionForm] ⚡ STEP 7: Updating databaseTables state with', finalTables.length, 'tables');
           setDatabaseTables(finalTables);
         }
         
+        console.log('[DatabaseConnectionForm] ⚡ STEP 8: Calling onUpdate() to refresh parent...');
         onUpdate(); // Refresh parent component
+        console.log('[DatabaseConnectionForm] ⚡ STEP 9: Migration process completed successfully!');
       } else {
-        console.error('[DatabaseConnectionForm] Migration failed:', result.message);
-        setError(result.message || 'La migration a échoué');
+        console.error('[DatabaseConnectionForm] ❌ STEP 4: Migration failed!', {
+          result,
+          success: result?.success,
+          message: result?.message
+        });
+        const errorMsg = result?.message || 'La migration a échoué sans message d\'erreur';
+        setError(errorMsg);
+        setIsMigrating(false);
       }
     } catch (err) {
       console.error('[DatabaseConnectionForm] Migration error:', err);
@@ -703,13 +721,29 @@ export function DatabaseConnectionForm({
       setShowEditForm(false);
       // Only auto-clear success messages for connection saves, not migrations
       // Migration messages should persist so user can see what tables were created
-      const isMigrationMessage = success.includes('Migrations executed') || success.includes('table');
+      const isMigrationMessage = success.includes('Migration') || 
+                                 success.includes('migration') || 
+                                 success.includes('Migrations') ||
+                                 success.includes('table') ||
+                                 success.includes('Table');
+      console.log('[DatabaseConnectionForm] useEffect success check:', {
+        success,
+        isMigrationMessage,
+        willAutoClear: !isMigrationMessage
+      });
       if (!isMigrationMessage) {
         // Clear success message after 5 seconds for non-migration messages
+        console.log('[DatabaseConnectionForm] Setting timer to clear non-migration success message in 5s');
         const timer = setTimeout(() => {
+          console.log('[DatabaseConnectionForm] Clearing success message (non-migration)');
           setSuccess(null);
         }, 5000);
-        return () => clearTimeout(timer);
+        return () => {
+          console.log('[DatabaseConnectionForm] Clearing timer for success message');
+          clearTimeout(timer);
+        };
+      } else {
+        console.log('[DatabaseConnectionForm] Migration success message detected - will NOT auto-clear');
       }
     }
     return undefined;

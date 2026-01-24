@@ -211,17 +211,45 @@ export interface MigrateDatabaseResponse {
 export async function migrateOrganizationDatabase(
   organizationId: string
 ): Promise<MigrateDatabaseResponse> {
-  console.log('[API] migrateOrganizationDatabase called', { organizationId });
+  console.log('[API] 🔵 migrateOrganizationDatabase called', { organizationId });
   try {
+    console.log('[API] 🔵 Making POST request to /v1/organizations/${organizationId}/database/migrate');
     const response = await apiClient.post<MigrateDatabaseResponse>(
       `/v1/organizations/${organizationId}/database/migrate`
     );
-    console.log('[API] migrateOrganizationDatabase response:', response);
+    console.log('[API] 🔵 Raw response received:', {
+      status: response.status,
+      statusText: response.statusText,
+      data: response.data,
+      headers: response.headers
+    });
+    
+    console.log('[API] 🔵 Extracting data from response...');
     const data = extractApiData(response);
-    console.log('[API] migrateOrganizationDatabase extracted data:', data);
+    console.log('[API] 🔵 Extracted data:', JSON.stringify(data, null, 2));
+    console.log('[API] 🔵 Data type:', typeof data);
+    console.log('[API] 🔵 Data.success:', data?.success);
+    console.log('[API] 🔵 Data.message:', data?.message);
+    console.log('[API] 🔵 Data.tables_created:', data?.tables_created);
+    
+    if (!data) {
+      console.error('[API] ❌ extractApiData returned null/undefined!');
+      throw new Error('La réponse de l\'API est vide');
+    }
+    
     return data;
   } catch (error) {
-    console.error('[API] migrateOrganizationDatabase error:', error);
+    console.error('[API] ❌ migrateOrganizationDatabase error:', error);
+    console.error('[API] ❌ Error type:', error instanceof Error ? error.constructor.name : typeof error);
+    console.error('[API] ❌ Error message:', error instanceof Error ? error.message : String(error));
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as any;
+      console.error('[API] ❌ Axios error response:', {
+        status: axiosError.response?.status,
+        statusText: axiosError.response?.statusText,
+        data: axiosError.response?.data
+      });
+    }
     // Re-throw with more context
     if (error instanceof Error) {
       throw new Error(`Migration failed: ${error.message}`);
