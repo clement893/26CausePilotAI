@@ -91,10 +91,10 @@ RUN cd apps/web && node scripts/prepare-build-env.js
 # Run pre-build validation to catch errors early (before expensive build process)
 # This runs type checking and other fast validations to fail fast if there are errors
 # This prevents wasting time on builds that will fail anyway
-# Set SKIP_TYPE_CHECK=0 as build arg to enable TypeScript validation (default is to skip due to known type errors)
-ARG SKIP_TYPE_CHECK=1
+# Set SKIP_TYPE_CHECK=1 as build arg to skip TypeScript validation (default is to enable for safety)
+ARG SKIP_TYPE_CHECK=0
 ENV SKIP_TYPE_CHECK=${SKIP_TYPE_CHECK}
-RUN cd apps/web && node scripts/validate-build.js || echo "⚠️  Validation failed but continuing build..."
+RUN cd apps/web && node scripts/validate-build.js
 
 # Build Next.js application
 # Uses Webpack by default in production (more stable with next-auth catch-all routes)
@@ -102,10 +102,11 @@ RUN cd apps/web && node scripts/validate-build.js || echo "⚠️  Validation fa
 # Next.js will read variables from .env.local (created above) or ENV
 # To use Turbopack instead, set USE_TURBOPACK=true in Railway environment variables
 # Disable Next.js telemetry for faster builds (no network calls during build)
-# Skip type check (already done in validate-build.js) and skip lib check for speed
+# Type checking is already done in validate-build.js, but Next.js will still verify types
+# We keep type checking enabled in Next.js as a safety net (it's fast since we already checked)
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV SKIP_TYPE_CHECK=true
-ENV TSC_COMPILE_ON_ERROR=true
+# Don't skip type check - Next.js will verify types (fast since validate-build.js already checked)
+# Remove TSC_COMPILE_ON_ERROR to fail on TypeScript errors
 # Disable build traces collection (saves ~30-45 seconds)
 ENV NEXT_PRIVATE_STANDALONE=true
 RUN cd apps/web && USE_WEBPACK=true pnpm build
