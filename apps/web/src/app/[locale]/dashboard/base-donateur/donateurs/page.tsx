@@ -4,17 +4,15 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Container, Card, Button, Input, Badge } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { listDonors, type ListDonorsParams } from '@/lib/api/donors';
-import type { Donor, DonorList } from '@modele/types';
+import type { Donor } from '@modele/types';
 import { Search, Plus, Mail, Phone, DollarSign, Calendar } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
 export default function DonateursPage() {
-  const router = useRouter();
   const locale = useLocale();
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
   const [donors, setDonors] = useState<Donor[]>([]);
@@ -235,7 +233,7 @@ export default function DonateursPage() {
                         )}
                       </td>
                       <td className="p-4">
-                        <Badge variant={donor.is_active ? 'default' : 'secondary'}>
+                        <Badge variant={donor.is_active ? 'success' : 'info'}>
                           {donor.is_active ? 'Actif' : 'Inactif'}
                         </Badge>
                       </td>

@@ -4,18 +4,18 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { getDonor, getDonorHistory, getDonorStats, listDonorDonations } from '@/lib/api/donors';
 import type { DonorWithStats, Donation, DonorHistory, DonorStats } from '@modele/types';
-import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, FileText, Activity } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
+import type { ColorVariant } from '@/components/ui/types';
 
 export default function DonorDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const locale = useLocale();
   const donorId = params.id as string;
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
@@ -25,11 +25,10 @@ export default function DonorDetailPage() {
   const [stats, setStats] = useState<DonorStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState('overview');
   
   // Update activeTab when tab changes
   const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
+    // Tab change handler
   };
 
   useEffect(() => {
@@ -99,18 +98,18 @@ export default function DonorDetailPage() {
     });
   };
 
-  const getStatusBadgeVariant = (status: string) => {
+  const getStatusBadgeVariant = (status: string): ColorVariant => {
     switch (status) {
       case 'completed':
         return 'default';
       case 'pending':
-        return 'secondary';
+        return 'warning';
       case 'failed':
-        return 'destructive';
+        return 'error';
       case 'refunded':
-        return 'outline';
+        return 'info';
       default:
-        return 'secondary';
+        return 'default';
     }
   };
 
@@ -171,7 +170,7 @@ export default function DonorDetailPage() {
             </h1>
             <p className="text-muted-foreground">{donor.email}</p>
           </div>
-          <Badge variant={donor.is_active ? 'default' : 'secondary'}>
+          <Badge variant={donor.is_active ? 'success' : 'info'}>
             {donor.is_active ? 'Actif' : 'Inactif'}
           </Badge>
         </div>
@@ -264,25 +263,25 @@ export default function DonorDetailPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Email marketing</span>
-                  <Badge variant={donor.opt_in_email ? 'default' : 'secondary'}>
+                  <Badge variant={donor.opt_in_email ? 'success' : 'default'}>
                     {donor.opt_in_email ? 'Oui' : 'Non'}
                   </Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">SMS</span>
-                  <Badge variant={donor.opt_in_sms ? 'default' : 'secondary'}>
+                  <Badge variant={donor.opt_in_sms ? 'success' : 'default'}>
                     {donor.opt_in_sms ? 'Oui' : 'Non'}
                   </Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Courrier postal</span>
-                  <Badge variant={donor.opt_in_postal ? 'default' : 'secondary'}>
+                  <Badge variant={donor.opt_in_postal ? 'success' : 'default'}>
                     {donor.opt_in_postal ? 'Oui' : 'Non'}
                   </Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Anonyme</span>
-                  <Badge variant={donor.is_anonymous ? 'default' : 'secondary'}>
+                  <Badge variant={donor.is_anonymous ? 'default' : 'default'}>
                     {donor.is_anonymous ? 'Oui' : 'Non'}
                   </Badge>
                 </div>
