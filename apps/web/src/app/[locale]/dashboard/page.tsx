@@ -115,20 +115,23 @@ function DashboardContent() {
           <p className="text-sm text-muted-foreground">Explore what CausePilot AI can do for your organization</p>
         </div>
         <Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="normal">
-          <Card className="border-l-4 border-l-primary-500 hover:shadow-lg transition-all hover:scale-[1.02]">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex-shrink-0">
-                <Brain className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+          <div className="stagger-fade-in opacity-0 stagger-delay-1">
+            <Card className="border-l-4 border-l-primary-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex-shrink-0">
+                  <Brain className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-foreground mb-1">AI Copilot</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Get intelligent recommendations on when to ask, how much to ask, and who to target using generative AI.
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-foreground mb-1">AI Copilot</h4>
-                <p className="text-sm text-muted-foreground">
-                  Get intelligent recommendations on when to ask, how much to ask, and who to target using generative AI.
-                </p>
-              </div>
-            </div>
-          </Card>
-          <Card className="border-l-4 border-l-secondary-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+            </Card>
+          </div>
+          <div className="stagger-fade-in opacity-0 stagger-delay-2">
+            <Card className="border-l-4 border-l-secondary-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg flex-shrink-0">
                 <Users className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
@@ -141,7 +144,9 @@ function DashboardContent() {
               </div>
             </div>
           </Card>
-          <Card className="border-l-4 border-l-info-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+          </div>
+          <div className="stagger-fade-in opacity-0 stagger-delay-3">
+            <Card className="border-l-4 border-l-info-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-info-100 dark:bg-info-900/30 rounded-lg flex-shrink-0">
                 <Zap className="w-6 h-6 text-info-600 dark:text-info-400" />
@@ -154,7 +159,9 @@ function DashboardContent() {
               </div>
             </div>
           </Card>
-          <Card className="border-l-4 border-l-success-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+          </div>
+          <div className="stagger-fade-in opacity-0 stagger-delay-4">
+            <Card className="border-l-4 border-l-success-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg flex-shrink-0">
                 <Heart className="w-6 h-6 text-success-600 dark:text-success-400" />
@@ -167,7 +174,9 @@ function DashboardContent() {
               </div>
             </div>
           </Card>
-          <Card className="border-l-4 border-l-warning-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+          </div>
+          <div className="stagger-fade-in opacity-0 stagger-delay-5">
+            <Card className="border-l-4 border-l-warning-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-warning-100 dark:bg-warning-900/30 rounded-lg flex-shrink-0">
                 <BarChart3 className="w-6 h-6 text-warning-600 dark:text-warning-400" />
@@ -180,7 +189,9 @@ function DashboardContent() {
               </div>
             </div>
           </Card>
-          <Card className="border-l-4 border-l-error-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+          </div>
+          <div className="stagger-fade-in opacity-0 stagger-delay-6">
+            <Card className="border-l-4 border-l-error-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-error-100 dark:bg-error-900/30 rounded-lg flex-shrink-0">
                 <Shield className="w-6 h-6 text-error-600 dark:text-error-400" />
@@ -193,6 +204,7 @@ function DashboardContent() {
               </div>
             </div>
           </Card>
+          </div>
         </Grid>
       </MotionDiv>
 

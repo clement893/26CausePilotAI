@@ -75,7 +75,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 | **Sidebar** | Item actif : `bg-primary/10` + `border-l-2 border-primary`, `font-medium` |
 | **Empty states** | Illustration ou icône large, texte centré, CTA mis en avant |
 
-**Implémenté :** **Input** : `focus:ring-primary/20` / `focus:ring-error-500/20`, `focus:ring-offset-2`. **Textarea** : idem (focus ring, `rounded-lg`, `transition-all`). **Container** : `xl:px-12`, `2xl:px-14`. **Empty states** (donateurs, segments, campagnes, tags) : icône dans `rounded-2xl bg-primary/10`, titre + sous-titre, CTA primary avec `shadow-lg hover:shadow-xl`.
+**Implémenté :** **Input** : `focus:ring-primary/20` / `focus:ring-error-500/20`, `focus:ring-offset-2`. **Textarea** : idem. **Select** : idem (focus ring, `rounded-lg`, `transition-all`). **Container** : `xl:px-12`, `2xl:px-14`. **Empty states** (donateurs, segments, campagnes, tags) : icône dans `rounded-2xl bg-primary/10`, titre + sous-titre, CTA primary avec `shadow-lg hover:shadow-xl`.
 
 ---
 
@@ -101,9 +101,11 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 7. **Card** : variant `elevated` (`rounded-2xl`, `shadow-lg`, `hover:shadow-xl`).
 8. **Input** : `focus:ring-primary/20` ou `focus:ring-error-500/20`, `focus:ring-offset-2`.
 9. **Textarea** : focus ring aligné sur Input, `rounded-lg`, `transition-all duration-200`.
-10. **Container** : `xl:px-12`, `2xl:px-14`.
-11. **Empty states** (donateurs, segments, campagnes, tags) : icône `rounded-2xl bg-primary/10`, titre, sous-titre, CTA primary `shadow-lg`.
-12. **Page Tags** : en-tête unifié (icône Tag, gradient), LoadingSkeleton, Card no-org. **TagManager** : skeleton, stagger, empty state unifié, libellés FR.
+10. **Select** : focus ring aligné sur Input/Textarea, `rounded-lg`, `transition-all duration-200`.
+11. **Container** : `xl:px-12`, `2xl:px-14`.
+12. **Empty states** (donateurs, segments, campagnes, tags) : icône `rounded-2xl bg-primary/10`, titre, sous-titre, CTA primary `shadow-lg`.
+13. **Page Tags** : en-tête unifié (icône Tag, gradient), LoadingSkeleton, Card no-org. **TagManager** : skeleton, stagger, empty state unifié, libellés FR.
+14. **Dashboard principal** : stagger sur la grille « Key Features » (6 cards), `h-full` sur les cards.
 
 ---
 
@@ -117,6 +119,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 6. ~~Loading skeleton sur pages clés~~ ✅ Donateurs (liste + détail), segments, campagnes.
 7. ~~Input focus, Container padding, Empty states~~ ✅ Input ring/offset, Container xl:px-12 2xl:px-14, empty states unifiés.
 8. ~~Textarea focus, Page Tags~~ ✅ Textarea focus ring, Tags header + skeleton + TagManager (stagger, empty state, FR).
+9. ~~Select focus, Dashboard Key Features stagger~~ ✅ Select focus ring, Dashboard grille Key Features avec stagger.
 
 ---
 

@@ -27,7 +27,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const paddingX = sizeConfig?.paddingX || '0.75rem';
     const paddingY = sizeConfig?.paddingY || '0.5rem';
     const fontSize = sizeConfig?.fontSize || '0.875rem';
-    const borderRadius = sizeConfig?.borderRadius || '0.375rem';
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
         {' '}
@@ -46,14 +45,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={clsx(
-            'block w-full',
-            'bg-[var(--color-input)]',
-            'text-foreground',
-            'border-border',
-            'shadow-sm focus:border-primary-500 dark:focus:border-primary-400 focus:ring-primary-500 dark:focus:ring-primary-400',
+            'block w-full border rounded-lg transition-all duration-200',
+            'bg-[var(--color-input)] text-foreground',
+            'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
             'disabled:opacity-50 disabled:cursor-not-allowed',
-            error &&
-              'border-error-500 dark:border-error-400 focus:border-error-500 dark:focus:border-error-400 focus:ring-error-500 dark:focus:ring-error-400',
+            error
+              ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
+              : 'border-border focus:ring-primary/20',
             className
           )}
           style={{
@@ -62,7 +60,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             paddingTop: paddingY,
             paddingBottom: paddingY,
             fontSize,
-            borderRadius,
           }}
           {...props}
         >
