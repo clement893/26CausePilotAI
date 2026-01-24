@@ -4,7 +4,6 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { Container, Card, Button, Input } from '@/components/ui';
@@ -13,7 +12,6 @@ import { createOrganization } from '@/lib/api/organizations';
 import { ArrowLeft, Building } from 'lucide-react';
 
 function NewOrganizationContent() {
-  const router = useRouter();
   const locale = useLocale();
   const [formData, setFormData] = useState({
     name: '',
