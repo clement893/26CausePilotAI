@@ -16,9 +16,22 @@ function OrganisationsContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load organizations
+  // Load organizations on mount and when page becomes visible (handles back navigation)
   useEffect(() => {
     loadOrganizations();
+    
+    // Reload when page becomes visible (handles navigation back from creation page)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        loadOrganizations();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const loadOrganizations = async () => {

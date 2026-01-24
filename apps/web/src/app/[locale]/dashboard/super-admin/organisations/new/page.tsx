@@ -5,6 +5,7 @@ export const dynamicParams = true;
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { Container, Card, Button, Input } from '@/components/ui';
 import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
@@ -13,6 +14,7 @@ import { ArrowLeft, Building } from 'lucide-react';
 
 function NewOrganizationContent() {
   const router = useRouter();
+  const locale = useLocale();
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -38,7 +40,11 @@ function NewOrganizationContent() {
         settings: {},
       });
 
-      router.push('/dashboard/super-admin/organisations');
+      // Force a full page reload to ensure the list is updated with the new organization
+      const targetPath = locale === 'fr' 
+        ? '/fr/dashboard/super-admin/organisations'
+        : `/${locale}/dashboard/super-admin/organisations`;
+      window.location.href = targetPath;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur lors de la création');
     } finally {
