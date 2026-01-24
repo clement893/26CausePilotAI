@@ -99,11 +99,11 @@ async def list_donors(
         
         # Apply filters
         if search:
-        search_filter = or_(
-            Donor.email.ilike(f"%{search}%"),
-            Donor.first_name.ilike(f"%{search}%"),
-            Donor.last_name.ilike(f"%{search}%"),
-        )
+            search_filter = or_(
+                Donor.email.ilike(f"%{search}%"),
+                Donor.first_name.ilike(f"%{search}%"),
+                Donor.last_name.ilike(f"%{search}%"),
+            )
             query = query.where(search_filter)
         
         if is_active is not None:
@@ -160,6 +160,22 @@ async def list_donors(
             "page_size": page_size,
             "total_pages": total_pages,
         }
+        
+    except (ProgrammingError, OperationalError) as e:
+        error_msg = str(e).lower()
+        if "does not exist" in error_msg or "relation" in error_msg:
+            # Table doesn't exist - migrations needed
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    "Database tables not found. Please run migrations on the organization database. "
+                    f"Use POST /api/v1/organizations/{organization_id}/database/migrate to run migrations."
+                )
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
 
 
 @router.get("/{organization_id}/donors/{donor_id}", response_model=DonorWithStats)
