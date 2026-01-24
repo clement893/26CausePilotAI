@@ -1,19 +1,20 @@
 """Add organizations tables
 
 Revision ID: add_organizations_001
-Revises: 
+Revises: 032_make_name_nullable
 Create Date: 2026-01-24
 
 """
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
+from typing import Union, Sequence
 
 # revision identifiers, used by Alembic.
 revision = 'add_organizations_001'
-down_revision = None  # Update this with your latest migration
-branch_labels = None
-depends_on = None
+down_revision: Union[str, None] = '032_make_name_nullable'  # Latest migration
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
@@ -61,7 +62,7 @@ def upgrade() -> None:
         sa.Column('organization_id', postgresql.UUID(as_uuid=True), sa.ForeignKey('organizations.id', ondelete='CASCADE'), nullable=False),
         sa.Column('user_email', sa.String(255), nullable=False),
         sa.Column('role', sa.String(50), default='member', nullable=False),
-        sa.Column('invited_by', postgresql.UUID(as_uuid=True), sa.ForeignKey('users.id'), nullable=True),
+        sa.Column('invited_by', sa.Integer(), sa.ForeignKey('users.id'), nullable=True),  # User.id is Integer, not UUID
         sa.Column('joined_at', sa.DateTime(timezone=True), nullable=True),
         sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
     )

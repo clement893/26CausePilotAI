@@ -72,19 +72,26 @@ if [ -n "$DATABASE_URL" ]; then
     # Run migrations with timeout (60 seconds max) - don't fail if migrations fail
     # Use timeout command if available, otherwise run directly
     if command -v timeout >/dev/null 2>&1; then
-        MIGRATION_RESULT=$(timeout 60 alembic upgrade head 2>&1)
+        # Check for multiple heads first
+        HEADS_COUNT=$(alembic heads 2>&1 | grep -c "head" || echo "0")
+        if [ "$HEADS_COUNT" -gt 1 ]; then
+            echo "⚠️  Multiple migration heads detected. Using 'heads' instead of 'head'..."
+            MIGRATION_RESULT=$(timeout 60 alembic upgrade heads 2>&1)
+        else
+            MIGRATION_RESULT=$(timeout 60 alembic upgrade head 2>&1)
+        fi
         MIGRATION_EXIT_CODE=$?
         echo "$MIGRATION_RESULT"
         if [ $MIGRATION_EXIT_CODE -eq 0 ]; then
             MIGRATION_STATUS="success"
-        elif echo "$MIGRATION_RESULT" | grep -q "overlaps with other requested revisions"; then
-            echo "⚠️  Migration overlap detected. Attempting to resolve..."
+        elif echo "$MIGRATION_RESULT" | grep -qE "(Multiple head revisions|overlaps with other requested revisions)"; then
+            echo "⚠️  Migration conflict detected. Attempting to resolve..."
             # Try to merge heads again
             HEADS=$(alembic heads 2>&1 | grep -oE "[a-f0-9]+_[a-z_]+" | tr '\n' ' ')
             if [ -n "$HEADS" ]; then
                 alembic merge -m "Auto-merge migration heads" $HEADS 2>&1 || true
                 # Retry upgrade after merge
-                timeout 60 alembic upgrade head 2>&1 && MIGRATION_STATUS="success" || MIGRATION_STATUS="timeout_or_failed"
+                timeout 60 alembic upgrade heads 2>&1 && MIGRATION_STATUS="success" || MIGRATION_STATUS="timeout_or_failed"
             else
                 MIGRATION_STATUS="timeout_or_failed"
             fi
@@ -93,19 +100,25 @@ if [ -n "$DATABASE_URL" ]; then
         fi
     else
         # Fallback: run without timeout if timeout command not available
-        MIGRATION_RESULT=$(alembic upgrade head 2>&1)
+        HEADS_COUNT=$(alembic heads 2>&1 | grep -c "head" || echo "0")
+        if [ "$HEADS_COUNT" -gt 1 ]; then
+            echo "⚠️  Multiple migration heads detected. Using 'heads' instead of 'head'..."
+            MIGRATION_RESULT=$(alembic upgrade heads 2>&1)
+        else
+            MIGRATION_RESULT=$(alembic upgrade head 2>&1)
+        fi
         MIGRATION_EXIT_CODE=$?
         echo "$MIGRATION_RESULT"
         if [ $MIGRATION_EXIT_CODE -eq 0 ]; then
             MIGRATION_STATUS="success"
-        elif echo "$MIGRATION_RESULT" | grep -q "overlaps with other requested revisions"; then
-            echo "⚠️  Migration overlap detected. Attempting to resolve..."
+        elif echo "$MIGRATION_RESULT" | grep -qE "(Multiple head revisions|overlaps with other requested revisions)"; then
+            echo "⚠️  Migration conflict detected. Attempting to resolve..."
             # Try to merge heads again
             HEADS=$(alembic heads 2>&1 | grep -oE "[a-f0-9]+_[a-z_]+" | tr '\n' ' ')
             if [ -n "$HEADS" ]; then
                 alembic merge -m "Auto-merge migration heads" $HEADS 2>&1 || true
                 # Retry upgrade after merge
-                alembic upgrade head 2>&1 && MIGRATION_STATUS="success" || MIGRATION_STATUS="failed"
+                alembic upgrade heads 2>&1 && MIGRATION_STATUS="success" || MIGRATION_STATUS="failed"
             else
                 MIGRATION_STATUS="failed"
             fi

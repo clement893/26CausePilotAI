@@ -4,7 +4,7 @@ Organization Member Model
 Manages members (users) belonging to organizations.
 """
 
-from sqlalchemy import Column, String, DateTime, ForeignKey, func, UniqueConstraint
+from sqlalchemy import Column, String, DateTime, ForeignKey, Integer, func, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import uuid
@@ -25,7 +25,7 @@ class OrganizationMember(Base):
     organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id", ondelete="CASCADE"), nullable=False, index=True)
     user_email = Column(String(255), nullable=False, index=True)
     role = Column(String(50), default="member", nullable=False)  # admin, member, viewer
-    invited_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)  # SuperAdmin who invited
+    invited_by = Column(Integer, ForeignKey("users.id"), nullable=True)  # SuperAdmin who invited (User.id is Integer)
     joined_at = Column(DateTime(timezone=True), nullable=True)  # When user accepted invitation
     
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

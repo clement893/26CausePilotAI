@@ -5,7 +5,7 @@ Pydantic schemas for API requests/responses.
 """
 
 from pydantic import BaseModel, Field, EmailStr, validator
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Union
 from datetime import datetime
 from uuid import UUID
 
@@ -144,7 +144,7 @@ class OrganizationMember(OrganizationMemberBase):
     """Member response"""
     id: UUID
     organization_id: UUID
-    invited_by: Optional[UUID] = None
+    invited_by: Optional[int] = None  # User.id is Integer, not UUID
     joined_at: Optional[datetime] = None
     created_at: datetime
     
