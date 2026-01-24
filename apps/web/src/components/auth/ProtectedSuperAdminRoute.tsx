@@ -30,6 +30,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
   const [isChecking, setIsChecking] = useState(true);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const checkingRef = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastUserEmailRef = useRef<string | undefined>(user?.email);
   const lastTokenRef = useRef<string | null>(token);
   const lastPathnameRef = useRef<string>(pathname);
@@ -72,37 +73,58 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
       checkingRef.current = true;
       setIsChecking(true);
 
-      // Check authentication - also check token in sessionStorage as fallback
-      const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
-      const isAuth = isAuthenticated() || (tokenFromStorage && user);
+      // Set a timeout to prevent infinite loading (30 seconds)
+      timeoutRef.current = setTimeout(() => {
+        logger.error('Superadmin check timeout - taking too long', {
+          email: user?.email,
+          pathname,
+        });
+        setIsChecking(false);
+        checkingRef.current = false;
+        // Fallback: redirect to dashboard with error
+        router.replace('/dashboard?error=check_timeout');
+      }, 30000);
 
-      if (!isAuth) {
-        logger.debug('Not authenticated, redirecting to login', { pathname });
-        router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
-        return;
-      }
-
-      // Check superadmin status
       try {
-        if (user?.email) {
-          const authToken = token || tokenFromStorage;
+        // Check authentication - also check token in sessionStorage as fallback
+        const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
+        const isAuth = isAuthenticated() || (tokenFromStorage && user);
 
-          if (!authToken) {
-            logger.warn('No token available for superadmin check', {
+        if (!isAuth) {
+          logger.debug('Not authenticated, redirecting to login', { pathname });
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+          return;
+        }
+
+        // Check superadmin status
+        try {
+          if (user?.email) {
+            const authToken = token || tokenFromStorage;
+
+            if (!authToken) {
+              logger.warn('No token available for superadmin check', {
+                email: user.email,
+              });
+              if (timeoutRef.current) clearTimeout(timeoutRef.current);
+              router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+              return;
+            }
+
+            logger.debug('Checking superadmin status', {
               email: user.email,
+              pathname,
+              has_token: !!authToken,
+              token_length: authToken?.length,
             });
-            router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
-            return;
-          }
 
-          logger.debug('Checking superadmin status', {
-            email: user.email,
-            pathname,
-            has_token: !!authToken,
-            token_length: authToken?.length,
-          });
-
-          const status = await checkMySuperAdminStatus(authToken);
+            // Add timeout wrapper for the API call
+            const statusPromise = checkMySuperAdminStatus(authToken);
+            const timeoutPromise = new Promise((_, reject) => 
+              setTimeout(() => reject(new Error('Superadmin check timeout')), 25000)
+            );
+            
+            const status = await Promise.race([statusPromise, timeoutPromise]) as Awaited<ReturnType<typeof checkMySuperAdminStatus>>;
 
           logger.debug('Superadmin status check result', {
             email: user.email,
@@ -122,6 +144,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
               user_is_admin: user.is_admin,
               status_response: status,
             });
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
             router.replace('/dashboard?error=unauthorized_superadmin');
             return;
           }
@@ -141,6 +164,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
 
           if (!user?.is_admin) {
             logger.debug('User is not admin, redirecting', { pathname });
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
             router.replace('/dashboard?error=unauthorized_superadmin');
             return;
           }
@@ -159,6 +183,31 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           status_code: statusCode,
         });
 
+        // Check if error is timeout
+        if (error.message.includes('timeout') || error.message.includes('Timeout')) {
+          logger.error('Superadmin check timed out', {
+            email: user?.email,
+            pathname,
+            error_message: error.message,
+          });
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          // Fallback to is_admin check on timeout
+          if (user?.is_admin) {
+            logger.warn('Using is_admin fallback due to timeout', {
+              is_admin: user.is_admin,
+              pathname,
+            });
+            setIsSuperAdmin(true);
+            setIsAuthorized(true);
+            setIsChecking(false);
+            checkingRef.current = false;
+            return;
+          } else {
+            router.replace('/dashboard?error=check_timeout');
+            return;
+          }
+        }
+
         // Check if error is 401 (unauthorized) - token invalid/expired
         if (
           statusCode === 401 ||
@@ -171,6 +220,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
             pathname,
             status_code: statusCode,
           });
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
           router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
           return;
         }
@@ -186,6 +236,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
             pathname,
             status_code: statusCode,
           });
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
           router.replace('/dashboard?error=unauthorized_superadmin');
           return;
         }
@@ -199,11 +250,18 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
         });
 
         if (!user?.is_admin) {
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
           router.replace('/dashboard?error=unauthorized_superadmin');
           return;
         }
 
         setIsSuperAdmin(true);
+      }
+
+      // Clear timeout on success
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
 
       // Authorize access
@@ -214,6 +272,14 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
 
     // Check immediately
     checkAuth();
+
+    // Cleanup timeout on unmount
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
   }, [isHydrated, user?.email, token, isAuthorized, router]);
 
   // Show loader during verification

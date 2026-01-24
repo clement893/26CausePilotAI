@@ -130,7 +130,9 @@ export async function checkMySuperAdminStatus(
           user_id: number;
           is_superadmin: boolean;
           is_active: boolean;
-        }>(`/v1/admin/check-my-superadmin-status`);
+        }>(`/v1/admin/check-my-superadmin-status`, {
+          timeout: 20000, // 20 seconds timeout for superadmin check
+        });
 
         // Backend FastAPI returns data directly: { email, user_id, is_superadmin, is_active }
         // apiClient.get returns ApiResponse<T> which wraps the data in { success, data, ... }
@@ -208,7 +210,9 @@ export async function checkMySuperAdminStatus(
       user_id: number;
       is_superadmin: boolean;
       is_active: boolean;
-    }>(`/v1/admin/check-my-superadmin-status`);
+    }>(`/v1/admin/check-my-superadmin-status`, {
+      timeout: 20000, // 20 seconds timeout for superadmin check
+    });
 
     // Same logic as above
     interface SuperAdminStatusResponse {
