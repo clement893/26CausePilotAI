@@ -539,9 +539,37 @@ export function DatabaseConnectionForm({
                 <p className="text-xs text-warning-700 dark:text-warning-300 font-medium mb-1">
                   ⚠️ URL Railway Interne Détectée
                 </p>
+                <p className="text-xs text-warning-700 dark:text-warning-300 mb-2">
+                  L'URL <code className="bg-warning-100 dark:bg-warning-900/40 px-1 rounded">*.railway.internal</code> ne fonctionne que si votre backend est sur Railway dans le même projet Railway. 
+                  Si vous obtenez une erreur "Name or service not known" ou des timeouts, cela signifie que :
+                </p>
+                <ul className="text-xs text-warning-700 dark:text-warning-300 list-disc list-inside space-y-1 mb-2">
+                  <li>Le backend n'est pas dans le même projet Railway que la base de données, OU</li>
+                  <li>Les services ne sont pas correctement configurés pour communiquer entre eux</li>
+                </ul>
                 <p className="text-xs text-warning-700 dark:text-warning-300">
-                  L'URL <code className="bg-warning-100 dark:bg-warning-900/40 px-1 rounded">*.railway.internal</code> ne fonctionne que si votre backend est sur Railway dans le même projet. 
-                  Si vous avez des timeouts, utilisez l'URL publique Railway (avec <code className="bg-warning-100 dark:bg-warning-900/40 px-1 rounded">*.railway.app</code>) et activez "Public Networking" dans Railway.
+                  <strong>Solution :</strong> Utilisez l'URL publique Railway (avec <code className="bg-warning-100 dark:bg-warning-900/40 px-1 rounded">*.railway.app</code>) 
+                  disponible dans les variables d'environnement Railway de votre base de données. Activez "Public Networking" dans Railway si nécessaire.
+                </p>
+              </div>
+            )}
+            
+            {/* DNS Error Help */}
+            {error && (error.toLowerCase().includes('name or service not known') || error.toLowerCase().includes('errno -2') || error.toLowerCase().includes('résolution dns')) && (
+              <div className="p-3 rounded-lg bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800">
+                <p className="text-xs text-error-700 dark:text-error-300 font-medium mb-1">
+                  🔍 Erreur de Résolution DNS
+                </p>
+                <p className="text-xs text-error-700 dark:text-error-300 mb-2">
+                  Le serveur backend ne peut pas résoudre le nom d'hôte de la base de données. Causes possibles :
+                </p>
+                <ul className="text-xs text-error-700 dark:text-error-300 list-disc list-inside space-y-1 mb-2">
+                  <li>URL Railway interne (.railway.internal) utilisée mais backend pas dans le même projet</li>
+                  <li>Nom d'hôte incorrect ou typo dans l'URL</li>
+                  <li>Problème de connectivité réseau du backend</li>
+                </ul>
+                <p className="text-xs text-error-700 dark:text-error-300">
+                  <strong>Solution :</strong> Vérifiez que vous utilisez l'URL correcte (publique si backend et DB sont dans des projets différents, interne si dans le même projet).
                 </p>
               </div>
             )}
