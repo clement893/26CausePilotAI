@@ -6,7 +6,7 @@
 import type { Locale } from './messages';
 
 // Supported locales
-export const locales = ['fr', 'en'] as const;
+export const locales = ['fr', 'en', 'es'] as const;
 export const supportedLocales = locales;
 
 export const defaultLocale: Locale = 'fr';
@@ -15,4 +15,5 @@ export const defaultLocale: Locale = 'fr';
 export const localeNames: Record<Locale, string> = {
   fr: 'Français',
   en: 'English',
+  es: 'Español',
 };
