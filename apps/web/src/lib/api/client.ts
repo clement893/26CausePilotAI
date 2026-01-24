@@ -31,7 +31,7 @@ class ApiClient {
     }
     this.client = axios.create({
       baseURL,
-      timeout: 60000, // Increased to 60s for database connection tests
+      timeout: 120000, // Increased to 120s for database connection tests and external APIs
       headers: {
         'Content-Type': 'application/json',
       },

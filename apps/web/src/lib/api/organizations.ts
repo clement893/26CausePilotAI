@@ -160,13 +160,13 @@ export async function updateOrganizationDatabase(
     test_connection: data.testConnection ?? true,
   };
   
-  // Use a longer timeout for database connection updates (120 seconds)
-  // Database connections can be slow, especially for external databases
+  // Use a longer timeout for database connection updates (180 seconds)
+  // Database connections can be slow, especially for external databases like Railway
   const response = await apiClient.patch<Organization>(
     `/v1/organizations/${organizationId}/database`,
     requestData,
     {
-      timeout: 120000, // 120 seconds for DB connection tests
+      timeout: 180000, // 180 seconds (3 minutes) for DB connection tests
     }
   );
   return extractApiData(response);
@@ -181,13 +181,13 @@ export async function testOrganizationDatabase(
     db_connection_string: data.dbConnectionString,
   };
   
-  // Use a longer timeout for database connection tests (120 seconds)
-  // Database connections can be slow, especially for external databases
+  // Use a longer timeout for database connection tests (180 seconds)
+  // Database connections can be slow, especially for external databases like Railway
   const response = await apiClient.post<TestConnectionResponse>(
     `/v1/organizations/${organizationId}/database/test`,
     requestData,
     {
-      timeout: 120000, // 120 seconds for DB connection tests
+      timeout: 180000, // 180 seconds (3 minutes) for DB connection tests
     }
   );
   return extractApiData(response);

@@ -132,7 +132,7 @@ export function DatabaseConnectionForm({
       
       // Provide more helpful error messages for timeout errors
       if (errorMessage.includes('timeout') || errorMessage.includes('exceeded')) {
-        errorMessage = `Timeout: La connexion à la base de données prend trop de temps (plus de 2 minutes).\n\n` +
+        errorMessage = `Timeout: La connexion à la base de données prend trop de temps (plus de 3 minutes).\n\n` +
           `Causes possibles:\n` +
           `- La base de données est inaccessible depuis le serveur backend\n` +
           `- Le réseau est lent ou instable\n` +
@@ -141,7 +141,8 @@ export function DatabaseConnectionForm({
           `Vérifiez que:\n` +
           `- L'URL de connexion est correcte\n` +
           `- Le serveur backend peut accéder à Internet pour se connecter à la base de données\n` +
-          `- Si vous utilisez Railway, vérifiez que "Public Networking" est activé pour votre service PostgreSQL`;
+          `- Si vous utilisez Railway, vérifiez que "Public Networking" est activé pour votre service PostgreSQL\n` +
+          `- Vérifiez que le port est correct (Railway utilise parfois des ports non-standard)`;
       }
       
       setError(errorMessage);
@@ -182,11 +183,12 @@ export function DatabaseConnectionForm({
       
       // Provide more helpful error messages for timeout errors
       if (errorMessage.includes('timeout') || errorMessage.includes('exceeded')) {
-        errorMessage = `Timeout: Le test de connexion prend trop de temps (plus de 2 minutes).\n\n` +
+        errorMessage = `Timeout: Le test de connexion prend trop de temps (plus de 3 minutes).\n\n` +
           `La connexion n'a pas été sauvegardée. Vérifiez que:\n` +
           `- L'URL de connexion est correcte\n` +
           `- Le serveur backend peut accéder à Internet pour se connecter à la base de données\n` +
-          `- Si vous utilisez Railway, vérifiez que "Public Networking" est activé pour votre service PostgreSQL`;
+          `- Si vous utilisez Railway, vérifiez que "Public Networking" est activé pour votre service PostgreSQL\n` +
+          `- Vérifiez que le port est correct (Railway utilise parfois des ports non-standard)`;
       }
       
       setError(errorMessage);
