@@ -250,16 +250,17 @@ export function DatabaseConnectionForm({
         hostname = connectionPart.substring(0, colonIndex) || '';
         const portPart = connectionPart.substring(colonIndex + 1) || '5432';
         // Clean up port if it contains multiple colons (malformed)
-        port = portPart.includes(':') ? portPart.split(':')[0] : portPart;
+        port = portPart.includes(':') ? (portPart.split(':')[0] ?? portPart) : portPart;
         // Remove any trailing characters that might be part of the database name
-        port = port.split('/')[0];
+        port = port.split('/')[0] ?? port;
       } else {
         hostname = connectionPart || '';
       }
       
       // Clean up database name (remove any trailing path or query params)
       if (database) {
-        database = database.split('?')[0].split('#')[0];
+        const afterQ = database.split('?')[0] ?? database;
+        database = afterQ.split('#')[0] ?? afterQ;
       }
       
       // Only update if we successfully parsed hostname (must contain a dot or be a valid hostname)
