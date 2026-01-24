@@ -185,10 +185,10 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
         key={item.href}
         href={item.href}
         className={clsx(
-          'flex items-center gap-3 px-lg py-md rounded-lg text-sm font-medium transition-colors',
+          'flex items-center gap-3 px-lg py-md rounded-lg text-sm font-medium transition-all duration-200 border-l-2',
           active
-            ? 'bg-primary-50 dark:bg-primary-900/20 text-primary font-semibold'
-            : 'text-foreground hover:bg-muted'
+            ? 'bg-primary/10 dark:bg-primary/20 text-primary font-semibold border-l-primary'
+            : 'border-l-transparent text-foreground hover:bg-muted'
         )}
       >
         {item.icon}
@@ -218,10 +218,10 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
           <button
             onClick={() => toggleGroup(group.name)}
             className={clsx(
-              'w-full flex items-center justify-between gap-3 px-lg py-md rounded-lg text-sm font-medium transition-colors',
+              'w-full flex items-center justify-between gap-3 px-lg py-md rounded-lg text-sm font-medium transition-all duration-200 border-l-2',
               hasActiveItem
-                ? 'bg-primary-50 dark:bg-primary-900/20 text-primary font-semibold'
-                : 'text-foreground hover:bg-muted'
+                ? 'bg-primary/10 dark:bg-primary/20 text-primary font-semibold border-l-primary'
+                : 'border-l-transparent text-foreground hover:bg-muted'
             )}
             aria-expanded={isOpen}
             aria-label={`Toggle ${group.name} group`}
@@ -246,10 +246,10 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
                 key={item.href}
                 href={item.href}
                 className={clsx(
-                  'flex items-center gap-3 px-lg py-md rounded-lg text-sm font-medium transition-colors',
+                  'flex items-center gap-3 px-lg py-md rounded-lg text-sm font-medium transition-all duration-200 border-l-2',
                   isActive(item.href)
-                    ? 'bg-primary-50 dark:bg-primary-900/20 text-primary font-semibold'
-                    : 'text-foreground hover:bg-muted'
+                    ? 'bg-primary/10 dark:bg-primary/20 text-primary font-semibold border-l-primary'
+                    : 'border-l-transparent text-foreground hover:bg-muted'
                 )}
               >
                 {item.icon}

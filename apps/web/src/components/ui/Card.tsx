@@ -145,11 +145,12 @@ export default function Card({
   return (
     <div
       className={clsx(
-        'rounded-lg border shadow-sm',
+        'rounded-xl border shadow-md',
         // Normal background (will be overridden by glassmorphism if enabled)
         'bg-[var(--color-background)]',
         'border-[var(--color-border)]',
-        hover && 'transition-all hover:shadow-md',
+        'transition-all duration-300',
+        hover && 'hover:shadow-lg hover:-translate-y-0.5',
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
         className
       )}
@@ -161,7 +162,7 @@ export default function Card({
           WebkitBackdropFilter: 'var(--glassmorphism-card-backdrop-blur, var(--glassmorphism-backdrop, none))',
           borderColor: 'var(--glassmorphism-card-border, var(--color-border))',
           // Enhanced shadow for glassmorphism (will use normal shadow if glassmorphism not enabled)
-          boxShadow: 'var(--glassmorphism-shadow, var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05)))',
+          boxShadow: 'var(--glassmorphism-shadow, var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)))',
         } as React.CSSProperties
       }
       onClick={

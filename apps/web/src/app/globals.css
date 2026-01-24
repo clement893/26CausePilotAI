@@ -105,6 +105,38 @@
   animation: swiss-fade-in 0.6s ease-out;
 }
 
+/* UI modernisation - Staggered list animations */
+@keyframes stagger-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-fade-in {
+  animation: stagger-fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.stagger-delay-1 { animation-delay: 40ms; }
+.stagger-delay-2 { animation-delay: 80ms; }
+.stagger-delay-3 { animation-delay: 120ms; }
+.stagger-delay-4 { animation-delay: 160ms; }
+.stagger-delay-5 { animation-delay: 200ms; }
+.stagger-delay-6 { animation-delay: 240ms; }
+
+/* Card hover lift - use with Tailwind transition */
+.card-hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.07);
+}
+
 /* 
  * No default colors defined here - all colors come from API theme via GlobalThemeProvider
  * Theme system will set all CSS variables dynamically from the active theme

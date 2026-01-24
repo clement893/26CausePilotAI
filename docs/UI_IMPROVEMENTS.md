@@ -1,0 +1,111 @@
+# Améliorations UI – Plan d'action
+
+Proposition d’évolutions pour rendre l’interface moins plate et plus moderne, tout en restant cohérente avec le thème et l’accessibilité.
+
+---
+
+## 1. **Profondeur et ombres**
+
+| Élément | Actuel | Proposition |
+|--------|--------|-------------|
+| **Cards** | `shadow-sm`, hover léger | `shadow-md` par défaut, `shadow-lg` + légère translation au hover (`-translate-y-0.5`) |
+| **Buttons** | Transition basique | Légère `scale(1.02)` au hover, ombre plus marquée sur primary |
+| **Modals / Dropdowns** | Ombre simple | `shadow-2xl`, `backdrop-blur-sm` sur l’overlay |
+| **Sidebar** | Fond uni | Légère bordure droite ou ombre portée pour la séparer du contenu |
+
+**Implémenté :** Cards avec `rounded-xl`, `shadow-md`, hover lift + `shadow-lg`.
+
+---
+
+## 2. **Micro-interactions et animations**
+
+| Élément | Proposition |
+|--------|-------------|
+| **Listes (donateurs, segments, etc.)** | Apparition en stagger : `animation-delay` progressif sur chaque item (`.stagger-1`, `.stagger-2`, …) |
+| **Boutons** | `transition-all duration-200`, `hover:scale-[1.02]`, `active:scale-[0.98]` |
+| **Cards cliquables** | Hover : léger lift, bordure primary/20, `transition-all duration-300` |
+| **Chargement** | Skeleton avec léger pulse au lieu d’un spinner seul |
+| **Navigation** | Item actif : fond subtle + bordure gauche colorée (déjà partiel dans la sidebar) |
+
+**Implémenté :** Utilitaire `.stagger-fade-in` + délais dans `globals.css`. Cards hover amélioré.
+
+---
+
+## 3. **Typographie**
+
+| Élément | Proposition |
+|--------|-------------|
+| **Titres de page** | `text-3xl` / `text-4xl`, `font-bold`, `tracking-tight`, gradient optionnel (`bg-gradient-to-r` + `bg-clip-text`) |
+| **Sous-titres** | `text-muted-foreground`, `text-lg` |
+| **Hiérarchie** | Espacement clair entre sections (`space-y-8` ou `gap-8`) |
+| **Corps** | `text-base` (16px) pour la lisibilité |
+
+---
+
+## 4. **Couleur et contraste**
+
+| Élément | Proposition |
+|--------|-------------|
+| **En-têtes de section** | Petit gradient ou accent (icône dans un `rounded-lg` coloré) |
+| **Cards “feature”** | Bordure gauche colorée (`border-l-4 border-l-primary`) ou fond `from-primary/5 to-transparent` |
+| **Badges** | Variants plus marqués (success, warning, info) avec fond et texte contrastés |
+| **Zones d’action** | CTAs avec `shadow-lg` et hover plus visible |
+
+---
+
+## 5. **Layout et espacement**
+
+| Élément | Actuel | Proposition |
+|--------|--------|-------------|
+| **Container** | `px-4 sm:px-6 lg:px-8` | Garder ou légèrement augmenter (`xl:px-12`) pour plus de respiration |
+| **Grilles** | `gap-4` | `gap-6` ou `gap-8` sur les grilles de cards |
+| **Sections** | Variable | `mb-8` ou `mb-10` entre blocs majeurs |
+| **Main (dashboard)** | Fond `background` | Fond légèrement différencié : `bg-muted/20` ou `bg-muted/30` |
+
+**Implémenté :** Main du dashboard avec `bg-muted/20` pour distinguer du contenu.
+
+---
+
+## 6. **Composants**
+
+| Composant | Proposition |
+|-----------|-------------|
+| **Input** | `focus:ring-2 focus:ring-primary/20`, `transition-shadow duration-200`, bordures `rounded-lg` |
+| **Card** | Variant optionnel `elevated` : `shadow-lg` par défaut, `rounded-2xl` |
+| **Sidebar** | Item actif : `bg-primary/10` + `border-l-2 border-primary`, `font-medium` |
+| **Empty states** | Illustration ou icône large, texte centré, CTA mis en avant |
+
+---
+
+## 7. **Tendances “moderne”**
+
+| Pratique | Application |
+|----------|-------------|
+| **Coins plus arrondis** | Cards `rounded-xl` (12px), modals `rounded-2xl` |
+| **Backdrop blur** | Overlays modals, tooltips, dropdowns (`backdrop-blur-sm`) |
+| **Dégradés discrets** | Headers de page, boutons primary (déjà en place sur donateurs) |
+| **Dark mode** | Vérifier contrastes, ombres et bordures en dark |
+
+---
+
+## 8. **Résumé des changements déjà appliqués**
+
+1. **`Card`** : `rounded-xl`, `shadow-md`, hover avec lift + `shadow-lg`, `transition-all duration-300`.
+2. **`globals.css`** : utilitaires `.card-hover-lift`, `.stagger-fade-in` avec délais (`.stagger-delay-1` … `.stagger-delay-6`).
+3. **Dashboard layout** : zone main avec `bg-muted/20` pour un fond légèrement différencié.
+4. **Sidebar** : item actif avec `border-l-2 border-l-primary`, `bg-primary/10`, `transition-all duration-200`.
+5. **Page Donateurs** : grille `gap-6`, animation `stagger-fade-in` sur les cards, délais progressifs.
+
+---
+
+## 9. **Prochaines étapes suggérées**
+
+1. Appliquer `stagger-fade-in` aux listes (donateurs, segments, etc.).
+2. Renforcer le style des items actifs dans la Sidebar.
+3. Ajouter un variant `elevated` au composant Card.
+4. Uniformiser les en-têtes de page (gradient, icône, espacement).
+5. Audit accessibilité (focus, contraste) après ces changements.
+
+---
+
+*Document généré pour guider les évolutions UI. À adapter selon les retours design et produit.*

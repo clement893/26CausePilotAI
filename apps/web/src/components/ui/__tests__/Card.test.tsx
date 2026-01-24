@@ -74,13 +74,13 @@ describe('Card Component', () => {
     it('applies hover styles when hover prop is true', () => {
       const { container } = render(<Card hover>Content</Card>);
       const card = container.querySelector('div');
-      expect(card).toHaveClass('transition-shadow', 'hover:shadow-md');
+      expect(card).toHaveClass('transition-all', 'hover:shadow-lg', 'hover:-translate-y-0.5');
     });
 
     it('does not apply hover styles when hover prop is false', () => {
       const { container } = render(<Card hover={false}>Content</Card>);
       const card = container.querySelector('div');
-      expect(card).not.toHaveClass('hover:shadow-md');
+      expect(card).not.toHaveClass('hover:shadow-lg');
     });
   });
 

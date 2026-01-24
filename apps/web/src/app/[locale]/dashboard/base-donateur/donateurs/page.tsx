@@ -272,12 +272,12 @@ export default function DonateursPage() {
         </Card>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            {donors.map((donor) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {donors.map((donor, index) => (
               <Link
                 key={donor.id}
                 href={`/dashboard/base-donateur/donateurs/${donor.id}`}
-                className="group"
+                className={`group stagger-fade-in opacity-0 stagger-delay-${Math.min(index + 1, 6)}`}
               >
                 <Card className="h-full transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-primary/50 cursor-pointer border-2 border-transparent">
                   <div className="p-6">

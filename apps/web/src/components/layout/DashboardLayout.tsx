@@ -80,11 +80,11 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
         <div className="hidden md:block w-64 flex-shrink-0" />
 
         {/* Main Content - Only this part changes during navigation */}
-        <div className="flex-1 flex flex-col min-w-0 w-full bg-background">
+        <div className="flex-1 flex flex-col min-w-0 w-full bg-muted/20">
           {/* Page Content - This is the only part that updates on navigation */}
           <main
             key={pathname}
-            className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8 bg-background"
+            className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8 bg-muted/20"
             style={{
               animation: 'fadeInSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
