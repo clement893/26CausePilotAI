@@ -14,13 +14,11 @@ import Button from '@/components/ui/Button';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
 import NotificationBellConnected from '@/components/notifications/NotificationBellConnected';
 import { LogOut, Menu, Home } from 'lucide-react';
-import { clsx } from 'clsx';
 
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout, user } = useAuthStore();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { logout } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
