@@ -87,7 +87,8 @@ export interface RealtimeSyncOptions {
 export function useRealtimeSync(options: RealtimeSyncOptions = {}) {
   const { enabled = true, customMapping = {} } = options;
   const queryClient = useQueryClient();
-  const { user, isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated: isAuthenticatedFn } = useAuthStore();
+  const isAuthenticated = isAuthenticatedFn();
 
   // Merge custom mapping with default mapping
   const eventMapping = { ...EVENT_TO_QUERY_KEYS, ...customMapping };

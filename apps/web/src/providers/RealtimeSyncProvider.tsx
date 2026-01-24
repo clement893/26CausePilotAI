@@ -34,7 +34,8 @@ export function RealtimeSyncProvider({
   children, 
   enabled = true 
 }: RealtimeSyncProviderProps) {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated: isAuthenticatedFn } = useAuthStore();
+  const isAuthenticated = isAuthenticatedFn();
   
   // Activate real-time sync only if authenticated
   const { isConnected, lastMessage } = useRealtimeSync({ 
