@@ -7,6 +7,7 @@ CRUD operations for organizations (SuperAdmin only).
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
+from sqlalchemy.orm import selectinload
 from typing import List
 from uuid import UUID
 
@@ -54,8 +55,14 @@ async def list_organizations(
     total_result = await db.execute(count_query)
     total = total_result.scalar()
     
-    # Get organizations with stats
-    query = select(Organization).offset(skip).limit(limit).order_by(Organization.created_at.desc())
+    # Get organizations with stats - eagerly load relationships
+    query = (
+        select(Organization)
+        .options(selectinload(Organization.modules), selectinload(Organization.members))
+        .offset(skip)
+        .limit(limit)
+        .order_by(Organization.created_at.desc())
+    )
     result = await db.execute(query)
     organizations = result.scalars().all()
     
