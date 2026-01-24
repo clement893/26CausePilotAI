@@ -710,17 +710,11 @@ async def create_organization_database(
 async def migrate_organization_database(
     organization_id: UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_superadmin),
 ):
     """
-    Run migrations on organization database to create/update tables.
-    
-    Accessible to:
-    - SuperAdmins (can migrate any organization)
-    - Organization members (can migrate their own organization)
+    Run migrations on organization database to create/update tables (SuperAdmin only)
     """
-    from app.dependencies import is_superadmin
-    
     # Check organization exists
     query = select(Organization).where(Organization.id == organization_id)
     result = await db.execute(query)
@@ -731,24 +725,6 @@ async def migrate_organization_database(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Organization not found"
         )
-    
-    # Check permissions: SuperAdmin or organization member
-    is_super = await is_superadmin(current_user, db)
-    
-    if not is_super:
-        # Check if user is a member of this organization
-        member_query = select(OrganizationMember).where(
-            OrganizationMember.organization_id == organization_id,
-            OrganizationMember.user_email == current_user.email
-        )
-        member_result = await db.execute(member_query)
-        membership = member_result.scalar_one_or_none()
-        
-        if not membership:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You don't have permission to migrate this organization's database"
-            )
     
     if not organization.db_connection_string:
         raise HTTPException(
