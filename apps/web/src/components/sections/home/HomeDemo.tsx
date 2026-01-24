@@ -6,10 +6,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Badge } from '@/components/ui/Badge';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import { Container, Badge, Card, Button } from '@/components/ui';
 import { Sparkles, ArrowRight, Check, Wand2 } from 'lucide-react';
 
 const demoMessages = [

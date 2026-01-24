@@ -5,8 +5,7 @@
 
 'use client';
 
-import { Badge } from '@/components/ui/Badge';
-import { Container } from '@/components/ui/Container';
+import { Badge, Container } from '@/components/ui';
 import ButtonLink from '@/components/ui/ButtonLink';
 import { Sparkles, ArrowRight, Play } from 'lucide-react';
 

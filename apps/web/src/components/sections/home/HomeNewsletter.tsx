@@ -6,10 +6,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Container, Badge, Button, Input } from '@/components/ui';
 import { Mail, CheckCircle2, Sparkles, ArrowRight } from 'lucide-react';
 
 export function HomeNewsletter() {
@@ -91,7 +88,7 @@ export function HomeNewsletter() {
                           type="email"
                           placeholder="name@organization.org"
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                           required
                           disabled={isSubmitting}
                           className="w-full pl-12 pr-4 py-4 text-lg bg-white dark:bg-gray-900 border-0 focus:ring-2 focus:ring-blue-500 rounded-xl"
