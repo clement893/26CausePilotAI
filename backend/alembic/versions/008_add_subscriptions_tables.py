@@ -24,50 +24,40 @@ def upgrade() -> None:
     # Check if enum types exist, create them if they don't
     # PostgreSQL enum types are created automatically by SQLAlchemy when creating tables,
     # but we need to check if they exist first to avoid errors
-    with conn.connection.cursor() as cursor:
-        # Check if planinterval enum exists
-        cursor.execute("""
-            SELECT EXISTS (
-                SELECT 1 FROM pg_type WHERE typname = 'planinterval'
-            )
-        """)
-        planinterval_exists = cursor.fetchone()[0]
-        
-        if not planinterval_exists:
-            op.execute("CREATE TYPE planinterval AS ENUM ('MONTH', 'YEAR', 'WEEK', 'DAY')")
-        
-        # Check if planstatus enum exists
-        cursor.execute("""
-            SELECT EXISTS (
-                SELECT 1 FROM pg_type WHERE typname = 'planstatus'
-            )
-        """)
-        planstatus_exists = cursor.fetchone()[0]
-        
-        if not planstatus_exists:
-            op.execute("CREATE TYPE planstatus AS ENUM ('ACTIVE', 'INACTIVE', 'ARCHIVED')")
-        
-        # Check if subscriptionstatus enum exists
-        cursor.execute("""
-            SELECT EXISTS (
-                SELECT 1 FROM pg_type WHERE typname = 'subscriptionstatus'
-            )
-        """)
-        subscriptionstatus_exists = cursor.fetchone()[0]
-        
-        if not subscriptionstatus_exists:
-            op.execute("CREATE TYPE subscriptionstatus AS ENUM ('ACTIVE', 'CANCELED', 'PAST_DUE', 'UNPAID', 'TRIALING', 'INCOMPLETE', 'INCOMPLETE_EXPIRED')")
-        
-        # Check if invoicestatus enum exists
-        cursor.execute("""
-            SELECT EXISTS (
-                SELECT 1 FROM pg_type WHERE typname = 'invoicestatus'
-            )
-        """)
-        invoicestatus_exists = cursor.fetchone()[0]
-        
-        if not invoicestatus_exists:
-            op.execute("CREATE TYPE invoicestatus AS ENUM ('DRAFT', 'OPEN', 'PAID', 'VOID', 'UNCOLLECTIBLE')")
+    # Use raw SQL with DO block to avoid duplicate errors (PostgreSQL doesn't support CREATE TYPE IF NOT EXISTS)
+    
+    # Create enum types only if they don't exist
+    op.execute("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'planinterval') THEN
+                CREATE TYPE planinterval AS ENUM ('MONTH', 'YEAR', 'WEEK', 'DAY');
+            END IF;
+        END $$;
+    """)
+    
+    op.execute("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'planstatus') THEN
+                CREATE TYPE planstatus AS ENUM ('ACTIVE', 'INACTIVE', 'ARCHIVED');
+            END IF;
+        END $$;
+    """)
+    
+    op.execute("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'subscriptionstatus') THEN
+                CREATE TYPE subscriptionstatus AS ENUM ('ACTIVE', 'CANCELED', 'PAST_DUE', 'UNPAID', 'TRIALING', 'INCOMPLETE', 'INCOMPLETE_EXPIRED');
+            END IF;
+        END $$;
+    """)
+    
+    op.execute("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'invoicestatus') THEN
+                CREATE TYPE invoicestatus AS ENUM ('DRAFT', 'OPEN', 'PAID', 'VOID', 'UNCOLLECTIBLE');
+            END IF;
+        END $$;
+    """)
 
     # Create plans table
     if 'plans' not in tables:
