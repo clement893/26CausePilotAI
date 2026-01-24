@@ -203,6 +203,16 @@ class OrganizationDatabaseManager:
             # Validate required fields
             if not result['host']:
                 raise ValueError("Host is required in connection string")
+            
+            # Check if hostname is the same as scheme (common parsing error)
+            if result['host'].lower() == parsed.scheme.lower() or result['host'].lower() in ['postgresql', 'postgres']:
+                raise ValueError(
+                    f"Format d'URL invalide: le nom d'hôte '{result['host']}' semble incorrect. "
+                    f"Vérifiez que votre URL de connexion est au format: "
+                    f"postgresql://user:password@host:port/database ou "
+                    f"postgresql+asyncpg://user:password@host:port/database"
+                )
+            
             if not result['database']:
                 raise ValueError("Database name is required in connection string")
             
