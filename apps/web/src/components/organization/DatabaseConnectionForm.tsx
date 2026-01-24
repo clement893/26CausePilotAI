@@ -518,12 +518,27 @@ export function DatabaseConnectionForm({
           </div>
 
           {/* Info Box */}
-          <div className="mt-4 p-3 rounded-lg bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800">
-            <p className="text-xs text-info-700 dark:text-info-300">
-              <strong>Note:</strong> La création automatique nécessite que la variable d'environnement{' '}
-              <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">ORG_DB_BASE_URL</code> soit configurée.
-              La base de données sera nommée automatiquement selon le slug de l'organisation.
-            </p>
+          <div className="mt-4 space-y-3">
+            <div className="p-3 rounded-lg bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800">
+              <p className="text-xs text-info-700 dark:text-info-300">
+                <strong>Note:</strong> La création automatique nécessite que la variable d'environnement{' '}
+                <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">ORG_DB_BASE_URL</code> soit configurée.
+                La base de données sera nommée automatiquement selon le slug de l'organisation.
+              </p>
+            </div>
+            
+            {/* Railway URL Help */}
+            {(dbHost?.includes('railway.internal') || connectionString?.includes('railway.internal')) && (
+              <div className="p-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800">
+                <p className="text-xs text-warning-700 dark:text-warning-300 font-medium mb-1">
+                  ⚠️ URL Railway Interne Détectée
+                </p>
+                <p className="text-xs text-warning-700 dark:text-warning-300">
+                  L'URL <code className="bg-warning-100 dark:bg-warning-900/40 px-1 rounded">*.railway.internal</code> ne fonctionne que si votre backend est sur Railway dans le même projet. 
+                  Si vous avez des timeouts, utilisez l'URL publique Railway (avec <code className="bg-warning-100 dark:bg-warning-900/40 px-1 rounded">*.railway.app</code>) et activez "Public Networking" dans Railway.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
