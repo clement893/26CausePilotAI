@@ -22,6 +22,12 @@ import {
   Shield,
   Sparkles,
   Zap,
+  Heart,
+  Users,
+  BarChart3,
+  Brain,
+  Target,
+  ArrowRight,
 } from 'lucide-react';
 
 // Lazy load TemplateAIChat to avoid circular dependency issues during build
