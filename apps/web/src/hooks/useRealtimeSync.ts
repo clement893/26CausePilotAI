@@ -18,7 +18,7 @@
 import { useEffect, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useWebSocket } from './useWebSocket';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/lib/store';
 import { logger } from '@/lib/logger';
 
 /**

@@ -125,7 +125,9 @@ export function useMutationWithInvalidation<
       }
 
       // Call original onSuccess callback
-      onSuccess?.(data, variables, context);
+      if (onSuccess) {
+        (onSuccess as any)(data, variables, context);
+      }
     },
     
     onError: (error, variables, context) => {
@@ -135,12 +137,16 @@ export function useMutationWithInvalidation<
       });
       
       // Call original onError callback
-      onError?.(error, variables, context);
+      if (onError) {
+        (onError as any)(error, variables, context);
+      }
     },
     
     onSettled: (data, error, variables, context) => {
       // Call original onSettled callback
-      onSettled?.(data, error, variables, context);
+      if (onSettled) {
+        (onSettled as any)(data, error, variables, context);
+      }
     },
   });
 }

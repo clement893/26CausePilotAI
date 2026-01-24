@@ -18,7 +18,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import { useRealtimeSync } from '@/hooks/useRealtimeSync';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/lib/store';
 import { logger } from '@/lib/logger';
 
 export interface RealtimeSyncProviderProps {
