@@ -24,6 +24,14 @@ import {
   Sparkles,
   Zap,
   TrendingUp,
+  Heart,
+  Users,
+  BarChart3,
+  Brain,
+  Target,
+  FileText,
+  Globe,
+  ArrowRight,
 } from 'lucide-react';
 
 // Lazy load TemplateAIChat to avoid circular dependency issues during build
@@ -67,56 +75,125 @@ function DashboardContent() {
       {/* Welcome Header */}
       <MotionDiv variant="fade" delay={100}>
         <PageHeader
-          title={`Welcome back, ${user?.name || 'User'}!`}
-          description="Here's what's happening with your account today"
+          title={`Welcome to CausePilot AI, ${user?.name || 'User'}!`}
+          description="Your all-in-one platform for intelligent fundraising and donor management"
           breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Dashboard' }]}
         />
       </MotionDiv>
 
-      {/* Quick Stats Grid */}
+      {/* About CausePilot Section */}
+      <MotionDiv variant="slideUp" delay={150}>
+        <Card className="bg-gradient-to-br from-primary-50 via-primary-100/50 to-secondary-50 dark:from-primary-950/60 dark:via-primary-900/40 dark:to-secondary-950/60 border-primary-200 dark:border-primary-800">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-3 bg-primary-600 dark:bg-primary-500 rounded-lg">
+                  <Brain className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <h2 className="text-2xl font-bold text-foreground">About CausePilot AI</h2>
+              </div>
+              <p className="text-base text-muted-foreground mb-4 leading-relaxed">
+                CausePilot AI is an intelligent fundraising platform designed for modern nonprofits. 
+                We combine <span className="font-semibold text-primary-600 dark:text-primary-400">predictive donor analytics</span>,{' '}
+                <span className="font-semibold text-secondary-600 dark:text-secondary-400">automated stewardship</span>, and{' '}
+                <span className="font-semibold text-info-600 dark:text-info-400">AI-powered insights</span> to help you maximize your impact.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Whether you're managing donor relationships, running campaigns, or analyzing your fundraising performance, 
+                CausePilot AI provides the tools you need to grow your organization's reach and effectiveness.
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <div className="p-4 bg-white/50 dark:bg-gray-900/50 rounded-lg border border-primary-200 dark:border-primary-800">
+                <Heart className="w-12 h-12 text-primary-600 dark:text-primary-400" />
+              </div>
+            </div>
+          </div>
+        </Card>
+      </MotionDiv>
+
+      {/* Key Features Grid */}
       <MotionDiv variant="slideUp" delay={200}>
-        <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
-          <Card className="border-l-4 border-l-primary-500 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Resources</p>
-                <p className="text-3xl font-bold text-foreground">0</p>
+        <div className="mb-4">
+          <h3 className="text-xl font-semibold text-foreground mb-2">Key Features</h3>
+          <p className="text-sm text-muted-foreground">Explore what CausePilot AI can do for your organization</p>
+        </div>
+        <Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="normal">
+          <Card className="border-l-4 border-l-primary-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex-shrink-0">
+                <Brain className="w-6 h-6 text-primary-600 dark:text-primary-400" />
               </div>
-              <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                <Sparkles className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-              </div>
-            </div>
-          </Card>
-          <Card className="border-l-4 border-l-secondary-500 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Files</p>
-                <p className="text-3xl font-bold text-foreground">0</p>
-              </div>
-              <div className="p-3 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg">
-                <Zap className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
+              <div className="flex-1">
+                <h4 className="font-semibold text-foreground mb-1">AI Copilot</h4>
+                <p className="text-sm text-muted-foreground">
+                  Get intelligent recommendations on when to ask, how much to ask, and who to target using generative AI.
+                </p>
               </div>
             </div>
           </Card>
-          <Card className="border-l-4 border-l-info-500 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Activities</p>
-                <p className="text-3xl font-bold text-foreground">0</p>
+          <Card className="border-l-4 border-l-secondary-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg flex-shrink-0">
+                <Users className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
               </div>
-              <div className="p-3 bg-info-100 dark:bg-info-900/30 rounded-lg">
-                <Activity className="w-6 h-6 text-info-600 dark:text-info-400" />
+              <div className="flex-1">
+                <h4 className="font-semibold text-foreground mb-1">Donor Management</h4>
+                <p className="text-sm text-muted-foreground">
+                  A 360-degree view of your supporters. Track history, preferences, and engagement in one secure CRM.
+                </p>
               </div>
             </div>
           </Card>
-          <Card className="border-l-4 border-l-success-500 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Growth</p>
-                <p className="text-3xl font-bold text-foreground">+12%</p>
+          <Card className="border-l-4 border-l-info-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-info-100 dark:bg-info-900/30 rounded-lg flex-shrink-0">
+                <Zap className="w-6 h-6 text-info-600 dark:text-info-400" />
               </div>
-              <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-success-600 dark:text-success-400" />
+              <div className="flex-1">
+                <h4 className="font-semibold text-foreground mb-1">Automated Campaigns</h4>
+                <p className="text-sm text-muted-foreground">
+                  Set up multi-channel communication flows that nurture donors automatically while you sleep.
+                </p>
+              </div>
+            </div>
+          </Card>
+          <Card className="border-l-4 border-l-success-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg flex-shrink-0">
+                <Heart className="w-6 h-6 text-success-600 dark:text-success-400" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-foreground mb-1">Smart Donation Forms</h4>
+                <p className="text-sm text-muted-foreground">
+                  Conversion-optimized forms that adapt suggested amounts based on donor history and profile.
+                </p>
+              </div>
+            </div>
+          </Card>
+          <Card className="border-l-4 border-l-warning-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-warning-100 dark:bg-warning-900/30 rounded-lg flex-shrink-0">
+                <BarChart3 className="w-6 h-6 text-warning-600 dark:text-warning-400" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-foreground mb-1">Impact Analytics</h4>
+                <p className="text-sm text-muted-foreground">
+                  Real-time dashboards that turn complex data into actionable insights for your board and team.
+                </p>
+              </div>
+            </div>
+          </Card>
+          <Card className="border-l-4 border-l-error-500 hover:shadow-lg transition-all hover:scale-[1.02]">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-error-100 dark:bg-error-900/30 rounded-lg flex-shrink-0">
+                <Shield className="w-6 h-6 text-error-600 dark:text-error-400" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-foreground mb-1">Secure & Compliant</h4>
+                <p className="text-sm text-muted-foreground">
+                  Enterprise-grade security with automated tax receipting and compliance built-in.
+                </p>
               </div>
             </div>
           </Card>
@@ -203,21 +280,61 @@ function DashboardContent() {
                 <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-foreground">Quick Actions</h3>
-                <p className="text-sm text-muted-foreground">Access frequently used features</p>
+                <h3 className="text-xl font-semibold text-foreground">Get Started</h3>
+                <p className="text-sm text-muted-foreground">Quick access to key features</p>
               </div>
             </div>
             <Stack gap="normal">
-              <Link href="/admin">
+              <Link href="/dashboard/base-donateur/donateurs">
                 <Button
                   variant="primary"
                   className="w-full justify-start gap-3 h-auto py-3 hover:scale-[1.02] transition-transform"
                 >
+                  <Users className="w-5 h-5" />
+                  <div className="text-left flex-1">
+                    <div className="font-semibold">Manage Donors</div>
+                    <div className="text-xs opacity-90">View and manage your donor database</div>
+                  </div>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/dashboard/campagnes/campagnes">
+                <Button
+                  variant="secondary"
+                  className="w-full justify-start gap-3 h-auto py-3 hover:scale-[1.02] transition-transform"
+                >
+                  <Target className="w-5 h-5" />
+                  <div className="text-left flex-1">
+                    <div className="font-semibold">Campaigns</div>
+                    <div className="text-xs opacity-90">Create and manage fundraising campaigns</div>
+                  </div>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/dashboard/analytics/dashboard">
+                <Button
+                  variant="secondary"
+                  className="w-full justify-start gap-3 h-auto py-3 hover:scale-[1.02] transition-transform"
+                >
+                  <BarChart3 className="w-5 h-5" />
+                  <div className="text-left flex-1">
+                    <div className="font-semibold">Analytics</div>
+                    <div className="text-xs opacity-90">View insights and reports</div>
+                  </div>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/admin">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start gap-3 h-auto py-3 hover:scale-[1.02] transition-transform"
+                >
                   <Settings className="w-5 h-5" />
-                  <div className="text-left">
-                    <div className="font-semibold">Espace Admin</div>
+                  <div className="text-left flex-1">
+                    <div className="font-semibold">Administration</div>
                     <div className="text-xs opacity-90">Manage system settings</div>
                   </div>
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
             </Stack>
@@ -280,7 +397,7 @@ function DashboardContent() {
             </div>
             <div>
               <h3 className="text-xl font-semibold text-foreground">AI Assistant</h3>
-              <p className="text-sm text-muted-foreground">Get help with your questions</p>
+              <p className="text-sm text-muted-foreground">Ask questions about CausePilot AI and get intelligent assistance</p>
             </div>
           </div>
           <TemplateAIChat />
