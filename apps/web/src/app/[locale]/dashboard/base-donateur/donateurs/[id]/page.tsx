@@ -11,12 +11,10 @@ import { getDonor, getDonorHistory, getDonorStats, listDonorDonations } from '@/
 import type { DonorWithStats, Donation, DonorHistory, DonorStats } from '@modele/types';
 import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity } from 'lucide-react';
 import { Link } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
 import type { ColorVariant } from '@/components/ui/types';
 
 export default function DonorDetailPage() {
   const params = useParams();
-  const locale = useLocale();
   const donorId = params.id as string;
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
   const [donor, setDonor] = useState<DonorWithStats | null>(null);
@@ -140,7 +138,7 @@ export default function DonorDetailPage() {
         <Card>
           <div className="text-center py-12">
             <p className="text-destructive">{error || 'Donateur non trouvé'}</p>
-            <Link href={`/${locale}/dashboard/base-donateur/donateurs`}>
+            <Link href="/dashboard/base-donateur/donateurs">
               <Button variant="outline" className="mt-4">
                 Retour à la liste
               </Button>
@@ -155,7 +153,7 @@ export default function DonorDetailPage() {
     <Container className="py-8 lg:py-12">
       {/* Header */}
       <div className="mb-8">
-        <Link href={`/${locale}/dashboard/base-donateur/donateurs`}>
+        <Link href="/dashboard/base-donateur/donateurs">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Retour à la liste

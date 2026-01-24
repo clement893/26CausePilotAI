@@ -10,10 +10,8 @@ import { listDonors, type ListDonorsParams } from '@/lib/api/donors';
 import type { Donor } from '@modele/types';
 import { Search, Plus, Mail, Phone, DollarSign, Calendar } from 'lucide-react';
 import { Link } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
 
 export default function DonateursPage() {
-  const locale = useLocale();
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
   const [donors, setDonors] = useState<Donor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
