@@ -102,7 +102,7 @@ class OrganizationDatabaseManager:
             clean_url = connection_string.replace('postgresql+asyncpg://', 'postgresql://')
             parsed = urlparse(clean_url)
             
-            return {
+            result = {
                 'scheme': parsed.scheme,
                 'user': parsed.username,
                 'password': parsed.password,
@@ -111,6 +111,16 @@ class OrganizationDatabaseManager:
                 'database': parsed.path.lstrip('/'),
                 'full': connection_string
             }
+            
+            # Validate required fields
+            if not result['host']:
+                raise ValueError("Host is required in connection string")
+            if not result['database']:
+                raise ValueError("Database name is required in connection string")
+            
+            return result
+        except ValueError:
+            raise
         except Exception as e:
             logger.error(f"Failed to parse connection string: {e}")
             raise ValueError(f"Invalid connection string format: {e}")
@@ -172,7 +182,7 @@ class OrganizationDatabaseManager:
         return normalized
     
     @classmethod
-    async def test_connection(cls, db_connection_string: str, timeout: int = 5) -> tuple[bool, str, Optional[str]]:
+    async def test_connection(cls, db_connection_string: str, timeout: int = 30) -> tuple[bool, str, Optional[str]]:
         """
         Test a database connection string.
         
@@ -191,7 +201,13 @@ class OrganizationDatabaseManager:
         
         # Validate format after normalization
         if not db_connection_string.startswith('postgresql+asyncpg://'):
-            return False, "Invalid connection string format. Must be a valid PostgreSQL connection string.", None
+            return False, "Format de chaîne de connexion invalide. Doit être une chaîne de connexion PostgreSQL valide.", None
+        
+        # Parse to get host for better error messages
+        try:
+            parsed = cls.parse_db_connection_string(db_connection_string)
+        except ValueError as e:
+            return False, f"Format de chaîne de connexion invalide: {str(e)}", None
         
         try:
             
@@ -205,7 +221,9 @@ class OrganizationDatabaseManager:
                     "server_settings": {
                         "application_name": "causepilot_test_connection",
                     },
+                    "timeout": timeout,  # Connection timeout
                 },
+                pool_timeout=timeout,  # Pool timeout
             )
             
             async with test_engine.connect() as conn:
@@ -227,15 +245,28 @@ class OrganizationDatabaseManager:
         except OperationalError as e:
             error_msg = str(e)
             logger.error(f"Database operational error testing connection: {error_msg}")
-            return False, f"Connection failed: {error_msg}", None
+            # Provide more helpful error messages
+            if "timeout" in error_msg.lower() or "timed out" in error_msg.lower():
+                return False, f"Timeout: La connexion à la base de données a pris trop de temps. Vérifiez que la base de données est accessible depuis le serveur backend et que l'URL est correcte.", None
+            elif "could not translate host name" in error_msg.lower() or "name resolution" in error_msg.lower():
+                return False, f"Résolution DNS échouée: Impossible de résoudre le nom d'hôte '{parsed.get('host', 'unknown')}'. Vérifiez que l'hôte est correct et accessible.", None
+            elif "connection refused" in error_msg.lower():
+                return False, f"Connexion refusée: Le serveur PostgreSQL refuse la connexion. Vérifiez que PostgreSQL est démarré et que le port est correct.", None
+            elif "authentication failed" in error_msg.lower() or "password authentication failed" in error_msg.lower():
+                return False, f"Authentification échouée: Le nom d'utilisateur ou le mot de passe est incorrect.", None
+            else:
+                return False, f"Erreur de connexion: {error_msg}", None
         except ProgrammingError as e:
             error_msg = str(e)
             logger.error(f"Database programming error testing connection: {error_msg}")
-            return False, f"Database error: {error_msg}", None
+            return False, f"Erreur de base de données: {error_msg}", None
         except Exception as e:
             error_msg = str(e)
             logger.error(f"Unexpected error testing connection: {error_msg}", exc_info=True)
-            return False, f"Connection test failed: {error_msg}", None
+            # Check for timeout specifically
+            if "timeout" in error_msg.lower() or "timed out" in error_msg.lower():
+                return False, f"Timeout: La connexion a pris trop de temps. Vérifiez que la base de données est accessible depuis le backend et que l'URL de connexion est correcte (utilisez l'URL interne Railway si le backend est sur Railway).", None
+            return False, f"Échec du test de connexion: {error_msg}", None
     
     @classmethod
     async def create_organization_database(cls, organization_slug: str, db_connection_string: Optional[str] = None) -> tuple[bool, str]:
