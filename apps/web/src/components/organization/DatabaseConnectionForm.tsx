@@ -131,18 +131,45 @@ export function DatabaseConnectionForm({
       let errorMessage = err instanceof Error ? err.message : 'Erreur lors du test de connexion';
       
       // Provide more helpful error messages for timeout errors
-      if (errorMessage.includes('timeout') || errorMessage.includes('exceeded')) {
-        errorMessage = `Timeout: La connexion à la base de données prend trop de temps (plus de 3 minutes).\n\n` +
-          `Causes possibles:\n` +
-          `- La base de données est inaccessible depuis le serveur backend\n` +
-          `- Le réseau est lent ou instable\n` +
-          `- Les paramètres de connexion sont incorrects\n` +
-          `- Le firewall bloque la connexion\n\n` +
-          `Vérifiez que:\n` +
-          `- L'URL de connexion est correcte\n` +
-          `- Le serveur backend peut accéder à Internet pour se connecter à la base de données\n` +
-          `- Si vous utilisez Railway, vérifiez que "Public Networking" est activé pour votre service PostgreSQL\n` +
-          `- Vérifiez que le port est correct (Railway utilise parfois des ports non-standard)`;
+      if (errorMessage.includes('timeout') || errorMessage.includes('exceeded') || errorMessage.includes('Timeout')) {
+        const isRailway = dbHost?.includes('railway') || connectionString?.includes('railway');
+        const isInternal = dbHost?.includes('railway.internal') || connectionString?.includes('railway.internal');
+        
+        errorMessage = `Timeout: La connexion à la base de données prend trop de temps (plus de 3 minutes).\n\n`;
+        
+        if (isRailway) {
+          errorMessage += `🔧 Configuration Railway :\n\n`;
+          if (isInternal) {
+            errorMessage += `Vous utilisez une URL Railway interne (.railway.internal).\n\n`;
+            errorMessage += `✅ Si votre backend et votre base de données sont dans le MÊME projet Railway :\n`;
+            errorMessage += `   - Vérifiez que les deux services sont bien dans le même projet\n`;
+            errorMessage += `   - Vérifiez que les deux services sont démarrés\n\n`;
+            errorMessage += `❌ Si votre backend et votre base de données sont dans des projets DIFFÉRENTS :\n`;
+            errorMessage += `   - Utilisez l'URL PUBLIQUE Railway (avec .railway.app)\n`;
+            errorMessage += `   - Activez "Public Networking" dans les paramètres de votre service PostgreSQL\n`;
+            errorMessage += `   - Copiez l'URL depuis les variables d'environnement Railway (DATABASE_URL ou PGDATABASE_URL)\n\n`;
+          } else {
+            errorMessage += `Vous utilisez une URL Railway publique (.railway.app).\n\n`;
+            errorMessage += `✅ Vérifications :\n`;
+            errorMessage += `   1. Allez dans votre service PostgreSQL sur Railway\n`;
+            errorMessage += `   2. Ouvrez l'onglet "Settings"\n`;
+            errorMessage += `   3. Activez "Public Networking" si ce n'est pas déjà fait\n`;
+            errorMessage += `   4. Vérifiez que le port est correct (généralement 5432)\n`;
+            errorMessage += `   5. Vérifiez que l'URL de connexion correspond exactement à celle dans Railway\n\n`;
+          }
+        } else {
+          errorMessage += `Causes possibles :\n`;
+          errorMessage += `- La base de données est inaccessible depuis le serveur backend\n`;
+          errorMessage += `- Le réseau est lent ou instable\n`;
+          errorMessage += `- Les paramètres de connexion sont incorrects\n`;
+          errorMessage += `- Le firewall bloque la connexion\n\n`;
+        }
+        
+        errorMessage += `📋 Vérifications générales :\n`;
+        errorMessage += `- L'URL de connexion est correcte et complète\n`;
+        errorMessage += `- Le nom d'hôte, le port, l'utilisateur et le mot de passe sont corrects\n`;
+        errorMessage += `- La base de données existe (si vous testez une connexion, créez d'abord la base)\n`;
+        errorMessage += `- Le serveur backend peut accéder à Internet pour se connecter à la base de données`;
       }
       
       setError(errorMessage);
@@ -553,10 +580,20 @@ export function DatabaseConnectionForm({
           {/* Info Box */}
           <div className="mt-4 space-y-3">
             <div className="p-3 rounded-lg bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800">
+              <p className="text-xs text-info-700 dark:text-info-300 mb-2">
+                <strong>📘 Guide de Configuration Railway :</strong>
+              </p>
+              <ol className="text-xs text-info-700 dark:text-info-300 list-decimal list-inside space-y-1 mb-2">
+                <li>Allez dans votre service PostgreSQL sur Railway</li>
+                <li>Ouvrez l'onglet <strong>"Variables"</strong> ou <strong>"Connect"</strong></li>
+                <li>Copiez la variable <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">DATABASE_URL</code> ou <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">PGDATABASE_URL</code></li>
+                <li>Si backend et DB sont dans le même projet Railway : utilisez l'URL avec <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">.railway.internal</code></li>
+                <li>Sinon : utilisez l'URL publique avec <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">.railway.app</code> et activez "Public Networking"</li>
+                <li>Remplacez le nom de la base de données par le nom souhaité pour cette organisation</li>
+              </ol>
               <p className="text-xs text-info-700 dark:text-info-300">
-                <strong>Note:</strong> La création automatique nécessite que la variable d'environnement{' '}
-                <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">ORG_DB_BASE_URL</code> soit configurée.
-                La base de données sera nommée automatiquement selon le slug de l'organisation.
+                <strong>Note:</strong> La création automatique fonctionne maintenant sans <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">ORG_DB_BASE_URL</code> - 
+                elle utilise automatiquement votre <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">DATABASE_URL</code>.
               </p>
             </div>
             

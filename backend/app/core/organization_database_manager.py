@@ -33,15 +33,54 @@ class OrganizationDatabaseManager:
     _sessions: Dict[str, async_sessionmaker] = {}  # Key: organization_id (UUID as string)
     
     @classmethod
+    def _convert_railway_url_to_internal(cls, url: str) -> str:
+        """
+        Try to convert Railway public URL to internal URL if we're on Railway.
+        
+        Railway internal URLs (.railway.internal) work better for connections
+        within the same Railway project, but we should only convert if we can
+        reliably determine the internal hostname.
+        """
+        import os
+        
+        # Check if we're on Railway
+        is_railway = os.getenv("RAILWAY_ENVIRONMENT") is not None or os.getenv("RAILWAY_SERVICE_NAME") is not None
+        
+        if not is_railway:
+            return url
+        
+        # Only convert if we have PGHOST (Railway's internal hostname)
+        # Don't guess - let the user configure it correctly
+        railway_pghost = os.getenv("PGHOST")
+        if railway_pghost and (".railway.app" in url or ".up.railway.app" in url or ".rlwy.net" in url):
+            # We have the internal hostname from Railway, use it
+            parsed = urlparse(url)
+            hostname = parsed.hostname or ""
+            
+            if hostname and hostname != railway_pghost:
+                # Replace hostname in URL
+                new_url = url.replace(f"@{hostname}", f"@{railway_pghost}")
+                logger.info(f"Converted Railway public URL to internal using PGHOST: {hostname} -> {railway_pghost}")
+                return new_url
+        
+        # Don't convert if we can't reliably determine the internal hostname
+        # Let the user configure the correct URL
+        return url
+    
+    @classmethod
     def get_org_db_base_url(cls) -> Optional[str]:
         """
         Get base database URL for organization databases.
         
         If ORG_DB_BASE_URL is not set, derives it from DATABASE_URL by removing the database name.
+        On Railway, tries to use internal URLs for better connectivity.
         """
         base_url = getattr(settings, 'ORG_DB_BASE_URL', None)
         if base_url:
-            return str(base_url)
+            base_url = str(base_url)
+            # Try to convert to internal URL if on Railway
+            base_url = cls._convert_railway_url_to_internal(base_url)
+            return base_url
         
         # Fallback: derive from DATABASE_URL
         # Extract base URL (without database name) from DATABASE_URL
@@ -77,6 +116,10 @@ class OrganizationDatabaseManager:
                     query_part = db_url[fragment_idx:]
                 
                 base_url = base_without_db + query_part
+                
+                # Try to convert to internal URL if on Railway
+                base_url = cls._convert_railway_url_to_internal(base_url)
+                
                 logger.info("Derived ORG_DB_BASE_URL from DATABASE_URL")
                 return base_url
         
@@ -556,14 +599,24 @@ class OrganizationDatabaseManager:
                 
                 if is_railway_public:
                     return False, (
-                        f"Timeout: La connexion à la base de données Railway a pris trop de temps.\n\n"
+                        f"Timeout: La connexion à la base de données Railway a pris trop de temps (plus de 3 minutes).\n\n"
                         f"Host: {host}, Port: {port}\n\n"
-                        f"Solutions possibles:\n"
-                        f"1. Vérifiez que 'Public Networking' est activé pour votre service PostgreSQL sur Railway\n"
-                        f"2. Vérifiez que le port {port} est correct (Railway utilise parfois des ports non-standard)\n"
-                        f"3. Vérifiez que votre backend Railway peut accéder à Internet pour se connecter à la base de données\n"
-                        f"4. Si le backend et la DB sont dans le même projet Railway, essayez l'URL interne (.railway.internal)\n"
-                        f"5. Vérifiez les variables d'environnement Railway pour obtenir la bonne URL de connexion"
+                        f"🔧 Guide de Configuration Railway :\n\n"
+                        f"1. Obtenez la bonne URL de connexion :\n"
+                        f"   - Allez dans votre service PostgreSQL sur Railway\n"
+                        f"   - Ouvrez l'onglet 'Variables' ou 'Connect'\n"
+                        f"   - Copiez la variable DATABASE_URL ou PGDATABASE_URL\n\n"
+                        f"2. Choisissez le bon type d'URL :\n"
+                        f"   ✅ Si backend et DB sont dans le MÊME projet Railway :\n"
+                        f"      → Utilisez l'URL avec .railway.internal (ex: postgres.railway.internal)\n"
+                        f"   ✅ Si backend et DB sont dans des projets DIFFÉRENTS :\n"
+                        f"      → Utilisez l'URL publique avec .railway.app ou .up.railway.app\n"
+                        f"      → Activez 'Public Networking' dans Settings de votre service PostgreSQL\n\n"
+                        f"3. Vérifications :\n"
+                        f"   - Le port {port} est correct (généralement 5432)\n"
+                        f"   - Le nom d'utilisateur et le mot de passe sont corrects\n"
+                        f"   - La base de données existe (créez-la d'abord si nécessaire)\n"
+                        f"   - 'Public Networking' est activé si vous utilisez l'URL publique"
                     ), None
                 else:
                     return False, (
@@ -617,7 +670,34 @@ class OrganizationDatabaseManager:
             
             # Check for timeout specifically
             if "timeout" in error_msg.lower() or "timed out" in error_msg.lower():
-                return False, f"Timeout: La connexion a pris trop de temps. Vérifiez que la base de données est accessible depuis le serveur backend et que l'URL de connexion est correcte (utilisez l'URL interne Railway si le backend est sur Railway).", None
+                host = parsed.get('host', 'unknown') if 'parsed' in locals() else 'unknown'
+                port = parsed.get('port', 'unknown') if 'parsed' in locals() else 'unknown'
+                is_railway = 'railway' in host.lower()
+                
+                if is_railway:
+                    return False, (
+                        f"Timeout: La connexion à la base de données Railway a pris trop de temps.\n\n"
+                        f"Host: {host}, Port: {port}\n\n"
+                        f"🔧 Solutions :\n\n"
+                        f"1. Vérifiez que vous utilisez la bonne URL :\n"
+                        f"   - Même projet Railway → URL avec .railway.internal\n"
+                        f"   - Projets différents → URL publique avec .railway.app + 'Public Networking' activé\n\n"
+                        f"2. Obtenez l'URL correcte depuis Railway :\n"
+                        f"   - Service PostgreSQL → Variables → DATABASE_URL ou PGDATABASE_URL\n\n"
+                        f"3. Vérifiez que la base de données existe (créez-la d'abord si nécessaire)\n\n"
+                        f"4. Vérifiez que 'Public Networking' est activé si vous utilisez l'URL publique"
+                    ), None
+                else:
+                    return False, (
+                        f"Timeout: La connexion a pris trop de temps.\n\n"
+                        f"Host: {host}, Port: {port}\n\n"
+                        f"Vérifiez que :\n"
+                        f"- La base de données est démarrée et accessible\n"
+                        f"- Le port {port} est correct et ouvert\n"
+                        f"- Le serveur backend peut accéder au réseau pour se connecter à {host}\n"
+                        f"- Il n'y a pas de firewall bloquant la connexion\n"
+                        f"- L'URL de connexion est correcte et complète"
+                    ), None
             
             return False, f"Échec du test de connexion: {error_msg}", None
     
