@@ -30,7 +30,7 @@ class SEOSettings(BaseModel):
     twitter_title: Optional[str] = None
     twitter_description: Optional[str] = None
     twitter_image: Optional[str] = None
-    schema: Optional[str] = None
+    schema_json: Optional[str] = Field(None, alias='schema', description='JSON-LD schema markup')
 
 
 class SEOSettingsResponse(BaseModel):
@@ -66,7 +66,7 @@ async def update_seo_settings(
     db: AsyncSession = Depends(get_db),
 ):
     """Update SEO settings"""
-    settings_dict = settings.model_dump(exclude_none=True)
+    settings_dict = settings.model_dump(exclude_none=True, by_alias=True)
     
     result = await db.execute(
         select(UserPreference)
