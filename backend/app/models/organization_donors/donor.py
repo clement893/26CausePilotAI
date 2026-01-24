@@ -71,7 +71,7 @@ class Donor(Base):
     donations = relationship("Donation", back_populates="donor", cascade="all, delete-orphan")
     payment_methods = relationship("PaymentMethod", back_populates="donor", cascade="all, delete-orphan")
     notes = relationship("DonorNote", back_populates="donor", cascade="all, delete-orphan")
-    communications = relationship("DonorCommunication", back_populates="donor", cascade="all, delete-orphan")
+    # communications = relationship("DonorCommunication", back_populates="donor", cascade="all, delete-orphan")  # TODO: Create DonorCommunication model
     activities = relationship("DonorActivity", back_populates="donor", cascade="all, delete-orphan")
     
     def __repr__(self):
