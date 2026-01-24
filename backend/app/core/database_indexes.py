@@ -145,6 +145,24 @@ async def create_recommended_indexes(session: AsyncSession) -> dict:
                 logger.info(f"Index {index_def['name']} already exists, skipping")
                 continue
             
+            # Check if table exists and has required columns
+            check_table_sql = """
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = :table_name
+            """
+            table_result = await session.execute(text(check_table_sql), {"table_name": index_def["table"]})
+            existing_columns = {row[0] for row in table_result}
+            
+            # Check if all required columns exist
+            required_columns = [col.split()[0] for col in index_def["columns"]]  # Extract column name (remove DESC, etc.)
+            missing_columns = [col for col in required_columns if col not in existing_columns]
+            
+            if missing_columns:
+                results["skipped"].append(index_def["name"])
+                logger.info(f"Index {index_def['name']} skipped: missing columns {missing_columns} in table {index_def['table']}")
+                continue
+            
             # Create index (without CONCURRENTLY to avoid transaction issues)
             # CONCURRENTLY cannot run inside a transaction block
             columns_str = ", ".join(index_def["columns"])
