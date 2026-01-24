@@ -227,9 +227,18 @@ export default function SegmentsPage() {
       </div>
 
       {segments.length === 0 && (
-        <Card className="p-8 text-center" elevated>
-          <Users className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">Aucun segment créé. Créez votre premier segment pour commencer.</p>
+        <Card className="p-12 text-center" elevated>
+          <div className="mx-auto mb-6 w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <Users className="w-10 h-10 text-primary" />
+          </div>
+          <h3 className="text-xl font-semibold text-foreground mb-2">Aucun segment créé</h3>
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            Créez votre premier segment pour organiser et cibler vos donateurs.
+          </p>
+          <Button variant="primary" onClick={handleCreate} className="shadow-lg hover:shadow-xl transition-all duration-200">
+            <Plus className="w-4 h-4 mr-2" />
+            Créer un segment
+          </Button>
         </Card>
       )}
 

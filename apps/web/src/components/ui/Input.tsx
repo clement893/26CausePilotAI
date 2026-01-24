@@ -108,12 +108,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               'w-full border rounded-lg transition-all duration-200',
               paddingClasses,
               'bg-[var(--color-input)] text-foreground',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
+              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'placeholder:text-muted-foreground',
               error
-                ? 'border-error-500 dark:border-error-400 focus:ring-error-500 dark:focus:ring-error-400'
-                : 'border-border',
+                ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
+                : 'border-border focus:ring-primary/20',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className

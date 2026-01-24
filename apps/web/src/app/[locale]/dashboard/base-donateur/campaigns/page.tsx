@@ -99,10 +99,15 @@ export default function CampaignsPage() {
       </div>
 
       {campaigns.length === 0 ? (
-        <Card className="p-8 text-center" elevated>
-          <Target className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground mb-4">Aucune campagne créée.</p>
-          <Button variant="primary">
+        <Card className="p-12 text-center" elevated>
+          <div className="mx-auto mb-6 w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <Target className="w-10 h-10 text-primary" />
+          </div>
+          <h3 className="text-xl font-semibold text-foreground mb-2">Aucune campagne créée</h3>
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            Lancez votre première campagne de collecte pour mobiliser vos donateurs.
+          </p>
+          <Button variant="primary" className="shadow-lg hover:shadow-xl transition-all duration-200">
             <Plus className="w-4 h-4 mr-2" />
             Créer votre première campagne
           </Button>

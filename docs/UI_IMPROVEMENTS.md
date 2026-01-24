@@ -75,6 +75,8 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 | **Sidebar** | Item actif : `bg-primary/10` + `border-l-2 border-primary`, `font-medium` |
 | **Empty states** | Illustration ou icône large, texte centré, CTA mis en avant |
 
+**Implémenté :** **Input** : `focus:ring-primary/20` / `focus:ring-error-500/20`, `focus:ring-offset-2`. **Container** : `xl:px-12`, `2xl:px-14`. **Empty states** (donateurs, segments, campagnes) : icône dans `rounded-2xl bg-primary/10`, titre + sous-titre, CTA primary avec `shadow-lg hover:shadow-xl`.
+
 ---
 
 ## 7. **Tendances “moderne”**
@@ -97,6 +99,9 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 5. **Page Donateurs** : grille `gap-6`, animation `stagger-fade-in` sur les cards, délais progressifs.
 6. **Pages Segments & Campagnes** : en-têtes unifiés (icône, gradient), stagger sur les grilles, `Card` elevated sur empty states, `text-muted-foreground` / `bg-muted`.
 7. **Card** : variant `elevated` (`rounded-2xl`, `shadow-lg`, `hover:shadow-xl`).
+8. **Input** : `focus:ring-primary/20` ou `focus:ring-error-500/20`, `focus:ring-offset-2`.
+9. **Container** : `xl:px-12`, `2xl:px-14`.
+10. **Empty states** (donateurs, segments, campagnes) : icône `rounded-2xl bg-primary/10`, titre, sous-titre, CTA primary `shadow-lg`.
 
 ---
 
@@ -108,6 +113,7 @@ Proposition d’évolutions pour rendre l’interface moins plate et plus modern
 4. ~~Uniformiser les en-têtes de page (gradient, icône, espacement).~~ ✅ Fait (donateurs, segments, campagnes).
 5. Audit accessibilité (focus, contraste) après ces changements.
 6. ~~Loading skeleton sur pages clés~~ ✅ Donateurs (liste + détail), segments, campagnes.
+7. ~~Input focus, Container padding, Empty states~~ ✅ Input ring/offset, Container xl:px-12 2xl:px-14, empty states unifiés.
 
 ---
 

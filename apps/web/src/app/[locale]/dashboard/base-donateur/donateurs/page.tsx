@@ -245,17 +245,17 @@ export default function DonateursPage() {
           <LoadingSkeleton variant="card" count={6} />
         </div>
       ) : donors.length === 0 ? (
-        <Card className="text-center py-16">
-          <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
-            <User className="w-12 h-12 text-muted-foreground" />
+        <Card className="text-center py-16" elevated>
+          <div className="mx-auto mb-6 w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <User className="w-10 h-10 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold mb-2">Aucun donateur trouvé</h3>
-          <p className="text-muted-foreground mb-6">
-            {searchTerm ? 'Essayez avec d\'autres termes de recherche' : 'Commencez par ajouter votre premier donateur'}
+          <h3 className="text-xl font-semibold text-foreground mb-2">Aucun donateur trouvé</h3>
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            {searchTerm ? 'Essayez avec d\'autres termes de recherche.' : 'Commencez par ajouter votre premier donateur.'}
           </p>
           {!searchTerm && (
             <Link href="/dashboard/base-donateur/donateurs/new">
-              <Button>
+              <Button variant="primary" className="shadow-lg hover:shadow-xl transition-all duration-200">
                 <Plus className="w-4 h-4 mr-2" />
                 Ajouter un donateur
               </Button>
