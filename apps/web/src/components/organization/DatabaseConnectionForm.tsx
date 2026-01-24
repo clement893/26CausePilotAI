@@ -73,26 +73,63 @@ export function DatabaseConnectionForm({
     // If dbHost contains a full connection string, parse it and use user-provided values
     if (dbHost && (dbHost.includes('://') || dbHost.includes('postgresql') || dbHost.includes('postgres'))) {
       try {
-        // Normalize URL for parsing
-        let urlString = dbHost.replace(/^postgresql\+?asyncpg?:\/\//, 'http://');
-        if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {
-          urlString = 'http://' + urlString;
+        // First, clean up any nested URLs (e.g., postgresql+asyncpg://user:pass@postgresql://user:pass@host/db)
+        let cleanHost = dbHost;
+        
+        // Remove any nested postgresql:// or postgres:// URLs
+        // Find the last occurrence of a valid host pattern (after @)
+        const lastAtIdx = cleanHost.lastIndexOf('@');
+        if (lastAtIdx > 0) {
+          const afterLastAt = cleanHost.substring(lastAtIdx + 1);
+          // If after @ there's a scheme (postgresql:// or postgres://), extract only that part
+          if (afterLastAt.includes('postgresql://') || afterLastAt.includes('postgres://')) {
+            const schemeMatch = afterLastAt.match(/(postgresql?:\/\/[^@]+)/);
+            if (schemeMatch) {
+              // Extract only the host part (everything after postgresql:// or postgres://)
+              const hostPart = schemeMatch[1].replace(/^postgresql?:\/\//, '');
+              // Use only the host part, not the full URL
+              cleanHost = hostPart.split('/')[0]; // Get host:port part only
+            }
+          }
         }
-        const url = new URL(urlString);
         
-        // Extract components from URL
-        const urlHost = url.hostname || '';
-        const urlPort = url.port || '5432';
-        const urlUser = url.username || dbUser || 'postgres';
-        const urlPassword = url.password || dbPassword || '';
+        // Normalize URL for parsing - remove any scheme prefixes
+        let urlString = cleanHost.replace(/^postgresql\+?asyncpg?:\/\//, '');
+        urlString = urlString.replace(/^postgresql:\/\//, '');
+        urlString = urlString.replace(/^postgres:\/\//, '');
         
-        // Use user-provided database name if set, otherwise use from URL
-        const finalDbName = dbName && dbName.trim() ? dbName.trim() : (url.pathname.replace(/^\//, '') || '');
+        // If it still contains @, extract only the part after the last @
+        if (urlString.includes('@')) {
+          urlString = urlString.split('@').pop() || urlString;
+        }
         
-        // Use user-provided values if they differ from URL (user may have edited them)
-        const finalUser = dbUser && dbUser.trim() ? dbUser.trim() : urlUser;
-        const finalPassword = dbPassword && dbPassword.trim() ? dbPassword.trim() : urlPassword;
-        const finalPort = dbPort && dbPort.trim() ? dbPort.trim() : urlPort;
+        // Remove database name if present (everything after /)
+        if (urlString.includes('/')) {
+          urlString = urlString.split('/')[0];
+        }
+        
+        // Now parse as host:port
+        let hostname = urlString;
+        let port = '5432';
+        if (urlString.includes(':')) {
+          const parts = urlString.split(':');
+          hostname = parts[0];
+          port = parts[1] || '5432';
+        }
+        
+        // Use parsed values or fallback to user-provided values
+        const urlHost = hostname || dbHost.split('@').pop()?.split('/')[0]?.split(':')[0] || '';
+        const urlPort = port || dbPort || '5432';
+        const urlUser = dbUser && dbUser.trim() ? dbUser.trim() : 'postgres';
+        const urlPassword = dbPassword && dbPassword.trim() ? dbPassword.trim() : '';
+        
+        // Use user-provided database name if set
+        const finalDbName = dbName && dbName.trim() ? dbName.trim() : '';
+        
+        // Use parsed or user-provided values
+        const finalUser = urlUser;
+        const finalPassword = urlPassword;
+        const finalPort = urlPort;
         const finalHost = urlHost;
         
         if (!finalHost || !finalDbName || !finalUser || !finalPassword) {
@@ -102,9 +139,9 @@ export function DatabaseConnectionForm({
         // Encode password and user to handle special characters
         const encodedUser = encodeURIComponent(finalUser);
         const encodedPassword = encodeURIComponent(finalPassword);
-        const port = finalPort && !isNaN(Number(finalPort)) ? finalPort : '5432';
+        const portNum = finalPort && !isNaN(Number(finalPort)) ? finalPort : '5432';
         
-        return `postgresql+asyncpg://${encodedUser}:${encodedPassword}@${finalHost}:${port}/${finalDbName}`;
+        return `postgresql+asyncpg://${encodedUser}:${encodedPassword}@${finalHost}:${portNum}/${finalDbName}`;
       } catch (err) {
         console.warn('Failed to parse connection string from host field:', err);
         // Fall through to normal building

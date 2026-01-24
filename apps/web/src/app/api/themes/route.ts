@@ -52,7 +52,7 @@ const API_URL = getApiUrl();
 export async function GET() {
   // Create an AbortController for timeout
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000); // Increased to 30s - theme loading shouldn't block critical features
+  const timeoutId = setTimeout(() => controller.abort(), 60000); // Increased to 60s - theme loading shouldn't block critical features
 
   try {
     const response = await fetch(`${API_URL}/api/v1/themes/active`, {

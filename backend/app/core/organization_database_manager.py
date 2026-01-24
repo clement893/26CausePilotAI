@@ -263,7 +263,44 @@ class OrganizationDatabaseManager:
             logger.debug(f"Parsing connection string: {cls.mask_connection_string(connection_string)}")
             
             # Detect and fix nested URLs (e.g., postgresql+asyncpg://...@postgresql://...)
-            # This can happen if DATABASE_URL is incorrectly set
+            # This can happen if DATABASE_URL is incorrectly set or user pastes full URL in host field
+            # Pattern: postgresql+asyncpg://user:pass@postgresql://user:pass@host:port/db
+            # We need to extract only the last valid URL part
+            
+            # First, check for nested postgresql+asyncpg:// URLs
+            if "postgresql+asyncpg://" in connection_string:
+                # Count occurrences
+                count_asyncpg = connection_string.count("postgresql+asyncpg://")
+                if count_asyncpg > 1:
+                    # Find the last occurrence (should be the actual URL)
+                    last_idx = connection_string.rfind("postgresql+asyncpg://")
+                    if last_idx >= 0:
+                        # Extract from the last occurrence onwards
+                        connection_string = connection_string[last_idx:]
+                        logger.warning(f"Detected nested asyncpg URL, extracted: {cls.mask_connection_string(connection_string)}")
+                elif count_asyncpg == 1:
+                    # Check if there's a nested postgresql:// inside
+                    # Pattern: postgresql+asyncpg://user:pass@postgresql://user:pass@host/db
+                    if "@postgresql://" in connection_string or "@postgres://" in connection_string:
+                        # Find the last @ before a postgresql:// or postgres://
+                        # Extract everything after the last @postgresql:// or @postgres://
+                        last_postgres_idx = max(
+                            connection_string.rfind("@postgresql://"),
+                            connection_string.rfind("@postgres://")
+                        )
+                        if last_postgres_idx > 0:
+                            # Extract from postgresql:// or postgres:// onwards
+                            if "@postgresql://" in connection_string[last_postgres_idx:]:
+                                actual_url_start = connection_string.find("postgresql://", last_postgres_idx)
+                            else:
+                                actual_url_start = connection_string.find("postgres://", last_postgres_idx)
+                            
+                            if actual_url_start > 0:
+                                # Rebuild with postgresql+asyncpg:// prefix
+                                connection_string = "postgresql+asyncpg://" + connection_string[actual_url_start + len("postgresql://"):]
+                                logger.warning(f"Detected nested URL pattern, extracted: {cls.mask_connection_string(connection_string)}")
+            
+            # Also check for nested postgresql:// URLs (without asyncpg)
             if "postgresql://" in connection_string and connection_string.count("postgresql://") > 1:
                 # Find the last occurrence of postgresql:// (should be the actual URL)
                 last_idx = connection_string.rfind("postgresql://")
@@ -272,14 +309,27 @@ class OrganizationDatabaseManager:
                     connection_string = connection_string[last_idx:]
                     logger.warning(f"Detected nested URL, extracted: {cls.mask_connection_string(connection_string)}")
             
-            # Also check for nested postgresql+asyncpg://
-            if "postgresql+asyncpg://" in connection_string and connection_string.count("postgresql+asyncpg://") > 1:
-                # Find the last occurrence
-                last_idx = connection_string.rfind("postgresql+asyncpg://")
-                if last_idx >= 0:
-                    # Extract from the last occurrence
-                    connection_string = connection_string[last_idx:]
-                    logger.warning(f"Detected nested asyncpg URL, extracted: {cls.mask_connection_string(connection_string)}")
+            # Final cleanup: if we still have nested patterns, try to extract the cleanest URL
+            # Look for pattern: scheme://user:pass@scheme://user:pass@host:port/db
+            if "@" in connection_string and connection_string.count("@") > 1:
+                # Count @ symbols - if more than 1, we might have nested URLs
+                at_positions = [i for i, char in enumerate(connection_string) if char == '@']
+                if len(at_positions) > 1:
+                    # Check if any @ is followed by a scheme (postgresql:// or postgres://)
+                    for at_pos in reversed(at_positions):
+                        after_at = connection_string[at_pos + 1:]
+                        if after_at.startswith("postgresql://") or after_at.startswith("postgres://"):
+                            # This @ is part of a nested URL, extract from here
+                            scheme_start = after_at.find("://")
+                            if scheme_start > 0:
+                                scheme = after_at[:scheme_start]
+                                # Rebuild with postgresql+asyncpg:// if original had it
+                                if connection_string.startswith("postgresql+asyncpg://"):
+                                    connection_string = "postgresql+asyncpg://" + after_at[scheme_start + 3:]
+                                else:
+                                    connection_string = after_at
+                                logger.warning(f"Detected nested URL via @ pattern, extracted: {cls.mask_connection_string(connection_string)}")
+                            break
             
             # Handle both postgresql:// and postgresql+asyncpg://
             clean_url = connection_string.replace('postgresql+asyncpg://', 'postgresql://')

@@ -84,6 +84,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 60000, // 60 seconds default timeout (increased from default to handle slow connections)
   withCredentials: true, // Important: Include cookies in requests
 });
 
@@ -164,6 +165,44 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     if (typeof window === 'undefined') {
       return Promise.reject(error);
+    }
+
+    // Handle timeout errors - might indicate backend is down or session expired
+    const isTimeout = error.code === 'ECONNABORTED' || 
+                     error.message?.includes('timeout') || 
+                     error.message?.includes('exceeded');
+    
+    // If timeout on authenticated request, treat as potential session issue
+    if (isTimeout && error.config?.headers?.Authorization) {
+      logger.warn('Request timeout on authenticated endpoint', {
+        url: error.config.url,
+        method: error.config.method,
+      });
+      
+      // For logout and refresh operations, don't treat timeout as session expired
+      const isCriticalOperation = error.config.url?.includes('/auth/logout') ||
+                                  error.config.url?.includes('/auth/refresh');
+      
+      if (!isCriticalOperation) {
+        // Check if we have a valid token - if not, session might be expired
+        const token = TokenStorage.getToken();
+        if (!token) {
+          // No token, clear everything and redirect
+          await TokenStorage.removeTokens();
+          const isPublicPage =
+            typeof window !== 'undefined' &&
+            (window.location.pathname === '/' ||
+              window.location.pathname.match(/^\/(en|fr)?\/?$/) ||
+              window.location.pathname.includes('/auth/') ||
+              window.location.pathname.includes('/components') ||
+              window.location.pathname.includes('/pricing'));
+          
+          if (typeof window !== 'undefined' && !isPublicPage && !window.location.pathname.includes('/auth/login')) {
+            window.location.href = '/auth/login?error=session_expired';
+          }
+          return Promise.reject(new Error('Session expired - please log in again'));
+        }
+      }
     }
 
     // Convert to AppError for better error handling
@@ -298,13 +337,13 @@ export const authAPI = {
   logout: () => {
     return apiClient.post('/v1/auth/logout');
   },
-  getGoogleAuthUrl: (redirectUrl?: string) => {
-    const params = redirectUrl ? { redirect: redirectUrl } : {};
-    return apiClient.get<{ auth_url: string }>('/v1/auth/google', { 
-      params,
-      timeout: 30000, // 30 seconds timeout for OAuth URL generation
-    });
-  },
+      getGoogleAuthUrl: (redirectUrl?: string) => {
+        const params = redirectUrl ? { redirect: redirectUrl } : {};
+        return apiClient.get<{ auth_url: string }>('/v1/auth/google', { 
+          params,
+          timeout: 60000, // 60 seconds timeout for OAuth URL generation (increased from 30s)
+        });
+      },
 };
 
 export const usersAPI = {

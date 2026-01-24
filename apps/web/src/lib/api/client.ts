@@ -80,6 +80,44 @@ class ApiClient {
         const status = error.response?.status;
         const url = error.config?.url;
         const originalRequest = error.config;
+        
+        // Handle timeout errors - might indicate backend is down or session expired
+        const isTimeout = error.code === 'ECONNABORTED' || 
+                         error.message?.includes('timeout') || 
+                         error.message?.includes('exceeded');
+        
+        // If timeout on authenticated request, treat as potential session issue
+        if (isTimeout && originalRequest && originalRequest.headers?.Authorization) {
+          logger.warn('Request timeout on authenticated endpoint', {
+            url: originalRequest.url,
+            method: originalRequest.method,
+          });
+          
+          // For logout and critical operations, don't treat timeout as session expired
+          const isCriticalOperation = originalRequest.url?.includes('/auth/logout') ||
+                                      originalRequest.url?.includes('/auth/refresh');
+          
+          if (!isCriticalOperation) {
+            // Check if we have a valid token - if not, session might be expired
+            const token = TokenStorage.getToken();
+            if (!token) {
+              // No token, clear everything and redirect
+              await TokenStorage.removeTokens();
+              const isPublicPage =
+                typeof window !== 'undefined' &&
+                (window.location.pathname === '/' ||
+                  window.location.pathname.match(/^\/(en|fr)?\/?$/) ||
+                  window.location.pathname.includes('/auth/') ||
+                  window.location.pathname.includes('/components') ||
+                  window.location.pathname.includes('/pricing'));
+              
+              if (typeof window !== 'undefined' && !isPublicPage && !window.location.pathname.includes('/auth/login')) {
+                window.location.href = '/auth/login?error=session_expired';
+              }
+              return Promise.reject(new Error('Session expired - please log in again'));
+            }
+          }
+        }
 
         // Handle 401 Unauthorized - try to refresh token
         if (status === 401 && originalRequest && !originalRequest._retry) {
