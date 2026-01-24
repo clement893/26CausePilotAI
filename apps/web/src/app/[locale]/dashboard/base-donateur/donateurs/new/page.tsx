@@ -7,8 +7,9 @@ import { useState } from 'react';
 import { Container, Card, Button, Input } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
 import { createDonor } from '@/lib/api/donors';
+import { migrateOrganizationDatabase } from '@/lib/api/organizations';
 import type { DonorCreate } from '@modele/types';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Database, Loader2 } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
@@ -16,7 +17,10 @@ export default function NewDonorPage() {
   const locale = useLocale();
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMigrating, setIsMigrating] = useState(false);
+  const [migrationSuccess, setMigrationSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showMigrationButton, setShowMigrationButton] = useState(false);
   const [formData, setFormData] = useState<DonorCreate>({
     email: '',
     first_name: '',
@@ -46,7 +50,20 @@ export default function NewDonorPage() {
       // Redirect to donors list with full reload to ensure fresh data
       window.location.href = `/${locale}/dashboard/base-donateur/donateurs`;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Échec de la création du donateur');
+      const errorMessage = err instanceof Error ? err.message : 'Échec de la création du donateur';
+      setError(errorMessage);
+      
+      // Check if error is related to missing database tables
+      const errorLower = errorMessage.toLowerCase();
+      const isDatabaseError = 
+        errorLower.includes('database') || 
+        errorLower.includes('table') ||
+        errorLower.includes('does not exist') ||
+        errorLower.includes('relation') ||
+        errorLower.includes('migration') ||
+        errorLower.includes('schema');
+      
+      setShowMigrationButton(isDatabaseError);
     } finally {
       setIsSubmitting(false);
     }
@@ -54,6 +71,41 @@ export default function NewDonorPage() {
 
   const handleChange = (field: keyof DonorCreate, value: string | boolean) => {
     setFormData({ ...formData, [field]: value });
+  };
+
+  const handleMigrateDatabase = async () => {
+    if (!activeOrganization) {
+      setError('Aucune organisation active');
+      return;
+    }
+
+    setIsMigrating(true);
+    setError(null);
+    setMigrationSuccess(null);
+
+    try {
+      const result = await migrateOrganizationDatabase(activeOrganization.id);
+
+      if (result.success) {
+        const successMessage = 
+          result.message + 
+          (result.tables_created && result.tables_created.length > 0 
+            ? ` Tables créées: ${result.tables_created.join(', ')}`
+            : '');
+        setMigrationSuccess(successMessage);
+        setShowMigrationButton(false);
+        setError(null);
+      } else {
+        setError(result.message || 'Erreur lors de la mise à jour de la base de données');
+        setShowMigrationButton(true);
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la mise à jour de la base de données';
+      setError(errorMessage);
+      setShowMigrationButton(true);
+    } finally {
+      setIsMigrating(false);
+    }
   };
 
   if (orgLoading) {
@@ -91,9 +143,47 @@ export default function NewDonorPage() {
         <p className="text-muted-foreground">Ajouter un nouveau donateur à votre base de données</p>
       </div>
 
+      {/* Database Migration Alert */}
+      {error && showMigrationButton && (
+        <Card className="mb-6 border-warning bg-warning/10">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <h3 className="font-semibold text-warning mb-2">Migration de base de données requise</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Les tables de la base de données doivent être créées avant de pouvoir ajouter des donateurs.
+                {error && <span className="block mt-2 text-destructive text-xs">{error}</span>}
+              </p>
+              <Button
+                onClick={handleMigrateDatabase}
+                disabled={isMigrating || !activeOrganization}
+                className="bg-warning text-warning-foreground hover:bg-warning/90"
+              >
+                {isMigrating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Mise à jour en cours...
+                  </>
+                ) : (
+                  <>
+                    <Database className="w-4 h-4 mr-2" />
+                    Mettre à jour la BD
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {migrationSuccess && (
+        <Card className="mb-6 border-success bg-success/10">
+          <p className="text-success">{migrationSuccess}</p>
+        </Card>
+      )}
+
       <Card>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
+          {error && !error.includes('Database tables not found') && (
             <div className="p-4 bg-destructive/10 border border-destructive rounded-lg">
               <p className="text-destructive">{error}</p>
             </div>
