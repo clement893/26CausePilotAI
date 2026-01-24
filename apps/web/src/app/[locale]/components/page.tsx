@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useGlobalTheme } from '@/lib/theme/global-theme-provider';
 import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import Container from '@/components/ui/Container';
@@ -264,7 +263,6 @@ const componentCategories = [
 ];
 
 export default function ComponentsPage() {
-  const { theme } = useGlobalTheme();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
