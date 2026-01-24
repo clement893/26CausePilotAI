@@ -27,9 +27,10 @@ function OrganisationsContent() {
       setIsLoading(true);
       setError(null);
       const response = await listOrganizations();
-      setOrganizations(response.items);
+      setOrganizations(response?.items || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load organizations');
+      setOrganizations([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }
@@ -76,7 +77,7 @@ function OrganisationsContent() {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         </Card>
-      ) : organizations.length === 0 ? (
+      ) : (!organizations || organizations.length === 0) ? (
         <Card>
           <div className="text-center py-12">
             <Building className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
@@ -90,7 +91,7 @@ function OrganisationsContent() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {organizations.map((org) => (
+          {(organizations || []).map((org) => (
             <Card
               key={org.id}
               className="hover:shadow-lg transition-shadow cursor-pointer"
@@ -167,7 +168,7 @@ function OrganisationsContent() {
       )}
 
       {/* Quick Stats */}
-      {!isLoading && organizations.length > 0 && (
+      {!isLoading && organizations && organizations.length > 0 && (
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
             <div className="flex items-center gap-4">
@@ -175,7 +176,7 @@ function OrganisationsContent() {
                 <Building className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">{organizations.length}</p>
+                <p className="text-2xl font-bold text-foreground">{(organizations || []).length}</p>
                 <p className="text-sm text-muted-foreground">Organisations totales</p>
               </div>
             </div>
@@ -187,7 +188,7 @@ function OrganisationsContent() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">
-                  {organizations.filter((o) => o.isActive).length}
+                  {(organizations || []).filter((o) => o.isActive).length}
                 </p>
                 <p className="text-sm text-muted-foreground">Organisations actives</p>
               </div>
@@ -200,7 +201,7 @@ function OrganisationsContent() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">
-                  {organizations.reduce((acc, org) => acc + org.totalMembers, 0)}
+                  {(organizations || []).reduce((acc, org) => acc + (org.totalMembers || 0), 0)}
                 </p>
                 <p className="text-sm text-muted-foreground">Membres totaux</p>
               </div>

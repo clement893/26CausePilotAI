@@ -70,10 +70,12 @@ function OrganizationDetailsContent() {
       ]);
 
       setOrganization(org);
-      setModules(modulesData.items);
-      setMembers(membersData.items);
+      setModules(modulesData?.items || []);
+      setMembers(membersData?.items || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load organization');
+      setModules([]);
+      setMembers([]);
     } finally {
       setIsLoading(false);
     }
@@ -181,7 +183,7 @@ function OrganizationDetailsContent() {
             Activez ou désactivez les modules disponibles pour cette organisation
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {modules.map((module) => (
+            {(modules || []).map((module) => (
               <div
                 key={module.id}
                 className="flex items-center justify-between p-4 rounded-lg border border-border bg-muted/30"
@@ -244,7 +246,7 @@ function OrganizationDetailsContent() {
 
           {/* Members List */}
           <div className="space-y-2">
-            {members.length === 0 ? (
+            {(!members || members.length === 0) ? (
               <p className="text-center text-muted-foreground py-8">Aucun membre pour le moment</p>
             ) : (
               members.map((member) => (
@@ -291,7 +293,7 @@ function OrganizationDetailsContent() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">
-                  {modules.filter((m) => m.isEnabled).length}
+                  {(modules || []).filter((m) => m.isEnabled).length}
                 </p>
                 <p className="text-sm text-muted-foreground">Modules activés</p>
               </div>
@@ -301,7 +303,7 @@ function OrganizationDetailsContent() {
                 <Users className="w-6 h-6 text-success-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">{members.length}</p>
+                <p className="text-2xl font-bold text-foreground">{(members || []).length}</p>
                 <p className="text-sm text-muted-foreground">Membres</p>
               </div>
             </div>

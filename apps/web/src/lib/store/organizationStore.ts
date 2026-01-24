@@ -59,9 +59,9 @@ export const useOrganizationStore = create<OrganizationState>()(
 
           const response = await listOrganizations(0, 100);
           
-          logger.debug('Organizations loaded', { count: response.items.length });
+          logger.debug('Organizations loaded', { count: response?.items?.length || 0 });
           set({
-            availableOrganizations: response.items,
+            availableOrganizations: response?.items || [],
             isLoading: false,
           });
         } catch (error) {
