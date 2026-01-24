@@ -33,7 +33,8 @@ def upgrade() -> None:
     
     # Rename password_hash to hashed_password if password_hash exists and hashed_password doesn't
     if 'password_hash' in columns and 'hashed_password' not in columns:
-        op.alter_column('users', 'password_hash', new_column_name='hashed_password')
+        # Use raw SQL for PostgreSQL column rename
+        op.execute('ALTER TABLE users RENAME COLUMN password_hash TO hashed_password')
     elif 'password_hash' in columns and 'hashed_password' in columns:
         # Both exist - drop password_hash and keep hashed_password
         op.drop_column('users', 'password_hash')
@@ -54,4 +55,5 @@ def downgrade() -> None:
     
     # Rename hashed_password back to password_hash if hashed_password exists
     if 'hashed_password' in columns and 'password_hash' not in columns:
-        op.alter_column('users', 'hashed_password', new_column_name='password_hash')
+        # Use raw SQL for PostgreSQL column rename
+        op.execute('ALTER TABLE users RENAME COLUMN hashed_password TO password_hash')
