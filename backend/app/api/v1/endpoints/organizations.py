@@ -799,10 +799,15 @@ async def migrate_organization_database(
         )
     
     try:
+        logger.info(f"Starting migrations for organization {organization_id} ({organization.slug})")
+        logger.info(f"Connection string: {OrganizationDatabaseManager.mask_connection_string(organization.db_connection_string)}")
+        
         # Run migrations
         await OrganizationDatabaseManager.run_migrations_for_organization(
             organization.db_connection_string
         )
+        
+        logger.info(f"Migrations completed successfully for organization {organization_id}")
         
         # Get list of tables after migration
         parsed = OrganizationDatabaseManager.parse_db_connection_string(organization.db_connection_string)
@@ -815,25 +820,31 @@ async def migrate_organization_database(
         
         logger.info(
             f"Ran migrations on database '{db_name}' for organization {organization_id} "
-            f"({organization.slug}). Tables: {', '.join(tables)}"
+            f"({organization.slug}). Tables found: {', '.join(tables) if tables else 'none'}"
         )
         
         return MigrateDatabaseResponse(
             success=True,
-            message=f"Migrations executed successfully on database '{db_name}'",
+            message=f"Migrations executed successfully on database '{db_name}'. {len(tables)} table(s) found.",
             tables_created=tables
         )
         
     except ValueError as e:
+        error_msg = str(e)
+        logger.error(f"ValueError running migrations for organization {organization_id}: {error_msg}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail=error_msg
         )
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
     except Exception as e:
-        logger.error(f"Error running migrations for organization {organization_id}: {e}", exc_info=True)
+        error_msg = str(e)
+        logger.error(f"Unexpected error running migrations for organization {organization_id}: {error_msg}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to run migrations: {str(e)}"
+            detail=f"Failed to run migrations: {error_msg}"
         )
 
 

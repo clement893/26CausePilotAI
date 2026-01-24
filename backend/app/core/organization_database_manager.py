@@ -1036,7 +1036,7 @@ class OrganizationDatabaseManager:
             # Find alembic.ini - it should be in the backend directory
             # Get the directory where this file is located (app/core/)
             current_file = Path(__file__)
-            # Go up to backend directory
+            # Go up to backend directory: app/core/ -> app/ -> backend/
             backend_dir = current_file.parent.parent.parent
             alembic_ini_path = backend_dir / "alembic.ini"
             
@@ -1046,6 +1046,18 @@ class OrganizationDatabaseManager:
                 if not alembic_ini_path.exists():
                     # Try backend/alembic.ini
                     alembic_ini_path = Path("backend/alembic.ini")
+                    if not alembic_ini_path.exists():
+                        # Try from current working directory
+                        import os
+                        cwd = Path(os.getcwd())
+                        alembic_ini_path = cwd / "alembic.ini"
+                        if not alembic_ini_path.exists():
+                            alembic_ini_path = cwd / "backend" / "alembic.ini"
+            
+            if not alembic_ini_path.exists():
+                error_msg = f"Cannot find alembic.ini. Tried: {backend_dir / 'alembic.ini'}, {Path('alembic.ini')}, {Path('backend/alembic.ini')}, {Path(os.getcwd()) / 'alembic.ini'}"
+                logger.error(error_msg)
+                raise ValueError(f"Cannot find alembic.ini configuration file. {error_msg}")
             
             logger.info(f"Using Alembic config from: {alembic_ini_path.absolute()}")
             alembic_cfg = Config(str(alembic_ini_path))

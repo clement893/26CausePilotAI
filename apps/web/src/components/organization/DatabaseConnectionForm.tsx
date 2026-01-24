@@ -557,31 +557,52 @@ export function DatabaseConnectionForm({
   };
 
   const handleMigrateDatabase = async () => {
+    console.log('[DatabaseConnectionForm] handleMigrateDatabase called', { organizationId });
     setIsMigrating(true);
     setError(null);
     setSuccess(null);
     setTestResult(null);
 
     try {
+      console.log('[DatabaseConnectionForm] Calling migrateOrganizationDatabase API...');
       const result = await migrateOrganizationDatabase(organizationId);
+      console.log('[DatabaseConnectionForm] Migration result:', result);
 
       if (result.success) {
-        setSuccess(
-          result.message + (result.tables_created && result.tables_created.length > 0 
-            ? ` Tables créées: ${result.tables_created.join(', ')}`
-            : '')
-        );
+        const successMsg = result.message + (result.tables_created && result.tables_created.length > 0 
+          ? ` Tables créées: ${result.tables_created.join(', ')}`
+          : '');
+        console.log('[DatabaseConnectionForm] Migration successful:', successMsg);
+        setSuccess(successMsg);
         // Reload tables after migration
         await loadTables();
         onUpdate(); // Refresh parent component
       } else {
-        setError(result.message);
+        console.error('[DatabaseConnectionForm] Migration failed:', result.message);
+        setError(result.message || 'La migration a échoué');
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la mise à jour de la base de données';
+      console.error('[DatabaseConnectionForm] Migration error:', err);
+      let errorMessage = 'Erreur lors de la mise à jour de la base de données';
+      if (err instanceof Error) {
+        errorMessage = err.message;
+        // Check for specific error types
+        if (err.message.includes('404')) {
+          errorMessage = 'Organisation non trouvée. Vérifiez que l\'ID est correct.';
+        } else if (err.message.includes('400')) {
+          errorMessage = 'Connexion à la base de données non configurée. Configurez d\'abord la connexion.';
+        } else if (err.message.includes('500')) {
+          errorMessage = 'Erreur serveur lors de la migration. Vérifiez les logs du backend.';
+        } else if (err.message.includes('Network') || err.message.includes('fetch')) {
+          errorMessage = 'Erreur de connexion au serveur. Vérifiez votre connexion internet.';
+        }
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      }
       setError(errorMessage);
     } finally {
       setIsMigrating(false);
+      console.log('[DatabaseConnectionForm] Migration process finished');
     }
   };
 
@@ -984,7 +1005,10 @@ export function DatabaseConnectionForm({
               <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
                 <p className="font-medium">Erreur</p>
-                <p className="text-sm mt-1">{error}</p>
+                <p className="text-sm mt-1 whitespace-pre-line">{error}</p>
+                <p className="text-xs mt-2 text-muted-foreground">
+                  Vérifiez la console du navigateur (F12) pour plus de détails.
+                </p>
               </div>
             </Alert>
           )}
