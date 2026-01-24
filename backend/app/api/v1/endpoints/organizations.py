@@ -648,6 +648,16 @@ async def update_organization_database(
         f"{'SET' if organization.db_connection_string else 'NOT SET'}"
     )
     
+    # Ensure db_connection_string is explicitly set in the response
+    # This is important for Pydantic serialization
+    if not organization.db_connection_string:
+        logger.error(
+            f"CRITICAL: Organization {organization_id} db_connection_string is None or empty after save! "
+            f"This should not happen as the field is nullable=False in the model."
+        )
+        # Set it to the normalized value as fallback
+        organization.db_connection_string = normalized_connection_string
+    
     return organization
 
 

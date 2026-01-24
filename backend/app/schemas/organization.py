@@ -69,7 +69,7 @@ class Organization(OrganizationBase):
     """Organization response"""
     id: UUID
     is_active: bool
-    db_connection_string: Optional[str] = None  # Only visible to superadmin
+    db_connection_string: str = Field(default="", description="Database connection string")  # Required in model, but may be empty initially
     created_at: datetime
     updated_at: datetime
     
