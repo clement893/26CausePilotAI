@@ -9,7 +9,6 @@ import { type ReactNode } from 'react';
 import { Hero, Stats, TechStack, CTA } from '@/components/sections';
 import { Container, Card, Badge, Grid } from '@/components/ui';
 import {
-  Heart,
   Users,
   BarChart3,
   Brain,
