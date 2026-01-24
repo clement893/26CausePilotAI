@@ -33,6 +33,7 @@ export function DatabaseConnectionForm({
   const [isLoadingTables, setIsLoadingTables] = useState(false);
   const [databaseTables, setDatabaseTables] = useState<string[]>([]);
   const [databaseName, setDatabaseName] = useState<string | null>(null);
+  const [showEditForm, setShowEditForm] = useState(!currentConnectionString);
   const [testResult, setTestResult] = useState<{
     success: boolean;
     message: string;
@@ -455,16 +456,14 @@ export function DatabaseConnectionForm({
       // Reload tables after saving
       await loadTables();
       
-      // Refresh parent component to get updated connection string
-      onUpdate();
+      // Hide edit form after successful save
+      setShowEditForm(false);
       
-      // Scroll to success message
+      // Refresh parent component to get updated connection string
+      // Use setTimeout to ensure state is updated before calling onUpdate
       setTimeout(() => {
-        const successElement = document.querySelector('[data-success-message]');
-        if (successElement) {
-          successElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }, 100);
+        onUpdate();
+      }, 500);
     } catch (err: any) {
       console.error('Error saving database connection:', err);
       
@@ -604,8 +603,22 @@ export function DatabaseConnectionForm({
   useEffect(() => {
     if (currentConnectionString && currentConnectionString !== connectionString) {
       setConnectionString(currentConnectionString);
+      // Hide edit form if connection is already configured
+      setShowEditForm(false);
     }
   }, [currentConnectionString]);
+  
+  // Hide edit form when connection is successfully saved
+  useEffect(() => {
+    if (success && (currentConnectionString || connectionString)) {
+      setShowEditForm(false);
+      // Clear success message after 5 seconds
+      const timer = setTimeout(() => {
+        setSuccess(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, currentConnectionString, connectionString]);
   
   // Load tables when connection string is available
   useEffect(() => {
@@ -625,28 +638,43 @@ export function DatabaseConnectionForm({
             Chaque organisation possède sa propre base de données isolée.
           </p>
 
-          {/* Current Status */}
+          {/* Current Status - Always visible when connection exists */}
           {(currentConnectionString || connectionString) && (
-            <div className="mb-4 p-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800">
-              <div className="flex items-center justify-between">
+            <div className="mb-4 p-4 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-success-600 dark:text-success-400" />
                   <span className="text-sm font-medium text-success-700 dark:text-success-300">
                     Base de données connectée
                   </span>
                 </div>
-                <Badge variant="success">✅ Configurée</Badge>
+                <div className="flex items-center gap-2">
+                  <Badge variant="success">✅ Configurée</Badge>
+                  {!showEditForm && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowEditForm(true)}
+                    >
+                      Modifier
+                    </Button>
+                  )}
+                </div>
               </div>
-              <p className="text-xs text-success-600 dark:text-success-400 mt-2 font-mono">
+              <p className="text-xs text-success-600 dark:text-success-400 mt-2 font-mono break-all">
                 {maskConnectionString(currentConnectionString || connectionString)}
               </p>
-              <p className="text-xs text-success-600 dark:text-success-400 mt-1">
+              <p className="text-xs text-success-600 dark:text-success-400 mt-2">
                 La connexion est active. Utilisez le bouton "Mettre à jour la BD" ci-dessous pour créer les tables.
               </p>
             </div>
           )}
 
-          {/* Mode Toggle */}
+          {/* Edit Form - Only show if showEditForm is true or no connection exists */}
+          {showEditForm || !(currentConnectionString || connectionString) ? (
+            <>
+              {/* Mode Toggle */}
           <div className="flex items-center justify-between mb-4">
             <label className="text-sm font-medium text-foreground">Mode de configuration</label>
             <div className="flex gap-2">
@@ -885,6 +913,8 @@ export function DatabaseConnectionForm({
               </p>
             </div>
           )}
+          </>
+          ) : null}
 
           {/* Test Result */}
           {testResult && (
@@ -940,62 +970,68 @@ export function DatabaseConnectionForm({
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-2 pt-2">
-            <Button
-              variant="primary"
-              onClick={handleTestConnection}
-              disabled={isTesting || isSaving || isCreating || !connectionString.trim()}
-            >
-              {isTesting ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Test en cours...
-                </>
-              ) : (
-                <>
-                  <Database className="w-4 h-4 mr-2" />
-                  Tester la connexion
-                </>
-              )}
-            </Button>
+            {/* Show form buttons only when editing */}
+            {showEditForm || !(currentConnectionString || connectionString) ? (
+              <>
+                <Button
+                  variant="primary"
+                  onClick={handleTestConnection}
+                  disabled={isTesting || isSaving || isCreating || !connectionString.trim()}
+                >
+                  {isTesting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Test en cours...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4 mr-2" />
+                      Tester la connexion
+                    </>
+                  )}
+                </Button>
 
-            <Button
-              variant="primary"
-              onClick={handleSave}
-              disabled={isTesting || isSaving || isCreating || isMigrating || !connectionString.trim()}
-            >
-              {isSaving ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Sauvegarde et test en cours...
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
-                  Sauvegarder
-                </>
-              )}
-            </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleSave}
+                  disabled={isTesting || isSaving || isCreating || isMigrating || !connectionString.trim()}
+                >
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sauvegarde et test en cours...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4 mr-2" />
+                      Sauvegarder
+                    </>
+                  )}
+                </Button>
 
-            {organizationSlug && (
-              <Button
-                variant="ghost"
-                onClick={handleCreateDatabase}
-                disabled={isTesting || isSaving || isCreating || isMigrating}
-              >
-                {isCreating ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Création...
-                  </>
-                ) : (
-                  <>
-                    <Database className="w-4 h-4 mr-2" />
-                    Créer automatiquement la BD
-                  </>
+                {organizationSlug && (
+                  <Button
+                    variant="ghost"
+                    onClick={handleCreateDatabase}
+                    disabled={isTesting || isSaving || isCreating || isMigrating}
+                  >
+                    {isCreating ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Création...
+                      </>
+                    ) : (
+                      <>
+                        <Database className="w-4 h-4 mr-2" />
+                        Créer automatiquement la BD
+                      </>
+                    )}
+                  </Button>
                 )}
-              </Button>
-            )}
+              </>
+            ) : null}
 
+            {/* Always show migrate button when connection exists */}
             {(currentConnectionString || connectionString) && (
               <Button
                 variant="ghost"
