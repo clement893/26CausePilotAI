@@ -268,6 +268,17 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
       setIsAuthorized(true);
       setIsChecking(false);
       checkingRef.current = false;
+    } catch (err) {
+      // Outer try catch - handle any unexpected errors
+      logger.error('Unexpected error in auth check', err);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      setIsChecking(false);
+      checkingRef.current = false;
+      router.replace('/dashboard?error=check_failed');
+    }
     };
 
     // Check immediately
