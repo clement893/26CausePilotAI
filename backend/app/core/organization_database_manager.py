@@ -103,14 +103,28 @@ class OrganizationDatabaseManager:
             parsed = urlparse(clean_url)
             
             # Safely parse port - handle None, empty string, or invalid values
+            # urlparse.port can be None (not specified) or an integer (if specified)
+            # But if URL has ':' without port number, port might be in netloc as empty string
             port = 5432  # Default PostgreSQL port
             if parsed.port is not None:
-                try:
-                    port = int(parsed.port)
-                except (ValueError, TypeError):
-                    port = 5432  # Use default if port is invalid
-            elif parsed.port == '':
-                port = 5432  # Use default if port is empty string
+                # parsed.port is always an integer or None from urlparse, but check anyway
+                if isinstance(parsed.port, int):
+                    port = parsed.port
+                elif isinstance(parsed.port, str):
+                    # Handle string port (shouldn't happen with urlparse, but be safe)
+                    port_str = parsed.port.strip()
+                    if port_str:
+                        try:
+                            port = int(port_str)
+                        except (ValueError, TypeError):
+                            port = 5432
+                    else:
+                        port = 5432
+                else:
+                    try:
+                        port = int(parsed.port)
+                    except (ValueError, TypeError):
+                        port = 5432
             
             result = {
                 'scheme': parsed.scheme,
@@ -305,7 +319,14 @@ class OrganizationDatabaseManager:
         db_name = parsed['database']
         
         # Get admin connection (connect to 'postgres' database)
-        admin_url = f"postgresql+asyncpg://{parsed['user']}:{parsed['password']}@{parsed['host']}:{parsed['port']}/postgres"
+        # Ensure port is always an integer (parsed['port'] should already be int from parse_db_connection_string)
+        port = parsed['port']
+        if not isinstance(port, int):
+            try:
+                port = int(str(port).strip()) if str(port).strip() else 5432
+            except (ValueError, TypeError):
+                port = 5432
+        admin_url = f"postgresql+asyncpg://{parsed['user']}:{parsed['password']}@{parsed['host']}:{port}/postgres"
         
         try:
             # Create async engine for admin connection
