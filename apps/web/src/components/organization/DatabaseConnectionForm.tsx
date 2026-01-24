@@ -425,21 +425,64 @@ export function DatabaseConnectionForm({
     setIsSaving(true);
     setError(null);
     setSuccess(null);
+    setTestResult(null);
 
     try {
-      await updateOrganizationDatabase(organizationId, {
+      const result = await updateOrganizationDatabase(organizationId, {
         dbConnectionString: finalConnectionString,
         testConnection: true, // Test before saving
       });
 
       setSuccess('Chaîne de connexion mise à jour avec succès');
-      setTestResult(null);
+      setTestResult({
+        success: true,
+        message: 'Connexion sauvegardée et testée avec succès',
+        databaseName: result.dbConnectionString ? 
+          finalConnectionString.split('/').pop()?.split('?')[0] : undefined
+      });
+      
+      // Update current connection string
+      setConnectionString(finalConnectionString);
+      
+      // Reload tables after saving
+      await loadTables();
+      
       onUpdate(); // Refresh parent component
-    } catch (err) {
-      let errorMessage = err instanceof Error ? err.message : 'Erreur lors de la sauvegarde';
+    } catch (err: any) {
+      console.error('Error saving database connection:', err);
+      
+      let errorMessage = 'Erreur lors de la sauvegarde';
+      
+      // Extract error message from response - FastAPI returns errors in response.data.detail
+      if (err?.response?.data) {
+        const responseData = err.response.data;
+        
+        // FastAPI error format: { detail: "error message" }
+        if (responseData.detail) {
+          if (typeof responseData.detail === 'string') {
+            errorMessage = responseData.detail;
+          } else if (Array.isArray(responseData.detail)) {
+            // Validation errors format
+            errorMessage = responseData.detail.map((e: any) => e.msg || e.message || JSON.stringify(e)).join('\n');
+          } else {
+            errorMessage = JSON.stringify(responseData.detail);
+          }
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        } else if (responseData.error) {
+          errorMessage = typeof responseData.error === 'string' 
+            ? responseData.error 
+            : responseData.error.message || JSON.stringify(responseData.error);
+        }
+      } else if (err?.message) {
+        errorMessage = err.message;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      }
       
       // Provide more helpful error messages for timeout errors
-      if (errorMessage.includes('timeout') || errorMessage.includes('exceeded')) {
+      const errorLower = errorMessage.toLowerCase();
+      if (errorLower.includes('timeout') || errorLower.includes('exceeded') || errorLower.includes('timed out')) {
         errorMessage = `Timeout: Le test de connexion prend trop de temps (plus de 3 minutes).\n\n` +
           `La connexion n'a pas été sauvegardée. Vérifiez que:\n` +
           `- L'URL de connexion est correcte\n` +
@@ -448,7 +491,16 @@ export function DatabaseConnectionForm({
           `- Vérifiez que le port est correct (Railway utilise parfois des ports non-standard)`;
       }
       
+      // Check for connection test failure
+      if (errorLower.includes('connection test failed') || errorLower.includes('test de connexion')) {
+        errorMessage = `Le test de connexion a échoué. La connexion n'a pas été sauvegardée.\n\n${errorMessage}`;
+      }
+      
       setError(errorMessage);
+      setTestResult({
+        success: false,
+        message: errorMessage,
+      });
     } finally {
       setIsSaving(false);
     }
@@ -871,15 +923,18 @@ export function DatabaseConnectionForm({
             <Button
               variant="primary"
               onClick={handleSave}
-              disabled={isTesting || isSaving || isCreating || !connectionString.trim()}
+              disabled={isTesting || isSaving || isCreating || isMigrating || !connectionString.trim()}
             >
               {isSaving ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Sauvegarde...
+                  Sauvegarde et test en cours...
                 </>
               ) : (
-                'Sauvegarder'
+                <>
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Sauvegarder
+                </>
               )}
             </Button>
 
