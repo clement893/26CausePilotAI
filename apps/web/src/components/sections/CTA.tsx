@@ -34,7 +34,7 @@ export default function CTA() {
             <ButtonLink
               href="/auth/register"
               size="lg"
-              variant="default"
+              variant="primary"
               className="bg-[#cc5500] text-white hover:bg-[#b34a00] text-lg px-10 py-7 shadow-2xl hover:shadow-3xl transition-all font-bold"
               aria-label="Démarrer gratuitement"
             >

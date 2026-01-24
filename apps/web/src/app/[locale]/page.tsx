@@ -203,7 +203,7 @@ export default function HomePage() {
             <ButtonLink
               href="/auth/register"
               size="lg"
-              variant="default"
+              variant="primary"
               className="bg-[#cc5500] text-white hover:bg-[#b34a00] text-lg px-8 py-6 shadow-2xl hover:shadow-3xl transition-all"
             >
               <Heart className="w-5 h-5 mr-2" />
