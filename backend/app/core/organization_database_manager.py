@@ -382,15 +382,25 @@ class OrganizationDatabaseManager:
             return False, "Connection string is empty", None
         
         # Normalize connection string
+        original_url = db_connection_string
         db_connection_string = cls.normalize_connection_string(db_connection_string)
+        
+        # Log for debugging
+        logger.debug(f"Original URL: {cls.mask_connection_string(original_url)}")
+        logger.debug(f"Normalized URL: {cls.mask_connection_string(db_connection_string)}")
         
         # Validate format after normalization
         if not db_connection_string.startswith('postgresql+asyncpg://'):
-            return False, "Format de chaîne de connexion invalide. Doit être une chaîne de connexion PostgreSQL valide.", None
+            return False, (
+                f"Format de chaîne de connexion invalide. Doit être une chaîne de connexion PostgreSQL valide.\n"
+                f"URL reçue: {cls.mask_connection_string(original_url)}\n"
+                f"URL normalisée: {cls.mask_connection_string(db_connection_string)}"
+            ), None
         
         # Parse to validate and ensure port is valid
         try:
             parsed = cls.parse_db_connection_string(db_connection_string)
+            logger.debug(f"Parsed connection - host: {parsed.get('host')}, port: {parsed.get('port')}, database: {parsed.get('database')}")
             # Reconstruct URL with guaranteed valid port to avoid asyncpg parsing issues
             port = parsed['port']
             if not isinstance(port, int) or port < 1 or port > 65535:
