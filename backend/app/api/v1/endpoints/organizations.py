@@ -583,13 +583,69 @@ async def update_organization_database(
     # Invalidate cache for this organization
     OrganizationDatabaseManager.invalidate_cache(organization_id)
     
-    await db.commit()
-    await db.refresh(organization)
+    # Commit the transaction to persist changes
+    try:
+        await db.commit()
+        # Refresh to get the latest data from database
+        await db.refresh(organization)
+        
+        # Verify the data was saved by querying again
+        verify_query = select(Organization).where(Organization.id == organization_id)
+        verify_result = await db.execute(verify_query)
+        verified_org = verify_result.scalar_one_or_none()
+        
+        if verified_org and verified_org.db_connection_string != normalized_connection_string:
+            logger.error(
+                f"Database connection string was not persisted correctly for organization {organization_id}. "
+                f"Expected: {OrganizationDatabaseManager.mask_connection_string(normalized_connection_string)}, "
+                f"Got: {OrganizationDatabaseManager.mask_connection_string(verified_org.db_connection_string)}"
+            )
+            # Try to update again
+            verified_org.db_connection_string = normalized_connection_string
+            await db.commit()
+            await db.refresh(verified_org)
+            organization = verified_org
+        
+        logger.info(
+            f"Updated database connection for organization {organization_id} "
+            f"(old: {OrganizationDatabaseManager.mask_connection_string(old_connection_string)}, "
+            f"new: {OrganizationDatabaseManager.mask_connection_string(normalized_connection_string)})"
+        )
+        
+        # Ensure the returned organization has the updated connection string
+        if organization.db_connection_string != normalized_connection_string:
+            logger.warning(
+                f"Organization object does not have updated connection string after refresh. "
+                f"Manually setting it."
+            )
+            organization.db_connection_string = normalized_connection_string
+        
+        # Final verification: query one more time to ensure persistence
+        final_query = select(Organization).where(Organization.id == organization_id)
+        final_result = await db.execute(final_query)
+        final_org = final_result.scalar_one_or_none()
+        
+        if final_org:
+            logger.info(
+                f"Final verification - Organization {organization_id} db_connection_string: "
+                f"{'SET' if final_org.db_connection_string else 'NOT SET'} "
+                f"(masked: {OrganizationDatabaseManager.mask_connection_string(final_org.db_connection_string) if final_org.db_connection_string else 'None'})"
+            )
+            # Use the final verified organization
+            organization = final_org
+        
+    except Exception as commit_error:
+        await db.rollback()
+        logger.error(f"Failed to commit database connection update: {commit_error}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to save database connection: {str(commit_error)}"
+        )
     
+    # Log the response being returned
     logger.info(
-        f"Updated database connection for organization {organization_id} "
-        f"(old: {OrganizationDatabaseManager.mask_connection_string(old_connection_string)}, "
-        f"new: {OrganizationDatabaseManager.mask_connection_string(db_update.db_connection_string)})"
+        f"Returning organization {organization_id} with db_connection_string: "
+        f"{'SET' if organization.db_connection_string else 'NOT SET'}"
     )
     
     return organization

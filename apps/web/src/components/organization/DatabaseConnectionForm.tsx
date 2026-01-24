@@ -429,13 +429,17 @@ export function DatabaseConnectionForm({
     setTestResult(null);
 
     try {
-      await updateOrganizationDatabase(organizationId, {
+      // Save and get the updated organization from the server
+      const updatedOrganization = await updateOrganizationDatabase(organizationId, {
         dbConnectionString: finalConnectionString,
         testConnection: true, // Test before saving
       });
 
+      // Use the connection string from the server response (normalized)
+      const savedConnectionString = updatedOrganization.dbConnectionString || finalConnectionString;
+      
       // Extract database name from connection string
-      const dbName = finalConnectionString.split('/').pop()?.split('?')[0] || 'unknown';
+      const dbName = savedConnectionString.split('/').pop()?.split('?')[0] || 'unknown';
       
       setSuccess(`✅ Base de données connectée avec succès ! (${dbName})`);
       setTestResult({
@@ -444,13 +448,13 @@ export function DatabaseConnectionForm({
         databaseName: dbName
       });
       
-      // Update current connection string locally to reflect the saved state
-      setConnectionString(finalConnectionString);
+      // Update current connection string locally to reflect the saved state from server
+      setConnectionString(savedConnectionString);
       
       // Update the form fields to match the saved connection
       if (useSimpleMode) {
         // Re-parse the connection string to update form fields
-        parseConnectionString(finalConnectionString);
+        parseConnectionString(savedConnectionString);
       }
       
       // Reload tables after saving
@@ -459,11 +463,10 @@ export function DatabaseConnectionForm({
       // Hide edit form after successful save
       setShowEditForm(false);
       
-      // Refresh parent component to get updated connection string
-      // Use setTimeout to ensure state is updated before calling onUpdate
-      setTimeout(() => {
-        onUpdate();
-      }, 500);
+      // Refresh parent component to get updated connection string from server
+      // Wait a bit to ensure backend has committed the transaction
+      await new Promise(resolve => setTimeout(resolve, 300));
+      await onUpdate();
     } catch (err: any) {
       console.error('Error saving database connection:', err);
       
