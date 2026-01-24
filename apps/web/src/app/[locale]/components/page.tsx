@@ -378,7 +378,7 @@ export default function ComponentsPage() {
               >
                 <span className="text-xl">{category.icon}</span>
                 <span className="text-sm font-medium">{category.name}</span>
-                <Badge variant="secondary" className="ml-auto">
+                <Badge variant="default" className="ml-auto">
                   {category.count}
                 </Badge>
               </label>
@@ -410,7 +410,7 @@ export default function ComponentsPage() {
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{component.categoryIcon}</span>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="default" className="text-xs">
                     {component.categoryName}
                   </Badge>
                 </div>
