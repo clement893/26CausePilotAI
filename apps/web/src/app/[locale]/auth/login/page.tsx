@@ -104,7 +104,7 @@ function LoginContent() {
       const auth_url = response.data?.auth_url;
       
       if (!auth_url) {
-        console.error('No auth_url in Google OAuth response:', { response, data });
+        console.error('No auth_url in Google OAuth response:', { response, response_data: response.data });
         throw new Error('Réponse invalide du serveur: URL d\'autorisation Google manquante');
       }
       
