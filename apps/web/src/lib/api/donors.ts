@@ -94,6 +94,23 @@ export async function deleteDonor(organizationId: string, donorId: string): Prom
   await apiClient.delete(`/v1/organizations/${organizationId}/donors/${donorId}`);
 }
 
+export interface SeedDonorsResponse {
+  success: boolean;
+  message: string;
+  donors_created: number;
+  donations_created: number;
+}
+
+export async function seedExampleDonors(
+  organizationId: string,
+  count: number = 10
+): Promise<SeedDonorsResponse> {
+  const response = await apiClient.post<SeedDonorsResponse>(
+    `/v1/organizations/${organizationId}/donors/seed?count=${count}`
+  );
+  return extractApiData(response);
+}
+
 // ============= Donations =============
 
 export interface ListDonorDonationsParams {

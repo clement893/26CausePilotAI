@@ -6,9 +6,11 @@ export const dynamicParams = true;
 import { useState, useEffect } from 'react';
 import { Container, Card, Button, Input, Badge, LoadingSkeleton } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
-import { listDonors, type ListDonorsParams } from '@/lib/api/donors';
+import { listDonors, type ListDonorsParams, seedExampleDonors } from '@/lib/api/donors';
+import { checkMySuperAdminStatus } from '@/lib/api/admin';
+import { TokenStorage } from '@/lib/auth/tokenStorage';
 import type { Donor } from '@modele/types';
-import { Search, Plus, Mail, Phone, DollarSign, Calendar, User, TrendingUp, Sparkles } from 'lucide-react';
+import { Search, Plus, Mail, Phone, DollarSign, Calendar, User, TrendingUp, Sparkles, Database } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 
 export default function DonateursPage() {
@@ -16,6 +18,9 @@ export default function DonateursPage() {
   const [donors, setDonors] = useState<Donor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [isSeeding, setIsSeeding] = useState(false);
+  const [seedSuccess, setSeedSuccess] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({
     isActive: undefined as boolean | undefined,
@@ -33,6 +38,21 @@ export default function DonateursPage() {
       loadDonors();
     }
   }, [activeOrganization, pagination.page, searchTerm, filters, orgLoading]);
+
+  useEffect(() => {
+    const checkSuperAdmin = async () => {
+      try {
+        const token = TokenStorage.getToken();
+        if (token) {
+          const status = await checkMySuperAdminStatus(token);
+          setIsSuperAdmin(status.is_superadmin === true);
+        }
+      } catch (error) {
+        setIsSuperAdmin(false);
+      }
+    };
+    checkSuperAdmin();
+  }, []);
 
   const loadDonors = async () => {
     if (!activeOrganization) return;
@@ -68,6 +88,37 @@ export default function DonateursPage() {
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setPagination({ ...pagination, page: 1 });
+  };
+
+  const handleSeedDonors = async () => {
+    if (!activeOrganization) return;
+
+    if (!confirm('Voulez-vous créer 10 donateurs exemples avec des données de test ?')) {
+      return;
+    }
+
+    try {
+      setIsSeeding(true);
+      setError(null);
+      setSeedSuccess(null);
+
+      const result = await seedExampleDonors(activeOrganization.id, 10);
+
+      if (result.success) {
+        setSeedSuccess(
+          `${result.donors_created} donateurs créés avec ${result.donations_created} dons !`
+        );
+        // Reload donors list
+        await loadDonors();
+      } else {
+        setError(result.message || 'Erreur lors de la création des donateurs exemples');
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la création des donateurs exemples';
+      setError(errorMessage);
+    } finally {
+      setIsSeeding(false);
+    }
   };
 
   const formatCurrency = (amount: string) => {
@@ -140,13 +191,33 @@ export default function DonateursPage() {
           </div>
           <p className="text-muted-foreground text-lg">Gérez votre base de données de donateurs</p>
         </div>
-        <Link href="/dashboard/base-donateur/donateurs/new">
-          <Button className="shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-            <Plus className="w-4 h-4 mr-2" />
-            Nouveau donateur
-          </Button>
-        </Link>
+        <div className="flex gap-3">
+          {isSuperAdmin && (
+            <Button
+              variant="outline"
+              onClick={handleSeedDonors}
+              disabled={isSeeding || !activeOrganization}
+              className="shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105"
+            >
+              <Database className="w-4 h-4 mr-2" />
+              {isSeeding ? 'Création...' : 'Seed exemples'}
+            </Button>
+          )}
+          <Link href="/dashboard/base-donateur/donateurs/new">
+            <Button className="shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+              <Plus className="w-4 h-4 mr-2" />
+              Nouveau donateur
+            </Button>
+          </Link>
+        </div>
       </div>
+
+      {/* Seed Success Message */}
+      {seedSuccess && (
+        <Card className="mb-6 border-success bg-success/10 animate-in fade-in slide-in-from-top-2">
+          <p className="text-success p-4 font-medium">{seedSuccess}</p>
+        </Card>
+      )}
 
       {/* Stats Summary */}
       {!isLoading && donors.length > 0 && (
