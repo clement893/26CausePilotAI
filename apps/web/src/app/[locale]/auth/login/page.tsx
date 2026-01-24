@@ -100,9 +100,8 @@ function LoginContent() {
       const callbackPath = '/auth/callback';
       const response = await authAPI.getGoogleAuthUrl(callbackPath);
       
-      // Extract data from response (handles both ApiResponse and direct response)
-      const data = response.data?.data || response.data || response;
-      const auth_url = (data as any)?.auth_url;
+      // Extract auth_url from response
+      const auth_url = response.data?.auth_url;
       
       if (!auth_url) {
         console.error('No auth_url in Google OAuth response:', { response, data });
