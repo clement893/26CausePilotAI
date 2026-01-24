@@ -23,7 +23,7 @@ export default function LocaleSwitcher() {
     setIsOpen(false);
 
     // Get current pathname without locale
-    const pathWithoutLocale = pathname.replace(/^\/(en|fr|ar|he)/, '') || '/';
+    const pathWithoutLocale = pathname.replace(/^\/(en|fr)/, '') || '/';
 
     // Build new path with locale
     const newPath = newLocale === 'en' ? pathWithoutLocale : `/${newLocale}${pathWithoutLocale}`;

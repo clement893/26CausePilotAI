@@ -30,7 +30,7 @@ export default function LanguageSwitcher() {
 
     // Use next-intl's navigation helper
     const { pathname: currentPath } = window.location;
-    const pathWithoutLocale = currentPath.replace(/^\/(en|fr|ar|he)/, '') || '/';
+    const pathWithoutLocale = currentPath.replace(/^\/(en|fr)/, '') || '/';
 
     // Build new path with locale
     const newPath = newLocale === 'en' ? pathWithoutLocale : `/${newLocale}${pathWithoutLocale}`;

@@ -7,26 +7,22 @@ import { defineRouting } from 'next-intl/routing';
 import { createNavigation } from 'next-intl/navigation';
 
 // Supported locales
-export const locales = ['en', 'fr', 'ar', 'he'] as const;
+export const locales = ['en', 'fr'] as const;
 export type Locale = (typeof locales)[number];
 
-// RTL locales
-export const rtlLocales: Locale[] = ['ar', 'he'];
+// RTL locales (none for now, only EN and FR)
+export const rtlLocales: Locale[] = [];
 
 // Locale display names
 export const localeNames: Record<Locale, string> = {
   en: 'English',
   fr: 'Français',
-  ar: 'العربية',
-  he: 'עברית',
 };
 
 // Locale native names
 export const localeNativeNames: Record<Locale, string> = {
   en: 'English',
   fr: 'Français',
-  ar: 'العربية',
-  he: 'עברית',
 };
 
 // Check if locale is RTL
@@ -48,8 +44,6 @@ export const routing = defineRouting({
     prefixes: {
       en: '', // English has no prefix
       fr: '/fr',
-      ar: '/ar',
-      he: '/he',
     },
   },
 });
