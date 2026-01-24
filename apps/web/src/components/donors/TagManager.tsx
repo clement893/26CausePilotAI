@@ -8,7 +8,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, Button, Input, Modal, Badge } from '@/components/ui';
+import { Card, Button, Input, Modal, Badge, LoadingSkeleton } from '@/components/ui';
 import { Plus, Edit, Trash2, Tag as TagIcon, Save, X } from 'lucide-react';
 import { listTags, createTag, updateTag, deleteTag } from '@/lib/api/donors';
 import type { DonorTag, DonorTagCreate, DonorTagUpdate } from '@modele/types';
@@ -111,22 +111,32 @@ export function TagManager({ className }: TagManagerProps) {
   };
 
   if (isLoading) {
-    return <div className={className}>Loading tags...</div>;
+    return (
+      <div className={className}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LoadingSkeleton variant="card" count={6} />
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className={className}>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Manage Tags</h2>
-        <Button onClick={handleCreate} variant="primary">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold text-foreground">Gérer les tags</h2>
+        <Button onClick={handleCreate} variant="primary" className="shadow-lg hover:shadow-xl transition-all duration-200">
           <Plus className="w-4 h-4 mr-2" />
-          Create Tag
+          Créer un tag
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {tags.map(tag => (
-          <Card key={tag.id} className="p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tags.map((tag, index) => (
+          <div
+            key={tag.id}
+            className={`stagger-fade-in opacity-0 stagger-delay-${Math.min(index + 1, 6)}`}
+          >
+          <Card className="p-4 h-full hover:shadow-lg transition-all duration-300">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2 flex-1">
                 {tag.color && (
@@ -138,10 +148,10 @@ export function TagManager({ className }: TagManagerProps) {
                 <div className="flex-1">
                   <h3 className="font-medium">{tag.name}</h3>
                   {tag.description && (
-                    <p className="text-sm text-gray-500 mt-1">{tag.description}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{tag.description}</p>
                   )}
                   <Badge variant="default" className="mt-2">
-                    {tag.donor_count} donors
+                    {tag.donor_count} donateurs
                   </Badge>
                 </div>
               </div>
@@ -165,13 +175,23 @@ export function TagManager({ className }: TagManagerProps) {
               </div>
             </div>
           </Card>
+          </div>
         ))}
       </div>
 
       {tags.length === 0 && (
-        <Card className="p-8 text-center">
-          <TagIcon className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-          <p className="text-gray-500">No tags yet. Create your first tag to get started.</p>
+        <Card className="p-12 text-center" elevated>
+          <div className="mx-auto mb-6 w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <TagIcon className="w-10 h-10 text-primary" />
+          </div>
+          <h3 className="text-xl font-semibold text-foreground mb-2">Aucun tag créé</h3>
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            Créez votre premier tag pour catégoriser vos donateurs.
+          </p>
+          <Button variant="primary" onClick={handleCreate} className="shadow-lg hover:shadow-xl transition-all duration-200">
+            <Plus className="w-4 h-4 mr-2" />
+            Créer un tag
+          </Button>
         </Card>
       )}
 
@@ -179,14 +199,14 @@ export function TagManager({ className }: TagManagerProps) {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingTag ? 'Edit Tag' : 'Create Tag'}
+        title={editingTag ? 'Modifier le tag' : 'Créer un tag'}
       >
         <div className="space-y-4">
           <Input
-            label="Name"
+            label="Nom"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="e.g., Major Donor"
+            placeholder="ex. Grand donateur"
             required
           />
 
@@ -194,11 +214,11 @@ export function TagManager({ className }: TagManagerProps) {
             label="Description"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            placeholder="Optional description"
+            placeholder="Description optionnelle"
           />
 
           <div>
-            <label className="block text-sm font-medium mb-2">Color</label>
+            <label className="block text-sm font-medium mb-2">Couleur</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -216,20 +236,20 @@ export function TagManager({ className }: TagManagerProps) {
           </div>
 
           <Input
-            label="Icon (optional)"
+            label="Icône (optionnel)"
             value={formData.icon}
             onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-            placeholder="e.g., star, heart"
+            placeholder="ex. star, heart"
           />
 
           <div className="flex justify-end gap-2 pt-4">
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               <X className="w-4 h-4 mr-2" />
-              Cancel
+              Annuler
             </Button>
             <Button variant="primary" onClick={handleSave} disabled={!formData.name}>
               <Save className="w-4 h-4 mr-2" />
-              {editingTag ? 'Update' : 'Create'}
+              {editingTag ? 'Mettre à jour' : 'Créer'}
             </Button>
           </div>
         </div>
