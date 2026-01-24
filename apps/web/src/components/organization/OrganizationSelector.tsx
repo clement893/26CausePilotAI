@@ -29,7 +29,7 @@ export default function OrganizationSelector() {
     loadOrganizations();
   }, []);
 
-  if (isLoading && availableOrganizations.length === 0) {
+  if (isLoading && (!availableOrganizations || availableOrganizations.length === 0)) {
     return (
       <div className="px-lg py-md border-b border-border">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -90,7 +90,7 @@ export default function OrganizationSelector() {
 
             {/* Menu */}
             <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-              {availableOrganizations.map((org) => (
+              {(availableOrganizations || []).map((org) => (
                 <button
                   key={org.id}
                   onClick={() => handleSelectOrganization(org.id)}
@@ -117,8 +117,8 @@ export default function OrganizationSelector() {
 
       {/* Module count badge */}
       <div className="mt-2 text-xs text-muted-foreground">
-        {enabledModules.length} module{enabledModules.length !== 1 ? 's' : ''} activé
-        {enabledModules.length !== 1 ? 's' : ''}
+        {(enabledModules || []).length} module{(enabledModules || []).length !== 1 ? 's' : ''} activé
+        {(enabledModules || []).length !== 1 ? 's' : ''}
       </div>
     </div>
   );
