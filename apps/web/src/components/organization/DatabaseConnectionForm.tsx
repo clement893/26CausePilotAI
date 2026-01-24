@@ -428,7 +428,7 @@ export function DatabaseConnectionForm({
     setTestResult(null);
 
     try {
-      const result = await updateOrganizationDatabase(organizationId, {
+      await updateOrganizationDatabase(organizationId, {
         dbConnectionString: finalConnectionString,
         testConnection: true, // Test before saving
       });
