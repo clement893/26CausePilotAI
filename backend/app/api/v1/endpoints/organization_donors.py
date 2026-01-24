@@ -2048,3 +2048,150 @@ async def cancel_recurring_donation(
     await org_db.commit()
     
     return None
+
+
+@router.post("/{organization_id}/donors/seed", response_model=dict, status_code=status.HTTP_201_CREATED)
+async def seed_example_donors(
+    organization_id: UUID,
+    count: int = Query(10, ge=1, le=100, description="Number of example donors to create"),
+    org_db: AsyncSession = Depends(get_organization_db),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_superadmin),
+):
+    """
+    Seed example donors for testing (SuperAdmin only)
+    
+    Creates example donors with realistic data including donations, tags, and activities.
+    """
+    from app.core.logging import logger
+    from datetime import datetime, timedelta
+    from random import choice, randint, uniform
+    import uuid
+    
+    # Sample data for generating realistic donors
+    first_names = [
+        "Jean", "Marie", "Pierre", "Sophie", "Michel", "Isabelle", "Philippe", "Catherine",
+        "Alain", "Françoise", "Bernard", "Monique", "Daniel", "Martine", "Patrick", "Nathalie",
+        "Laurent", "Valérie", "Stéphane", "Sandrine", "David", "Céline", "Nicolas", "Julie",
+        "Thomas", "Amélie", "Julien", "Émilie", "Antoine", "Camille", "Olivier", "Claire"
+    ]
+    
+    last_names = [
+        "Dupont", "Martin", "Bernard", "Dubois", "Thomas", "Robert", "Richard", "Petit",
+        "Durand", "Leroy", "Moreau", "Simon", "Laurent", "Lefebvre", "Michel", "Garcia",
+        "David", "Bertrand", "Roux", "Vincent", "Fournier", "Morel", "Girard", "André",
+        "Lefevre", "Mercier", "Dupuis", "Lambert", "Bonnet", "François", "Martinez", "Legrand"
+    ]
+    
+    domains = ["gmail.com", "yahoo.fr", "hotmail.com", "outlook.com", "live.com", "icloud.com"]
+    
+    cities = [
+        "Montréal", "Québec", "Ottawa", "Toronto", "Vancouver", "Calgary", "Edmonton",
+        "Winnipeg", "Halifax", "Victoria", "Saskatoon", "Regina", "Sherbrooke", "Trois-Rivières"
+    ]
+    
+    provinces = ["QC", "ON", "BC", "AB", "MB", "SK", "NS", "NB", "NL", "PE", "YT", "NT", "NU"]
+    
+    created_donors = []
+    created_donations = []
+    
+    try:
+        logger.info(f"Starting seed of {count} example donors for organization {organization_id}")
+        
+        for i in range(count):
+            # Generate random donor data
+            first_name = choice(first_names)
+            last_name = choice(last_names)
+            email = f"{first_name.lower()}.{last_name.lower()}{randint(1, 999)}@{choice(domains)}"
+            
+            # Create donor
+            donor = Donor(
+                id=uuid.uuid4(),
+                organization_id=organization_id,
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                phone=f"+1{randint(514, 999)}{randint(1000000, 9999999)}" if randint(1, 10) > 2 else None,
+                preferred_language=choice(["fr", "en"]),
+                opt_in_email=randint(1, 10) > 2,
+                opt_in_sms=randint(1, 10) > 5,
+                opt_in_postal=randint(1, 10) > 3,
+                is_anonymous=False,
+                is_active=randint(1, 10) > 1,
+            )
+            
+            # Add address (50% chance)
+            if randint(1, 10) > 5:
+                donor.address = {
+                    "street": f"{randint(1, 9999)} {choice(['rue', 'avenue', 'boulevard'])} {choice(['de la', 'du', 'des'])} {choice(['Montagne', 'Fleur', 'Érable', 'Chêne', 'Pins'])}",
+                    "city": choice(cities),
+                    "province": choice(provinces),
+                    "postal_code": f"{choice(['H', 'J', 'K', 'G', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'X', 'Y'])}{randint(0, 9)}{choice(['A', 'B', 'C', 'E', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'])} {randint(0, 9)}{choice(['A', 'B', 'C', 'E', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'])}{randint(0, 9)}",
+                    "country": "Canada"
+                }
+            
+            org_db.add(donor)
+            await org_db.flush()
+            
+            # Create 1-5 donations per donor
+            num_donations = randint(1, 5)
+            total_donated = Decimal('0.00')
+            
+            for j in range(num_donations):
+                donation_amount = Decimal(str(round(uniform(10.00, 500.00), 2)))
+                total_donated += donation_amount
+                
+                donation_date = datetime.now() - timedelta(days=randint(0, 365))
+                
+                donation = Donation(
+                    id=uuid.uuid4(),
+                    organization_id=organization_id,
+                    donor_id=donor.id,
+                    amount=donation_amount,
+                    donation_type=choice(["one_time", "recurring", "in_memory", "in_honor"]),
+                    payment_method=choice(["credit_card", "debit_card", "bank_transfer", "check", "cash"]),
+                    payment_status=choice(["completed", "completed", "completed", "pending", "failed"]),  # Mostly completed
+                    payment_date=donation_date if randint(1, 10) > 1 else None,
+                    receipt_sent=randint(1, 10) > 3,
+                )
+                
+                org_db.add(donation)
+                created_donations.append(donation)
+            
+            # Update donor total
+            donor.total_donated = total_donated
+            donor.donation_count = num_donations
+            donor.last_donation_date = max([d.payment_date for d in created_donations if d.payment_date] or [None])
+            
+            # Create activity
+            activity = DonorActivity(
+                id=uuid.uuid4(),
+                organization_id=organization_id,
+                donor_id=donor.id,
+                activity_type="profile_created",
+                activity_data={"created_by": current_user.id, "seed": True},
+                performed_by=current_user.id,
+            )
+            org_db.add(activity)
+            
+            created_donors.append(donor)
+        
+        await org_db.commit()
+        
+        logger.info(f"Successfully seeded {len(created_donors)} donors with {len(created_donations)} donations")
+        
+        return {
+            "success": True,
+            "message": f"Successfully created {len(created_donors)} example donors",
+            "donors_created": len(created_donors),
+            "donations_created": len(created_donations),
+        }
+        
+    except Exception as e:
+        await org_db.rollback()
+        logger.error(f"Error seeding example donors: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to seed example donors: {str(e)}"
+        )
