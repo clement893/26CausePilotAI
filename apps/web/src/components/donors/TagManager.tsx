@@ -140,7 +140,7 @@ export function TagManager({ className }: TagManagerProps) {
                   {tag.description && (
                     <p className="text-sm text-gray-500 mt-1">{tag.description}</p>
                   )}
-                  <Badge variant="secondary" className="mt-2">
+                  <Badge variant="default" className="mt-2">
                     {tag.donor_count} donors
                   </Badge>
                 </div>

@@ -7,10 +7,11 @@
 'use client';
 
 import { Card, Badge, Button, Progress } from '@/components/ui';
-import { Target, Users, DollarSign, Calendar, ExternalLink } from 'lucide-react';
+import { Users, DollarSign, Calendar, ExternalLink } from 'lucide-react';
 import type { Campaign, CampaignStats } from '@modele/types';
-import { format } from 'date-fns';
-import Link from 'next/link';
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -103,13 +104,13 @@ export function CampaignCard({ campaign, stats, className, onView }: CampaignCar
         {campaign.start_date && (
           <div className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
-            Starts: {format(new Date(campaign.start_date), 'MMM d, yyyy')}
+            Starts: {formatDate(new Date(campaign.start_date))}
           </div>
         )}
         {campaign.end_date && (
           <div className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
-            Ends: {format(new Date(campaign.end_date), 'MMM d, yyyy')}
+            Ends: {formatDate(new Date(campaign.end_date))}
           </div>
         )}
       </div>
@@ -117,7 +118,7 @@ export function CampaignCard({ campaign, stats, className, onView }: CampaignCar
       {/* Days Remaining */}
       {isActive && daysRemaining !== undefined && daysRemaining !== null && (
         <div className="mb-4">
-          <Badge variant="secondary">
+          <Badge variant="default">
             {daysRemaining > 0 ? `${daysRemaining} days remaining` : 'Ended'}
           </Badge>
         </div>

@@ -12,7 +12,9 @@ import { Mail, MessageSquare, Phone, FileText, User, Clock, CheckCircle, XCircle
 import { listDonorCommunications } from '@/lib/api/donors';
 import type { DonorCommunication } from '@modele/types';
 import { useOrganization } from '@/hooks/useOrganization';
-import { format } from 'date-fns';
+
+const formatDateTime = (d: Date) =>
+  d.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 
 interface CommunicationListProps {
   donorId: string;
@@ -109,7 +111,7 @@ export function CommunicationList({ donorId, className }: CommunicationListProps
                       {communication.sent_at && (
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
-                          {format(new Date(communication.sent_at), 'MMM d, yyyy HH:mm')}
+                          {formatDateTime(new Date(communication.sent_at))}
                         </div>
                       )}
                       {communication.delivered_at && (

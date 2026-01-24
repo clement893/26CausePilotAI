@@ -174,7 +174,7 @@ export default function SegmentsPage() {
             </div>
 
             <div className="flex items-center justify-between mb-4">
-              <Badge variant="secondary">
+              <Badge variant="default">
                 <Users className="w-3 h-3 mr-1" />
                 {segment.donor_count} donateurs
               </Badge>

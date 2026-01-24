@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Container, Card, Button, Badge, Tabs, TabList, Tab, TabPanels, TabPanel } from '@/components/ui';
 import { useOrganization } from '@/hooks/useOrganization';
-import { getDonor, getDonorHistory, getDonorStats, listDonorDonations, getSegmentDonors } from '@/lib/api/donors';
+import { getDonor, getDonorHistory, getDonorStats, listDonorDonations } from '@/lib/api/donors';
 import type { DonorWithStats, Donation, DonorHistory, DonorStats } from '@modele/types';
 import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign, Activity, Tag, Users, MessageSquare } from 'lucide-react';
 import { Link } from '@/i18n/routing';
@@ -398,8 +398,7 @@ export default function DonorDetailPage() {
                 <TagSelector
                   donorId={donorId}
                   assignedTagIds={donor.tags || []}
-                  onTagsChange={(tagIds) => {
-                    // Optionally reload donor data
+                  onTagsChange={() => {
                     loadDonorData();
                   }}
                 />

@@ -7,7 +7,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Badge, Button } from '@/components/ui';
+import { Badge } from '@/components/ui';
 import { Users } from 'lucide-react';
 import { listSegments } from '@/lib/api/donors';
 import type { DonorSegment } from '@modele/types';
@@ -22,7 +22,6 @@ interface SegmentSelectorProps {
 }
 
 export function SegmentSelector({
-  donorId,
   selectedSegmentIds = [],
   onSegmentsChange,
   className,
@@ -98,7 +97,7 @@ export function SegmentSelector({
           return (
             <Badge
               key={segment.id}
-              variant={isSelected ? 'default' : 'secondary'}
+              variant="default"
               style={isSelected && segment.color ? { backgroundColor: segment.color, color: 'white' } : undefined}
               className={`flex items-center gap-1 cursor-pointer ${readOnly ? 'cursor-default' : ''}`}
               onClick={() => handleToggleSegment(segment.id)}

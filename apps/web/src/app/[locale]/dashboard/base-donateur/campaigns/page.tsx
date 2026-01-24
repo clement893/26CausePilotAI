@@ -10,7 +10,6 @@ import { listCampaigns, getCampaignStats } from '@/lib/api/donors';
 import type { Campaign, CampaignStats } from '@modele/types';
 import { useOrganization } from '@/hooks/useOrganization';
 import { CampaignCard } from '@/components/donors';
-import Link from 'next/link';
 
 export default function CampaignsPage() {
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
