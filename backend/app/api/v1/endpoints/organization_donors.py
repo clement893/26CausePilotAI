@@ -168,11 +168,22 @@ async def get_donor(
             last_donation = max(completed_donations, key=lambda d: d.payment_date or d.created_at)
             last_donation_amount = last_donation.amount
     
+    # Convert donor to dict and map extra_data to metadata
     donor_dict = {
-        **donor.__dict__,
-        "average_donation": avg_donation,
-        "last_donation_amount": last_donation_amount,
+        **{k: v for k, v in donor.__dict__.items() if not k.startswith('_')},
     }
+    
+    # Convert Decimal fields to strings for API
+    if 'total_donated' in donor_dict and donor_dict['total_donated'] is not None:
+        donor_dict['total_donated'] = str(donor_dict['total_donated'])
+    
+    # Map extra_data to metadata for API response
+    if 'extra_data' in donor_dict:
+        donor_dict['metadata'] = donor_dict.pop('extra_data')
+    
+    # Add calculated stats
+    donor_dict['average_donation'] = str(avg_donation) if avg_donation else None
+    donor_dict['last_donation_amount'] = str(last_donation_amount) if last_donation_amount else None
     
     return DonorWithStats(**donor_dict)
 
@@ -374,9 +385,13 @@ async def create_donation(
             detail="Donor not found"
         )
     
-    # Create donation
+    # Create donation - map metadata to extra_data
+    donation_data = donation_in.dict()
+    if 'metadata' in donation_data:
+        donation_data['extra_data'] = donation_data.pop('metadata')
+    
     donation = Donation(
-        **donation_in.dict(),
+        **donation_data,
         donor_id=donor_id,
         organization_id=organization_id,
     )
@@ -440,8 +455,11 @@ async def update_donation(
     old_status = donation.payment_status
     old_amount = donation.amount
     
-    # Update fields
+    # Update fields - map metadata to extra_data
     update_data = donation_update.dict(exclude_unset=True)
+    if 'metadata' in update_data:
+        update_data['extra_data'] = update_data.pop('metadata')
+    
     for field, value in update_data.items():
         setattr(donation, field, value)
     
@@ -646,15 +664,15 @@ async def get_donor_stats(
     amounts = [d.amount for d in donations] if donations else []
     
     return {
-        "total_donated": donor.total_donated or Decimal('0.00'),
+        "total_donated": str(donor.total_donated or Decimal('0.00')),
         "donation_count": donor.donation_count or 0,
-        "average_donation": sum(amounts) / len(amounts) if amounts else Decimal('0.00'),
+        "average_donation": str(sum(amounts) / len(amounts) if amounts else Decimal('0.00')),
         "first_donation_date": donor.first_donation_date,
         "last_donation_date": donor.last_donation_date,
-        "last_donation_amount": amounts[-1] if amounts else None,
-        "largest_donation": max(amounts) if amounts else None,
-        "this_year_total": sum(d.amount for d in this_year_donations),
+        "last_donation_amount": str(amounts[-1]) if amounts else None,
+        "largest_donation": str(max(amounts)) if amounts else None,
+        "this_year_total": str(sum(d.amount for d in this_year_donations)),
         "this_year_count": len(this_year_donations),
-        "this_month_total": sum(d.amount for d in this_month_donations),
+        "this_month_total": str(sum(d.amount for d in this_month_donations)),
         "this_month_count": len(this_month_donations),
     }

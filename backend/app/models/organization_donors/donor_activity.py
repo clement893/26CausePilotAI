@@ -5,7 +5,7 @@ Activity model for organization-specific databases.
 Tracks all activities/interactions with donors for timeline.
 """
 
-from sqlalchemy import Column, String, DateTime, JSON, ForeignKey, func, Index
+from sqlalchemy import Column, String, DateTime, Integer, JSON, ForeignKey, func, Index
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import uuid

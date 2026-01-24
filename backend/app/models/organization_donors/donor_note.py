@@ -5,7 +5,7 @@ Note model for organization-specific databases.
 Stores notes and interactions with donors.
 """
 
-from sqlalchemy import Column, String, Text, Boolean, DateTime, ForeignKey, func, Index
+from sqlalchemy import Column, String, Text, Boolean, DateTime, Integer, ForeignKey, func, Index
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import uuid
