@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Force rebuild: 2026-01-24
 const createNextIntlPlugin = require('next-intl/plugin');
 const { withSentryConfig } = require('@sentry/nextjs');
 
