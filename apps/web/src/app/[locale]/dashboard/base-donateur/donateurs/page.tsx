@@ -11,12 +11,12 @@ import { checkMySuperAdminStatus } from '@/lib/api/admin';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { errorLogger } from '@/lib/logger/errorLogger';
 import type { Donor } from '@modele/types';
-import { Search, Plus, Mail, Phone, DollarSign, Calendar, User, TrendingUp, Sparkles, Database, Info, AlertCircle } from 'lucide-react';
+import { Search, Plus, Mail, Phone, DollarSign, Calendar, User, TrendingUp, Sparkles, Database, AlertCircle } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 
 export default function DonateursPage() {
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
-  const { success, error: showErrorToast, info, warning } = useToast();
+  const { success, error: showErrorToast, info } = useToast();
   const [donors, setDonors] = useState<Donor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +95,10 @@ export default function DonateursPage() {
       // Log error
       errorLogger.error('Failed to load donors', err instanceof Error ? err : new Error(errorMessage), {
         organizationId: activeOrganization?.id,
-        params,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        search: searchTerm,
+        filters,
       });
       
       // Show error toast

@@ -19,7 +19,7 @@ export default function DonorDetailPage() {
   const params = useParams();
   const donorId = params.id as string;
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
-  const { error: showErrorToast, info } = useToast();
+  const { error: showErrorToast } = useToast();
   const [donor, setDonor] = useState<DonorWithStats | null>(null);
   const [donations, setDonations] = useState<Donation[]>([]);
   const [history, setHistory] = useState<DonorHistory | null>(null);

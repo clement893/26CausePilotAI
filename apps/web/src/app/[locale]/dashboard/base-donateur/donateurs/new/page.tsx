@@ -17,7 +17,7 @@ import { useLocale } from 'next-intl';
 export default function NewDonorPage() {
   const locale = useLocale();
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
-  const { success, error: showErrorToast, info, warning } = useToast();
+  const { success, error: showErrorToast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMigrating, setIsMigrating] = useState(false);
   const [migrationSuccess, setMigrationSuccess] = useState<string | null>(null);
