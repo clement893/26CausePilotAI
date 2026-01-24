@@ -1033,8 +1033,32 @@ class OrganizationDatabaseManager:
             alembic_cfg = Config("alembic.ini")
             alembic_cfg.set_main_option("sqlalchemy.url", alembic_db_url)
             
-            # Run migrations
-            command.upgrade(alembic_cfg, "head")
+            # Try to run migrations - handle multiple heads gracefully
+            try:
+                # First, try with 'head' (single head)
+                command.upgrade(alembic_cfg, "head")
+            except Exception as head_error:
+                error_msg = str(head_error)
+                # Check if error is about multiple heads
+                if "Multiple head revisions" in error_msg or "overlaps" in error_msg.lower():
+                    logger.warning("Multiple migration heads detected. Using 'heads' to upgrade all heads...")
+                    # Use 'heads' to upgrade all heads
+                    try:
+                        command.upgrade(alembic_cfg, "heads")
+                    except Exception as heads_error:
+                        error_msg_heads = str(heads_error)
+                        # If 'heads' also fails, provide helpful error message
+                        if "Multiple head revisions" in error_msg_heads:
+                            raise ValueError(
+                                f"Multiple head revisions detected and could not be resolved automatically. "
+                                f"Please run 'alembic merge heads' manually to create a merge migration, "
+                                f"or specify a specific target revision. Error: {error_msg_heads}"
+                            ) from heads_error
+                        else:
+                            raise
+                else:
+                    # Different error, re-raise
+                    raise
             
             parsed = cls.parse_db_connection_string(db_connection_string)
             logger.info(f"Ran migrations on organization database: {parsed['database']}")
@@ -1046,8 +1070,21 @@ class OrganizationDatabaseManager:
             logger.error(f"Database programming error running migrations: {e}", exc_info=True)
             raise ValueError(f"Migration SQL error: {str(e)}") from e
         except Exception as e:
-            logger.error(f"Unexpected error running migrations: {e}", exc_info=True)
-            raise
+            error_msg = str(e)
+            if "Multiple head revisions" in error_msg:
+                # Last resort: try upgrading all heads
+                try:
+                    logger.warning("Multiple heads error caught, attempting to upgrade all heads as fallback...")
+                    alembic_cfg.set_main_option("sqlalchemy.url", alembic_db_url)
+                    command.upgrade(alembic_cfg, "heads")
+                    parsed = cls.parse_db_connection_string(db_connection_string)
+                    logger.info(f"Ran migrations on organization database (using heads): {parsed['database']}")
+                except Exception as fallback_error:
+                    logger.error(f"Failed to run migrations even with 'heads': {fallback_error}", exc_info=True)
+                    raise ValueError(f"Failed to run migrations: Multiple head revisions detected and could not be resolved. Error: {str(e)}") from e
+            else:
+                logger.error(f"Unexpected error running migrations: {e}", exc_info=True)
+                raise
     
     @classmethod
     async def list_database_tables(cls, db_connection_string: str) -> List[str]:
