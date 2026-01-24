@@ -23,7 +23,7 @@
  * - Options for select/radio/checkbox fields
  * - Form submission handling
  *
- * @see {@link https://github.com/your-repo/docs/components/form-builder} Component Documentation
+ * @see {@link https://github.com/clement893/26CausePilotAI/docs/components/form-builder} Component Documentation
  */
 'use client';
 

@@ -202,7 +202,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm" role="list">
               <li>
                 <a
-                  href="https://github.com/your-username"
+                  href="https://github.com/clement893"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
@@ -213,7 +213,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/your-username/your-repo-name/issues"
+                  href="https://github.com/clement893/26CausePilotAI/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"

@@ -16,7 +16,7 @@ git clone <URL-du-repo-NUKLEO-ERP> nukleo-erp-temp
 # - apps/web/src/app/reseau (si frontend)
 
 # 3. Utiliser le script de migration
-cd modele-final-1
+cd 26CausePilotAI-1
 pnpm migrate:module C:\Users\cleme\nukleo-erp-temp\<chemin-vers-reseau> reseau --type <frontend|backend|shared>
 
 # 4. Nettoyer (optionnel)

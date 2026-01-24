@@ -12,7 +12,7 @@ The fastest way to get started:
 
 ```bash
 # 1. Clone the template
-git clone https://github.com/your-username/your-repo-name.git your-project-name
+git clone https://github.com/clement893/26CausePilotAI.git your-project-name
 cd your-project-name
 
 # 2. Run interactive setup
@@ -74,7 +74,7 @@ If you prefer manual setup or the quick-start script doesn't work:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git your-project-name
+git clone https://github.com/clement893/26CausePilotAI.git your-project-name
 cd your-project-name
 ```
 
@@ -474,7 +474,7 @@ If you're still stuck:
 1. Check the [main README](./README.md)
 2. Review [TEMPLATE_USAGE.md](./TEMPLATE_USAGE.md)
 3. Check [DEVELOPMENT.md](./DEVELOPMENT.md) for development-specific issues
-4. [Open an issue](https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues)
+4. [Open an issue](https://github.com/clement893/26CausePilotAI/issues)
 5. Review error logs carefully
 
 ---
@@ -506,4 +506,4 @@ After setup, verify:
 
 **Happy coding! 🚀**
 
-_If you encounter any issues, don't hesitate to [open an issue](https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues) or check the documentation._
+_If you encounter any issues, don't hesitate to [open an issue](https://github.com/clement893/26CausePilotAI/issues) or check the documentation._

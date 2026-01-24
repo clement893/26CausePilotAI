@@ -22,7 +22,7 @@
  * - Multiple menu locations (header, footer, sidebar)
  * - Real-time preview
  *
- * @see {@link https://github.com/your-repo/docs/components/menu-builder} Component Documentation
+ * @see {@link https://github.com/clement893/26CausePilotAI/docs/components/menu-builder} Component Documentation
  */
 'use client';
 

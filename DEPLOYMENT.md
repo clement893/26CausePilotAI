@@ -606,4 +606,4 @@ curl -X POST https://your-backend.railway.app/api/v1/auth/bootstrap-superadmin \
 
 **Happy deploying! 🚀**
 
-_For issues, check the troubleshooting section or [open an issue](https://github.com/your-username/your-repo-name/issues)_
+_For issues, check the troubleshooting section or [open an issue](https://github.com/clement893/26CausePilotAI/issues)_

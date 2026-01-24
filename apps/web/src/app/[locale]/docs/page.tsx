@@ -275,7 +275,7 @@ const data = await response.json();`}
                 <a
                   href={
                     process.env.NEXT_PUBLIC_GITHUB_URL ||
-                    'https://github.com/your-username/your-repo'
+                    'https://github.com/clement893/26CausePilotAI'
                   }
                   target="_blank"
                   rel="noopener noreferrer"
@@ -304,7 +304,7 @@ const data = await response.json();`}
             <ul className="space-y-2">
               <li>
                 <a
-                  href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/your-username/your-repo'}/issues`}
+                  href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/clement893/26CausePilotAI'}/issues`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-info-600 dark:text-info-400 hover:underline"
@@ -314,7 +314,7 @@ const data = await response.json();`}
               </li>
               <li>
                 <a
-                  href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/your-username/your-repo'}/discussions`}
+                  href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/clement893/26CausePilotAI'}/discussions`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-info-600 dark:text-info-400 hover:underline"

@@ -35,7 +35,7 @@ Template full-stack production-ready avec:
 
 ### Structure du Projet
 ```
-modele-final/
+26CausePilotAI/
 ├── apps/web/          # Application Next.js (Frontend)
 ├── backend/           # Application FastAPI (Backend)
 ├── packages/types/    # Types TypeScript partagés

@@ -33,8 +33,8 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 ```bash
 # Fork the repository on GitHub, then:
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/clement893/26CausePilotAI.git
+cd 26CausePilotAI
 ```
 
 ### 2. Create a Branch

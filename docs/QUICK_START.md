@@ -10,7 +10,7 @@ Guide ultra-rapide pour démarrer avec le template en moins de 5 minutes.
 
 ```bash
 # Cloner le template
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git mon-projet
+git clone https://github.com/clement893/26CausePilotAI.git mon-projet
 cd mon-projet
 
 # Configuration automatique

@@ -24,7 +24,7 @@
  * - Filter by date range
  * - Compare responses over time
  *
- * @see {@link https://github.com/your-repo/docs/components/survey-results} Component Documentation
+ * @see {@link https://github.com/clement893/26CausePilotAI/docs/components/survey-results} Component Documentation
  */
 'use client';
 import { useState, useMemo } from 'react';

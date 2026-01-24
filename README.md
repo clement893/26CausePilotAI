@@ -147,7 +147,7 @@ See [TEMPLATE_CUSTOMIZATION.md](./TEMPLATE_CUSTOMIZATION.md) for detailed custom
 ### Option 1: Interactive Setup (Recommended)
 
 ```bash
-git clone https://github.com/your-username/MODELE-NEXTJS-FULLSTACK.git your-project-name
+git clone https://github.com/clement893/26CausePilotAI.git your-project-name
 cd your-project-name
 node scripts/quick-start.js
 ```
@@ -164,7 +164,7 @@ The interactive script will guide you through:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/MODELE-NEXTJS-FULLSTACK.git your-project-name
+git clone https://github.com/clement893/26CausePilotAI.git your-project-name
 cd your-project-name
 
 # 2. Install dependencies
@@ -646,8 +646,8 @@ This project is private and proprietary.
 ### Getting Help
 
 - 📖 Check the [documentation](./GETTING_STARTED.md)
-- 🐛 [Open an issue](https://github.com/your-username/your-repo/issues)
-- 💬 [Start a discussion](https://github.com/your-username/your-repo/discussions)
+- 🐛 [Open an issue](https://github.com/clement893/26CausePilotAI/issues)
+- 💬 [Start a discussion](https://github.com/clement893/26CausePilotAI/discussions)
 - 📚 Review code comments and examples
 
 ### Common Issues

@@ -44,7 +44,7 @@ export default function CTA() {
               Créer un compte gratuit{' '}
             </ButtonLink>{' '}
             <ButtonLink
-              href="https://github.com/your-username/your-repo-name"
+              href="https://github.com/clement893/26CausePilotAI"
               target="_blank"
               size="lg"
               variant="outline"

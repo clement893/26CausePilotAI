@@ -23,7 +23,7 @@
  * - Auto-save draft
  * - Question randomization
  *
- * @see {@link https://github.com/your-repo/docs/components/survey-taker} Component Documentation
+ * @see {@link https://github.com/clement893/26CausePilotAI/docs/components/survey-taker} Component Documentation
  */
 'use client';
 

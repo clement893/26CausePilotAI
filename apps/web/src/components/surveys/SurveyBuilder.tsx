@@ -23,7 +23,7 @@
  * - Survey settings (public link, dates, limits)
  * - Question randomization
  *
- * @see {@link https://github.com/your-repo/docs/components/survey-builder} Component Documentation
+ * @see {@link https://github.com/clement893/26CausePilotAI/docs/components/survey-builder} Component Documentation
  */
 'use client';
 import { useState, useCallback } from 'react';

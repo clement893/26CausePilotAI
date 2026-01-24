@@ -11,8 +11,8 @@ Questions fréquemment posées par les utilisateurs du template.
 **R:** Voir le [Guide de Démarrage Rapide](./QUICK_START.md) pour une installation en 5 minutes.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/clement893/26CausePilotAI.git
+cd 26CausePilotAI
 pnpm setup
 pnpm install
 ```
@@ -278,14 +278,14 @@ pnpm test:coverage
 
 **R:**
 
-- **Issues GitHub** : [Ouvrir une issue](https://github.com/your-username/your-repo-name/issues)
-- **Discussions** : [GitHub Discussions](https://github.com/your-username/your-repo-name/discussions)
+- **Issues GitHub** : [Ouvrir une issue](https://github.com/clement893/26CausePilotAI/issues)
+- **Discussions** : [GitHub Discussions](https://github.com/clement893/26CausePilotAI/discussions)
 - **Documentation** : Voir le dossier `docs/`
 
 ### Q: Comment signaler un bug ?
 
-**R:** Utilisez le template d'issue GitHub ou ouvrez une [nouvelle issue](https://github.com/your-username/your-repo-name/issues/new).
+**R:** Utilisez le template d'issue GitHub ou ouvrez une [nouvelle issue](https://github.com/clement893/26CausePilotAI/issues/new).
 
 ---
 
-**D'autres questions ?** Ouvrez une [discussion](https://github.com/your-username/your-repo-name/discussions) !
+**D'autres questions ?** Ouvrez une [discussion](https://github.com/clement893/26CausePilotAI/discussions) !

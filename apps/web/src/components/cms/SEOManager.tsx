@@ -23,7 +23,7 @@
  * - Canonical URL management
  * - Robots meta tag configuration
  *
- * @see {@link https://github.com/your-repo/docs/components/seo-manager} Component Documentation
+ * @see {@link https://github.com/clement893/26CausePilotAI/docs/components/seo-manager} Component Documentation
  */
 'use client';
 

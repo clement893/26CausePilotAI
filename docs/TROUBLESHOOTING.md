@@ -738,7 +738,7 @@ SELECT * FROM users LIMIT 10;
 
 ### Resources
 
-- [GitHub Issues](https://github.com/your-username/your-repo-name/issues)
+- [GitHub Issues](https://github.com/clement893/26CausePilotAI/issues)
 - [Documentation](./README.md)
 - [Sentry Dashboard](https://sentry.io) (for production errors)
 - [Next.js Docs](https://nextjs.org/docs)

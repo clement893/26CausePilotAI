@@ -136,7 +136,7 @@ import { ModuleComponent } from "@modele/votre-module";
 
 ```bash
 # Ajouter le submodule dans un dossier dédié
-git submodule add https://github.com/user/projet-externe.git packages/external-modules/projet-externe
+git submodule add https://github.com/clement893/26CausePilotAI.git packages/external-modules/projet-externe
 
 # Initialiser et mettre à jour
 git submodule update --init --recursive

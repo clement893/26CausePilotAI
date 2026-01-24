@@ -79,7 +79,7 @@
 ### Structure du Projet
 
 ```
-modele-final/
+26CausePilotAI/
 ├── apps/
 │   └── web/                    # Next.js 16 Frontend
 │       ├── src/
