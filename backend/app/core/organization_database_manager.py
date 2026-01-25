@@ -1145,8 +1145,25 @@ class OrganizationDatabaseManager:
                 logger.info(f"Alembic script directory location: {script.dir}")
                 logger.info(f"Alembic script directory exists: {Path(script.dir).exists()}")
                 
+                # Check if our specific migrations exist
+                try:
+                    base_rev_obj = script.get_revision(base_revision)
+                    logger.info(f"✓ Found base revision {base_revision}: {base_rev_obj}")
+                except Exception as e:
+                    logger.error(f"✗ Could not find base revision {base_revision}: {e}")
+                
+                try:
+                    target_rev_obj = script.get_revision(target_revision)
+                    logger.info(f"✓ Found target revision {target_revision}: {target_rev_obj}")
+                except Exception as e:
+                    logger.error(f"✗ Could not find target revision {target_revision}: {e}")
+                
                 heads = script.get_revisions("heads")
                 logger.info(f"Available migration heads: {[str(h) for h in heads]}")
+                
+                # List all available revisions
+                all_revisions = list(script.walk_revisions())
+                logger.info(f"All available revisions: {[str(r) for r in all_revisions]}")
                 
                 # List all revisions for debugging
                 all_revs = list(script.walk_revisions())

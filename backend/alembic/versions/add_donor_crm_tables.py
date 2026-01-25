@@ -29,8 +29,14 @@ def upgrade() -> None:
     inspector = sa.inspect(conn)
     existing_tables = inspector.get_table_names()
     
+    # Log for debugging
+    import logging
+    logger = logging.getLogger('alembic')
+    logger.info(f"[add_donor_crm_002] Existing tables before migration: {existing_tables}")
+    
     # Create donor_segments table
     if 'donor_segments' not in existing_tables:
+        logger.info("[add_donor_crm_002] Creating donor_segments table...")
         op.create_table(
             'donor_segments',
             sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
@@ -48,9 +54,13 @@ def upgrade() -> None:
         op.create_index('ix_donor_segments_id', 'donor_segments', ['id'])
         op.create_index('idx_donor_segments_org', 'donor_segments', ['organization_id'])
         op.create_index('idx_donor_segments_name', 'donor_segments', ['name'])
+        logger.info("[add_donor_crm_002] ✓ Created donor_segments table and indexes")
+    else:
+        logger.info("[add_donor_crm_002] donor_segments table already exists, skipping creation")
     
     # Create donor_segment_assignments table
     if 'donor_segment_assignments' not in existing_tables:
+        logger.info("[add_donor_crm_002] Creating donor_segment_assignments table...")
         op.create_table(
             'donor_segment_assignments',
             sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
@@ -64,6 +74,9 @@ def upgrade() -> None:
         op.create_index('idx_donor_segment_assignments_donor', 'donor_segment_assignments', ['donor_id'])
         op.create_index('idx_donor_segment_assignments_segment', 'donor_segment_assignments', ['segment_id'])
         op.create_unique_constraint('uq_donor_segment', 'donor_segment_assignments', ['donor_id', 'segment_id'])
+        logger.info("[add_donor_crm_002] ✓ Created donor_segment_assignments table and indexes")
+    else:
+        logger.info("[add_donor_crm_002] donor_segment_assignments table already exists, skipping creation")
     
     # Create donor_tags table
     if 'donor_tags' not in existing_tables:
@@ -83,6 +96,9 @@ def upgrade() -> None:
         op.create_index('idx_donor_tags_org', 'donor_tags', ['organization_id'])
         op.create_index('idx_donor_tags_name', 'donor_tags', ['name'])
         op.create_unique_constraint('uq_org_tag_name', 'donor_tags', ['organization_id', 'name'])
+        logger.info("[add_donor_crm_002] ✓ Created donor_tags table and indexes")
+    else:
+        logger.info("[add_donor_crm_002] donor_tags table already exists, skipping creation")
     
     # Create donor_tag_assignments table
     if 'donor_tag_assignments' not in existing_tables:
@@ -99,6 +115,9 @@ def upgrade() -> None:
         op.create_index('idx_donor_tag_assignments_donor', 'donor_tag_assignments', ['donor_id'])
         op.create_index('idx_donor_tag_assignments_tag', 'donor_tag_assignments', ['tag_id'])
         op.create_unique_constraint('uq_donor_tag', 'donor_tag_assignments', ['donor_id', 'tag_id'])
+        logger.info("[add_donor_crm_002] ✓ Created donor_tag_assignments table and indexes")
+    else:
+        logger.info("[add_donor_crm_002] donor_tag_assignments table already exists, skipping creation")
     
     # Create donor_communications table
     if 'donor_communications' not in existing_tables:
@@ -126,6 +145,9 @@ def upgrade() -> None:
         op.create_index('idx_donor_communications_type', 'donor_communications', ['communication_type'])
         op.create_index('idx_donor_communications_status', 'donor_communications', ['status'])
         op.create_index('idx_donor_communications_sent', 'donor_communications', ['sent_at'])
+        logger.info("[add_donor_crm_002] ✓ Created donor_communications table and indexes")
+    else:
+        logger.info("[add_donor_crm_002] donor_communications table already exists, skipping creation")
     
     # Create campaigns table
     if 'campaigns' not in existing_tables:
@@ -153,6 +175,9 @@ def upgrade() -> None:
         op.create_index('idx_campaigns_org', 'campaigns', ['organization_id'])
         op.create_index('idx_campaigns_status', 'campaigns', ['status'])
         op.create_index('idx_campaigns_dates', 'campaigns', ['start_date', 'end_date'])
+        logger.info("[add_donor_crm_002] ✓ Created campaigns table and indexes")
+    else:
+        logger.info("[add_donor_crm_002] campaigns table already exists, skipping creation")
     
     # Update donations table to add foreign keys for campaign and recurring_donation
     # Refresh inspector to get updated table list after creating campaigns
@@ -211,6 +236,9 @@ def upgrade() -> None:
         op.create_index('idx_recurring_donations_org', 'recurring_donations', ['organization_id'])
         op.create_index('idx_recurring_donations_status', 'recurring_donations', ['status'])
         op.create_index('idx_recurring_donations_next_payment', 'recurring_donations', ['next_payment_date'])
+        logger.info("[add_donor_crm_002] ✓ Created recurring_donations table and indexes")
+    else:
+        logger.info("[add_donor_crm_002] recurring_donations table already exists, skipping creation")
     
     # Add foreign key for recurring_donation_id in donations
     # Refresh inspector again to see recurring_donations table
@@ -222,6 +250,9 @@ def upgrade() -> None:
             existing_columns = [col['name'] for col in inspector.get_columns('donations')]
             if 'fk_donations_recurring' not in existing_fks and 'recurring_donation_id' in existing_columns:
                 op.create_foreign_key('fk_donations_recurring', 'donations', 'recurring_donations', ['recurring_donation_id'], ['id'], ondelete='SET NULL')
+                logger.info("[add_donor_crm_002] ✓ Created foreign key fk_donations_recurring")
+    
+    logger.info(f"[add_donor_crm_002] Migration completed. Final tables: {inspector.get_table_names()}")
 
 
 def downgrade() -> None:

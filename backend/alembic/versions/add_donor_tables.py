@@ -25,8 +25,14 @@ def upgrade() -> None:
     inspector = sa.inspect(conn)
     existing_tables = inspector.get_table_names()
     
+    # Log for debugging
+    import logging
+    logger = logging.getLogger('alembic')
+    logger.info(f"[add_donor_tables_001] Existing tables before migration: {existing_tables}")
+    
     # Create donors table
     if 'donors' not in existing_tables:
+        logger.info("[add_donor_tables_001] Creating donors table...")
         op.create_table(
             'donors',
             sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
@@ -67,7 +73,9 @@ def upgrade() -> None:
         op.create_index('idx_donors_name', 'donors', ['last_name', 'first_name'])
         op.create_index('idx_donors_created', 'donors', ['created_at'])
         op.create_index('idx_donors_total_donated', 'donors', ['total_donated'])
+        logger.info("[add_donor_tables_001] ✓ Created donors table and indexes")
     else:
+        logger.info("[add_donor_tables_001] donors table already exists, skipping creation")
         # Table exists, check and create missing indexes
         existing_indexes = [idx['name'] for idx in inspector.get_indexes('donors')]
         indexes_to_create = {
@@ -90,6 +98,7 @@ def upgrade() -> None:
     
     # Create payment_methods table
     if 'payment_methods' not in existing_tables:
+        logger.info("[add_donor_tables_001] Creating payment_methods table...")
         op.create_table(
             'payment_methods',
             sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
@@ -115,9 +124,13 @@ def upgrade() -> None:
         op.create_index('ix_payment_methods_is_active', 'payment_methods', ['is_active'])
         op.create_index('idx_payment_methods_donor', 'payment_methods', ['donor_id'])
         op.create_index('idx_payment_methods_active', 'payment_methods', ['is_active'])
+        logger.info("[add_donor_tables_001] ✓ Created payment_methods table and indexes")
+    else:
+        logger.info("[add_donor_tables_001] payment_methods table already exists, skipping creation")
     
     # Create donations table
     if 'donations' not in existing_tables:
+        logger.info("[add_donor_tables_001] Creating donations table...")
         op.create_table(
             'donations',
             sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
@@ -157,9 +170,13 @@ def upgrade() -> None:
         op.create_index('idx_donations_date', 'donations', ['payment_date'])
         op.create_index('idx_donations_status', 'donations', ['payment_status'])
         op.create_index('idx_donations_receipt', 'donations', ['receipt_number'])
+        logger.info("[add_donor_tables_001] ✓ Created donations table and indexes")
+    else:
+        logger.info("[add_donor_tables_001] donations table already exists, skipping creation")
     
     # Create donor_notes table
     if 'donor_notes' not in existing_tables:
+        logger.info("[add_donor_tables_001] Creating donor_notes table...")
         op.create_table(
             'donor_notes',
             sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
@@ -179,9 +196,13 @@ def upgrade() -> None:
         op.create_index('ix_donor_notes_created_at', 'donor_notes', ['created_at'])
         op.create_index('idx_donor_notes_donor', 'donor_notes', ['donor_id'])
         op.create_index('idx_donor_notes_created', 'donor_notes', ['created_at'])
+        logger.info("[add_donor_tables_001] ✓ Created donor_notes table and indexes")
+    else:
+        logger.info("[add_donor_tables_001] donor_notes table already exists, skipping creation")
     
     # Create donor_activities table
     if 'donor_activities' not in existing_tables:
+        logger.info("[add_donor_tables_001] Creating donor_activities table...")
         op.create_table(
             'donor_activities',
             sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
@@ -202,6 +223,11 @@ def upgrade() -> None:
         op.create_index('idx_donor_activities_donor', 'donor_activities', ['donor_id'])
         op.create_index('idx_donor_activities_created', 'donor_activities', ['created_at'])
         op.create_index('idx_donor_activities_type', 'donor_activities', ['activity_type'])
+        logger.info("[add_donor_tables_001] ✓ Created donor_activities table and indexes")
+    else:
+        logger.info("[add_donor_tables_001] donor_activities table already exists, skipping creation")
+    
+    logger.info(f"[add_donor_tables_001] Migration completed. Final tables: {inspector.get_table_names()}")
 
 
 def downgrade() -> None:
