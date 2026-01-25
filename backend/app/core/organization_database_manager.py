@@ -1396,29 +1396,70 @@ class OrganizationDatabaseManager:
                                     migration_conn.commit()
                                     logger.info(f"✓ Dropped alembic_version table")
                             
-                            # Use command.upgrade() with shared connection
-                            # env.py now supports connection from config.attributes
+                            # Execute migrations directly using Alembic's runtime API
+                            # This bypasses command.upgrade() which does stamp_revision with multiple heads
                             if current_rev is None:
-                                logger.info(f"Upgrading using command.upgrade() with shared connection...")
+                                logger.info(f"Executing migrations directly using Alembic runtime API...")
                                 
                                 # Ensure alembic_version table exists
                                 cls._ensure_alembic_version_table(alembic_db_url)
                                 
-                                # Create a new connection and share it across commands
-                                # env.py will use this connection if provided in config.attributes
+                                # Import Alembic runtime modules
+                                from alembic.runtime.migration import MigrationContext
+                                from alembic.script import ScriptDirectory
+                                from alembic import context as alembic_context
+                                from alembic import op
+                                
+                                # Create engine and connection
                                 manual_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                                 with manual_engine.begin() as connection:
-                                    # Share connection across commands
-                                    alembic_cfg.attributes['connection'] = connection
+                                    # Get script directory
+                                    script_dir = ScriptDirectory.from_config(alembic_cfg)
                                     
-                                    logger.info(f"Step 1: Upgrading from None to {base_revision}...")
-                                    command.upgrade(alembic_cfg, base_revision)
-                                    logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
+                                    # Get migration modules
+                                    base_rev_obj = script_dir.get_revision(base_revision)
+                                    target_rev_obj = script_dir.get_revision(target_revision)
                                     
-                                    # Step 2: Upgrade from base_revision to target_revision
-                                    logger.info(f"Step 2: Upgrading from {base_revision} to {target_revision}...")
-                                    command.upgrade(alembic_cfg, target_revision)
-                                    logger.info(f"✓ Step 2 completed: upgraded to {target_revision}")
+                                    logger.info(f"Step 1: Executing migration {base_revision} directly...")
+                                    
+                                    # Create migration context
+                                    migration_context = MigrationContext.configure(connection)
+                                    
+                                    # Configure Alembic context like env.py does
+                                    # We need to configure the context so op.get_bind() works
+                                    alembic_context.configure(
+                                        connection=connection,
+                                        target_metadata=None,  # We don't need metadata for org migrations
+                                    )
+                                    
+                                    # Execute base migration upgrade function directly
+                                    # The upgrade function uses op.get_bind() which requires context to be configured
+                                    base_rev_obj.module.upgrade()
+                                    
+                                    # Update alembic_version table manually
+                                    connection.execute(text(
+                                        f"UPDATE alembic_version SET version_num = '{base_revision}'"
+                                    ))
+                                    logger.info(f"✓ Step 1 completed: executed {base_revision}")
+                                    
+                                    # Step 2: Execute target migration
+                                    logger.info(f"Step 2: Executing migration {target_revision} directly...")
+                                    
+                                    # Reconfigure context for target migration
+                                    migration_context = MigrationContext.configure(connection)
+                                    alembic_context.configure(
+                                        connection=connection,
+                                        target_metadata=None,
+                                    )
+                                    
+                                    # Execute target migration upgrade function directly
+                                    target_rev_obj.module.upgrade()
+                                    
+                                    # Update alembic_version table manually
+                                    connection.execute(text(
+                                        f"UPDATE alembic_version SET version_num = '{target_revision}'"
+                                    ))
+                                    logger.info(f"✓ Step 2 completed: executed {target_revision}")
                                 
                                 manual_engine.dispose()
                             else:
