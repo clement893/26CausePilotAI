@@ -2207,6 +2207,21 @@ class OrganizationDatabaseManager:
                         logger.info(f"✅ MIGRATION CONFIRMÉE: Toutes les tables ont été créées avec succès dans la base de données '{db_name}'")
                         logger.info(f"✅ Révision finale: {final_rev if final_rev else 'None (à vérifier)'}")
                         logger.info(f"✅ Tables créées: {', '.join(sorted(tables_after))}")
+                        
+                        # CRITICAL FINAL CHECK: Try to actually query one of the tables to confirm they're real
+                        logger.info("🔍 Vérification finale: Test d'accès à la table 'donors'...")
+                        try:
+                            result = conn.execute(text("SELECT COUNT(*) FROM donors"))
+                            donor_count = result.scalar()
+                            logger.info(f"✅ SUCCÈS: La table 'donors' est accessible et contient {donor_count} enregistrement(s)")
+                        except Exception as query_err:
+                            logger.error(f"❌ ERREUR: Impossible d'accéder à la table 'donors': {query_err}")
+                            logger.error(f"   Cela signifie que la table n'existe pas vraiment ou n'est pas accessible.")
+                            raise ValueError(
+                                f"La table 'donors' n'est pas accessible dans la base de données '{db_name}'. "
+                                f"Erreur: {str(query_err)}. "
+                                f"Les tables peuvent avoir été créées dans une transaction non commitée."
+                            ) from query_err
                 
                 verify_engine.dispose()
             except ValueError:
