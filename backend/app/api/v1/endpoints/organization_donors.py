@@ -97,8 +97,8 @@ async def list_donors(
     from sqlalchemy.exc import ProgrammingError, OperationalError
     
     try:
-        # Build query
-        query = select(Donor)
+        # Build query - always filter by organization_id
+        query = select(Donor).where(Donor.organization_id == organization_id)
         
         # Apply filters
         if search:
@@ -124,7 +124,7 @@ async def list_donors(
             query = query.where(Donor.total_donated <= max_total_donated)
         
         # Get total count - build count query with same filters
-        count_query = select(func.count(Donor.id))
+        count_query = select(func.count(Donor.id)).where(Donor.organization_id == organization_id)
         if search:
             search_filter = or_(
                 Donor.email.ilike(f"%{search}%"),
