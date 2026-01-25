@@ -1276,18 +1276,63 @@ class OrganizationDatabaseManager:
                     logger.info(f"Base revision object: {base_rev_obj}")
                     logger.info(f"Target revision object: {target_rev_obj}")
                     
-                    # CRITICAL: Create alembic_version table if it doesn't exist BEFORE calling upgrade
-                    # Alembic's upgrade() tries to read alembic_version before creating it
-                    logger.info("Ensuring alembic_version table exists before migration...")
+                    # CRITICAL: For empty databases, ensure alembic_version table exists
+                    # If it's empty, we need to handle it properly for Alembic
+                    logger.info("Preparing database for migration...")
                     cls._ensure_alembic_version_table(alembic_db_url)
+                    
+                    # Check if alembic_version table has a revision
+                    check_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                    needs_stamp = False
+                    try:
+                        with check_engine.connect() as check_conn:
+                            result = check_conn.execute(text("SELECT version_num FROM alembic_version"))
+                            current_rev = result.scalar_one_or_none()
+                            
+                            if current_rev is None:
+                                # Table exists but is empty - we need to stamp it to indicate empty DB
+                                # But we can't stamp with None, so we'll drop the table and let Alembic create it
+                                logger.info("alembic_version table is empty. Dropping it so Alembic can handle it...")
+                                check_conn.execute(text("DROP TABLE alembic_version"))
+                                check_conn.commit()
+                                logger.info("✓ Dropped empty alembic_version table")
+                                needs_stamp = False  # Alembic will create it
+                            else:
+                                logger.info(f"Current revision in database: {current_rev}")
+                    finally:
+                        check_engine.dispose()
                     
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{base_revision}')")
                     try:
-                        # Use a context manager to ensure proper connection handling
-                        import contextlib
-                        with contextlib.redirect_stdout(None), contextlib.redirect_stderr(None):
+                        # Don't redirect stdout/stderr so we can see what Alembic is doing
+                        # This will help debug why migrations aren't being applied
+                        import sys
+                        import io
+                        # Capture stdout to see Alembic output
+                        old_stdout = sys.stdout
+                        old_stderr = sys.stderr
+                        stdout_capture = io.StringIO()
+                        stderr_capture = io.StringIO()
+                        
+                        try:
+                            sys.stdout = stdout_capture
+                            sys.stderr = stderr_capture
                             # Actually execute the upgrade
                             command.upgrade(alembic_cfg, base_revision)
+                            
+                            # Get the output
+                            stdout_output = stdout_capture.getvalue()
+                            stderr_output = stderr_capture.getvalue()
+                            
+                            # Log the output
+                            if stdout_output:
+                                logger.info(f"Alembic stdout: {stdout_output}")
+                            if stderr_output:
+                                logger.info(f"Alembic stderr: {stderr_output}")
+                        finally:
+                            sys.stdout = old_stdout
+                            sys.stderr = old_stderr
+                        
                         logger.info(f"✓ Successfully applied base revision {base_revision}")
                         
                         # Immediately verify the revision was applied
