@@ -1396,8 +1396,8 @@ class OrganizationDatabaseManager:
                                     migration_conn.commit()
                                     logger.info(f"✓ Dropped alembic_version table")
                             
-                            # Use command.upgrade() with shared connection to bypass stamp_revision
-                            # Share connection across commands to ensure migrations execute properly
+                            # Use command.upgrade() with shared connection
+                            # env.py now supports connection from config.attributes
                             if current_rev is None:
                                 logger.info(f"Upgrading using command.upgrade() with shared connection...")
                                 
@@ -1405,7 +1405,7 @@ class OrganizationDatabaseManager:
                                 cls._ensure_alembic_version_table(alembic_db_url)
                                 
                                 # Create a new connection and share it across commands
-                                # This is the recommended way to run migrations programmatically
+                                # env.py will use this connection if provided in config.attributes
                                 manual_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                                 with manual_engine.begin() as connection:
                                     # Share connection across commands

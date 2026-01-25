@@ -104,16 +104,25 @@ def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
     
     Uses synchronous engine with psycopg2 driver.
+    Supports shared connection from config.attributes for programmatic use.
     """
-    connectable = create_engine(
-        config.get_main_option("sqlalchemy.url"),
-        poolclass=pool.NullPool,
-    )
-
-    with connectable.connect() as connection:
+    # Check if a connection was provided in config attributes (for programmatic use)
+    connection = config.attributes.get('connection')
+    
+    if connection is not None:
+        # Use the provided connection directly
         do_run_migrations(connection)
+    else:
+        # Create a new engine and connection (normal usage)
+        connectable = create_engine(
+            config.get_main_option("sqlalchemy.url"),
+            poolclass=pool.NullPool,
+        )
 
-    connectable.dispose()
+        with connectable.connect() as connection:
+            do_run_migrations(connection)
+
+        connectable.dispose()
 
 
 if context.is_offline_mode():
