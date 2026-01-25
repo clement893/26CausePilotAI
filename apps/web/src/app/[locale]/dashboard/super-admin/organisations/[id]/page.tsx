@@ -75,8 +75,17 @@ function OrganizationDetailsContent() {
         id: org.id,
         name: org.name,
         hasDbConnection: !!org.dbConnectionString,
-        dbConnectionPreview: org.dbConnectionString ? org.dbConnectionString.substring(0, 50) + '...' : 'none'
+        dbConnectionPreview: org.dbConnectionString ? org.dbConnectionString.substring(0, 50) + '...' : 'none',
+        // Check for snake_case fallback
+        hasDbConnectionSnake: !!(org as any).db_connection_string,
+        allKeys: Object.keys(org)
       });
+      
+      // Handle both camelCase and snake_case (fallback for compatibility)
+      if (!org.dbConnectionString && (org as any).db_connection_string) {
+        console.warn('[OrganizationPage] Using snake_case fallback for dbConnectionString');
+        org.dbConnectionString = (org as any).db_connection_string;
+      }
 
       setOrganization(org);
       setModules(modulesData?.items || []);

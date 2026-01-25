@@ -109,7 +109,20 @@ async def get_organization(
             detail="Organization not found"
         )
     
-    return organization
+    # Ensure db_connection_string is set (should always be present, but handle edge cases)
+    if not organization.db_connection_string:
+        logger.warning(f"Organization {organization_id} has no db_connection_string set")
+        organization.db_connection_string = ""
+    
+    # Convert to schema explicitly to ensure alias is used
+    org_schema = OrganizationSchema.model_validate(organization)
+    
+    logger.debug(
+        f"Returning organization {organization_id} with db_connection_string: "
+        f"{'SET' if org_schema.db_connection_string else 'NOT SET'}"
+    )
+    
+    return org_schema
 
 
 @router.post("/", response_model=OrganizationSchema, status_code=status.HTTP_201_CREATED)
@@ -802,18 +815,29 @@ async def migrate_organization_database(
         logger.info(f"Starting migrations for organization {organization_id} ({organization.slug})")
         logger.info(f"Connection string: {OrganizationDatabaseManager.mask_connection_string(organization.db_connection_string)}")
         
+        # Parse connection string to get database name for logging
+        try:
+            parsed = OrganizationDatabaseManager.parse_db_connection_string(organization.db_connection_string)
+            db_name = parsed['database']
+            logger.info(f"Target database: {db_name}")
+        except Exception as parse_error:
+            logger.warning(f"Could not parse connection string for database name: {parse_error}")
+            db_name = "unknown"
+        
         # Run migrations
+        logger.info(f"Calling run_migrations_for_organization for organization {organization_id}")
         await OrganizationDatabaseManager.run_migrations_for_organization(
             organization.db_connection_string
         )
         
         logger.info(f"Migrations completed successfully for organization {organization_id}")
         
-        # Get list of tables after migration
-        parsed = OrganizationDatabaseManager.parse_db_connection_string(organization.db_connection_string)
-        db_name = parsed['database']
+        # Wait a moment for database to be ready (some migrations may need a moment)
+        import asyncio
+        await asyncio.sleep(1)
         
         # List tables to show what was created
+        logger.info(f"Listing tables in database '{db_name}' for organization {organization_id}")
         tables = await OrganizationDatabaseManager.list_database_tables(
             organization.db_connection_string
         )
@@ -823,6 +847,12 @@ async def migrate_organization_database(
             f"({organization.slug}). Tables found: {', '.join(tables) if tables else 'none'}"
         )
         
+        if not tables:
+            logger.warning(
+                f"No tables found after migration for organization {organization_id}. "
+                f"This might indicate that migrations did not create any tables, or there was an issue."
+            )
+        
         return MigrateDatabaseResponse(
             success=True,
             message=f"Migrations executed successfully on database '{db_name}'. {len(tables)} table(s) found.",
@@ -831,21 +861,55 @@ async def migrate_organization_database(
         
     except ValueError as e:
         error_msg = str(e)
-        logger.error(f"ValueError running migrations for organization {organization_id}: {error_msg}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=error_msg
+        logger.error(
+            f"ValueError running migrations for organization {organization_id} ({organization.slug}): {error_msg}",
+            exc_info=True
         )
+        # Provide more helpful error message
+        if "connection" in error_msg.lower() or "database" in error_msg.lower():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Erreur de connexion à la base de données: {error_msg}. Vérifiez que la chaîne de connexion est correcte."
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Erreur lors de la migration: {error_msg}"
+            )
     except HTTPException:
         # Re-raise HTTP exceptions as-is
         raise
     except Exception as e:
         error_msg = str(e)
-        logger.error(f"Unexpected error running migrations for organization {organization_id}: {error_msg}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to run migrations: {error_msg}"
+        error_type = type(e).__name__
+        logger.error(
+            f"Unexpected error ({error_type}) running migrations for organization {organization_id} ({organization.slug}): {error_msg}",
+            exc_info=True
         )
+        
+        # Provide more helpful error messages based on error type
+        if "timeout" in error_msg.lower() or "timed out" in error_msg.lower():
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    f"Timeout lors de la migration: La connexion à la base de données prend trop de temps. "
+                    f"Vérifiez que la base de données est accessible et que la chaîne de connexion est correcte. "
+                    f"Erreur: {error_msg}"
+                )
+            )
+        elif "connection" in error_msg.lower() or "connect" in error_msg.lower():
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    f"Erreur de connexion lors de la migration: {error_msg}. "
+                    f"Vérifiez que la base de données est démarrée et accessible."
+                )
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Échec de la migration: {error_msg}"
+            )
 
 
 @router.get("/{organization_id}/database/tables", response_model=DatabaseTablesResponse)

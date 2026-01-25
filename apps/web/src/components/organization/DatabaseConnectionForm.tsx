@@ -9,7 +9,7 @@ import {
   migrateOrganizationDatabase,
   getOrganizationDatabaseTables,
 } from '@/lib/api/organizations';
-import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2, Settings, Code, Wand2 } from 'lucide-react';
+import { Eye, EyeOff, Database, CheckCircle2, XCircle, Loader2, Settings, Code, Wand2, Info } from 'lucide-react';
 
 interface DatabaseConnectionFormProps {
   organizationId: string;
@@ -17,6 +17,25 @@ interface DatabaseConnectionFormProps {
   organizationSlug?: string;
   onUpdate: () => void;
 }
+
+// Liste des tables qui seront créées lors de la migration
+const TABLES_TO_BE_CREATED = [
+  // Tables de base (Migration add_donor_tables_001)
+  { name: 'donors', description: 'Donateurs de l\'organisation' },
+  { name: 'payment_methods', description: 'Méthodes de paiement des donateurs' },
+  { name: 'donations', description: 'Dons effectués' },
+  { name: 'donor_notes', description: 'Notes sur les donateurs' },
+  { name: 'donor_activities', description: 'Historique des activités des donateurs' },
+  
+  // Tables CRM (Migration add_donor_crm_002)
+  { name: 'donor_segments', description: 'Segments de donateurs' },
+  { name: 'donor_segment_assignments', description: 'Assignations aux segments' },
+  { name: 'donor_tags', description: 'Tags pour catégoriser les donateurs' },
+  { name: 'donor_tag_assignments', description: 'Assignations de tags' },
+  { name: 'donor_communications', description: 'Communications avec les donateurs' },
+  { name: 'campaigns', description: 'Campagnes de collecte' },
+  { name: 'recurring_donations', description: 'Dons récurrents' },
+];
 
 export function DatabaseConnectionForm({
   organizationId,
@@ -557,12 +576,24 @@ export function DatabaseConnectionForm({
   };
 
   const handleMigrateDatabase = async () => {
+    const activeConnectionString = currentConnectionString || connectionString;
+    
     console.log('[DatabaseConnectionForm] handleMigrateDatabase called', { 
       organizationId,
-      hasConnection: !!(currentConnectionString || connectionString),
+      hasConnection: !!activeConnectionString,
       currentConnectionString: currentConnectionString ? 'SET' : 'NOT SET',
-      connectionString: connectionString ? 'SET' : 'NOT SET'
+      connectionString: connectionString ? 'SET' : 'NOT SET',
+      activeConnectionString: activeConnectionString ? 'SET' : 'NOT SET'
     });
+    
+    // Check if we have a connection string
+    if (!activeConnectionString || !activeConnectionString.trim()) {
+      const errorMsg = 'Aucune connexion à la base de données configurée. Veuillez d\'abord configurer la connexion.';
+      setError(errorMsg);
+      setSuccess(null);
+      setIsMigrating(false);
+      return;
+    }
     
     // Immediate visual feedback
     setIsMigrating(true);
@@ -698,16 +729,21 @@ export function DatabaseConnectionForm({
       console.log('[DatabaseConnectionForm] Received currentConnectionString:', currentConnectionString.substring(0, 50) + '...');
     }
     
-    if (currentConnectionString && currentConnectionString.trim() && currentConnectionString !== connectionString) {
+    // Normalize: handle empty strings as "no connection"
+    const hasConnection = currentConnectionString && currentConnectionString.trim().length > 0;
+    const hasLocalConnection = connectionString && connectionString.trim().length > 0;
+    
+    if (hasConnection && currentConnectionString !== connectionString) {
       console.log('[DatabaseConnectionForm] Updating connectionString from prop');
       setConnectionString(currentConnectionString);
       // Hide edit form if connection is already configured
       setShowEditForm(false);
-    } else if (!currentConnectionString && connectionString) {
+    } else if (!hasConnection && hasLocalConnection) {
       // If currentConnectionString becomes empty but we have a local connectionString, keep it
       // This handles the case where the prop might be temporarily undefined during reload
       console.log('[DatabaseConnectionForm] currentConnectionString is empty but we have local connectionString, keeping it');
-    } else if (!currentConnectionString && !connectionString) {
+      // Don't change showEditForm here - let user decide
+    } else if (!hasConnection && !hasLocalConnection) {
       // No connection at all, show form
       console.log('[DatabaseConnectionForm] No connection found, showing form');
       setShowEditForm(true);
@@ -1170,19 +1206,19 @@ export function DatabaseConnectionForm({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  const activeConnection = currentConnectionString || connectionString;
                   console.log('[DatabaseConnectionForm] ⚡ Button clicked!', {
                     organizationId,
                     isMigrating,
                     isTesting,
                     isSaving,
                     isCreating,
-                    hasConnection: !!(currentConnectionString || connectionString)
+                    hasConnection: !!activeConnection,
+                    connectionString: activeConnection ? activeConnection.substring(0, 50) + '...' : 'none'
                   });
-                  // Show immediate feedback
-                  alert('Migration démarrée - vérifiez la console (F12) pour les détails');
                   handleMigrateDatabase();
                 }}
-                disabled={isTesting || isSaving || isCreating || isMigrating}
+                disabled={isTesting || isSaving || isCreating || isMigrating || !(currentConnectionString || connectionString)}
                 className="border border-primary/20"
                 type="button"
               >
@@ -1267,6 +1303,46 @@ export function DatabaseConnectionForm({
             )}
           </div>
 
+          {/* Tables to be Created - Info Section */}
+          {(currentConnectionString || connectionString) && databaseTables.length === 0 && (
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center gap-2">
+                <Info className="w-5 h-5 text-info-600" />
+                <h3 className="text-sm font-medium text-foreground">
+                  Tables qui seront créées lors de la migration
+                </h3>
+              </div>
+              <div className="p-4 rounded-lg bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800">
+                <p className="text-xs text-info-700 dark:text-info-300 mb-3">
+                  Lorsque vous cliquez sur "Mettre à jour la BD", les tables suivantes seront créées dans votre base de données :
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {TABLES_TO_BE_CREATED.map((table) => (
+                    <div
+                      key={table.name}
+                      className="px-3 py-2 rounded-md bg-background border border-info-200 dark:border-info-800"
+                    >
+                      <div className="flex items-start gap-2">
+                        <Database className="w-4 h-4 text-info-600 mt-0.5 flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-mono text-foreground font-semibold">
+                            {table.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {table.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-info-700 dark:text-info-300 mt-3 font-medium">
+                  Total : {TABLES_TO_BE_CREATED.length} tables seront créées
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Database Tables List */}
           {(currentConnectionString || connectionString) && (
             <div className="mt-6 space-y-2">
@@ -1302,17 +1378,30 @@ export function DatabaseConnectionForm({
               {databaseTables.length > 0 ? (
                 <div className="p-4 rounded-lg bg-muted/30 border border-border">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                    {databaseTables.map((table) => (
-                      <div
-                        key={table}
-                        className="px-3 py-2 rounded-md bg-background border border-border text-sm font-mono"
-                      >
-                        {table}
-                      </div>
-                    ))}
+                    {databaseTables.map((table) => {
+                      const tableInfo = TABLES_TO_BE_CREATED.find(t => t.name === table);
+                      return (
+                        <div
+                          key={table}
+                          className="px-3 py-2 rounded-md bg-background border border-border text-sm"
+                        >
+                          <p className="font-mono font-semibold text-foreground">{table}</p>
+                          {tableInfo && (
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {tableInfo.description}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                   <p className="text-xs text-muted-foreground mt-3">
                     {databaseTables.length} table{databaseTables.length > 1 ? 's' : ''} trouvée{databaseTables.length > 1 ? 's' : ''}
+                    {databaseTables.length < TABLES_TO_BE_CREATED.length && (
+                      <span className="text-warning-600 dark:text-warning-400 ml-2">
+                        ({TABLES_TO_BE_CREATED.length - databaseTables.length} table(s) manquante(s))
+                      </span>
+                    )}
                   </p>
                 </div>
               ) : (
