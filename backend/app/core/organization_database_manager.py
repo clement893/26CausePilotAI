@@ -1801,7 +1801,25 @@ class OrganizationDatabaseManager:
                             AND table_name = 'donors'
                         """))
                         donors_exists = result.fetchone() is not None
-                        logger.info(f"🔍 Table 'donors' existe AVANT upgrade: {donors_exists}")
+                        logger.info(f"🔍 Table 'donors' existe AVANT upgrade (information_schema): {donors_exists}")
+                        
+                        # CRITICAL: Try to actually query the table to confirm it's real and accessible
+                        if donors_exists:
+                            try:
+                                result = check_conn.execute(text("SELECT COUNT(*) FROM donors"))
+                                donor_count = result.scalar()
+                                logger.info(f"✅ Table 'donors' est ACCESSIBLE et contient {donor_count} enregistrement(s)")
+                            except Exception as query_err:
+                                logger.error(f"❌ ERREUR: La table 'donors' est listée mais N'EST PAS ACCESSIBLE!")
+                                logger.error(f"   Erreur lors de la requête: {query_err}")
+                                logger.error(f"   Cela signifie que la table n'existe pas vraiment ou est dans une transaction non commitée.")
+                                raise ValueError(
+                                    f"La table 'donors' est listée dans information_schema mais n'est pas accessible. "
+                                    f"Erreur: {str(query_err)}. "
+                                    f"Les tables peuvent avoir été créées dans une transaction non commitée."
+                                ) from query_err
+                        else:
+                            logger.warning(f"⚠️  Table 'donors' n'existe pas dans information_schema AVANT upgrade")
                     check_engine.dispose()
                     
                     # If tables already exist, we still need to run the upgrade to ensure they're properly created
