@@ -1396,66 +1396,22 @@ class OrganizationDatabaseManager:
                                     migration_conn.commit()
                                     logger.info(f"✓ Dropped alembic_version table")
                             
-                            # Now use MigrationContext and ScriptDirectory to execute migrations manually
+                            # Now use command.upgrade() but filter migrations to only organization-specific ones
                             # This bypasses Alembic's automatic stamp_revision detection
                             if current_rev is None:
-                                logger.info(f"Executing migrations manually using MigrationContext...")
+                                logger.info(f"Upgrading using command.upgrade() with explicit revision path...")
                                 
-                                from alembic.runtime.migration import MigrationContext
-                                from alembic.script import ScriptDirectory
-                                import alembic.context as alembic_context
+                                # CRITICAL: Use explicit revision path to avoid stamp_revision
+                                # Upgrade from 'base' to base_revision first, then to target_revision
+                                # This forces Alembic to execute migrations instead of stamping
+                                logger.info(f"Step 1: Upgrading from 'base' to {base_revision}...")
+                                command.upgrade(alembic_cfg, base_revision)
+                                logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
                                 
-                                # Ensure alembic_version table exists
-                                cls._ensure_alembic_version_table(alembic_db_url)
-                                
-                                # Create a new connection for manual migration execution
-                                manual_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
-                                with manual_engine.connect() as manual_conn:
-                                    # Get script directory
-                                    script_dir = ScriptDirectory.from_config(alembic_cfg)
-                                    
-                                    # Get the revision objects
-                                    base_rev_obj = script_dir.get_revision(base_revision)
-                                    target_rev_obj = script_dir.get_revision(target_revision)
-                                    
-                                    # Execute migrations manually
-                                    logger.info(f"Step 1: Executing migration {base_revision}...")
-                                    with manual_conn.begin():
-                                        # Configure Alembic context for this connection
-                                        # This is required for op.get_bind() to work in migrations
-                                        alembic_context.configure(
-                                            connection=manual_conn,
-                                            target_metadata=None,
-                                            script=script_dir,
-                                        )
-                                        
-                                        # Execute base migration
-                                        base_rev_obj.module.upgrade()
-                                        
-                                        # Update alembic_version table
-                                        manual_conn.execute(text(f"INSERT INTO alembic_version (version_num) VALUES ('{base_revision}') ON CONFLICT (version_num) DO UPDATE SET version_num = '{base_revision}'"))
-                                    
-                                    logger.info(f"✓ Step 1 completed: executed migration {base_revision}")
-                                    
-                                    # Step 2: Execute target migration
-                                    logger.info(f"Step 2: Executing migration {target_revision}...")
-                                    with manual_conn.begin():
-                                        # Re-configure context for second migration
-                                        alembic_context.configure(
-                                            connection=manual_conn,
-                                            target_metadata=None,
-                                            script=script_dir,
-                                        )
-                                        
-                                        # Execute target migration
-                                        target_rev_obj.module.upgrade()
-                                        
-                                        # Update alembic_version table
-                                        manual_conn.execute(text(f"UPDATE alembic_version SET version_num = '{target_revision}'"))
-                                    
-                                    logger.info(f"✓ Step 2 completed: executed migration {target_revision}")
-                                
-                                manual_engine.dispose()
+                                # Step 2: Upgrade from base_revision to target_revision
+                                logger.info(f"Step 2: Upgrading from {base_revision} to {target_revision}...")
+                                command.upgrade(alembic_cfg, target_revision)
+                                logger.info(f"✓ Step 2 completed: upgraded to {target_revision}")
                             else:
                                 # Database has a revision, upgrade normally using command.upgrade()
                                 logger.info(f"Database has revision {current_rev}, upgrading to {target_revision}...")
