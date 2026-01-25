@@ -1354,6 +1354,10 @@ class OrganizationDatabaseManager:
                         
                         # Immediately verify the revision was applied and check tables
                         verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                        applied_rev = None
+                        tables_after_base = []
+                        needs_retry = False
+                        
                         with verify_engine.connect() as verify_conn:
                             result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
                             applied_rev = result.scalar_one_or_none()
@@ -1368,11 +1372,80 @@ class OrganizationDatabaseManager:
                             tables_after_base = [row[0] for row in result]
                             logger.info(f"✓ Tables after base migration: {tables_after_base}")
                             
-                            if applied_rev != base_revision:
-                                logger.warning(f"⚠️  Expected revision {base_revision} but got {applied_rev}")
-                            if 'donors' not in tables_after_base:
-                                logger.error(f"✗ donors table was not created after base migration!")
+                            # CRITICAL: Check if Alembic did a stamp instead of upgrade
+                            # If revision is set but no tables were created, Alembic did a stamp_revision
+                            if applied_rev == base_revision and 'donors' not in tables_after_base:
+                                logger.error(f"✗ CRITICAL: Alembic did a stamp_revision instead of upgrade!")
+                                logger.error(f"  Revision is {applied_rev} but donors table doesn't exist.")
+                                logger.error(f"  This means Alembic marked the revision without executing migrations.")
+                                logger.error(f"  Forcing a real upgrade by dropping alembic_version and retrying...")
+                                
+                                # Drop alembic_version table to force Alembic to start from scratch
+                                verify_conn.execute(text("DROP TABLE alembic_version"))
+                                verify_conn.commit()
+                                logger.info("✓ Dropped alembic_version table to force real upgrade")
+                                needs_retry = True
                         verify_engine.dispose()
+                        
+                        # If we detected a stamp instead of upgrade, retry with a clean slate
+                        if needs_retry:
+                            logger.info("Retrying upgrade after detecting stamp_revision issue...")
+                            # Wait a moment for the table drop to be committed
+                            import time
+                            time.sleep(0.5)
+                            
+                            # Retry the upgrade - this time Alembic should do a real upgrade
+                            stdout_capture_retry = io.StringIO()
+                            stderr_capture_retry = io.StringIO()
+                            try:
+                                sys.stdout = stdout_capture_retry
+                                sys.stderr = stderr_capture_retry
+                                logger.info(f"Retrying command.upgrade(alembic_cfg, '{base_revision}')...")
+                                command.upgrade(alembic_cfg, base_revision)
+                                logger.info(f"Retry upgrade completed")
+                                
+                                stdout_output_retry = stdout_capture_retry.getvalue()
+                                stderr_output_retry = stderr_capture_retry.getvalue()
+                                
+                                if stdout_output_retry:
+                                    logger.info(f"Alembic stdout (retry): {stdout_output_retry}")
+                                if stderr_output_retry:
+                                    logger.info(f"Alembic stderr (retry): {stderr_output_retry}")
+                            finally:
+                                sys.stdout = old_stdout
+                                sys.stderr = old_stderr
+                            
+                            # Verify again after retry
+                            verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                            with verify_engine.connect() as verify_conn:
+                                result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
+                                applied_rev_retry = result.scalar_one_or_none()
+                                logger.info(f"✓ Verified after retry: revision = {applied_rev_retry}")
+                                
+                                result = verify_conn.execute(text("""
+                                    SELECT table_name FROM information_schema.tables 
+                                    WHERE table_schema = 'public' 
+                                    ORDER BY table_name
+                                """))
+                                tables_after_retry = [row[0] for row in result]
+                                logger.info(f"✓ Tables after retry: {tables_after_retry}")
+                                
+                                if 'donors' not in tables_after_retry:
+                                    raise ValueError(
+                                        f"Les migrations n'ont pas été exécutées même après retry. "
+                                        f"Tables trouvées: {tables_after_retry}. "
+                                        f"Vérifiez les logs Alembic ci-dessus pour voir pourquoi les migrations ne s'exécutent pas."
+                                    )
+                                
+                                # Update applied_rev and tables_after_base after retry
+                                applied_rev = applied_rev_retry
+                                tables_after_base = tables_after_retry
+                            verify_engine.dispose()
+                        
+                        if applied_rev != base_revision:
+                            logger.warning(f"⚠️  Expected revision {base_revision} but got {applied_rev}")
+                        if 'donors' not in tables_after_base:
+                            logger.error(f"✗ donors table was not created after base migration!")
                         
                         logger.info(f"✓ Successfully applied base revision {base_revision}")
                     except Exception as base_upgrade_err:
