@@ -1104,23 +1104,55 @@ class OrganizationDatabaseManager:
             # Log the connection string (masked) for debugging
             logger.info(f"Migration target database URL: {cls.mask_connection_string(alembic_db_url)}")
             
-            # Verify connection before running migrations
+            # CRITICAL: Verify connection and confirm database name
+            parsed_conn = cls.parse_db_connection_string(db_connection_string)
+            expected_db_name = parsed_conn.get('database')
+            logger.info("=" * 80)
+            logger.info("🔍 CONFIRMATION DE LA BASE DE DONNÉES CIBLE")
+            logger.info(f"📊 Nom de la base de données attendu (extrait de la connection string): '{expected_db_name}'")
+            logger.info(f"🔗 Connection string (masquée): {cls.mask_connection_string(db_connection_string)}")
+            logger.info("=" * 80)
+            
             try:
                 test_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                 with test_engine.connect() as test_conn:
                     # Test connection and get database name
                     result = test_conn.execute(text("SELECT current_database()"))
                     actual_db_name = result.scalar()
-                    logger.info(f"Connected to database: {actual_db_name}")
+                    logger.info(f"✅ Connecté à la base de données: '{actual_db_name}'")
+                    
+                    # Also get current user and schema
+                    result = test_conn.execute(text("SELECT current_user, current_schema()"))
+                    row = result.fetchone()
+                    current_user = row[0]
+                    current_schema = row[1]
+                    logger.info(f"👤 Utilisateur de connexion: {current_user}")
+                    logger.info(f"📁 Schéma actuel: {current_schema}")
+                    
+                    # Check what tables exist BEFORE migration
+                    result = test_conn.execute(text("""
+                        SELECT table_schema, table_name 
+                        FROM information_schema.tables 
+                        WHERE table_type = 'BASE TABLE'
+                        AND table_schema NOT IN ('pg_catalog', 'information_schema')
+                        ORDER BY table_schema, table_name
+                    """))
+                    tables_before_migration = [(row[0], row[1]) for row in result]
+                    logger.info(f"📋 Tables existantes AVANT migration dans '{actual_db_name}': {tables_before_migration}")
                     
                     # Verify it matches expected database name
-                    parsed_conn = cls.parse_db_connection_string(db_connection_string)
-                    expected_db_name = parsed_conn.get('database')
                     if actual_db_name != expected_db_name:
-                        logger.warning(
-                            f"Database name mismatch: expected '{expected_db_name}', "
-                            f"but connected to '{actual_db_name}'. Proceeding anyway..."
+                        logger.error(
+                            f"❌ ERREUR: Nom de base de données ne correspond pas! "
+                            f"Attendu: '{expected_db_name}', "
+                            f"Mais connecté à: '{actual_db_name}'"
                         )
+                        raise ValueError(
+                            f"Nom de base de données incorrect: attendu '{expected_db_name}' mais connecté à '{actual_db_name}'. "
+                            f"Vérifiez la chaîne de connexion de l'organisation."
+                        )
+                    else:
+                        logger.info(f"✅ Confirmation: Le nom de la base de données correspond ('{actual_db_name}')")
                 test_engine.dispose()
             except Exception as conn_test_error:
                 logger.error(f"Failed to connect to database before migration: {conn_test_error}", exc_info=True)
@@ -1987,16 +2019,31 @@ class OrganizationDatabaseManager:
             
             parsed = cls.parse_db_connection_string(db_connection_string)
             db_name = parsed['database']
-            logger.info(f"Ran migrations on organization database: {db_name}")
+            logger.info("=" * 80)
+            logger.info(f"✅ Migrations terminées pour la base de données: '{db_name}'")
+            logger.info("=" * 80)
             
             # Wait a moment for database to be ready
             import time
             time.sleep(2)
             
-            # Verify that tables were created by checking if alembic_version was updated
+            # CRITICAL: Verify that tables were created by checking directly in the database
             try:
                 verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                 with verify_engine.connect() as conn:
+                    # Confirm we're checking the right database
+                    result = conn.execute(text("SELECT current_database()"))
+                    verify_db_name = result.scalar()
+                    logger.info("=" * 80)
+                    logger.info(f"🔍 VÉRIFICATION FINALE DES TABLES")
+                    logger.info(f"📊 Base de données vérifiée: '{verify_db_name}'")
+                    logger.info(f"📊 Base de données attendue: '{db_name}'")
+                    if verify_db_name != db_name:
+                        logger.error(f"❌ ERREUR: Vérification dans la mauvaise base de données!")
+                    else:
+                        logger.info(f"✅ Confirmation: Vérification dans la bonne base de données ('{db_name}')")
+                    logger.info("=" * 80)
+                    
                     # First, check if any tables exist at all
                     result = conn.execute(text("""
                         SELECT table_name 
@@ -2005,7 +2052,7 @@ class OrganizationDatabaseManager:
                         ORDER BY table_name
                     """))
                     all_tables = [row[0] for row in result]
-                    logger.info(f"All tables found in database: {all_tables}")
+                    logger.info(f"📋 Toutes les tables trouvées dans '{verify_db_name}': {all_tables}")
                     
                     # Check if alembic_version table exists
                     has_alembic_table = 'alembic_version' in all_tables
