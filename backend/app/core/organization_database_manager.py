@@ -1453,18 +1453,8 @@ class OrganizationDatabaseManager:
                                         connection.execute(text(
                                             f"INSERT INTO alembic_version (version_num) VALUES ('{base_revision}')"
                                         ))
-                                        # Explicitly commit the transaction
-                                        connection.commit()
-                                        logger.info(f"✓ Step 1 completed: executed {base_revision}, transaction committed")
-                                        
-                                        # Verify tables were created immediately after commit
-                                        result = connection.execute(text("""
-                                            SELECT table_name FROM information_schema.tables 
-                                            WHERE table_schema = 'public' 
-                                            ORDER BY table_name
-                                        """))
-                                        tables_after_step1 = [row[0] for row in result]
-                                        logger.info(f"Tables after step 1: {tables_after_step1}")
+                                        # Note: Transaction will be committed automatically when exiting the 'with' block
+                                        logger.info(f"✓ Step 1 completed: executed {base_revision}")
                                     finally:
                                         # Restore original op
                                         if original_op_in_module is not None:
@@ -1503,18 +1493,8 @@ class OrganizationDatabaseManager:
                                         connection.execute(text(
                                             f"INSERT INTO alembic_version (version_num) VALUES ('{target_revision}')"
                                         ))
-                                        # Explicitly commit the transaction
-                                        connection.commit()
-                                        logger.info(f"✓ Step 2 completed: executed {target_revision}, transaction committed")
-                                        
-                                        # Verify tables were created immediately after commit
-                                        result = connection.execute(text("""
-                                            SELECT table_name FROM information_schema.tables 
-                                            WHERE table_schema = 'public' 
-                                            ORDER BY table_name
-                                        """))
-                                        tables_after_step2 = [row[0] for row in result]
-                                        logger.info(f"Tables after step 2: {tables_after_step2}")
+                                        # Note: Transaction will be committed automatically when exiting the 'with' block
+                                        logger.info(f"✓ Step 2 completed: executed {target_revision}")
                                     finally:
                                         # Restore original op
                                         if original_op_in_target is not None:
