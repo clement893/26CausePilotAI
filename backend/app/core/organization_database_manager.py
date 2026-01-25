@@ -1794,9 +1794,18 @@ class OrganizationDatabaseManager:
                         command.upgrade(alembic_cfg, target_revision)
                         logger.info(f"Successfully upgraded to {target_revision}")
                         
-                        # Check tables AFTER upgrade
+                        # CRITICAL: Wait and verify with a NEW connection to ensure transaction is committed
+                        import time
+                        time.sleep(1)  # Wait for transaction to commit
+                        
+                        # Check tables AFTER upgrade with a FRESH connection
                         check_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                         with check_engine.connect() as check_conn:
+                            # Confirm database name
+                            result = check_conn.execute(text("SELECT current_database()"))
+                            check_db_name = result.scalar()
+                            logger.info(f"🔍 Vérification dans la base de données: '{check_db_name}'")
+                            
                             result = check_conn.execute(text("""
                                 SELECT table_schema, table_name 
                                 FROM information_schema.tables 
@@ -1805,7 +1814,7 @@ class OrganizationDatabaseManager:
                                 ORDER BY table_schema, table_name
                             """))
                             tables_after = [(row[0], row[1]) for row in result]
-                            logger.info(f"🔍 Tables AFTER upgrade: {tables_after}")
+                            logger.info(f"🔍 Tables APRÈS upgrade (nouvelle connexion): {tables_after}")
                             
                             # Check specifically in public schema
                             result = check_conn.execute(text("""
@@ -1816,7 +1825,22 @@ class OrganizationDatabaseManager:
                                 ORDER BY table_name
                             """))
                             public_tables = [row[0] for row in result]
-                            logger.info(f"🔍 Tables in 'public' schema: {public_tables}")
+                            logger.info(f"🔍 Tables dans le schéma 'public': {public_tables}")
+                            
+                            # CRITICAL CHECK: If donors table is missing, Alembic did a stamp_revision instead of upgrade!
+                            if 'donors' not in public_tables:
+                                logger.error(f"❌ CRITIQUE: La table 'donors' n'existe pas après l'upgrade!")
+                                logger.error(f"   Alembic a probablement fait un stamp_revision au lieu d'un vrai upgrade.")
+                                logger.error(f"   Tables trouvées: {public_tables}")
+                                logger.error(f"   Forçant l'exécution réelle des migrations...")
+                                
+                                # Force real execution by dropping alembic_version and re-running
+                                check_conn.execute(text("DELETE FROM alembic_version"))
+                                check_conn.commit()
+                                logger.info("✓ Supprimé la révision pour forcer un vrai upgrade")
+                                
+                                # Now force execute migrations directly
+                                raise ValueError("FORCE_REAL_MIGRATION")
                         check_engine.dispose()
                     except Exception as target_upgrade_err:
                         logger.error(f"Failed to upgrade to target revision {target_revision}: {target_upgrade_err}", exc_info=True)
