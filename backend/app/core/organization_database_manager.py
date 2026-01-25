@@ -1392,46 +1392,48 @@ class OrganizationDatabaseManager:
                                 if current_rev is None:
                                     logger.info(f"Database is empty, executing migrations manually...")
                                     
-                                    # Configure Alembic context for op.get_bind()
+                                    # Execute base migration
+                                    logger.info(f"Step 1: Executing migration {base_revision}...")
+                                    # Configure Alembic context first (like in env.py do_run_migrations)
                                     alembic_context.configure(
                                         connection=migration_conn,
                                         target_metadata=None,
                                         script=script,
                                     )
                                     
-                                    # Execute base migration
-                                    logger.info(f"Step 1: Executing migration {base_revision}...")
-                                    with migration_conn.begin():
+                                    # Use begin_transaction() to create a transaction context
+                                    with alembic_context.begin_transaction():
                                         # Get the migration module from the script directory
-                                        # The module is already loaded in base_rev_obj.module
                                         base_module = base_rev_obj.module
                                         
-                                        # Set up Alembic op context
-                                        # We need to configure the context so op.get_bind() works
-                                        alembic_context.configure(
-                                            connection=migration_conn,
-                                            target_metadata=None,
-                                            script=script,
-                                        )
-                                        
-                                        # Execute upgrade
+                                        # Execute upgrade - op.get_bind() will work because context is configured
                                         base_module.upgrade()
-                                        
-                                        # Update alembic_version
+                                    
+                                    # Update alembic_version after the transaction
+                                    with migration_conn.begin():
                                         migration_conn.execute(text(f"INSERT INTO alembic_version (version_num) VALUES ('{base_revision}') ON CONFLICT (version_num) DO UPDATE SET version_num = '{base_revision}'"))
                                     
                                     logger.info(f"✓ Step 1 completed: executed migration {base_revision}")
                                     
                                     # Execute target migration
                                     logger.info(f"Step 2: Executing migration {target_revision}...")
-                                    with migration_conn.begin():
+                                    # Configure Alembic context again for the second migration
+                                    alembic_context.configure(
+                                        connection=migration_conn,
+                                        target_metadata=None,
+                                        script=script,
+                                    )
+                                    
+                                    # Use begin_transaction() to create a transaction context
+                                    with alembic_context.begin_transaction():
                                         # Get the migration module from the script directory
                                         target_module = target_rev_obj.module
                                         
                                         # Execute upgrade
                                         target_module.upgrade()
-                                        
-                                        # Update alembic_version
+                                    
+                                    # Update alembic_version after the transaction
+                                    with migration_conn.begin():
                                         migration_conn.execute(text(f"UPDATE alembic_version SET version_num = '{target_revision}'"))
                                     
                                     logger.info(f"✓ Step 2 completed: executed migration {target_revision}")
