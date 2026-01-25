@@ -1396,14 +1396,18 @@ class OrganizationDatabaseManager:
                                     migration_conn.commit()
                                     logger.info(f"✓ Dropped alembic_version table")
                             
-                            # Now use command.upgrade() but filter migrations to only organization-specific ones
+                            # Now use command.stamp() + command.upgrade() to force real migrations
                             # This bypasses Alembic's automatic stamp_revision detection
                             if current_rev is None:
-                                logger.info(f"Upgrading using command.upgrade() with explicit revision path...")
+                                logger.info(f"Upgrading using command.stamp() + command.upgrade() with explicit revision path...")
                                 
-                                # CRITICAL: Use explicit revision path to avoid stamp_revision
-                                # Upgrade from 'base' to base_revision first, then to target_revision
+                                # CRITICAL: First stamp the database as 'base' to ensure Alembic knows it's empty
+                                # Then upgrade to base_revision, then to target_revision
                                 # This forces Alembic to execute migrations instead of stamping
+                                logger.info(f"Step 0: Stamping database as 'base' to ensure clean state...")
+                                command.stamp(alembic_cfg, 'base')
+                                logger.info(f"✓ Step 0 completed: database stamped as 'base'")
+                                
                                 logger.info(f"Step 1: Upgrading from 'base' to {base_revision}...")
                                 command.upgrade(alembic_cfg, base_revision)
                                 logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
