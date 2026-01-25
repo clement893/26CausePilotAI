@@ -1742,10 +1742,50 @@ class OrganizationDatabaseManager:
                 elif current_rev_in_db == base_revision:
                     # Database is at base revision, upgrade to target
                     logger.info(f"Database at base revision {base_revision}, upgrading to {target_revision}...")
+                    
+                    # Check tables BEFORE upgrade
+                    check_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                    with check_engine.connect() as check_conn:
+                        result = check_conn.execute(text("""
+                            SELECT table_schema, table_name 
+                            FROM information_schema.tables 
+                            WHERE table_type = 'BASE TABLE'
+                            AND table_schema NOT IN ('pg_catalog', 'information_schema')
+                            ORDER BY table_schema, table_name
+                        """))
+                        tables_before = [(row[0], row[1]) for row in result]
+                        logger.info(f"🔍 Tables BEFORE upgrade: {tables_before}")
+                    check_engine.dispose()
+                    
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
                     try:
                         command.upgrade(alembic_cfg, target_revision)
                         logger.info(f"Successfully upgraded to {target_revision}")
+                        
+                        # Check tables AFTER upgrade
+                        check_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                        with check_engine.connect() as check_conn:
+                            result = check_conn.execute(text("""
+                                SELECT table_schema, table_name 
+                                FROM information_schema.tables 
+                                WHERE table_type = 'BASE TABLE'
+                                AND table_schema NOT IN ('pg_catalog', 'information_schema')
+                                ORDER BY table_schema, table_name
+                            """))
+                            tables_after = [(row[0], row[1]) for row in result]
+                            logger.info(f"🔍 Tables AFTER upgrade: {tables_after}")
+                            
+                            # Check specifically in public schema
+                            result = check_conn.execute(text("""
+                                SELECT table_name 
+                                FROM information_schema.tables 
+                                WHERE table_schema = 'public' 
+                                AND table_type = 'BASE TABLE'
+                                ORDER BY table_name
+                            """))
+                            public_tables = [row[0] for row in result]
+                            logger.info(f"🔍 Tables in 'public' schema: {public_tables}")
+                        check_engine.dispose()
                     except Exception as target_upgrade_err:
                         logger.error(f"Failed to upgrade to target revision {target_revision}: {target_upgrade_err}", exc_info=True)
                         raise ValueError(
