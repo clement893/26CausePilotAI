@@ -649,9 +649,22 @@ export function DatabaseConnectionForm({
         console.error('[DatabaseConnectionForm] ❌ STEP 4: Migration failed!', {
           result,
           success: result?.success,
-          message: result?.message
+          message: result?.message,
+          tables_created: result?.tables_created
         });
-        const errorMsg = result?.message || 'La migration a échoué sans message d\'erreur';
+        
+        // Build detailed error message
+        let errorMsg = result?.message || 'La migration a échoué sans message d\'erreur';
+        
+        // If no tables were created, add helpful information
+        if (!result?.tables_created || result.tables_created.length === 0) {
+          errorMsg += '\n\n⚠️ Aucune table n\'a été créée. Cela peut indiquer que :';
+          errorMsg += '\n- Les migrations Alembic ne sont pas correctement configurées';
+          errorMsg += '\n- Les fichiers de migration add_donor_tables_001 et add_donor_crm_002 sont manquants';
+          errorMsg += '\n- La base de données n\'est pas accessible';
+          errorMsg += '\n\nVérifiez les logs du backend pour plus de détails.';
+        }
+        
         setError(errorMsg);
         setIsMigrating(false);
       }
@@ -665,7 +678,26 @@ export function DatabaseConnectionForm({
       });
       
       let errorMessage = 'Erreur lors de la mise à jour de la base de données';
-      if (err instanceof Error) {
+      
+      // Extract error message from API response
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosError = err as any;
+        const responseData = axiosError.response?.data;
+        
+        if (responseData?.detail) {
+          if (typeof responseData.detail === 'string') {
+            errorMessage = responseData.detail;
+          } else if (Array.isArray(responseData.detail)) {
+            errorMessage = responseData.detail.map((e: any) => e.msg || e.message || JSON.stringify(e)).join('\n');
+          } else {
+            errorMessage = JSON.stringify(responseData.detail);
+          }
+        } else if (responseData?.message) {
+          errorMessage = responseData.message;
+        } else if (axiosError.response?.status === 500) {
+          errorMessage = 'Erreur serveur lors de la migration. Vérifiez les logs du backend pour plus de détails.';
+        }
+      } else if (err instanceof Error) {
         errorMessage = err.message;
         // Check for specific error types
         if (err.message.includes('404') || err.message.includes('not found')) {
@@ -678,6 +710,8 @@ export function DatabaseConnectionForm({
           errorMessage = 'Erreur de connexion au serveur. Vérifiez votre connexion internet et que le serveur est accessible.';
         } else if (err.message.includes('timeout') || err.message.includes('exceeded')) {
           errorMessage = 'La migration prend trop de temps. Vérifiez que la base de données est accessible et que le serveur n\'est pas surchargé.';
+        } else if (err.message.includes('revision') || err.message.includes('migration')) {
+          errorMessage = `Erreur de migration: ${err.message}\n\nVérifiez que les fichiers de migration add_donor_tables_001 et add_donor_crm_002 existent dans le backend.`;
         }
       } else if (typeof err === 'string') {
         errorMessage = err;
@@ -688,6 +722,7 @@ export function DatabaseConnectionForm({
       // Always set error to ensure it's displayed
       setError(errorMessage);
       setSuccess(null);
+      setIsMigrating(false);
     } finally {
       setIsMigrating(false);
       console.log('[DatabaseConnectionForm] Migration process finished');

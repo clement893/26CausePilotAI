@@ -1063,31 +1063,98 @@ class OrganizationDatabaseManager:
             alembic_cfg = Config(str(alembic_ini_path))
             alembic_cfg.set_main_option("sqlalchemy.url", alembic_db_url)
             
+            # Log the connection string (masked) for debugging
+            logger.info(f"Migration target database URL: {cls.mask_connection_string(alembic_db_url)}")
+            
+            # Check current revision before migration
+            try:
+                from alembic.script import ScriptDirectory
+                script = ScriptDirectory.from_config(alembic_cfg)
+                heads = script.get_revisions("heads")
+                logger.info(f"Available migration heads: {[str(h) for h in heads]}")
+                
+                # Check if our target revision exists
+                try:
+                    target_rev = script.get_revision(target_revision)
+                    logger.info(f"Target revision {target_revision} found: {target_rev}")
+                except Exception as rev_error:
+                    logger.warning(f"Target revision {target_revision} not found: {rev_error}")
+                    # List all available revisions
+                    all_revs = list(script.walk_revisions())
+                    logger.info(f"Available revisions: {[str(r.revision) for r in all_revs]}")
+            except Exception as script_error:
+                logger.warning(f"Could not check migration script directory: {script_error}")
+            
+            # For organization databases, we need to apply only the organization-specific migrations
+            # These migrations start with add_donor_tables_001 and end with add_donor_crm_002
+            # We'll try to upgrade to the specific revision for organization databases
+            target_revision = "add_donor_crm_002"  # Latest organization database migration
+            
+            logger.info(f"Running migrations for organization database, target revision: {target_revision}")
+            logger.info(f"Connection string (masked): {cls.mask_connection_string(db_connection_string)}")
+            
             # Try to run migrations - handle multiple heads gracefully
             try:
-                # First, try with 'head' (single head)
-                command.upgrade(alembic_cfg, "head")
-            except Exception as head_error:
-                error_msg = str(head_error)
-                # Check if error is about multiple heads
-                if "Multiple head revisions" in error_msg or "overlaps" in error_msg.lower():
+                # First, try with the specific organization database revision
+                command.upgrade(alembic_cfg, target_revision)
+                logger.info(f"Successfully upgraded to {target_revision}")
+            except Exception as revision_error:
+                error_msg = str(revision_error)
+                logger.warning(f"Failed to upgrade to {target_revision}: {error_msg}")
+                
+                # Check if the revision doesn't exist (database might be empty)
+                if "Can't locate revision identified by" in error_msg or "revision" in error_msg.lower() and "not found" in error_msg.lower():
+                    logger.info("Target revision not found, trying to upgrade from base (add_donor_tables_001)...")
+                    try:
+                        # Try upgrading from the base organization migration
+                        command.upgrade(alembic_cfg, "add_donor_tables_001")
+                        logger.info("Successfully upgraded to add_donor_tables_001, now upgrading to add_donor_crm_002...")
+                        # Then upgrade to the latest
+                        command.upgrade(alembic_cfg, target_revision)
+                        logger.info(f"Successfully upgraded to {target_revision}")
+                    except Exception as base_error:
+                        logger.error(f"Failed to upgrade from base: {base_error}", exc_info=True)
+                        # Try with 'head' as fallback
+                        logger.warning("Trying 'head' as fallback...")
+                        try:
+                            command.upgrade(alembic_cfg, "head")
+                            logger.info("Successfully upgraded using 'head'")
+                        except Exception as head_error:
+                            error_msg_head = str(head_error)
+                            # Check if error is about multiple heads
+                            if "Multiple head revisions" in error_msg_head or "overlaps" in error_msg_head.lower():
+                                logger.warning("Multiple migration heads detected. Using 'heads' to upgrade all heads...")
+                                # Use 'heads' to upgrade all heads
+                                try:
+                                    command.upgrade(alembic_cfg, "heads")
+                                    logger.info("Successfully upgraded using 'heads'")
+                                except Exception as heads_error:
+                                    error_msg_heads = str(heads_error)
+                                    logger.error(f"Failed to upgrade even with 'heads': {error_msg_heads}", exc_info=True)
+                                    raise ValueError(
+                                        f"Failed to run migrations: {error_msg_heads}. "
+                                        f"Please check that the organization database migrations (add_donor_tables_001, add_donor_crm_002) exist."
+                                    ) from heads_error
+                            else:
+                                logger.error(f"Migration error: {error_msg_head}", exc_info=True)
+                                raise ValueError(f"Failed to run migrations: {error_msg_head}") from head_error
+                elif "Multiple head revisions" in error_msg or "overlaps" in error_msg.lower():
                     logger.warning("Multiple migration heads detected. Using 'heads' to upgrade all heads...")
                     # Use 'heads' to upgrade all heads
                     try:
                         command.upgrade(alembic_cfg, "heads")
+                        logger.info("Successfully upgraded using 'heads'")
                     except Exception as heads_error:
                         error_msg_heads = str(heads_error)
-                        # If 'heads' also fails, provide helpful error message
-                        if "Multiple head revisions" in error_msg_heads:
-                            raise ValueError(
-                                f"Multiple head revisions detected and could not be resolved automatically. "
-                                f"Please run 'alembic merge heads' manually to create a merge migration, "
-                                f"or specify a specific target revision. Error: {error_msg_heads}"
-                            ) from heads_error
-                        else:
-                            raise
+                        logger.error(f"Failed to upgrade even with 'heads': {error_msg_heads}", exc_info=True)
+                        raise ValueError(
+                            f"Multiple head revisions detected and could not be resolved automatically. "
+                            f"Please run 'alembic merge heads' manually to create a merge migration, "
+                            f"or specify a specific target revision. Error: {error_msg_heads}"
+                        ) from heads_error
                 else:
                     # Different error, re-raise
+                    logger.error(f"Migration error: {error_msg}", exc_info=True)
                     raise
             
             parsed = cls.parse_db_connection_string(db_connection_string)
@@ -1101,7 +1168,16 @@ class OrganizationDatabaseManager:
             raise ValueError(f"Migration SQL error: {str(e)}") from e
         except Exception as e:
             error_msg = str(e)
-            if "Multiple head revisions" in error_msg:
+            logger.error(f"Unexpected error running migrations: {error_msg}", exc_info=True)
+            
+            # Provide more helpful error messages
+            if "Can't locate revision" in error_msg or "revision" in error_msg.lower() and "not found" in error_msg.lower():
+                raise ValueError(
+                    f"Les migrations pour les bases de données d'organisations ne sont pas trouvées. "
+                    f"Vérifiez que les fichiers de migration add_donor_tables_001 et add_donor_crm_002 existent dans backend/alembic/versions/. "
+                    f"Erreur: {error_msg}"
+                ) from e
+            elif "Multiple head revisions" in error_msg:
                 # Last resort: try upgrading all heads
                 try:
                     logger.warning("Multiple heads error caught, attempting to upgrade all heads as fallback...")
@@ -1111,7 +1187,11 @@ class OrganizationDatabaseManager:
                     logger.info(f"Ran migrations on organization database (using heads): {parsed['database']}")
                 except Exception as fallback_error:
                     logger.error(f"Failed to run migrations even with 'heads': {fallback_error}", exc_info=True)
-                    raise ValueError(f"Failed to run migrations: Multiple head revisions detected and could not be resolved. Error: {str(e)}") from e
+                    raise ValueError(
+                        f"Échec de la migration: Plusieurs révisions head détectées et impossible de les résoudre automatiquement. "
+                        f"Vérifiez que les migrations d'organisations (add_donor_tables_001, add_donor_crm_002) sont correctement configurées. "
+                        f"Erreur: {str(e)}"
+                    ) from e
             else:
                 logger.error(f"Unexpected error running migrations: {e}", exc_info=True)
                 raise

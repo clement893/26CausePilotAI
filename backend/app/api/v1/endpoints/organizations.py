@@ -833,8 +833,9 @@ async def migrate_organization_database(
         logger.info(f"Migrations completed successfully for organization {organization_id}")
         
         # Wait a moment for database to be ready (some migrations may need a moment)
+        # Give more time for migrations to complete and database to be ready
         import asyncio
-        await asyncio.sleep(1)
+        await asyncio.sleep(2)
         
         # List tables to show what was created
         logger.info(f"Listing tables in database '{db_name}' for organization {organization_id}")
@@ -847,10 +848,35 @@ async def migrate_organization_database(
             f"({organization.slug}). Tables found: {', '.join(tables) if tables else 'none'}"
         )
         
+        # Check if tables were created - if not, this might indicate a problem
+        expected_tables = ['donors', 'donations', 'payment_methods', 'donor_notes', 'donor_activities']
+        missing_tables = [t for t in expected_tables if t not in tables]
+        
         if not tables:
+            error_msg = (
+                f"Aucune table n'a été trouvée dans la base de données '{db_name}' après la migration. "
+                f"Cela indique que les migrations n'ont pas créé de tables. "
+                f"Vérifiez les logs du backend pour plus de détails."
+            )
+            logger.error(error_msg)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=error_msg
+            )
+        elif missing_tables:
             logger.warning(
-                f"No tables found after migration for organization {organization_id}. "
-                f"This might indicate that migrations did not create any tables, or there was an issue."
+                f"Some expected tables are missing after migration for organization {organization_id}: {missing_tables}. "
+                f"Tables found: {tables}"
+            )
+            # Still return success but with a warning in the message
+            return MigrateDatabaseResponse(
+                success=True,
+                message=(
+                    f"Migrations executed on database '{db_name}'. {len(tables)} table(s) found. "
+                    f"Note: Some expected tables are missing: {', '.join(missing_tables)}. "
+                    f"Vérifiez les logs pour plus de détails."
+                ),
+                tables_created=tables
             )
         
         return MigrateDatabaseResponse(
