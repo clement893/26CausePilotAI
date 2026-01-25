@@ -1842,6 +1842,67 @@ class OrganizationDatabaseManager:
                                 # Now force execute migrations directly
                                 raise ValueError("FORCE_REAL_MIGRATION")
                         check_engine.dispose()
+                    except ValueError as force_err:
+                        if "FORCE_REAL_MIGRATION" in str(force_err):
+                            # Force real migration execution
+                            logger.info("🔄 Exécution forcée des migrations avec exécution directe...")
+                            from alembic.runtime.migration import MigrationContext
+                            from alembic.script import ScriptDirectory
+                            from alembic.operations import Operations
+                            
+                            manual_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                            with manual_engine.begin() as connection:
+                                script_dir = ScriptDirectory.from_config(alembic_cfg)
+                                target_rev_obj = script_dir.get_revision(target_revision)
+                                
+                                migration_context = MigrationContext.configure(connection)
+                                ops = Operations(migration_context)
+                                
+                                if not hasattr(ops, 'get_bind'):
+                                    def get_bind():
+                                        return connection
+                                    ops.get_bind = get_bind
+                                
+                                target_migration_module = target_rev_obj.module
+                                original_op = getattr(target_migration_module, 'op', None)
+                                setattr(target_migration_module, 'op', ops)
+                                
+                                try:
+                                    logger.info(f"Exécution directe de la migration {target_revision}...")
+                                    target_rev_obj.module.upgrade()
+                                    
+                                    # Update alembic_version
+                                    connection.execute(text("DELETE FROM alembic_version"))
+                                    connection.execute(text(
+                                        f"INSERT INTO alembic_version (version_num) VALUES ('{target_revision}')"
+                                    ))
+                                    
+                                    # Verify tables were created
+                                    result = connection.execute(text("""
+                                        SELECT table_name 
+                                        FROM information_schema.tables 
+                                        WHERE table_schema = 'public' 
+                                        AND table_type = 'BASE TABLE'
+                                        ORDER BY table_name
+                                    """))
+                                    tables_after_force = [row[0] for row in result]
+                                    logger.info(f"✅ Tables après exécution forcée: {tables_after_force}")
+                                    
+                                    if 'donors' not in tables_after_force:
+                                        raise ValueError(
+                                            f"Les tables n'ont toujours pas été créées après exécution forcée. "
+                                            f"Tables trouvées: {tables_after_force}"
+                                        )
+                                finally:
+                                    if original_op is not None:
+                                        setattr(target_migration_module, 'op', original_op)
+                                    elif hasattr(target_migration_module, 'op'):
+                                        delattr(target_migration_module, 'op')
+                            
+                            manual_engine.dispose()
+                            logger.info("✅ Migration forcée terminée avec succès")
+                        else:
+                            raise
                     except Exception as target_upgrade_err:
                         logger.error(f"Failed to upgrade to target revision {target_revision}: {target_upgrade_err}", exc_info=True)
                         raise ValueError(
