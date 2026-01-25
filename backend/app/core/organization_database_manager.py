@@ -1336,7 +1336,9 @@ class OrganizationDatabaseManager:
                             sys.stdout = stdout_capture
                             sys.stderr = stderr_capture
                             # Actually execute the upgrade
+                            logger.info(f"Executing command.upgrade(alembic_cfg, '{base_revision}')...")
                             command.upgrade(alembic_cfg, base_revision)
+                            logger.info(f"command.upgrade() completed without exception")
                             
                             # Get the output
                             stdout_output = stdout_capture.getvalue()
@@ -1351,15 +1353,29 @@ class OrganizationDatabaseManager:
                             sys.stdout = old_stdout
                             sys.stderr = old_stderr
                         
-                        logger.info(f"✓ Successfully applied base revision {base_revision}")
-                        
-                        # Immediately verify the revision was applied
+                        # Immediately verify the revision was applied and check tables
                         verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                         with verify_engine.connect() as verify_conn:
                             result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
                             applied_rev = result.scalar_one_or_none()
                             logger.info(f"✓ Verified: alembic_version table exists with revision: {applied_rev}")
+                            
+                            # Check what tables exist after migration
+                            result = verify_conn.execute(text("""
+                                SELECT table_name FROM information_schema.tables 
+                                WHERE table_schema = 'public' 
+                                ORDER BY table_name
+                            """))
+                            tables_after_base = [row[0] for row in result]
+                            logger.info(f"✓ Tables after base migration: {tables_after_base}")
+                            
+                            if applied_rev != base_revision:
+                                logger.warning(f"⚠️  Expected revision {base_revision} but got {applied_rev}")
+                            if 'donors' not in tables_after_base:
+                                logger.error(f"✗ donors table was not created after base migration!")
                         verify_engine.dispose()
+                        
+                        logger.info(f"✓ Successfully applied base revision {base_revision}")
                     except Exception as base_upgrade_err:
                         error_msg = str(base_upgrade_err)
                         error_type = type(base_upgrade_err).__name__
@@ -1411,7 +1427,31 @@ class OrganizationDatabaseManager:
                     # Then upgrade to target_revision
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
                     try:
-                        command.upgrade(alembic_cfg, target_revision)
+                        import sys
+                        import io
+                        stdout_capture2 = io.StringIO()
+                        stderr_capture2 = io.StringIO()
+                        old_stdout2 = sys.stdout
+                        old_stderr2 = sys.stderr
+                        
+                        try:
+                            sys.stdout = stdout_capture2
+                            sys.stderr = stderr_capture2
+                            logger.info(f"Executing command.upgrade(alembic_cfg, '{target_revision}')...")
+                            command.upgrade(alembic_cfg, target_revision)
+                            logger.info(f"command.upgrade() to {target_revision} completed without exception")
+                        finally:
+                            sys.stdout = old_stdout2
+                            sys.stderr = old_stderr2
+                            
+                            stdout_output2 = stdout_capture2.getvalue()
+                            stderr_output2 = stderr_capture2.getvalue()
+                            
+                            if stdout_output2:
+                                logger.info(f"Alembic stdout (target): {stdout_output2}")
+                            if stderr_output2:
+                                logger.info(f"Alembic stderr (target): {stderr_output2}")
+                        
                         logger.info(f"✓ Successfully upgraded to {target_revision}")
                         
                         # Immediately verify the revision was applied
@@ -1429,6 +1469,13 @@ class OrganizationDatabaseManager:
                             """))
                             tables_created = [row[0] for row in result]
                             logger.info(f"✓ Tables created after migration: {tables_created}")
+                            
+                            if applied_rev != target_revision:
+                                logger.warning(f"⚠️  Expected revision {target_revision} but got {applied_rev}")
+                            expected_tables = ['donors', 'payment_methods', 'donations', 'donor_notes', 'donor_activities']
+                            missing_tables = [t for t in expected_tables if t not in tables_created]
+                            if missing_tables:
+                                logger.error(f"✗ Missing tables after migration: {missing_tables}")
                         verify_engine.dispose()
                     except Exception as target_upgrade_err:
                         logger.error(f"✗ Failed to upgrade to target revision {target_revision}", exc_info=True)
