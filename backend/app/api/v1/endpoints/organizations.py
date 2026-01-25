@@ -35,6 +35,7 @@ from app.schemas.organization import (
     CreateDatabaseResponse,
     MigrateDatabaseResponse,
     DatabaseTablesResponse,
+    TableInfo,
 )
 
 router = APIRouter()
@@ -954,8 +955,11 @@ async def get_organization_database_tables(
     _: None = Depends(require_superadmin),
 ):
     """
-    Get list of tables in organization database (SuperAdmin only)
+    Get list of tables in organization database with detailed information (SuperAdmin only)
     """
+    from sqlalchemy import text
+    from sqlalchemy.ext.asyncio import create_async_engine
+    
     # Check organization exists
     query = select(Organization).where(Organization.id == organization_id)
     result = await db.execute(query)
@@ -974,7 +978,7 @@ async def get_organization_database_tables(
         )
     
     try:
-        # List tables
+        # List tables using the existing method
         tables = await OrganizationDatabaseManager.list_database_tables(
             organization.db_connection_string
         )
@@ -982,10 +986,64 @@ async def get_organization_database_tables(
         parsed = OrganizationDatabaseManager.parse_db_connection_string(organization.db_connection_string)
         db_name = parsed['database']
         
+        # Get detailed table information including schema
+        normalized_conn = OrganizationDatabaseManager.normalize_connection_string(organization.db_connection_string)
+        engine = create_async_engine(normalized_conn, echo=False, pool_pre_ping=True)
+        
+        tables_detailed = []
+        current_schema = None
+        all_schemas = []
+        
+        async with engine.connect() as conn:
+            # Get current schema
+            result = await conn.execute(text("SELECT current_schema()"))
+            current_schema = result.scalar_one()
+            
+            # Get all schemas with tables
+            result = await conn.execute(text("""
+                SELECT DISTINCT table_schema 
+                FROM information_schema.tables 
+                WHERE table_type = 'BASE TABLE'
+                AND table_schema NOT IN ('pg_catalog', 'information_schema')
+                ORDER BY table_schema
+            """))
+            all_schemas = [row[0] for row in result]
+            
+            # Get detailed table information
+            result = await conn.execute(text("""
+                SELECT table_schema, table_name, table_type
+                FROM information_schema.tables 
+                WHERE table_schema = 'public' 
+                AND table_type = 'BASE TABLE'
+                ORDER BY table_name
+            """))
+            
+            for row in result:
+                tables_detailed.append(TableInfo(
+                    name=row[1],
+                    schema=row[0],
+                    table_type=row[2]
+                ))
+        
+        await engine.dispose()
+        
+        # Create helpful query hint
+        query_hint = (
+            f"Pour voir les tables dans votre outil SQL, utilisez:\n"
+            f"SELECT table_name FROM information_schema.tables "
+            f"WHERE table_schema = 'public' AND table_type = 'BASE TABLE' "
+            f"ORDER BY table_name;\n\n"
+            f"Ou vérifiez que vous êtes connecté au schéma 'public' (schéma actuel: {current_schema})"
+        )
+        
         return DatabaseTablesResponse(
             success=True,
             tables=tables,
-            database_name=db_name
+            tables_detailed=tables_detailed,
+            database_name=db_name,
+            current_schema=current_schema,
+            all_schemas=all_schemas,
+            query_hint=query_hint
         )
         
     except Exception as e:

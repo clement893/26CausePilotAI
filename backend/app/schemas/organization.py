@@ -233,8 +233,18 @@ class MigrateDatabaseResponse(BaseModel):
     tables_created: Optional[List[str]] = None
 
 
+class TableInfo(BaseModel):
+    """Table information"""
+    name: str
+    schema: str
+    table_type: str = "BASE TABLE"
+    
 class DatabaseTablesResponse(BaseModel):
     """Database tables response"""
     success: bool
     tables: List[str]
+    tables_detailed: Optional[List[TableInfo]] = None
     database_name: Optional[str] = None
+    current_schema: Optional[str] = None
+    all_schemas: Optional[List[str]] = None
+    query_hint: Optional[str] = None
