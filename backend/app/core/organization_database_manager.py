@@ -1401,6 +1401,13 @@ class OrganizationDatabaseManager:
                             if current_rev is None:
                                 logger.info(f"Upgrading using command.upgrade() in two steps...")
                                 
+                                # CRITICAL: First stamp the database to 'base' to force Alembic to do a real upgrade
+                                # Without this, Alembic may try to do a stamp_revision instead of upgrade
+                                # when it sees multiple heads in the migration history
+                                logger.info(f"Stamping database to 'base' to force real upgrade...")
+                                command.stamp(alembic_cfg, 'base')
+                                logger.info(f"✓ Database stamped to 'base'")
+                                
                                 # Step 1: Upgrade to base_revision first
                                 # This ensures Alembic executes the migration instead of stamping
                                 logger.info(f"Step 1: Upgrading to base revision {base_revision}...")
