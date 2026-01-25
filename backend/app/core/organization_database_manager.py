@@ -1407,8 +1407,7 @@ class OrganizationDatabaseManager:
                                 # Import Alembic runtime modules
                                 from alembic.runtime.migration import MigrationContext
                                 from alembic.script import ScriptDirectory
-                                from alembic import context as alembic_context
-                                from alembic import op
+                                from alembic.operations import Operations
                                 
                                 # Create engine and connection
                                 manual_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
@@ -1425,41 +1424,64 @@ class OrganizationDatabaseManager:
                                     # Create migration context
                                     migration_context = MigrationContext.configure(connection)
                                     
-                                    # Configure Alembic context like env.py does
-                                    # We need to configure the context so op.get_bind() works
-                                    alembic_context.configure(
-                                        connection=connection,
-                                        target_metadata=None,  # We don't need metadata for org migrations
-                                    )
+                                    # Create Operations object with the migration context
+                                    # This allows us to use op operations
+                                    ops = Operations(migration_context)
                                     
-                                    # Execute base migration upgrade function directly
-                                    # The upgrade function uses op.get_bind() which requires context to be configured
-                                    base_rev_obj.module.upgrade()
+                                    # Patch op in the migration module to use our Operations object
+                                    # Save original op
+                                    import alembic.op as op_module
+                                    original_op = op_module
                                     
-                                    # Update alembic_version table manually
-                                    connection.execute(text(
-                                        f"UPDATE alembic_version SET version_num = '{base_revision}'"
-                                    ))
-                                    logger.info(f"✓ Step 1 completed: executed {base_revision}")
+                                    # Replace op with our Operations object
+                                    import sys
+                                    migration_module = sys.modules[base_rev_obj.module.__name__]
+                                    original_op_in_module = getattr(migration_module, 'op', None)
+                                    setattr(migration_module, 'op', ops)
+                                    
+                                    try:
+                                        # Execute base migration upgrade function directly
+                                        base_rev_obj.module.upgrade()
+                                        
+                                        # Update alembic_version table manually
+                                        connection.execute(text(
+                                            f"UPDATE alembic_version SET version_num = '{base_revision}'"
+                                        ))
+                                        logger.info(f"✓ Step 1 completed: executed {base_revision}")
+                                    finally:
+                                        # Restore original op
+                                        if original_op_in_module is not None:
+                                            setattr(migration_module, 'op', original_op_in_module)
+                                        else:
+                                            delattr(migration_module, 'op')
                                     
                                     # Step 2: Execute target migration
                                     logger.info(f"Step 2: Executing migration {target_revision} directly...")
                                     
                                     # Reconfigure context for target migration
                                     migration_context = MigrationContext.configure(connection)
-                                    alembic_context.configure(
-                                        connection=connection,
-                                        target_metadata=None,
-                                    )
+                                    ops = Operations(migration_context)
                                     
-                                    # Execute target migration upgrade function directly
-                                    target_rev_obj.module.upgrade()
+                                    # Patch op in the target migration module
+                                    target_migration_module = sys.modules[target_rev_obj.module.__name__]
+                                    original_op_in_target = getattr(target_migration_module, 'op', None)
+                                    setattr(target_migration_module, 'op', ops)
                                     
-                                    # Update alembic_version table manually
-                                    connection.execute(text(
-                                        f"UPDATE alembic_version SET version_num = '{target_revision}'"
-                                    ))
-                                    logger.info(f"✓ Step 2 completed: executed {target_revision}")
+                                    try:
+                                        # Execute target migration upgrade function directly
+                                        target_rev_obj.module.upgrade()
+                                        
+                                        # Update alembic_version table manually
+                                        connection.execute(text(
+                                            f"UPDATE alembic_version SET version_num = '{target_revision}'"
+                                        ))
+                                        logger.info(f"✓ Step 2 completed: executed {target_revision}")
+                                    finally:
+                                        # Restore original op
+                                        if original_op_in_target is not None:
+                                            setattr(target_migration_module, 'op', original_op_in_target)
+                                        else:
+                                            delattr(target_migration_module, 'op')
                                 
                                 manual_engine.dispose()
                             else:
