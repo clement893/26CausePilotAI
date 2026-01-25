@@ -1055,6 +1055,7 @@ class OrganizationDatabaseManager:
             # Import alembic here to avoid circular imports
             from alembic.config import Config
             from alembic import command
+            import contextlib  # Import at function level for use in error handlers
             
             # Normalize connection string
             db_connection_string = cls.normalize_connection_string(db_connection_string)
@@ -1361,6 +1362,7 @@ class OrganizationDatabaseManager:
                                 
                                 # Now retry the upgrade
                                 logger.info("Retrying upgrade after initializing alembic_version table...")
+                                import contextlib
                                 with contextlib.redirect_stdout(None), contextlib.redirect_stderr(None):
                                     command.upgrade(alembic_cfg, base_revision)
                                 logger.info(f"✓ Successfully applied base revision {base_revision} after retry")
