@@ -1321,17 +1321,15 @@ class OrganizationDatabaseManager:
                     
                     # CRITICAL FIX: For empty databases, Alembic may do a stamp_revision instead of upgrade
                     # when there are multiple migration heads. To force a real upgrade, we need to:
-                    # 1. Ensure alembic_version table doesn't exist
-                    # 2. Use 'base' explicitly or upgrade directly to target_revision
-                    # Since we already dropped alembic_version, let's upgrade directly to target_revision
-                    # which will force Alembic to execute all migrations from base
-                    logger.info(f"Upgrading directly to target revision '{target_revision}' (will execute from base)...")
+                    # 1. Ensure alembic_version table doesn't exist (already done above)
+                    # 2. Explicitly stamp to 'base' to mark database as empty
+                    # 3. Then upgrade to target_revision
+                    logger.info(f"Stamping database to 'base' to force Alembic to recognize empty database...")
                     try:
-                        # Don't redirect stdout/stderr so we can see what Alembic is doing
-                        # This will help debug why migrations aren't being applied
+                        # First, explicitly stamp to 'base' to mark database as empty
+                        # This prevents Alembic from thinking the database is already migrated
                         import sys
                         import io
-                        # Capture stdout to see Alembic output
                         old_stdout = sys.stdout
                         old_stderr = sys.stderr
                         stdout_capture = io.StringIO()
@@ -1340,7 +1338,35 @@ class OrganizationDatabaseManager:
                         try:
                             sys.stdout = stdout_capture
                             sys.stderr = stderr_capture
-                            # Upgrade directly to target_revision - this will execute all migrations from base
+                            logger.info(f"Executing command.stamp(alembic_cfg, 'base')...")
+                            command.stamp(alembic_cfg, 'base')
+                            logger.info(f"✓ Database stamped to 'base'")
+                        finally:
+                            sys.stdout = old_stdout
+                            sys.stderr = old_stderr
+                        
+                        # Verify that stamp worked - check revision is None
+                        verify_stamp_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                        with verify_stamp_engine.connect() as verify_stamp_conn:
+                            result = verify_stamp_conn.execute(text("SELECT version_num FROM alembic_version"))
+                            stamp_rev = result.scalar_one_or_none()
+                            logger.info(f"✓ Verified stamp: revision after stamp to 'base' = {stamp_rev}")
+                            if stamp_rev is not None:
+                                logger.warning(f"⚠️  Stamp to 'base' did not set revision to None! Got: {stamp_rev}")
+                                # Force it to None by deleting the row
+                                verify_stamp_conn.execute(text("DELETE FROM alembic_version"))
+                                verify_stamp_conn.commit()
+                                logger.info("✓ Deleted revision from alembic_version to force None")
+                        verify_stamp_engine.dispose()
+                        
+                        # Now upgrade to target_revision - this will execute all migrations from base
+                        logger.info(f"Upgrading from 'base' to target revision '{target_revision}'...")
+                        stdout_capture = io.StringIO()
+                        stderr_capture = io.StringIO()
+                        
+                        try:
+                            sys.stdout = stdout_capture
+                            sys.stderr = stderr_capture
                             logger.info(f"Executing command.upgrade(alembic_cfg, '{target_revision}')...")
                             command.upgrade(alembic_cfg, target_revision)
                             logger.info(f"command.upgrade() to {target_revision} completed without exception")
