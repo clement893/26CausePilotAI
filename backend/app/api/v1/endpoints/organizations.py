@@ -1025,7 +1025,7 @@ async def get_organization_database_tables(
             for row in result:
                 tables_detailed.append(TableInfo(
                     name=row[1],
-                    schema=row[0],
+                    table_schema=row[0],
                     table_type=row[2]
                 ))
         

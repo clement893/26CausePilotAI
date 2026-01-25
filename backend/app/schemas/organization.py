@@ -236,8 +236,12 @@ class MigrateDatabaseResponse(BaseModel):
 class TableInfo(BaseModel):
     """Table information"""
     name: str
-    schema: str
+    table_schema: str = Field(..., alias="schema")
     table_type: str = "BASE TABLE"
+    
+    model_config = ConfigDict(
+        populate_by_name=True,  # Allow both schema and table_schema
+    )
     
 class DatabaseTablesResponse(BaseModel):
     """Database tables response"""
