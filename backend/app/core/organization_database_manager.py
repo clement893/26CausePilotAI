@@ -1447,6 +1447,17 @@ class OrganizationDatabaseManager:
                                         base_rev_obj.module.upgrade()
                                         logger.info(f"Upgrade function completed for {base_revision}")
                                         
+                                        # Verify tables were created IMMEDIATELY after upgrade
+                                        result = connection.execute(text("""
+                                            SELECT table_name, table_schema 
+                                            FROM information_schema.tables 
+                                            WHERE table_schema IN ('public', 'information_schema')
+                                            AND table_type = 'BASE TABLE'
+                                            ORDER BY table_schema, table_name
+                                        """))
+                                        tables_after_step1 = [(row[0], row[1]) for row in result]
+                                        logger.info(f"🔍 Tables after step 1 (schema, name): {tables_after_step1}")
+                                        
                                         # Update alembic_version table manually
                                         # Delete any existing row and insert the new revision
                                         connection.execute(text("DELETE FROM alembic_version"))
@@ -1487,6 +1498,17 @@ class OrganizationDatabaseManager:
                                         target_rev_obj.module.upgrade()
                                         logger.info(f"Upgrade function completed for {target_revision}")
                                         
+                                        # Verify tables were created IMMEDIATELY after upgrade
+                                        result = connection.execute(text("""
+                                            SELECT table_name, table_schema 
+                                            FROM information_schema.tables 
+                                            WHERE table_schema IN ('public', 'information_schema')
+                                            AND table_type = 'BASE TABLE'
+                                            ORDER BY table_schema, table_name
+                                        """))
+                                        tables_after_step2 = [(row[0], row[1]) for row in result]
+                                        logger.info(f"🔍 Tables after step 2 (schema, name): {tables_after_step2}")
+                                        
                                         # Update alembic_version table manually
                                         # Delete any existing row and insert the new revision
                                         connection.execute(text("DELETE FROM alembic_version"))
@@ -1495,6 +1517,19 @@ class OrganizationDatabaseManager:
                                         ))
                                         # Note: Transaction will be committed automatically when exiting the 'with' block
                                         logger.info(f"✓ Step 2 completed: executed {target_revision}")
+                                        
+                                        # CRITICAL: Verify transaction is committed by checking tables in a new connection
+                                        # This will help us understand if the transaction is really committed
+                                        logger.info("🔍 Verifying transaction commit by checking tables in same connection...")
+                                        result = connection.execute(text("""
+                                            SELECT table_name 
+                                            FROM information_schema.tables 
+                                            WHERE table_schema = 'public' 
+                                            AND table_type = 'BASE TABLE'
+                                            ORDER BY table_name
+                                        """))
+                                        tables_in_transaction = [row[0] for row in result]
+                                        logger.info(f"🔍 Tables visible in transaction: {tables_in_transaction}")
                                     finally:
                                         # Restore original op
                                         if original_op_in_target is not None:
@@ -1525,24 +1560,55 @@ class OrganizationDatabaseManager:
                             sys.stderr = old_stderr
                         
                         # Immediately verify the revision was applied and check tables
+                        # Wait a moment to ensure transaction is committed
+                        import time
+                        time.sleep(1)
+                        
                         verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                         applied_rev = None
                         tables_after_base = []
                         needs_retry = False
                         
                         with verify_engine.connect() as verify_conn:
+                            # First check current schema
+                            result = verify_conn.execute(text("SELECT current_schema()"))
+                            current_schema = result.scalar_one()
+                            logger.info(f"🔍 Current schema in verification: {current_schema}")
+                            
+                            # Check all schemas for tables
+                            result = verify_conn.execute(text("""
+                                SELECT table_schema, table_name 
+                                FROM information_schema.tables 
+                                WHERE table_type = 'BASE TABLE'
+                                AND table_schema NOT IN ('pg_catalog', 'information_schema')
+                                ORDER BY table_schema, table_name
+                            """))
+                            all_tables_by_schema = [(row[0], row[1]) for row in result]
+                            logger.info(f"🔍 All tables by schema: {all_tables_by_schema}")
+                            
                             result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
                             applied_rev = result.scalar_one_or_none()
                             logger.info(f"✓ Verified: alembic_version table exists with revision: {applied_rev}")
                             
-                            # Check what tables exist after migration
+                            # Check what tables exist after migration in public schema
                             result = verify_conn.execute(text("""
                                 SELECT table_name FROM information_schema.tables 
                                 WHERE table_schema = 'public' 
+                                AND table_type = 'BASE TABLE'
                                 ORDER BY table_name
                             """))
                             tables_after_migration = [row[0] for row in result]
-                            logger.info(f"✓ Tables after migration: {tables_after_migration}")
+                            logger.info(f"✓ Tables after migration in 'public' schema: {tables_after_migration}")
+                            
+                            # Also check if tables exist in other schemas
+                            result = verify_conn.execute(text("""
+                                SELECT DISTINCT table_schema 
+                                FROM information_schema.tables 
+                                WHERE table_type = 'BASE TABLE'
+                                AND table_schema NOT IN ('pg_catalog', 'information_schema')
+                            """))
+                            schemas_with_tables = [row[0] for row in result]
+                            logger.info(f"🔍 Schemas with tables: {schemas_with_tables}")
                             
                             # CRITICAL: Check if Alembic did a stamp instead of upgrade
                             # If revision is set but no tables were created, Alembic did a stamp_revision
