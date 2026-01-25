@@ -338,7 +338,7 @@ class OrganizationDatabaseManager:
         """
         try:
             # Log the original connection string (masked) for debugging (only at debug level to avoid spam)
-            logger.debug(f"Parsing connection string: {cls.mask_connection_string(connection_string)}")
+            # Removed verbose logging to reduce log spam
             
             # CRITICAL: Clean up nested/malformed URLs FIRST before any other processing
             # Pattern: postgresql+asyncpg://user:pass@postgresql://user:pass@host:port/db
@@ -479,8 +479,7 @@ class OrganizationDatabaseManager:
             
             parsed = urlparse(clean_url)
             
-            # Log parsed components for debugging
-            logger.debug(f"Parsed URL - scheme: {parsed.scheme}, netloc: {parsed.netloc}, hostname: {parsed.hostname}, port: {parsed.port}, path: {parsed.path}")
+            # Log parsed components for debugging (removed verbose logging to reduce log spam)
             
             # Additional check: if netloc contains a colon but port is None or empty,
             # manually extract and validate the port
