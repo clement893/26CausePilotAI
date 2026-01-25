@@ -1775,9 +1775,14 @@ class OrganizationDatabaseManager:
                     # Database is at base revision, upgrade to target
                     logger.info(f"Database at base revision {base_revision}, upgrading to {target_revision}...")
                     
-                    # Check tables BEFORE upgrade
+                    # CRITICAL: Check tables BEFORE upgrade with a FRESH connection
                     check_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                     with check_engine.connect() as check_conn:
+                        # Confirm database
+                        result = check_conn.execute(text("SELECT current_database()"))
+                        check_db_before = result.scalar()
+                        logger.info(f"🔍 Vérification AVANT upgrade dans la base: '{check_db_before}'")
+                        
                         result = check_conn.execute(text("""
                             SELECT table_schema, table_name 
                             FROM information_schema.tables 
@@ -1786,9 +1791,21 @@ class OrganizationDatabaseManager:
                             ORDER BY table_schema, table_name
                         """))
                         tables_before = [(row[0], row[1]) for row in result]
-                        logger.info(f"🔍 Tables BEFORE upgrade: {tables_before}")
+                        logger.info(f"🔍 Tables AVANT upgrade: {tables_before}")
+                        
+                        # Check if donors table exists
+                        result = check_conn.execute(text("""
+                            SELECT table_name 
+                            FROM information_schema.tables 
+                            WHERE table_schema = 'public' 
+                            AND table_name = 'donors'
+                        """))
+                        donors_exists = result.fetchone() is not None
+                        logger.info(f"🔍 Table 'donors' existe AVANT upgrade: {donors_exists}")
                     check_engine.dispose()
                     
+                    # If tables already exist, we still need to run the upgrade to ensure they're properly created
+                    # But first, let's verify they're REALLY there with a completely fresh connection
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
                     try:
                         command.upgrade(alembic_cfg, target_revision)
