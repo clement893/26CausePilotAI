@@ -1374,227 +1374,61 @@ class OrganizationDatabaseManager:
                     finally:
                         check_engine.dispose()
                     
-                    # CRITICAL FIX: For empty databases, Alembic may do a stamp_revision instead of upgrade
-                    # when there are multiple migration heads. The issue is that Alembic detects multiple heads
-                    # and tries to resolve them by stamping instead of upgrading.
-                    # Solution: Execute migrations directly by importing their modules and calling upgrade()
-                    # functions with a properly configured Alembic context
-                    logger.info(f"Executing migrations directly to bypass Alembic's stamp_revision detection...")
+                    # CRITICAL FIX: For empty databases, we must create alembic_version table first
+                    # Alembic's command.upgrade() tries to read alembic_version before executing migrations
+                    # Solution: Use command.stamp() to initialize alembic_version with None, then upgrade
+                    logger.info("Initializing alembic_version table for empty database...")
                     try:
-                        from alembic.script import ScriptDirectory
-                        from alembic import context as alembic_context
-                        import sys
-                        import io
+                        # Stamp the database with None (empty state) to create alembic_version table
+                        # This allows Alembic to track migrations from scratch
+                        command.stamp(alembic_cfg, None)
+                        logger.info("✓ Successfully initialized alembic_version table with None")
                         
-                        old_stdout = sys.stdout
-                        old_stderr = sys.stderr
-                        stdout_capture = io.StringIO()
-                        stderr_capture = io.StringIO()
+                        # Now we can safely call upgrade() - Alembic will execute all migrations from None to target
+                        logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
+                        command.upgrade(alembic_cfg, target_revision)
+                        logger.info(f"✓ Successfully upgraded to {target_revision}")
                         
-                        try:
-                            sys.stdout = stdout_capture
-                            sys.stderr = stderr_capture
+                        # Verify the migration was applied
+                        verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                        with verify_engine.connect() as verify_conn:
+                            result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
+                            applied_rev = result.scalar_one_or_none()
+                            logger.info(f"✓ Verified: alembic_version table has revision: {applied_rev}")
                             
-                            # Create engine and connection
-                            migration_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
-                            
-                            # Get script directory
-                            script = ScriptDirectory.from_config(alembic_cfg)
-                            
-                            # Get the migration revision objects
-                            base_rev_obj = script.get_revision(base_revision)
-                            target_rev_obj = script.get_revision(target_revision)
-                            
-                            # Check current revision and prepare database
-                            with migration_engine.connect() as migration_conn:
-                                # Ensure alembic_version table exists
-                                migration_conn.execute(text("""
-                                    CREATE TABLE IF NOT EXISTS alembic_version (
-                                        version_num VARCHAR(32) NOT NULL,
-                                        CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
-                                    )
-                                """))
-                                migration_conn.commit()
-                                
-                                # Check current revision
-                                result = migration_conn.execute(text("SELECT version_num FROM alembic_version"))
-                                current_rev = result.scalar_one_or_none()
-                                logger.info(f"Current revision in database: {current_rev}")
-                                
-                                # If database is empty, drop alembic_version table to force real upgrade
-                                if current_rev is None:
-                                    logger.info(f"Database is empty, dropping alembic_version table to force real upgrade...")
-                                    migration_conn.execute(text("DROP TABLE IF EXISTS alembic_version"))
-                                    migration_conn.commit()
-                                    logger.info(f"✓ Dropped alembic_version table")
-                            
-                            # Execute migrations directly using Alembic's runtime API
-                            # This bypasses command.upgrade() which does stamp_revision with multiple heads
-                            if current_rev is None:
-                                logger.info(f"Executing migrations directly using Alembic runtime API...")
-                                
-                                # Ensure alembic_version table exists
-                                cls._ensure_alembic_version_table(alembic_db_url)
-                                
-                                # Import Alembic runtime modules
-                                from alembic.runtime.migration import MigrationContext
-                                from alembic.script import ScriptDirectory
-                                from alembic.operations import Operations
-                                
-                                # Create engine and connection
-                                manual_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
-                                with manual_engine.begin() as connection:
-                                    # Get script directory
-                                    script_dir = ScriptDirectory.from_config(alembic_cfg)
-                                    
-                                    # Get migration modules
-                                    base_rev_obj = script_dir.get_revision(base_revision)
-                                    target_rev_obj = script_dir.get_revision(target_revision)
-                                    
-                                    logger.info(f"Step 1: Executing migration {base_revision} directly...")
-                                    
-                                    # Create migration context
-                                    migration_context = MigrationContext.configure(connection)
-                                    
-                                    # Create Operations object with the migration context
-                                    # This allows us to use op operations
-                                    ops = Operations(migration_context)
-                                    
-                                    # Ensure op.get_bind() works by adding it if it doesn't exist
-                                    # Operations should have get_bind() but let's make sure
-                                    if not hasattr(ops, 'get_bind'):
-                                        def get_bind():
-                                            return connection
-                                        ops.get_bind = get_bind
-                                    
-                                    # Patch op in the migration module to use our Operations object
-                                    # Use the module directly instead of sys.modules
-                                    migration_module = base_rev_obj.module
-                                    original_op_in_module = getattr(migration_module, 'op', None)
-                                    setattr(migration_module, 'op', ops)
-                                    
-                                    try:
-                                        # Execute base migration upgrade function directly
-                                        logger.info(f"Executing upgrade() function for {base_revision}...")
-                                        base_rev_obj.module.upgrade()
-                                        logger.info(f"Upgrade function completed for {base_revision}")
-                                        
-                                        # Verify tables were created IMMEDIATELY after upgrade
-                                        result = connection.execute(text("""
-                                            SELECT table_name, table_schema 
-                                            FROM information_schema.tables 
-                                            WHERE table_schema IN ('public', 'information_schema')
-                                            AND table_type = 'BASE TABLE'
-                                            ORDER BY table_schema, table_name
-                                        """))
-                                        tables_after_step1 = [(row[0], row[1]) for row in result]
-                                        logger.info(f"🔍 Tables after step 1 (schema, name): {tables_after_step1}")
-                                        
-                                        # Update alembic_version table manually
-                                        # Delete any existing row and insert the new revision
-                                        connection.execute(text("DELETE FROM alembic_version"))
-                                        connection.execute(text(
-                                            f"INSERT INTO alembic_version (version_num) VALUES ('{base_revision}')"
-                                        ))
-                                        # Note: Transaction will be committed automatically when exiting the 'with' block
-                                        logger.info(f"✓ Step 1 completed: executed {base_revision}")
-                                    finally:
-                                        # Restore original op
-                                        if original_op_in_module is not None:
-                                            setattr(migration_module, 'op', original_op_in_module)
-                                        else:
-                                            if hasattr(migration_module, 'op'):
-                                                delattr(migration_module, 'op')
-                                    
-                                    # Step 2: Execute target migration
-                                    logger.info(f"Step 2: Executing migration {target_revision} directly...")
-                                    
-                                    # Reconfigure context for target migration
-                                    migration_context = MigrationContext.configure(connection)
-                                    ops = Operations(migration_context)
-                                    
-                                    # Ensure op.get_bind() works by adding it if it doesn't exist
-                                    if not hasattr(ops, 'get_bind'):
-                                        def get_bind():
-                                            return connection
-                                        ops.get_bind = get_bind
-                                    
-                                    # Patch op in the target migration module
-                                    target_migration_module = target_rev_obj.module
-                                    original_op_in_target = getattr(target_migration_module, 'op', None)
-                                    setattr(target_migration_module, 'op', ops)
-                                    
-                                    try:
-                                        # Execute target migration upgrade function directly
-                                        logger.info(f"Executing upgrade() function for {target_revision}...")
-                                        target_rev_obj.module.upgrade()
-                                        logger.info(f"Upgrade function completed for {target_revision}")
-                                        
-                                        # Verify tables were created IMMEDIATELY after upgrade
-                                        result = connection.execute(text("""
-                                            SELECT table_name, table_schema 
-                                            FROM information_schema.tables 
-                                            WHERE table_schema IN ('public', 'information_schema')
-                                            AND table_type = 'BASE TABLE'
-                                            ORDER BY table_schema, table_name
-                                        """))
-                                        tables_after_step2 = [(row[0], row[1]) for row in result]
-                                        logger.info(f"🔍 Tables after step 2 (schema, name): {tables_after_step2}")
-                                        
-                                        # Update alembic_version table manually
-                                        # Delete any existing row and insert the new revision
-                                        connection.execute(text("DELETE FROM alembic_version"))
-                                        connection.execute(text(
-                                            f"INSERT INTO alembic_version (version_num) VALUES ('{target_revision}')"
-                                        ))
-                                        # Note: Transaction will be committed automatically when exiting the 'with' block
-                                        logger.info(f"✓ Step 2 completed: executed {target_revision}")
-                                        
-                                        # CRITICAL: Verify transaction is committed by checking tables in a new connection
-                                        # This will help us understand if the transaction is really committed
-                                        logger.info("🔍 Verifying transaction commit by checking tables in same connection...")
-                                        result = connection.execute(text("""
-                                            SELECT table_name 
-                                            FROM information_schema.tables 
-                                            WHERE table_schema = 'public' 
-                                            AND table_type = 'BASE TABLE'
-                                            ORDER BY table_name
-                                        """))
-                                        tables_in_transaction = [row[0] for row in result]
-                                        logger.info(f"🔍 Tables visible in transaction: {tables_in_transaction}")
-                                    finally:
-                                        # Restore original op
-                                        if original_op_in_target is not None:
-                                            setattr(target_migration_module, 'op', original_op_in_target)
-                                        else:
-                                            if hasattr(target_migration_module, 'op'):
-                                                delattr(target_migration_module, 'op')
-                                
-                                manual_engine.dispose()
-                            else:
-                                # Database has a revision, upgrade normally using command.upgrade()
-                                logger.info(f"Database has revision {current_rev}, upgrading to {target_revision}...")
+                            # Also check if tables were created
+                            result = verify_conn.execute(text("""
+                                SELECT table_name FROM information_schema.tables 
+                                WHERE table_schema = 'public' 
+                                ORDER BY table_name
+                            """))
+                            tables_created = [row[0] for row in result]
+                            logger.info(f"✓ Tables created after migration: {tables_created}")
+                        verify_engine.dispose()
+                    except Exception as migration_err:
+                        logger.error(f"✗ Failed to execute migrations: {migration_err}", exc_info=True)
+                        logger.error(f"Error type: {type(migration_err).__name__}")
+                        logger.error(f"Error message: {str(migration_err)}")
+                        
+                        # If stamp with None fails, try stamping with base_revision instead
+                        if "alembic_version" in str(migration_err).lower() and "does not exist" in str(migration_err).lower():
+                            logger.info("Retrying with stamp to base_revision instead of None...")
+                            try:
+                                command.stamp(alembic_cfg, base_revision)
+                                logger.info(f"✓ Stamped to {base_revision}, now upgrading to {target_revision}...")
                                 command.upgrade(alembic_cfg, target_revision)
-                            
-                            migration_engine.dispose()
-                            
-                            # Get the output
-                            stdout_output = stdout_capture.getvalue()
-                            stderr_output = stderr_capture.getvalue()
-                            
-                            # Log the output
-                            if stdout_output:
-                                logger.info(f"Alembic stdout: {stdout_output}")
-                            if stderr_output:
-                                logger.info(f"Alembic stderr: {stderr_output}")
-                        finally:
-                            sys.stdout = old_stdout
-                            sys.stderr = old_stderr
-                        
-                        # Immediately verify the revision was applied and check tables
-                        # Wait a moment to ensure transaction is committed
-                        import time
-                        time.sleep(1)
+                                logger.info(f"✓ Successfully upgraded to {target_revision}")
+                            except Exception as retry_err:
+                                logger.error(f"✗ Retry also failed: {retry_err}", exc_info=True)
+                                raise ValueError(
+                                    f"Échec de l'exécution des migrations: {str(retry_err)}. "
+                                    f"Vérifiez les logs du backend pour plus de détails."
+                                ) from retry_err
+                        else:
+                            raise ValueError(
+                                f"Échec de l'exécution des migrations: {str(migration_err)}. "
+                                f"Vérifiez les logs du backend pour plus de détails."
+                            ) from migration_err
                         
                         verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                         applied_rev = None
