@@ -1066,6 +1066,12 @@ class OrganizationDatabaseManager:
             # Log the connection string (masked) for debugging
             logger.info(f"Migration target database URL: {cls.mask_connection_string(alembic_db_url)}")
             
+            # For organization databases, we need to apply only the organization-specific migrations
+            # These migrations start with add_donor_tables_001 and end with add_donor_crm_002
+            # We'll try to upgrade to the specific revision for organization databases
+            target_revision = "add_donor_crm_002"  # Latest organization database migration
+            base_revision = "add_donor_tables_001"  # Base revision for organization databases
+            
             # Check current revision before migration and verify migrations exist
             try:
                 from alembic.script import ScriptDirectory
@@ -1117,12 +1123,6 @@ class OrganizationDatabaseManager:
                     f"Erreur lors de la vérification des migrations: {str(script_error)}. "
                     f"Vérifiez que le répertoire backend/alembic/versions/ existe et contient les migrations."
                 ) from script_error
-            
-            # For organization databases, we need to apply only the organization-specific migrations
-            # These migrations start with add_donor_tables_001 and end with add_donor_crm_002
-            # We'll try to upgrade to the specific revision for organization databases
-            target_revision = "add_donor_crm_002"  # Latest organization database migration
-            base_revision = "add_donor_tables_001"  # Base revision for organization databases
             
             logger.info(f"Running migrations for organization database, target revision: {target_revision}")
             logger.info(f"Connection string (masked): {cls.mask_connection_string(db_connection_string)}")
