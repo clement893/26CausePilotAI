@@ -190,52 +190,77 @@ async def get_donor(
     current_user: User = Depends(get_current_user),
 ):
     """Get donor by ID"""
-    query = select(Donor).where(Donor.id == donor_id)
-    result = await org_db.execute(query)
-    donor = result.scalar_one_or_none()
+    from sqlalchemy.exc import ProgrammingError, OperationalError
     
-    if not donor:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Donor not found"
+    try:
+        # Build query - always filter by organization_id to ensure donor belongs to organization
+        query = select(Donor).where(
+            and_(
+                Donor.id == donor_id,
+                Donor.organization_id == organization_id
+            )
         )
-    
-    # Calculate additional stats
-    donations_query = select(Donation).where(Donation.donor_id == donor_id)
-    donations_result = await org_db.execute(donations_query)
-    donations = donations_result.scalars().all()
-    
-    avg_donation = None
-    last_donation_amount = None
-    
-    if donations:
-        completed_donations = [d for d in donations if d.payment_status == 'completed']
-        if completed_donations:
-            total = sum(d.amount for d in completed_donations)
-            avg_donation = total / len(completed_donations)
-            
-            # Get last donation
-            last_donation = max(completed_donations, key=lambda d: d.payment_date or d.created_at)
-            last_donation_amount = last_donation.amount
-    
-    # Convert donor to dict and map extra_data to metadata
-    donor_dict = {
-        **{k: v for k, v in donor.__dict__.items() if not k.startswith('_')},
-    }
-    
-    # Convert Decimal fields to strings for API
-    if 'total_donated' in donor_dict and donor_dict['total_donated'] is not None:
-        donor_dict['total_donated'] = str(donor_dict['total_donated'])
-    
-    # Map extra_data to metadata for API response
-    if 'extra_data' in donor_dict:
-        donor_dict['metadata'] = donor_dict.pop('extra_data')
-    
-    # Add calculated stats
-    donor_dict['average_donation'] = str(avg_donation) if avg_donation else None
-    donor_dict['last_donation_amount'] = str(last_donation_amount) if last_donation_amount else None
-    
-    return DonorWithStats(**donor_dict)
+        result = await org_db.execute(query)
+        donor = result.scalar_one_or_none()
+        
+        if not donor:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Donor not found"
+            )
+        
+        # Calculate additional stats
+        donations_query = select(Donation).where(Donation.donor_id == donor_id)
+        donations_result = await org_db.execute(donations_query)
+        donations = donations_result.scalars().all()
+        
+        avg_donation = None
+        last_donation_amount = None
+        
+        if donations:
+            completed_donations = [d for d in donations if d.payment_status == 'completed']
+            if completed_donations:
+                total = sum(d.amount for d in completed_donations)
+                avg_donation = total / len(completed_donations)
+                
+                # Get last donation
+                last_donation = max(completed_donations, key=lambda d: d.payment_date or d.created_at)
+                last_donation_amount = last_donation.amount
+        
+        # Convert donor to dict and map extra_data to metadata
+        donor_dict = {
+            **{k: v for k, v in donor.__dict__.items() if not k.startswith('_')},
+        }
+        
+        # Convert Decimal fields to strings for API
+        if 'total_donated' in donor_dict and donor_dict['total_donated'] is not None:
+            donor_dict['total_donated'] = str(donor_dict['total_donated'])
+        
+        # Map extra_data to metadata for API response
+        if 'extra_data' in donor_dict:
+            donor_dict['metadata'] = donor_dict.pop('extra_data')
+        
+        # Add calculated stats
+        donor_dict['average_donation'] = str(avg_donation) if avg_donation else None
+        donor_dict['last_donation_amount'] = str(last_donation_amount) if last_donation_amount else None
+        
+        return DonorWithStats(**donor_dict)
+        
+    except (ProgrammingError, OperationalError) as e:
+        error_msg = str(e).lower()
+        if "does not exist" in error_msg or "relation" in error_msg:
+            # Table doesn't exist - migrations needed
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    "Database tables not found. Please run migrations on the organization database. "
+                    f"Use POST /api/v1/organizations/{organization_id}/database/migrate to run migrations."
+                )
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
 
 
 @router.post("/{organization_id}/donors", response_model=DonorSchema, status_code=status.HTTP_201_CREATED)
@@ -390,49 +415,73 @@ async def list_donor_donations(
     current_user: User = Depends(get_current_user),
 ):
     """List donations for a donor"""
-    # Verify donor exists
-    donor_query = select(Donor).where(Donor.id == donor_id)
-    donor_result = await org_db.execute(donor_query)
-    donor = donor_result.scalar_one_or_none()
+    from sqlalchemy.exc import ProgrammingError, OperationalError
     
-    if not donor:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Donor not found"
+    try:
+        # Verify donor exists and belongs to organization
+        donor_query = select(Donor).where(
+            and_(
+                Donor.id == donor_id,
+                Donor.organization_id == organization_id
+            )
         )
-    
-    # Build query
-    query = select(Donation).where(Donation.donor_id == donor_id)
-    
-    if payment_status:
-        query = query.where(Donation.payment_status == payment_status)
-    
-    # Get total count - build count query with same filters
-    count_query = select(func.count(Donation.id)).where(Donation.donor_id == donor_id)
-    if payment_status:
-        count_query = count_query.where(Donation.payment_status == payment_status)
-    
-    total_result = await org_db.execute(count_query)
-    total = total_result.scalar_one() or 0
-    
-    # Apply pagination
-    offset = (page - 1) * page_size
-    query = query.order_by(Donation.payment_date.desc(), Donation.created_at.desc()).offset(offset).limit(page_size)
-    
-    # Execute query
-    result = await org_db.execute(query)
-    donations = result.scalars().all()
-    
-    # Calculate total pages
-    total_pages = (total + page_size - 1) // page_size
-    
-    return {
-        "items": donations,
-        "total": total,
-        "page": page,
-        "page_size": page_size,
-        "total_pages": total_pages,
-    }
+        donor_result = await org_db.execute(donor_query)
+        donor = donor_result.scalar_one_or_none()
+        
+        if not donor:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Donor not found"
+            )
+        
+        # Build query
+        query = select(Donation).where(Donation.donor_id == donor_id)
+        
+        if payment_status:
+            query = query.where(Donation.payment_status == payment_status)
+        
+        # Get total count - build count query with same filters
+        count_query = select(func.count(Donation.id)).where(Donation.donor_id == donor_id)
+        if payment_status:
+            count_query = count_query.where(Donation.payment_status == payment_status)
+        
+        total_result = await org_db.execute(count_query)
+        total = total_result.scalar_one() or 0
+        
+        # Apply pagination
+        offset = (page - 1) * page_size
+        query = query.order_by(Donation.payment_date.desc(), Donation.created_at.desc()).offset(offset).limit(page_size)
+        
+        # Execute query
+        result = await org_db.execute(query)
+        donations = result.scalars().all()
+        
+        # Calculate total pages
+        total_pages = (total + page_size - 1) // page_size
+        
+        return {
+            "items": donations,
+            "total": total,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+        }
+        
+    except (ProgrammingError, OperationalError) as e:
+        error_msg = str(e).lower()
+        if "does not exist" in error_msg or "relation" in error_msg:
+            # Table doesn't exist - migrations needed
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    "Database tables not found. Please run migrations on the organization database. "
+                    f"Use POST /api/v1/organizations/{organization_id}/database/migrate to run migrations."
+                )
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
 
 
 @router.post("/{organization_id}/donors/{donor_id}/donations", response_model=DonationSchema, status_code=status.HTTP_201_CREATED)
@@ -665,33 +714,57 @@ async def get_donor_history(
     current_user: User = Depends(get_current_user),
 ):
     """Get donor history (donations + activities)"""
-    # Verify donor exists
-    donor_query = select(Donor).where(Donor.id == donor_id)
-    donor_result = await org_db.execute(donor_query)
-    donor = donor_result.scalar_one_or_none()
+    from sqlalchemy.exc import ProgrammingError, OperationalError
     
-    if not donor:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Donor not found"
+    try:
+        # Verify donor exists and belongs to organization
+        donor_query = select(Donor).where(
+            and_(
+                Donor.id == donor_id,
+                Donor.organization_id == organization_id
+            )
         )
-    
-    # Get donations
-    donations_query = select(Donation).where(Donation.donor_id == donor_id).order_by(Donation.payment_date.desc(), Donation.created_at.desc())
-    donations_result = await org_db.execute(donations_query)
-    donations = donations_result.scalars().all()
-    
-    # Get activities
-    activities_query = select(DonorActivity).where(DonorActivity.donor_id == donor_id).order_by(DonorActivity.created_at.desc())
-    activities_result = await org_db.execute(activities_query)
-    activities = activities_result.scalars().all()
-    
-    return {
-        "donations": donations,
-        "activities": activities,
-        "total_donations": len(donations),
-        "total_activities": len(activities),
-    }
+        donor_result = await org_db.execute(donor_query)
+        donor = donor_result.scalar_one_or_none()
+        
+        if not donor:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Donor not found"
+            )
+        
+        # Get donations
+        donations_query = select(Donation).where(Donation.donor_id == donor_id).order_by(Donation.payment_date.desc(), Donation.created_at.desc())
+        donations_result = await org_db.execute(donations_query)
+        donations = donations_result.scalars().all()
+        
+        # Get activities
+        activities_query = select(DonorActivity).where(DonorActivity.donor_id == donor_id).order_by(DonorActivity.created_at.desc())
+        activities_result = await org_db.execute(activities_query)
+        activities = activities_result.scalars().all()
+        
+        return {
+            "donations": donations,
+            "activities": activities,
+            "total_donations": len(donations),
+            "total_activities": len(activities),
+        }
+        
+    except (ProgrammingError, OperationalError) as e:
+        error_msg = str(e).lower()
+        if "does not exist" in error_msg or "relation" in error_msg:
+            # Table doesn't exist - migrations needed
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    "Database tables not found. Please run migrations on the organization database. "
+                    f"Use POST /api/v1/organizations/{organization_id}/database/migrate to run migrations."
+                )
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
+        )
 
 
 @router.get("/{organization_id}/donors/{donor_id}/stats", response_model=DonorStats)
@@ -703,50 +776,74 @@ async def get_donor_stats(
     current_user: User = Depends(get_current_user),
 ):
     """Get donor statistics"""
-    # Verify donor exists
-    donor_query = select(Donor).where(Donor.id == donor_id)
-    donor_result = await org_db.execute(donor_query)
-    donor = donor_result.scalar_one_or_none()
+    from sqlalchemy.exc import ProgrammingError, OperationalError
     
-    if not donor:
+    try:
+        # Verify donor exists and belongs to organization
+        donor_query = select(Donor).where(
+            and_(
+                Donor.id == donor_id,
+                Donor.organization_id == organization_id
+            )
+        )
+        donor_result = await org_db.execute(donor_query)
+        donor = donor_result.scalar_one_or_none()
+        
+        if not donor:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Donor not found"
+            )
+        
+        # Get all completed donations
+        donations_query = select(Donation).where(
+            and_(
+                Donation.donor_id == donor_id,
+                Donation.payment_status == 'completed'
+            )
+        )
+        donations_result = await org_db.execute(donations_query)
+        donations = donations_result.scalars().all()
+        
+        from datetime import datetime, timezone
+        now = datetime.now(timezone.utc)
+        this_year_start = datetime(now.year, 1, 1, tzinfo=timezone.utc)
+        this_month_start = datetime(now.year, now.month, 1, tzinfo=timezone.utc)
+        
+        this_year_donations = [d for d in donations if (d.payment_date or d.created_at) >= this_year_start]
+        this_month_donations = [d for d in donations if (d.payment_date or d.created_at) >= this_month_start]
+        
+        amounts = [d.amount for d in donations] if donations else []
+        
+        return {
+            "total_donated": str(donor.total_donated or Decimal('0.00')),
+            "donation_count": donor.donation_count or 0,
+            "average_donation": str(sum(amounts) / len(amounts) if amounts else Decimal('0.00')),
+            "first_donation_date": donor.first_donation_date,
+            "last_donation_date": donor.last_donation_date,
+            "last_donation_amount": str(amounts[-1]) if amounts else None,
+            "largest_donation": str(max(amounts)) if amounts else None,
+            "this_year_total": str(sum(d.amount for d in this_year_donations)),
+            "this_year_count": len(this_year_donations),
+            "this_month_total": str(sum(d.amount for d in this_month_donations)),
+            "this_month_count": len(this_month_donations),
+        }
+        
+    except (ProgrammingError, OperationalError) as e:
+        error_msg = str(e).lower()
+        if "does not exist" in error_msg or "relation" in error_msg:
+            # Table doesn't exist - migrations needed
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=(
+                    "Database tables not found. Please run migrations on the organization database. "
+                    f"Use POST /api/v1/organizations/{organization_id}/database/migrate to run migrations."
+                )
+            )
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Donor not found"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(e)}"
         )
-    
-    # Get all completed donations
-    donations_query = select(Donation).where(
-        and_(
-            Donation.donor_id == donor_id,
-            Donation.payment_status == 'completed'
-        )
-    )
-    donations_result = await org_db.execute(donations_query)
-    donations = donations_result.scalars().all()
-    
-    from datetime import datetime, timezone
-    now = datetime.now(timezone.utc)
-    this_year_start = datetime(now.year, 1, 1, tzinfo=timezone.utc)
-    this_month_start = datetime(now.year, now.month, 1, tzinfo=timezone.utc)
-    
-    this_year_donations = [d for d in donations if (d.payment_date or d.created_at) >= this_year_start]
-    this_month_donations = [d for d in donations if (d.payment_date or d.created_at) >= this_month_start]
-    
-    amounts = [d.amount for d in donations] if donations else []
-    
-    return {
-        "total_donated": str(donor.total_donated or Decimal('0.00')),
-        "donation_count": donor.donation_count or 0,
-        "average_donation": str(sum(amounts) / len(amounts) if amounts else Decimal('0.00')),
-        "first_donation_date": donor.first_donation_date,
-        "last_donation_date": donor.last_donation_date,
-        "last_donation_amount": str(amounts[-1]) if amounts else None,
-        "largest_donation": str(max(amounts)) if amounts else None,
-        "this_year_total": str(sum(d.amount for d in this_year_donations)),
-        "this_year_count": len(this_year_donations),
-        "this_month_total": str(sum(d.amount for d in this_month_donations)),
-        "this_month_count": len(this_month_donations),
-    }
 
 
 # ============= Tags Endpoints =============
