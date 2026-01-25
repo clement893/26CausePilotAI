@@ -1399,18 +1399,12 @@ class OrganizationDatabaseManager:
                             # Now use command.upgrade() outside the connection block
                             # This allows Alembic to create its own connection via env.py
                             if current_rev is None:
-                                logger.info(f"Upgrading using command.upgrade() in two steps...")
+                                logger.info(f"Upgrading using command.upgrade() with explicit revision path...")
                                 
-                                # CRITICAL: First stamp the database to 'base' to force Alembic to do a real upgrade
-                                # Without this, Alembic may try to do a stamp_revision instead of upgrade
-                                # when it sees multiple heads in the migration history
-                                logger.info(f"Stamping database to 'base' to force real upgrade...")
-                                command.stamp(alembic_cfg, 'base')
-                                logger.info(f"✓ Database stamped to 'base'")
-                                
-                                # Step 1: Upgrade to base_revision first
-                                # This ensures Alembic executes the migration instead of stamping
-                                logger.info(f"Step 1: Upgrading to base revision {base_revision}...")
+                                # CRITICAL: Use explicit revision path to avoid stamp_revision
+                                # Upgrade from 'base' to base_revision first, then to target_revision
+                                # This forces Alembic to execute migrations instead of stamping
+                                logger.info(f"Step 1: Upgrading from 'base' to {base_revision}...")
                                 command.upgrade(alembic_cfg, base_revision)
                                 logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
                                 
