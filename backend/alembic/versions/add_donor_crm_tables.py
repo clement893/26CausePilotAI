@@ -33,16 +33,16 @@ def upgrade() -> None:
     if 'donor_segments' not in existing_tables:
         op.create_table(
             'donor_segments',
-        sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
-        sa.Column('organization_id', postgresql.UUID(as_uuid=True), nullable=False),
-        sa.Column('name', sa.String(255), nullable=False),
-        sa.Column('description', sa.Text, nullable=True),
-        sa.Column('criteria', postgresql.JSON, default=dict),
-        sa.Column('is_automatic', sa.Boolean, default=False, nullable=False),
-        sa.Column('color', sa.String(7), nullable=True),
-        sa.Column('donor_count', sa.Integer, default=0, nullable=False),
-        sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(), nullable=False),
+            sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True),
+            sa.Column('organization_id', postgresql.UUID(as_uuid=True), nullable=False),
+            sa.Column('name', sa.String(255), nullable=False),
+            sa.Column('description', sa.Text, nullable=True),
+            sa.Column('criteria', postgresql.JSON, default=dict),
+            sa.Column('is_automatic', sa.Boolean, default=False, nullable=False),
+            sa.Column('color', sa.String(7), nullable=True),
+            sa.Column('donor_count', sa.Integer, default=0, nullable=False),
+            sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+            sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(), nullable=False),
         )
         
         op.create_index('ix_donor_segments_id', 'donor_segments', ['id'])
