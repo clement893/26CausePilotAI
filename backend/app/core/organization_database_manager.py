@@ -1439,8 +1439,10 @@ class OrganizationDatabaseManager:
                                         base_rev_obj.module.upgrade()
                                         
                                         # Update alembic_version table manually
+                                        # Delete any existing row and insert the new revision
+                                        connection.execute(text("DELETE FROM alembic_version"))
                                         connection.execute(text(
-                                            f"UPDATE alembic_version SET version_num = '{base_revision}'"
+                                            f"INSERT INTO alembic_version (version_num) VALUES ('{base_revision}')"
                                         ))
                                         logger.info(f"✓ Step 1 completed: executed {base_revision}")
                                     finally:
@@ -1468,8 +1470,10 @@ class OrganizationDatabaseManager:
                                         target_rev_obj.module.upgrade()
                                         
                                         # Update alembic_version table manually
+                                        # Delete any existing row and insert the new revision
+                                        connection.execute(text("DELETE FROM alembic_version"))
                                         connection.execute(text(
-                                            f"UPDATE alembic_version SET version_num = '{target_revision}'"
+                                            f"INSERT INTO alembic_version (version_num) VALUES ('{target_revision}')"
                                         ))
                                         logger.info(f"✓ Step 2 completed: executed {target_revision}")
                                     finally:
