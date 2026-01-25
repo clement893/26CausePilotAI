@@ -1345,9 +1345,9 @@ class OrganizationDatabaseManager:
                     # CRITICAL FIX: For empty databases, Alembic may do a stamp_revision instead of upgrade
                     # when there are multiple migration heads. To force a real upgrade, we need to:
                     # 1. Ensure alembic_version table doesn't exist (already done above)
-                    # 2. Upgrade step by step: first to base_revision, then to target_revision
-                    #    This forces Alembic to execute migrations instead of stamping
-                    logger.info(f"Upgrading step by step: first to '{base_revision}', then to '{target_revision}'...")
+                    # 2. Use command.upgrade() with explicit revision path to force execution
+                    #    The key is to upgrade from 'base' explicitly, not from None
+                    logger.info(f"Upgrading from 'base' to '{base_revision}', then to '{target_revision}'...")
                     try:
                         import sys
                         import io
@@ -1359,7 +1359,14 @@ class OrganizationDatabaseManager:
                         try:
                             sys.stdout = stdout_capture
                             sys.stderr = stderr_capture
-                            # First upgrade to base_revision - this will create alembic_version and execute first migration
+                            
+                            # CRITICAL: First, explicitly stamp to 'base' to ensure Alembic knows the database is empty
+                            # This prevents Alembic from trying to do a stamp_revision
+                            logger.info(f"Step 0: Stamping database to 'base' to ensure clean state...")
+                            command.stamp(alembic_cfg, 'base')
+                            logger.info(f"✓ Database stamped to 'base'")
+                            
+                            # Now upgrade to base_revision - this will execute the first migration
                             logger.info(f"Step 1: Executing command.upgrade(alembic_cfg, '{base_revision}')...")
                             command.upgrade(alembic_cfg, base_revision)
                             logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
