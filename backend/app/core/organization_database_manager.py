@@ -1345,12 +1345,15 @@ class OrganizationDatabaseManager:
                     # CRITICAL FIX: For empty databases, Alembic may do a stamp_revision instead of upgrade
                     # when there are multiple migration heads. The issue is that Alembic detects multiple heads
                     # and tries to resolve them by stamping instead of upgrading.
-                    # Solution: Use command.upgrade() but ensure alembic_version table doesn't exist first,
-                    # and use a specific revision path that forces execution
-                    logger.info(f"Upgrading to '{base_revision}', then to '{target_revision}'...")
+                    # Solution: Execute migrations directly by importing their modules and calling upgrade()
+                    # functions with a properly configured Alembic context
+                    logger.info(f"Executing migrations directly to bypass Alembic's stamp_revision detection...")
                     try:
+                        from alembic.script import ScriptDirectory
+                        from alembic import context as alembic_context
                         import sys
                         import io
+                        
                         old_stdout = sys.stdout
                         old_stderr = sys.stderr
                         stdout_capture = io.StringIO()
@@ -1360,20 +1363,84 @@ class OrganizationDatabaseManager:
                             sys.stdout = stdout_capture
                             sys.stderr = stderr_capture
                             
-                            # CRITICAL: Do NOT stamp to 'base' - this causes Alembic to do stamp_revision
-                            # Instead, ensure alembic_version table doesn't exist and let Alembic create it
-                            # during the first upgrade
+                            # Create engine and connection
+                            migration_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                             
-                            # First upgrade to base_revision - this will create alembic_version and execute first migration
-                            logger.info(f"Step 1: Executing command.upgrade(alembic_cfg, '{base_revision}')...")
-                            logger.info(f"  Note: alembic_version table should not exist at this point")
-                            command.upgrade(alembic_cfg, base_revision)
-                            logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
+                            with migration_engine.connect() as migration_conn:
+                                # Get script directory
+                                script = ScriptDirectory.from_config(alembic_cfg)
+                                
+                                # Get the migration revision objects
+                                base_rev_obj = script.get_revision(base_revision)
+                                target_rev_obj = script.get_revision(target_revision)
+                                
+                                # Ensure alembic_version table exists
+                                migration_conn.execute(text("""
+                                    CREATE TABLE IF NOT EXISTS alembic_version (
+                                        version_num VARCHAR(32) NOT NULL,
+                                        CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
+                                    )
+                                """))
+                                migration_conn.commit()
+                                
+                                # Check current revision
+                                result = migration_conn.execute(text("SELECT version_num FROM alembic_version"))
+                                current_rev = result.scalar_one_or_none()
+                                logger.info(f"Current revision in database: {current_rev}")
+                                
+                                # If database is empty, execute migrations manually
+                                if current_rev is None:
+                                    logger.info(f"Database is empty, executing migrations manually...")
+                                    
+                                    # Configure Alembic context for op.get_bind()
+                                    alembic_context.configure(
+                                        connection=migration_conn,
+                                        target_metadata=None,
+                                        script=script,
+                                    )
+                                    
+                                    # Execute base migration
+                                    logger.info(f"Step 1: Executing migration {base_revision}...")
+                                    with migration_conn.begin():
+                                        # Get the migration module from the script directory
+                                        # The module is already loaded in base_rev_obj.module
+                                        base_module = base_rev_obj.module
+                                        
+                                        # Set up Alembic op context
+                                        # We need to configure the context so op.get_bind() works
+                                        alembic_context.configure(
+                                            connection=migration_conn,
+                                            target_metadata=None,
+                                            script=script,
+                                        )
+                                        
+                                        # Execute upgrade
+                                        base_module.upgrade()
+                                        
+                                        # Update alembic_version
+                                        migration_conn.execute(text(f"INSERT INTO alembic_version (version_num) VALUES ('{base_revision}') ON CONFLICT (version_num) DO UPDATE SET version_num = '{base_revision}'"))
+                                    
+                                    logger.info(f"✓ Step 1 completed: executed migration {base_revision}")
+                                    
+                                    # Execute target migration
+                                    logger.info(f"Step 2: Executing migration {target_revision}...")
+                                    with migration_conn.begin():
+                                        # Get the migration module from the script directory
+                                        target_module = target_rev_obj.module
+                                        
+                                        # Execute upgrade
+                                        target_module.upgrade()
+                                        
+                                        # Update alembic_version
+                                        migration_conn.execute(text(f"UPDATE alembic_version SET version_num = '{target_revision}'"))
+                                    
+                                    logger.info(f"✓ Step 2 completed: executed migration {target_revision}")
+                                else:
+                                    # Database has a revision, upgrade normally using command.upgrade()
+                                    logger.info(f"Database has revision {current_rev}, upgrading to {target_revision}...")
+                                    command.upgrade(alembic_cfg, target_revision)
                             
-                            # Then upgrade to target_revision
-                            logger.info(f"Step 2: Executing command.upgrade(alembic_cfg, '{target_revision}')...")
-                            command.upgrade(alembic_cfg, target_revision)
-                            logger.info(f"✓ Step 2 completed: upgraded to {target_revision}")
+                            migration_engine.dispose()
                             
                             # Get the output
                             stdout_output = stdout_capture.getvalue()
