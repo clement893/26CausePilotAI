@@ -1345,11 +1345,9 @@ class OrganizationDatabaseManager:
                     # CRITICAL FIX: For empty databases, Alembic may do a stamp_revision instead of upgrade
                     # when there are multiple migration heads. To force a real upgrade, we need to:
                     # 1. Ensure alembic_version table doesn't exist (already done above)
-                    # 2. Upgrade directly to target_revision - Alembic will create alembic_version automatically
-                    #    and execute all migrations from base to target
-                    # NOTE: We do NOT call stamp('base') because that causes Alembic to do a stamp_revision
-                    #       instead of executing migrations. We let Alembic detect the empty database naturally.
-                    logger.info(f"Upgrading directly to target revision '{target_revision}' (alembic_version table was dropped, Alembic will create it)...")
+                    # 2. Upgrade step by step: first to base_revision, then to target_revision
+                    #    This forces Alembic to execute migrations instead of stamping
+                    logger.info(f"Upgrading step by step: first to '{base_revision}', then to '{target_revision}'...")
                     try:
                         import sys
                         import io
@@ -1361,11 +1359,15 @@ class OrganizationDatabaseManager:
                         try:
                             sys.stdout = stdout_capture
                             sys.stderr = stderr_capture
-                            logger.info(f"Executing command.upgrade(alembic_cfg, '{target_revision}')...")
-                            # Upgrade directly - Alembic will detect empty database (no alembic_version table)
-                            # and execute all migrations from base to target
+                            # First upgrade to base_revision - this will create alembic_version and execute first migration
+                            logger.info(f"Step 1: Executing command.upgrade(alembic_cfg, '{base_revision}')...")
+                            command.upgrade(alembic_cfg, base_revision)
+                            logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
+                            
+                            # Then upgrade to target_revision
+                            logger.info(f"Step 2: Executing command.upgrade(alembic_cfg, '{target_revision}')...")
                             command.upgrade(alembic_cfg, target_revision)
-                            logger.info(f"command.upgrade() to {target_revision} completed without exception")
+                            logger.info(f"✓ Step 2 completed: upgraded to {target_revision}")
                             
                             # Get the output
                             stdout_output = stdout_capture.getvalue()
