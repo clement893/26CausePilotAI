@@ -1428,6 +1428,13 @@ class OrganizationDatabaseManager:
                                     # This allows us to use op operations
                                     ops = Operations(migration_context)
                                     
+                                    # Ensure op.get_bind() works by adding it if it doesn't exist
+                                    # Operations should have get_bind() but let's make sure
+                                    if not hasattr(ops, 'get_bind'):
+                                        def get_bind():
+                                            return connection
+                                        ops.get_bind = get_bind
+                                    
                                     # Patch op in the migration module to use our Operations object
                                     # Use the module directly instead of sys.modules
                                     migration_module = base_rev_obj.module
@@ -1436,7 +1443,9 @@ class OrganizationDatabaseManager:
                                     
                                     try:
                                         # Execute base migration upgrade function directly
+                                        logger.info(f"Executing upgrade() function for {base_revision}...")
                                         base_rev_obj.module.upgrade()
+                                        logger.info(f"Upgrade function completed for {base_revision}")
                                         
                                         # Update alembic_version table manually
                                         # Delete any existing row and insert the new revision
@@ -1444,7 +1453,18 @@ class OrganizationDatabaseManager:
                                         connection.execute(text(
                                             f"INSERT INTO alembic_version (version_num) VALUES ('{base_revision}')"
                                         ))
-                                        logger.info(f"✓ Step 1 completed: executed {base_revision}")
+                                        # Explicitly commit the transaction
+                                        connection.commit()
+                                        logger.info(f"✓ Step 1 completed: executed {base_revision}, transaction committed")
+                                        
+                                        # Verify tables were created immediately after commit
+                                        result = connection.execute(text("""
+                                            SELECT table_name FROM information_schema.tables 
+                                            WHERE table_schema = 'public' 
+                                            ORDER BY table_name
+                                        """))
+                                        tables_after_step1 = [row[0] for row in result]
+                                        logger.info(f"Tables after step 1: {tables_after_step1}")
                                     finally:
                                         # Restore original op
                                         if original_op_in_module is not None:
@@ -1460,6 +1480,12 @@ class OrganizationDatabaseManager:
                                     migration_context = MigrationContext.configure(connection)
                                     ops = Operations(migration_context)
                                     
+                                    # Ensure op.get_bind() works by adding it if it doesn't exist
+                                    if not hasattr(ops, 'get_bind'):
+                                        def get_bind():
+                                            return connection
+                                        ops.get_bind = get_bind
+                                    
                                     # Patch op in the target migration module
                                     target_migration_module = target_rev_obj.module
                                     original_op_in_target = getattr(target_migration_module, 'op', None)
@@ -1467,7 +1493,9 @@ class OrganizationDatabaseManager:
                                     
                                     try:
                                         # Execute target migration upgrade function directly
+                                        logger.info(f"Executing upgrade() function for {target_revision}...")
                                         target_rev_obj.module.upgrade()
+                                        logger.info(f"Upgrade function completed for {target_revision}")
                                         
                                         # Update alembic_version table manually
                                         # Delete any existing row and insert the new revision
@@ -1475,7 +1503,18 @@ class OrganizationDatabaseManager:
                                         connection.execute(text(
                                             f"INSERT INTO alembic_version (version_num) VALUES ('{target_revision}')"
                                         ))
-                                        logger.info(f"✓ Step 2 completed: executed {target_revision}")
+                                        # Explicitly commit the transaction
+                                        connection.commit()
+                                        logger.info(f"✓ Step 2 completed: executed {target_revision}, transaction committed")
+                                        
+                                        # Verify tables were created immediately after commit
+                                        result = connection.execute(text("""
+                                            SELECT table_name FROM information_schema.tables 
+                                            WHERE table_schema = 'public' 
+                                            ORDER BY table_name
+                                        """))
+                                        tables_after_step2 = [row[0] for row in result]
+                                        logger.info(f"Tables after step 2: {tables_after_step2}")
                                     finally:
                                         # Restore original op
                                         if original_op_in_target is not None:
