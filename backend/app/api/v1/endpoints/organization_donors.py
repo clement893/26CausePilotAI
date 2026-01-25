@@ -2102,10 +2102,15 @@ async def seed_example_donors(
             last_name = choice(last_names)
             email = f"{first_name.lower()}.{last_name.lower()}{randint(1, 999)}@{choice(domains)}"
             
+            # Ensure organization_id is a UUID, not a string
+            org_id = organization_id
+            if isinstance(org_id, str):
+                org_id = UUID(org_id)
+            
             # Create donor
             donor = Donor(
                 id=uuid.uuid4(),
-                organization_id=organization_id,
+                organization_id=org_id,
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
@@ -2129,7 +2134,11 @@ async def seed_example_donors(
                 }
             
             org_db.add(donor)
-            await org_db.flush()
+            await org_db.flush()  # Ensure donor.id is available
+            
+            # Verify donor.id is set (should be UUID)
+            if not donor.id:
+                raise ValueError(f"Donor ID not set after flush for donor {donor.email}")
             
             # Create 1-5 donations per donor
             num_donations = randint(1, 5)
@@ -2141,10 +2150,15 @@ async def seed_example_donors(
                 
                 donation_date = datetime.now() - timedelta(days=randint(0, 365))
                 
+                # Ensure donor_id is a UUID, not a string
+                donor_id = donor.id
+                if isinstance(donor_id, str):
+                    donor_id = UUID(donor_id)
+                
                 donation = Donation(
                     id=uuid.uuid4(),
-                    organization_id=organization_id,
-                    donor_id=donor.id,
+                    organization_id=org_id,  # Use the validated UUID
+                    donor_id=donor_id,
                     amount=donation_amount,
                     donation_type=choice(["one_time", "recurring", "in_memory", "in_honor"]),
                     payment_method=choice(["credit_card", "debit_card", "bank_transfer", "check", "cash"]),
@@ -2160,24 +2174,27 @@ async def seed_example_donors(
             donor.total_donated = total_donated
             donor.donation_count = num_donations
             
-            # Calculate last donation date from donations created in this loop (not all created_donations)
-            donation_dates = [d.payment_date for d in created_donations[-num_donations:] if d.payment_date and d.donor_id == donor.id]
+            # Calculate last donation date from donations created in this loop
+            # Get donations for this specific donor (the last num_donations created)
+            donor_donations = created_donations[-num_donations:]
+            donation_dates = [d.payment_date for d in donor_donations if d.payment_date is not None]
+            
             if donation_dates:
                 donor.last_donation_date = max(donation_dates)
+                donor.first_donation_date = min(donation_dates)
             else:
                 donor.first_donation_date = None
                 donor.last_donation_date = None
             
-            # Set first donation date
-            if donation_dates:
-                donor.first_donation_date = min(donation_dates)
+            # Ensure donor is flushed so donor.id is available
+            await org_db.flush()
             
             # Create activity - ensure current_user.id is an integer
             performed_by_id = int(current_user.id) if current_user.id else None
             activity = DonorActivity(
                 id=uuid.uuid4(),
-                organization_id=organization_id,
-                donor_id=donor.id,
+                organization_id=org_id,  # Use the validated UUID
+                donor_id=donor.id,  # This should now be available after flush
                 activity_type="profile_created",
                 activity_data={"created_by": performed_by_id, "seed": True},
                 performed_by=performed_by_id,
