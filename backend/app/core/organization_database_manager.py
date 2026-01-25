@@ -12,7 +12,7 @@ This module handles:
 from typing import Optional, Dict, List
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
-from sqlalchemy import text
+from sqlalchemy import text, create_engine, pool
 from sqlalchemy.exc import OperationalError, ProgrammingError, SQLAlchemyError
 import re
 from urllib.parse import urlparse, urlunparse
@@ -1066,7 +1066,7 @@ class OrganizationDatabaseManager:
             # Log the connection string (masked) for debugging
             logger.info(f"Migration target database URL: {cls.mask_connection_string(alembic_db_url)}")
             
-            # Check current revision before migration
+            # Check current revision before migration and verify migrations exist
             try:
                 from alembic.script import ScriptDirectory
                 script = ScriptDirectory.from_config(alembic_cfg)
@@ -1078,20 +1078,99 @@ class OrganizationDatabaseManager:
                     target_rev = script.get_revision(target_revision)
                     logger.info(f"Target revision {target_revision} found: {target_rev}")
                 except Exception as rev_error:
-                    logger.warning(f"Target revision {target_revision} not found: {rev_error}")
+                    logger.error(f"Target revision {target_revision} not found: {rev_error}")
                     # List all available revisions
                     all_revs = list(script.walk_revisions())
-                    logger.info(f"Available revisions: {[str(r.revision) for r in all_revs]}")
+                    rev_names = [str(r.revision) for r in all_revs]
+                    logger.error(f"Available revisions: {rev_names}")
+                    
+                    # Check if base revision exists
+                    try:
+                        base_rev = script.get_revision(base_revision)
+                        logger.info(f"Base revision {base_revision} found: {base_rev}")
+                    except Exception as base_rev_error:
+                        logger.error(f"Base revision {base_revision} also not found: {base_rev_error}")
+                        raise ValueError(
+                            f"Les migrations pour les bases de données d'organisations ne sont pas trouvées. "
+                            f"Vérifiez que les fichiers backend/alembic/versions/add_donor_tables.py et "
+                            f"backend/alembic/versions/add_donor_crm_tables.py existent. "
+                            f"Révisions disponibles: {', '.join(rev_names[:10])}"
+                        ) from base_rev_error
+                    
+                    raise ValueError(
+                        f"La révision cible {target_revision} n'a pas été trouvée. "
+                        f"Révisions disponibles: {', '.join(rev_names[:10])}"
+                    ) from rev_error
+                
+                # Also verify base revision exists
+                try:
+                    base_rev = script.get_revision(base_revision)
+                    logger.info(f"Base revision {base_revision} found: {base_rev}")
+                except Exception as base_rev_error:
+                    logger.warning(f"Base revision {base_revision} not found: {base_rev_error}")
+            except ValueError:
+                # Re-raise ValueError as-is (it's our custom error)
+                raise
             except Exception as script_error:
-                logger.warning(f"Could not check migration script directory: {script_error}")
+                logger.error(f"Could not check migration script directory: {script_error}", exc_info=True)
+                raise ValueError(
+                    f"Erreur lors de la vérification des migrations: {str(script_error)}. "
+                    f"Vérifiez que le répertoire backend/alembic/versions/ existe et contient les migrations."
+                ) from script_error
             
             # For organization databases, we need to apply only the organization-specific migrations
             # These migrations start with add_donor_tables_001 and end with add_donor_crm_002
             # We'll try to upgrade to the specific revision for organization databases
             target_revision = "add_donor_crm_002"  # Latest organization database migration
+            base_revision = "add_donor_tables_001"  # Base revision for organization databases
             
             logger.info(f"Running migrations for organization database, target revision: {target_revision}")
             logger.info(f"Connection string (masked): {cls.mask_connection_string(db_connection_string)}")
+            
+            # Check current revision in the database
+            try:
+                # Create a sync engine to check current revision
+                sync_db_url = alembic_db_url
+                check_engine = create_engine(sync_db_url, poolclass=pool.NullPool)
+                
+                with check_engine.connect() as conn:
+                    # Check if alembic_version table exists
+                    result = conn.execute(text("""
+                        SELECT EXISTS (
+                            SELECT FROM information_schema.tables 
+                            WHERE table_schema = 'public' 
+                            AND table_name = 'alembic_version'
+                        )
+                    """))
+                    has_alembic_table = result.scalar()
+                    
+                    if has_alembic_table:
+                        # Get current revision
+                        result = conn.execute(text("SELECT version_num FROM alembic_version"))
+                        current_rev = result.scalar_one_or_none()
+                        logger.info(f"Current revision in database: {current_rev}")
+                        
+                        # If database has a revision from main database migrations, we need to stamp it
+                        # Organization databases should start from None or add_donor_tables_001
+                        if current_rev and current_rev not in [None, base_revision, target_revision]:
+                            # Check if it's a main database revision (numeric or different format)
+                            # Main DB revisions are typically numeric like '032', '033', etc.
+                            if current_rev.isdigit() or current_rev not in ['add_donor_tables_001', 'add_donor_crm_002']:
+                                logger.warning(
+                                    f"Database has revision '{current_rev}' which appears to be from main database. "
+                                    f"Stamping to base organization revision '{base_revision}'..."
+                                )
+                                # Stamp to base revision
+                                command.stamp(alembic_cfg, base_revision)
+                                logger.info(f"Database stamped to {base_revision}")
+                    else:
+                        # No alembic_version table, database is empty
+                        logger.info("Database is empty (no alembic_version table). Alembic will create alembic_version table automatically.")
+                        # Don't stamp - let Alembic create the table automatically when upgrading from base_revision
+                
+                check_engine.dispose()
+            except Exception as check_error:
+                logger.warning(f"Could not check current revision: {check_error}. Proceeding with migration...")
             
             # Try to run migrations - handle multiple heads gracefully
             try:
@@ -1102,18 +1181,33 @@ class OrganizationDatabaseManager:
                 error_msg = str(revision_error)
                 logger.warning(f"Failed to upgrade to {target_revision}: {error_msg}")
                 
-                # Check if the revision doesn't exist (database might be empty)
+                # Check if the revision doesn't exist or if we need to start from base
                 if "Can't locate revision identified by" in error_msg or "revision" in error_msg.lower() and "not found" in error_msg.lower():
-                    logger.info("Target revision not found, trying to upgrade from base (add_donor_tables_001)...")
+                    logger.info("Target revision not found or database is empty, trying to upgrade from base (add_donor_tables_001)...")
                     try:
-                        # Try upgrading from the base organization migration
-                        command.upgrade(alembic_cfg, "add_donor_tables_001")
-                        logger.info("Successfully upgraded to add_donor_tables_001, now upgrading to add_donor_crm_002...")
+                        # Try upgrading from the base organization migration first
+                        # This will create alembic_version table if it doesn't exist
+                        command.upgrade(alembic_cfg, base_revision)
+                        logger.info(f"Successfully upgraded to {base_revision}, now upgrading to {target_revision}...")
                         # Then upgrade to the latest
                         command.upgrade(alembic_cfg, target_revision)
                         logger.info(f"Successfully upgraded to {target_revision}")
                     except Exception as base_error:
-                        logger.error(f"Failed to upgrade from base: {base_error}", exc_info=True)
+                        error_msg_base = str(base_error)
+                        logger.error(f"Failed to upgrade from base: {error_msg_base}", exc_info=True)
+                        
+                        # If base revision also fails, try upgrading step by step
+                        if "Can't locate revision" in error_msg_base:
+                            logger.error(
+                                f"Migration {base_revision} not found! "
+                                f"Please verify that the migration file exists in backend/alembic/versions/"
+                            )
+                            raise ValueError(
+                                f"Les migrations pour les bases de données d'organisations ne sont pas trouvées. "
+                                f"Vérifiez que le fichier backend/alembic/versions/add_donor_tables.py existe. "
+                                f"Erreur: {error_msg_base}"
+                            ) from base_error
+                        
                         # Try with 'head' as fallback
                         logger.warning("Trying 'head' as fallback...")
                         try:
@@ -1158,7 +1252,46 @@ class OrganizationDatabaseManager:
                     raise
             
             parsed = cls.parse_db_connection_string(db_connection_string)
-            logger.info(f"Ran migrations on organization database: {parsed['database']}")
+            db_name = parsed['database']
+            logger.info(f"Ran migrations on organization database: {db_name}")
+            
+            # Verify that tables were created by checking if alembic_version was updated
+            try:
+                verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                with verify_engine.connect() as conn:
+                    # Check alembic_version
+                    result = conn.execute(text("SELECT version_num FROM alembic_version"))
+                    final_rev = result.scalar_one_or_none()
+                    logger.info(f"Final revision after migration: {final_rev}")
+                    
+                    # Check if any tables exist
+                    result = conn.execute(text("""
+                        SELECT table_name 
+                        FROM information_schema.tables 
+                        WHERE table_schema = 'public' 
+                        AND table_name != 'alembic_version'
+                        ORDER BY table_name
+                    """))
+                    tables_after = [row[0] for row in result]
+                    logger.info(f"Tables found after migration: {tables_after}")
+                    
+                    if not tables_after:
+                        logger.error(f"No tables found in database {db_name} after migration!")
+                        logger.error(f"Final revision: {final_rev}, Expected: {target_revision}")
+                        raise ValueError(
+                            f"Aucune table n'a été créée dans la base de données '{db_name}' après la migration. "
+                            f"Révision finale: {final_rev}, Révision attendue: {target_revision}. "
+                            f"Vérifiez que les migrations add_donor_tables_001 et add_donor_crm_002 existent et sont correctement configurées."
+                        )
+                    else:
+                        logger.info(f"Successfully created {len(tables_after)} tables in database {db_name}")
+                
+                verify_engine.dispose()
+            except ValueError:
+                # Re-raise ValueError as-is (it's our custom error)
+                raise
+            except Exception as verify_error:
+                logger.warning(f"Could not verify tables after migration: {verify_error}. Migration may have succeeded anyway.")
             
         except OperationalError as e:
             logger.error(f"Database operational error running migrations: {e}", exc_info=True)
