@@ -2159,16 +2159,28 @@ async def seed_example_donors(
             # Update donor total
             donor.total_donated = total_donated
             donor.donation_count = num_donations
-            donor.last_donation_date = max([d.payment_date for d in created_donations if d.payment_date] or [None])
             
-            # Create activity
+            # Calculate last donation date from donations created in this loop (not all created_donations)
+            donation_dates = [d.payment_date for d in created_donations[-num_donations:] if d.payment_date and d.donor_id == donor.id]
+            if donation_dates:
+                donor.last_donation_date = max(donation_dates)
+            else:
+                donor.first_donation_date = None
+                donor.last_donation_date = None
+            
+            # Set first donation date
+            if donation_dates:
+                donor.first_donation_date = min(donation_dates)
+            
+            # Create activity - ensure current_user.id is an integer
+            performed_by_id = int(current_user.id) if current_user.id else None
             activity = DonorActivity(
                 id=uuid.uuid4(),
                 organization_id=organization_id,
                 donor_id=donor.id,
                 activity_type="profile_created",
-                activity_data={"created_by": current_user.id, "seed": True},
-                performed_by=current_user.id,
+                activity_data={"created_by": performed_by_id, "seed": True},
+                performed_by=performed_by_id,
             )
             org_db.add(activity)
             
