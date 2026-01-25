@@ -1396,25 +1396,31 @@ class OrganizationDatabaseManager:
                                     migration_conn.commit()
                                     logger.info(f"✓ Dropped alembic_version table")
                             
-                            # Now use command.upgrade() directly without stamp() to force real migrations
-                            # The issue is that stamp() with multiple heads causes Alembic to do stamp_revision
-                            # Instead, we'll call upgrade() directly which should execute migrations
+                            # Use command.upgrade() with shared connection to bypass stamp_revision
+                            # Share connection across commands to ensure migrations execute properly
                             if current_rev is None:
-                                logger.info(f"Upgrading using command.upgrade() directly (no stamp) to force real migrations...")
+                                logger.info(f"Upgrading using command.upgrade() with shared connection...")
                                 
-                                # CRITICAL: Don't use stamp() - it causes Alembic to do stamp_revision with multiple heads
-                                # Instead, call upgrade() directly which should execute migrations
-                                # Ensure alembic_version table exists but is empty (we already dropped it above)
+                                # Ensure alembic_version table exists
                                 cls._ensure_alembic_version_table(alembic_db_url)
                                 
-                                logger.info(f"Step 1: Upgrading from None to {base_revision}...")
-                                command.upgrade(alembic_cfg, base_revision)
-                                logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
+                                # Create a new connection and share it across commands
+                                # This is the recommended way to run migrations programmatically
+                                manual_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                                with manual_engine.begin() as connection:
+                                    # Share connection across commands
+                                    alembic_cfg.attributes['connection'] = connection
+                                    
+                                    logger.info(f"Step 1: Upgrading from None to {base_revision}...")
+                                    command.upgrade(alembic_cfg, base_revision)
+                                    logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
+                                    
+                                    # Step 2: Upgrade from base_revision to target_revision
+                                    logger.info(f"Step 2: Upgrading from {base_revision} to {target_revision}...")
+                                    command.upgrade(alembic_cfg, target_revision)
+                                    logger.info(f"✓ Step 2 completed: upgraded to {target_revision}")
                                 
-                                # Step 2: Upgrade from base_revision to target_revision
-                                logger.info(f"Step 2: Upgrading from {base_revision} to {target_revision}...")
-                                command.upgrade(alembic_cfg, target_revision)
-                                logger.info(f"✓ Step 2 completed: upgraded to {target_revision}")
+                                manual_engine.dispose()
                             else:
                                 # Database has a revision, upgrade normally using command.upgrade()
                                 logger.info(f"Database has revision {current_rev}, upgrading to {target_revision}...")
