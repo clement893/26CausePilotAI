@@ -1101,18 +1101,28 @@ class OrganizationDatabaseManager:
             try:
                 from alembic.script import ScriptDirectory
                 script = ScriptDirectory.from_config(alembic_cfg)
+                
+                # Log script location for debugging
+                logger.info(f"Alembic script directory location: {script.dir}")
+                logger.info(f"Alembic script directory exists: {Path(script.dir).exists()}")
+                
                 heads = script.get_revisions("heads")
                 logger.info(f"Available migration heads: {[str(h) for h in heads]}")
+                
+                # List all revisions for debugging
+                all_revs = list(script.walk_revisions())
+                rev_names = [str(r.revision) for r in all_revs]
+                logger.info(f"All available revisions ({len(rev_names)}): {rev_names}")
                 
                 # Check if our target revision exists
                 try:
                     target_rev = script.get_revision(target_revision)
-                    logger.info(f"Target revision {target_revision} found: {target_rev}")
+                    logger.info(f"✓ Target revision {target_revision} found: {target_rev}")
+                    logger.info(f"  - Revision ID: {target_rev.revision}")
+                    logger.info(f"  - Down revision: {target_rev.down_revision}")
+                    logger.info(f"  - Branch labels: {target_rev.branch_labels}")
                 except Exception as rev_error:
-                    logger.error(f"Target revision {target_revision} not found: {rev_error}")
-                    # List all available revisions
-                    all_revs = list(script.walk_revisions())
-                    rev_names = [str(r.revision) for r in all_revs]
+                    logger.error(f"✗ Target revision {target_revision} not found: {rev_error}")
                     logger.error(f"Available revisions: {rev_names}")
                     
                     # Check if base revision exists
@@ -1136,9 +1146,16 @@ class OrganizationDatabaseManager:
                 # Also verify base revision exists
                 try:
                     base_rev = script.get_revision(base_revision)
-                    logger.info(f"Base revision {base_revision} found: {base_rev}")
+                    logger.info(f"✓ Base revision {base_revision} found: {base_rev}")
+                    logger.info(f"  - Revision ID: {base_rev.revision}")
+                    logger.info(f"  - Down revision: {base_rev.down_revision}")
+                    logger.info(f"  - Branch labels: {base_rev.branch_labels}")
                 except Exception as base_rev_error:
-                    logger.warning(f"Base revision {base_revision} not found: {base_rev_error}")
+                    logger.error(f"✗ Base revision {base_revision} not found: {base_rev_error}")
+                    raise ValueError(
+                        f"La révision de base {base_revision} n'a pas été trouvée. "
+                        f"Révisions disponibles: {', '.join(rev_names[:10])}"
+                    ) from base_rev_error
             except ValueError:
                 # Re-raise ValueError as-is (it's our custom error)
                 raise
@@ -1206,26 +1223,72 @@ class OrganizationDatabaseManager:
             try:
                 if is_empty_db or current_rev_in_db is None:
                     # Empty database - start from base_revision
-                    logger.info("Starting migration from empty database - applying base revision first...")
+                    logger.info("=" * 80)
+                    logger.info("STARTING MIGRATION FROM EMPTY DATABASE")
+                    logger.info(f"Database state: is_empty_db={is_empty_db}, current_rev_in_db={current_rev_in_db}")
+                    logger.info(f"Alembic config script_location: {alembic_cfg.get_main_option('script_location')}")
+                    logger.info(f"Target database URL: {cls.mask_connection_string(alembic_db_url)}")
+                    logger.info("=" * 80)
+                    
+                    # Verify migrations exist before attempting upgrade
+                    from alembic.script import ScriptDirectory
+                    script = ScriptDirectory.from_config(alembic_cfg)
+                    base_rev_obj = script.get_revision(base_revision)
+                    target_rev_obj = script.get_revision(target_revision)
+                    logger.info(f"Base revision object: {base_rev_obj}")
+                    logger.info(f"Target revision object: {target_rev_obj}")
+                    
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{base_revision}')")
                     try:
-                        command.upgrade(alembic_cfg, base_revision)
-                        logger.info(f"Successfully applied base revision {base_revision}")
+                        # Use a context manager to ensure proper connection handling
+                        import contextlib
+                        with contextlib.redirect_stdout(None), contextlib.redirect_stderr(None):
+                            # Actually execute the upgrade
+                            command.upgrade(alembic_cfg, base_revision)
+                        logger.info(f"✓ Successfully applied base revision {base_revision}")
+                        
+                        # Immediately verify the revision was applied
+                        verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                        with verify_engine.connect() as verify_conn:
+                            result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
+                            applied_rev = result.scalar_one_or_none()
+                            logger.info(f"✓ Verified: alembic_version table exists with revision: {applied_rev}")
+                        verify_engine.dispose()
                     except Exception as base_upgrade_err:
-                        logger.error(f"Failed to apply base revision {base_revision}: {base_upgrade_err}", exc_info=True)
+                        logger.error(f"✗ Failed to apply base revision {base_revision}", exc_info=True)
+                        logger.error(f"Error type: {type(base_upgrade_err).__name__}")
+                        logger.error(f"Error message: {str(base_upgrade_err)}")
                         raise ValueError(
                             f"Échec de l'application de la migration de base {base_revision}: {str(base_upgrade_err)}. "
                             f"Vérifiez les logs du backend pour plus de détails."
                         ) from base_upgrade_err
                     
                     # Then upgrade to target_revision
-                    logger.info(f"Upgrading from {base_revision} to {target_revision}...")
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
                     try:
                         command.upgrade(alembic_cfg, target_revision)
-                        logger.info(f"Successfully upgraded to {target_revision}")
+                        logger.info(f"✓ Successfully upgraded to {target_revision}")
+                        
+                        # Immediately verify the revision was applied
+                        verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                        with verify_engine.connect() as verify_conn:
+                            result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
+                            applied_rev = result.scalar_one_or_none()
+                            logger.info(f"✓ Verified: alembic_version table has revision: {applied_rev}")
+                            
+                            # Also check if tables were created
+                            result = verify_conn.execute(text("""
+                                SELECT table_name FROM information_schema.tables 
+                                WHERE table_schema = 'public' 
+                                ORDER BY table_name
+                            """))
+                            tables_created = [row[0] for row in result]
+                            logger.info(f"✓ Tables created after migration: {tables_created}")
+                        verify_engine.dispose()
                     except Exception as target_upgrade_err:
-                        logger.error(f"Failed to upgrade to target revision {target_revision}: {target_upgrade_err}", exc_info=True)
+                        logger.error(f"✗ Failed to upgrade to target revision {target_revision}", exc_info=True)
+                        logger.error(f"Error type: {type(target_upgrade_err).__name__}")
+                        logger.error(f"Error message: {str(target_upgrade_err)}")
                         raise ValueError(
                             f"Échec de la mise à jour vers la révision cible {target_revision}: {str(target_upgrade_err)}. "
                             f"Vérifiez les logs du backend pour plus de détails."
