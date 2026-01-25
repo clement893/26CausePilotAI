@@ -1006,6 +1006,44 @@ class OrganizationDatabaseManager:
             raise
     
     @classmethod
+    def _ensure_alembic_version_table(cls, db_url: str) -> None:
+        """
+        Ensure the alembic_version table exists in the database.
+        This must be called before any Alembic command that reads the version table.
+        
+        Args:
+            db_url: Database connection URL
+        """
+        init_engine = create_engine(db_url, poolclass=pool.NullPool)
+        try:
+            with init_engine.connect() as init_conn:
+                # Check if table exists
+                check_result = init_conn.execute(text("""
+                    SELECT EXISTS (
+                        SELECT FROM information_schema.tables 
+                        WHERE table_schema = 'public' 
+                        AND table_name = 'alembic_version'
+                    )
+                """))
+                table_exists = check_result.scalar()
+                
+                if not table_exists:
+                    logger.info("Creating alembic_version table...")
+                    # Create the alembic_version table
+                    init_conn.execute(text("""
+                        CREATE TABLE alembic_version (
+                            version_num VARCHAR(32) NOT NULL,
+                            CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
+                        )
+                    """))
+                    init_conn.commit()
+                    logger.info("✓ alembic_version table created successfully")
+                else:
+                    logger.debug("✓ alembic_version table already exists")
+        finally:
+            init_engine.dispose()
+    
+    @classmethod
     async def run_migrations_for_organization(cls, db_connection_string: str) -> None:
         """
         Run database migrations on an organization database.
@@ -1238,6 +1276,11 @@ class OrganizationDatabaseManager:
                     logger.info(f"Base revision object: {base_rev_obj}")
                     logger.info(f"Target revision object: {target_rev_obj}")
                     
+                    # CRITICAL: Create alembic_version table if it doesn't exist BEFORE calling upgrade
+                    # Alembic's upgrade() tries to read alembic_version before creating it
+                    logger.info("Ensuring alembic_version table exists before migration...")
+                    cls._ensure_alembic_version_table(alembic_db_url)
+                    
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{base_revision}')")
                     try:
                         # Use a context manager to ensure proper connection handling
@@ -1255,13 +1298,51 @@ class OrganizationDatabaseManager:
                             logger.info(f"✓ Verified: alembic_version table exists with revision: {applied_rev}")
                         verify_engine.dispose()
                     except Exception as base_upgrade_err:
-                        logger.error(f"✗ Failed to apply base revision {base_revision}", exc_info=True)
-                        logger.error(f"Error type: {type(base_upgrade_err).__name__}")
-                        logger.error(f"Error message: {str(base_upgrade_err)}")
-                        raise ValueError(
-                            f"Échec de l'application de la migration de base {base_revision}: {str(base_upgrade_err)}. "
-                            f"Vérifiez les logs du backend pour plus de détails."
-                        ) from base_upgrade_err
+                        error_msg = str(base_upgrade_err)
+                        error_type = type(base_upgrade_err).__name__
+                        
+                        # Check if the error is about alembic_version table not existing
+                        # This shouldn't happen now since we create it before, but handle it just in case
+                        if "alembic_version" in error_msg.lower() and ("does not exist" in error_msg.lower() or "relation" in error_msg.lower()):
+                            logger.warning(f"alembic_version table does not exist (unexpected). Creating it first...")
+                            try:
+                                # Ensure table exists
+                                cls._ensure_alembic_version_table(alembic_db_url)
+                                
+                                # Now stamp the database with the base revision
+                                logger.info(f"Stamping database with base revision {base_revision}...")
+                                command.stamp(alembic_cfg, base_revision)
+                                logger.info(f"✓ Database stamped with {base_revision}")
+                                
+                                # Now retry the upgrade
+                                logger.info("Retrying upgrade after initializing alembic_version table...")
+                                with contextlib.redirect_stdout(None), contextlib.redirect_stderr(None):
+                                    command.upgrade(alembic_cfg, base_revision)
+                                logger.info(f"✓ Successfully applied base revision {base_revision} after retry")
+                                
+                                # Verify the revision was applied
+                                verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                                with verify_engine.connect() as verify_conn:
+                                    result = verify_conn.execute(text("SELECT version_num FROM alembic_version"))
+                                    applied_rev = result.scalar_one_or_none()
+                                    logger.info(f"✓ Verified: alembic_version table exists with revision: {applied_rev}")
+                                verify_engine.dispose()
+                                
+                            except Exception as init_err:
+                                logger.error(f"✗ Failed to initialize alembic_version table: {init_err}", exc_info=True)
+                                raise ValueError(
+                                    f"Échec de l'initialisation de la table alembic_version: {str(init_err)}. "
+                                    f"Vérifiez les logs du backend pour plus de détails."
+                                ) from init_err
+                        else:
+                            # Different error, raise it as before
+                            logger.error(f"✗ Failed to apply base revision {base_revision}", exc_info=True)
+                            logger.error(f"Error type: {error_type}")
+                            logger.error(f"Error message: {error_msg}")
+                            raise ValueError(
+                                f"Échec de l'application de la migration de base {base_revision}: {error_msg}. "
+                                f"Vérifiez les logs du backend pour plus de détails."
+                            ) from base_upgrade_err
                     
                     # Then upgrade to target_revision
                     logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
@@ -1326,8 +1407,36 @@ class OrganizationDatabaseManager:
                 error_msg = str(revision_error)
                 logger.error(f"Failed to upgrade migrations: {error_msg}", exc_info=True)
                 
+                # Check if the error is about alembic_version table not existing
+                if "alembic_version" in error_msg.lower() and ("does not exist" in error_msg.lower() or "relation" in error_msg.lower()):
+                    logger.warning(f"alembic_version table does not exist. Creating it first...")
+                    try:
+                        # Create alembic_version table manually if it doesn't exist
+                        # Ensure alembic_version table exists
+                        cls._ensure_alembic_version_table(alembic_db_url)
+                        
+                        # Now stamp the database with the base revision
+                        logger.info(f"Stamping database with base revision {base_revision}...")
+                        command.stamp(alembic_cfg, base_revision)
+                        logger.info(f"✓ Database stamped with {base_revision}")
+                        
+                        # Now retry the upgrade from base
+                        logger.info("Retrying upgrade after initializing alembic_version table...")
+                        import contextlib
+                        with contextlib.redirect_stdout(None), contextlib.redirect_stderr(None):
+                            command.upgrade(alembic_cfg, base_revision)
+                        logger.info(f"Successfully upgraded to {base_revision}, now upgrading to {target_revision}...")
+                        # Then upgrade to the latest
+                        command.upgrade(alembic_cfg, target_revision)
+                        logger.info(f"Successfully upgraded to {target_revision}")
+                    except Exception as init_err:
+                        logger.error(f"Failed to initialize alembic_version table: {init_err}", exc_info=True)
+                        raise ValueError(
+                            f"Échec de l'initialisation de la table alembic_version: {str(init_err)}. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from init_err
                 # Check if the revision doesn't exist or if we need to start from base
-                if "Can't locate revision identified by" in error_msg or "revision" in error_msg.lower() and "not found" in error_msg.lower():
+                elif "Can't locate revision identified by" in error_msg or "revision" in error_msg.lower() and "not found" in error_msg.lower():
                     logger.info("Target revision not found, trying to upgrade from base (add_donor_tables_001)...")
                     try:
                         # Try upgrading from the base organization migration first
@@ -1341,8 +1450,35 @@ class OrganizationDatabaseManager:
                         error_msg_base = str(base_error)
                         logger.error(f"Failed to upgrade from base: {error_msg_base}", exc_info=True)
                         
+                        # Check if the error is about alembic_version table not existing
+                        if "alembic_version" in error_msg_base.lower() and ("does not exist" in error_msg_base.lower() or "relation" in error_msg_base.lower()):
+                            logger.warning(f"alembic_version table does not exist in base_error handler. Creating it first...")
+                            try:
+                                # Ensure alembic_version table exists
+                                cls._ensure_alembic_version_table(alembic_db_url)
+                                
+                                # Now stamp the database with the base revision
+                                logger.info(f"Stamping database with base revision {base_revision}...")
+                                command.stamp(alembic_cfg, base_revision)
+                                logger.info(f"✓ Database stamped with {base_revision}")
+                                
+                                # Now retry the upgrade
+                                logger.info("Retrying upgrade after initializing alembic_version table...")
+                                import contextlib
+                                with contextlib.redirect_stdout(None), contextlib.redirect_stderr(None):
+                                    command.upgrade(alembic_cfg, base_revision)
+                                logger.info(f"Successfully upgraded to {base_revision}, now upgrading to {target_revision}...")
+                                # Then upgrade to the latest
+                                command.upgrade(alembic_cfg, target_revision)
+                                logger.info(f"Successfully upgraded to {target_revision}")
+                            except Exception as init_err:
+                                logger.error(f"Failed to initialize alembic_version table: {init_err}", exc_info=True)
+                                raise ValueError(
+                                    f"Échec de l'initialisation de la table alembic_version: {str(init_err)}. "
+                                    f"Vérifiez les logs du backend pour plus de détails."
+                                ) from init_err
                         # If base revision also fails, try upgrading step by step
-                        if "Can't locate revision" in error_msg_base:
+                        elif "Can't locate revision" in error_msg_base:
                             logger.error(
                                 f"Migration {base_revision} not found! "
                                 f"Please verify that the migration file exists in backend/alembic/versions/"
@@ -1397,11 +1533,42 @@ class OrganizationDatabaseManager:
                     
                     # Check for SQL errors that might indicate migration issues
                     if "relation" in error_msg.lower() and "does not exist" in error_msg.lower():
-                        raise ValueError(
-                            f"Erreur SQL lors de la migration: {error_msg}. "
-                            f"Cela peut indiquer que les migrations précédentes n'ont pas été appliquées correctement. "
-                            f"Vérifiez les logs du backend pour plus de détails."
-                        ) from revision_error
+                        # Check if it's specifically the alembic_version table
+                        if "alembic_version" in error_msg.lower():
+                            logger.warning(f"alembic_version table does not exist. Creating it first...")
+                            try:
+                                # Create alembic_version table manually if it doesn't exist
+                                # Ensure alembic_version table exists
+                                cls._ensure_alembic_version_table(alembic_db_url)
+                                
+                                # Now stamp the database with the base revision
+                                logger.info(f"Stamping database with base revision {base_revision}...")
+                                command.stamp(alembic_cfg, base_revision)
+                                logger.info(f"✓ Database stamped with {base_revision}")
+                                
+                                # Now retry the upgrade
+                                logger.info("Retrying upgrade after initializing alembic_version table...")
+                                import contextlib
+                                with contextlib.redirect_stdout(None), contextlib.redirect_stderr(None):
+                                    command.upgrade(alembic_cfg, base_revision)
+                                logger.info(f"✓ Successfully applied base revision {base_revision}")
+                                
+                                # Then upgrade to target
+                                command.upgrade(alembic_cfg, target_revision)
+                                logger.info(f"✓ Successfully upgraded to {target_revision}")
+                                
+                            except Exception as init_err:
+                                logger.error(f"Failed to initialize alembic_version table: {init_err}", exc_info=True)
+                                raise ValueError(
+                                    f"Échec de l'initialisation de la table alembic_version: {str(init_err)}. "
+                                    f"Vérifiez les logs du backend pour plus de détails."
+                                ) from init_err
+                        else:
+                            raise ValueError(
+                                f"Erreur SQL lors de la migration: {error_msg}. "
+                                f"Cela peut indiquer que les migrations précédentes n'ont pas été appliquées correctement. "
+                                f"Vérifiez les logs du backend pour plus de détails."
+                            ) from revision_error
                     elif "syntax error" in error_msg.lower() or "invalid" in error_msg.lower():
                         raise ValueError(
                             f"Erreur de syntaxe SQL lors de la migration: {error_msg}. "
