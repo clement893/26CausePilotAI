@@ -1296,38 +1296,61 @@ class OrganizationDatabaseManager:
                     # CRITICAL: For empty databases, ensure alembic_version table exists
                     # If it's empty, we need to handle it properly for Alembic
                     logger.info("Preparing database for migration...")
-                    cls._ensure_alembic_version_table(alembic_db_url)
                     
-                    # Check if alembic_version table has a revision
+                    # First, check what tables exist in the database
                     check_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
-                    needs_stamp = False
+                    current_rev = None
                     try:
                         with check_engine.connect() as check_conn:
-                            result = check_conn.execute(text("SELECT version_num FROM alembic_version"))
-                            current_rev = result.scalar_one_or_none()
+                            # Check if alembic_version table exists
+                            result = check_conn.execute(text("""
+                                SELECT table_name FROM information_schema.tables 
+                                WHERE table_schema = 'public' AND table_name = 'alembic_version'
+                            """))
+                            has_alembic_table = result.fetchone() is not None
                             
-                            if current_rev is None:
-                                # Table exists but is empty - we need to stamp it to indicate empty DB
-                                # But we can't stamp with None, so we'll drop the table and let Alembic create it
-                                logger.info("alembic_version table is empty. Dropping it so Alembic can handle it...")
-                                check_conn.execute(text("DROP TABLE alembic_version"))
-                                check_conn.commit()
-                                logger.info("✓ Dropped empty alembic_version table")
-                                needs_stamp = False  # Alembic will create it
-                            else:
+                            if has_alembic_table:
+                                result = check_conn.execute(text("SELECT version_num FROM alembic_version"))
+                                current_rev = result.scalar_one_or_none()
                                 logger.info(f"Current revision in database: {current_rev}")
+                                
+                                if current_rev is None:
+                                    # Table exists but is empty - drop it
+                                    logger.info("alembic_version table is empty. Dropping it...")
+                                    check_conn.execute(text("DROP TABLE alembic_version"))
+                                    check_conn.commit()
+                                    logger.info("✓ Dropped empty alembic_version table")
+                                    current_rev = None
+                            else:
+                                logger.info("alembic_version table does not exist")
+                                current_rev = None
+                            
+                            # Check what other tables exist (besides alembic_version)
+                            result = check_conn.execute(text("""
+                                SELECT table_name FROM information_schema.tables 
+                                WHERE table_schema = 'public' AND table_name != 'alembic_version'
+                                ORDER BY table_name
+                            """))
+                            other_tables = [row[0] for row in result]
+                            logger.info(f"Other tables in database (excluding alembic_version): {other_tables}")
+                            
+                            # If there are other tables but alembic_version is None, this is suspicious
+                            # Alembic might think the database is already migrated based on table existence
+                            if other_tables and current_rev is None:
+                                logger.warning(f"⚠️  Database has tables {other_tables} but alembic_version is None!")
+                                logger.warning("This might confuse Alembic. We'll force stamp to 'base' to reset state.")
                     finally:
                         check_engine.dispose()
                     
                     # CRITICAL FIX: For empty databases, Alembic may do a stamp_revision instead of upgrade
                     # when there are multiple migration heads. To force a real upgrade, we need to:
                     # 1. Ensure alembic_version table doesn't exist (already done above)
-                    # 2. Explicitly stamp to 'base' to mark database as empty
-                    # 3. Then upgrade to target_revision
-                    logger.info(f"Stamping database to 'base' to force Alembic to recognize empty database...")
+                    # 2. Upgrade directly to target_revision - Alembic will create alembic_version automatically
+                    #    and execute all migrations from base to target
+                    # NOTE: We do NOT call stamp('base') because that causes Alembic to do a stamp_revision
+                    #       instead of executing migrations. We let Alembic detect the empty database naturally.
+                    logger.info(f"Upgrading directly to target revision '{target_revision}' (alembic_version table was dropped, Alembic will create it)...")
                     try:
-                        # First, explicitly stamp to 'base' to mark database as empty
-                        # This prevents Alembic from thinking the database is already migrated
                         import sys
                         import io
                         old_stdout = sys.stdout
@@ -1338,36 +1361,9 @@ class OrganizationDatabaseManager:
                         try:
                             sys.stdout = stdout_capture
                             sys.stderr = stderr_capture
-                            logger.info(f"Executing command.stamp(alembic_cfg, 'base')...")
-                            command.stamp(alembic_cfg, 'base')
-                            logger.info(f"✓ Database stamped to 'base'")
-                        finally:
-                            sys.stdout = old_stdout
-                            sys.stderr = old_stderr
-                        
-                        # Verify that stamp worked - check revision is None
-                        verify_stamp_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
-                        with verify_stamp_engine.connect() as verify_stamp_conn:
-                            result = verify_stamp_conn.execute(text("SELECT version_num FROM alembic_version"))
-                            stamp_rev = result.scalar_one_or_none()
-                            logger.info(f"✓ Verified stamp: revision after stamp to 'base' = {stamp_rev}")
-                            if stamp_rev is not None:
-                                logger.warning(f"⚠️  Stamp to 'base' did not set revision to None! Got: {stamp_rev}")
-                                # Force it to None by deleting the row
-                                verify_stamp_conn.execute(text("DELETE FROM alembic_version"))
-                                verify_stamp_conn.commit()
-                                logger.info("✓ Deleted revision from alembic_version to force None")
-                        verify_stamp_engine.dispose()
-                        
-                        # Now upgrade to target_revision - this will execute all migrations from base
-                        logger.info(f"Upgrading from 'base' to target revision '{target_revision}'...")
-                        stdout_capture = io.StringIO()
-                        stderr_capture = io.StringIO()
-                        
-                        try:
-                            sys.stdout = stdout_capture
-                            sys.stderr = stderr_capture
                             logger.info(f"Executing command.upgrade(alembic_cfg, '{target_revision}')...")
+                            # Upgrade directly - Alembic will detect empty database (no alembic_version table)
+                            # and execute all migrations from base to target
                             command.upgrade(alembic_cfg, target_revision)
                             logger.info(f"command.upgrade() to {target_revision} completed without exception")
                             
