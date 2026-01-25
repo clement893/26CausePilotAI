@@ -2168,13 +2168,16 @@ async def seed_example_donors(
                     donor_id = UUID(donor_id)
                 
                 try:
+                    # Note: Donation model has payment_method_id (UUID FK) not payment_method (string)
+                    # We don't set payment_method_id here as it's optional and would require a PaymentMethod object
                     donation = Donation(
                         id=uuid.uuid4(),
                         organization_id=org_id,  # Use the validated UUID
                         donor_id=donor_id,
                         amount=donation_amount,
                         donation_type=choice(["one_time", "recurring", "in_memory", "in_honor"]),
-                        payment_method=choice(["credit_card", "debit_card", "bank_transfer", "check", "cash"]),
+                        # payment_method is a relationship, not a column - don't pass it
+                        # payment_method_id would be the FK, but we're not creating PaymentMethod objects in seed
                         payment_status=choice(["completed", "completed", "completed", "pending", "failed"]),  # Mostly completed
                         payment_date=donation_date if randint(1, 10) > 1 else None,
                         receipt_sent=randint(1, 10) > 3,
