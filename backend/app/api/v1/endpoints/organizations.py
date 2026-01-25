@@ -813,20 +813,24 @@ async def migrate_organization_database(
         )
     
     try:
-        logger.info(f"Starting migrations for organization {organization_id} ({organization.slug})")
-        logger.info(f"Connection string: {OrganizationDatabaseManager.mask_connection_string(organization.db_connection_string)}")
+        logger.info("=" * 80)
+        logger.info("🚀 DÉMARRAGE DES MIGRATIONS POUR L'ORGANISATION")
+        logger.info(f"🆔 ID de l'organisation: {organization_id}")
+        logger.info(f"📝 Nom de l'organisation: {organization.slug}")
+        logger.info(f"🔗 Connection string: {OrganizationDatabaseManager.mask_connection_string(organization.db_connection_string)}")
+        logger.info("=" * 80)
         
         # Parse connection string to get database name for logging
         try:
             parsed = OrganizationDatabaseManager.parse_db_connection_string(organization.db_connection_string)
             db_name = parsed['database']
-            logger.info(f"Target database: {db_name}")
+            logger.info(f"📊 Base de données cible (extrait de la connection string): '{db_name}'")
         except Exception as parse_error:
             logger.warning(f"Could not parse connection string for database name: {parse_error}")
             db_name = "unknown"
         
         # Run migrations
-        logger.info(f"Calling run_migrations_for_organization for organization {organization_id}")
+        logger.info(f"▶️  Appel de run_migrations_for_organization pour l'organisation {organization_id}")
         await OrganizationDatabaseManager.run_migrations_for_organization(
             organization.db_connection_string
         )
