@@ -1066,6 +1066,31 @@ class OrganizationDatabaseManager:
             # Log the connection string (masked) for debugging
             logger.info(f"Migration target database URL: {cls.mask_connection_string(alembic_db_url)}")
             
+            # Verify connection before running migrations
+            try:
+                test_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
+                with test_engine.connect() as test_conn:
+                    # Test connection and get database name
+                    result = test_conn.execute(text("SELECT current_database()"))
+                    actual_db_name = result.scalar()
+                    logger.info(f"Connected to database: {actual_db_name}")
+                    
+                    # Verify it matches expected database name
+                    parsed_conn = cls.parse_db_connection_string(db_connection_string)
+                    expected_db_name = parsed_conn.get('database')
+                    if actual_db_name != expected_db_name:
+                        logger.warning(
+                            f"Database name mismatch: expected '{expected_db_name}', "
+                            f"but connected to '{actual_db_name}'. Proceeding anyway..."
+                        )
+                test_engine.dispose()
+            except Exception as conn_test_error:
+                logger.error(f"Failed to connect to database before migration: {conn_test_error}", exc_info=True)
+                raise ValueError(
+                    f"Impossible de se connecter à la base de données avant d'exécuter les migrations: {str(conn_test_error)}. "
+                    f"Vérifiez que la chaîne de connexion est correcte."
+                ) from conn_test_error
+            
             # For organization databases, we need to apply only the organization-specific migrations
             # These migrations start with add_donor_tables_001 and end with add_donor_crm_002
             # We'll try to upgrade to the specific revision for organization databases
@@ -1182,25 +1207,57 @@ class OrganizationDatabaseManager:
                 if is_empty_db or current_rev_in_db is None:
                     # Empty database - start from base_revision
                     logger.info("Starting migration from empty database - applying base revision first...")
-                    command.upgrade(alembic_cfg, base_revision)
-                    logger.info(f"Successfully applied base revision {base_revision}")
+                    logger.info(f"Calling command.upgrade(alembic_cfg, '{base_revision}')")
+                    try:
+                        command.upgrade(alembic_cfg, base_revision)
+                        logger.info(f"Successfully applied base revision {base_revision}")
+                    except Exception as base_upgrade_err:
+                        logger.error(f"Failed to apply base revision {base_revision}: {base_upgrade_err}", exc_info=True)
+                        raise ValueError(
+                            f"Échec de l'application de la migration de base {base_revision}: {str(base_upgrade_err)}. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from base_upgrade_err
                     
                     # Then upgrade to target_revision
                     logger.info(f"Upgrading from {base_revision} to {target_revision}...")
-                    command.upgrade(alembic_cfg, target_revision)
-                    logger.info(f"Successfully upgraded to {target_revision}")
+                    logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
+                    try:
+                        command.upgrade(alembic_cfg, target_revision)
+                        logger.info(f"Successfully upgraded to {target_revision}")
+                    except Exception as target_upgrade_err:
+                        logger.error(f"Failed to upgrade to target revision {target_revision}: {target_upgrade_err}", exc_info=True)
+                        raise ValueError(
+                            f"Échec de la mise à jour vers la révision cible {target_revision}: {str(target_upgrade_err)}. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from target_upgrade_err
                 elif current_rev_in_db == target_revision:
                     logger.info(f"Database already at target revision {target_revision}, skipping migration")
                 elif current_rev_in_db == base_revision:
                     # Database is at base revision, upgrade to target
                     logger.info(f"Database at base revision {base_revision}, upgrading to {target_revision}...")
-                    command.upgrade(alembic_cfg, target_revision)
-                    logger.info(f"Successfully upgraded to {target_revision}")
+                    logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
+                    try:
+                        command.upgrade(alembic_cfg, target_revision)
+                        logger.info(f"Successfully upgraded to {target_revision}")
+                    except Exception as target_upgrade_err:
+                        logger.error(f"Failed to upgrade to target revision {target_revision}: {target_upgrade_err}", exc_info=True)
+                        raise ValueError(
+                            f"Échec de la mise à jour vers la révision cible {target_revision}: {str(target_upgrade_err)}. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from target_upgrade_err
                 else:
                     # Database has a different revision, try to upgrade to target
                     logger.info(f"Database has revision {current_rev_in_db}, attempting to upgrade to {target_revision}...")
-                    command.upgrade(alembic_cfg, target_revision)
-                    logger.info(f"Successfully upgraded to {target_revision}")
+                    logger.info(f"Calling command.upgrade(alembic_cfg, '{target_revision}')")
+                    try:
+                        command.upgrade(alembic_cfg, target_revision)
+                        logger.info(f"Successfully upgraded to {target_revision}")
+                    except Exception as target_upgrade_err:
+                        logger.error(f"Failed to upgrade to target revision {target_revision}: {target_upgrade_err}", exc_info=True)
+                        raise ValueError(
+                            f"Échec de la mise à jour vers la révision cible {target_revision}: {str(target_upgrade_err)}. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from target_upgrade_err
                     
             except Exception as revision_error:
                 error_msg = str(revision_error)
@@ -1272,9 +1329,28 @@ class OrganizationDatabaseManager:
                             f"or specify a specific target revision. Error: {error_msg_heads}"
                         ) from heads_error
                 else:
-                    # Different error, re-raise
+                    # Different error - could be SQL error, connection error, etc.
                     logger.error(f"Migration error: {error_msg}", exc_info=True)
-                    raise
+                    
+                    # Check for SQL errors that might indicate migration issues
+                    if "relation" in error_msg.lower() and "does not exist" in error_msg.lower():
+                        raise ValueError(
+                            f"Erreur SQL lors de la migration: {error_msg}. "
+                            f"Cela peut indiquer que les migrations précédentes n'ont pas été appliquées correctement. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from revision_error
+                    elif "syntax error" in error_msg.lower() or "invalid" in error_msg.lower():
+                        raise ValueError(
+                            f"Erreur de syntaxe SQL lors de la migration: {error_msg}. "
+                            f"Vérifiez que les fichiers de migration sont correctement formatés. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from revision_error
+                    else:
+                        # Re-raise with more context
+                        raise ValueError(
+                            f"Erreur lors de l'exécution des migrations: {error_msg}. "
+                            f"Vérifiez les logs du backend pour plus de détails."
+                        ) from revision_error
             
             parsed = cls.parse_db_connection_string(db_connection_string)
             db_name = parsed['database']
@@ -1288,12 +1364,7 @@ class OrganizationDatabaseManager:
             try:
                 verify_engine = create_engine(alembic_db_url, poolclass=pool.NullPool)
                 with verify_engine.connect() as conn:
-                    # Check alembic_version
-                    result = conn.execute(text("SELECT version_num FROM alembic_version"))
-                    final_rev = result.scalar_one_or_none()
-                    logger.info(f"Final revision after migration: {final_rev}")
-                    
-                    # Check if any tables exist (including alembic_version)
+                    # First, check if any tables exist at all
                     result = conn.execute(text("""
                         SELECT table_name 
                         FROM information_schema.tables 
@@ -1301,7 +1372,26 @@ class OrganizationDatabaseManager:
                         ORDER BY table_name
                     """))
                     all_tables = [row[0] for row in result]
-                    logger.info(f"All tables found in database (including alembic_version): {all_tables}")
+                    logger.info(f"All tables found in database: {all_tables}")
+                    
+                    # Check if alembic_version table exists
+                    has_alembic_table = 'alembic_version' in all_tables
+                    
+                    if not has_alembic_table:
+                        logger.error(f"alembic_version table does not exist in database {db_name} after migration!")
+                        logger.error(f"This indicates that migrations were not executed successfully.")
+                        logger.error(f"All tables in database: {all_tables}")
+                        raise ValueError(
+                            f"La table alembic_version n'existe pas dans la base de données '{db_name}' après la migration. "
+                            f"Cela indique que les migrations n'ont pas été exécutées avec succès. "
+                            f"Vérifiez les logs du backend pour voir les erreurs de migration. "
+                            f"Tables trouvées dans la base de données: {all_tables if all_tables else 'aucune'}"
+                        )
+                    
+                    # Now safely check alembic_version
+                    result = conn.execute(text("SELECT version_num FROM alembic_version"))
+                    final_rev = result.scalar_one_or_none()
+                    logger.info(f"Final revision after migration: {final_rev}")
                     
                     # Filter out alembic_version
                     tables_after = [t for t in all_tables if t != 'alembic_version']
@@ -1321,21 +1411,12 @@ class OrganizationDatabaseManager:
                         logger.error(f"Final revision: {final_rev}, Expected: {target_revision}")
                         logger.error(f"All tables in database: {all_tables}")
                         logger.error(f"Expected tables: {expected_tables}")
-                        
-                        # Check if alembic_version table exists
-                        if 'alembic_version' not in all_tables:
-                            raise ValueError(
-                                f"La table alembic_version n'existe pas dans la base de données '{db_name}'. "
-                                f"Cela indique que les migrations n'ont pas été exécutées. "
-                                f"Vérifiez les logs du backend pour plus de détails."
-                            )
-                        else:
-                            raise ValueError(
-                                f"Aucune table n'a été créée dans la base de données '{db_name}' après la migration. "
-                                f"Révision finale: {final_rev}, Révision attendue: {target_revision}. "
-                                f"Vérifiez que les migrations add_donor_tables_001 et add_donor_crm_002 existent et sont correctement configurées. "
-                                f"Tables trouvées: {all_tables}"
-                            )
+                        raise ValueError(
+                            f"Aucune table n'a été créée dans la base de données '{db_name}' après la migration. "
+                            f"Révision finale: {final_rev}, Révision attendue: {target_revision}. "
+                            f"Vérifiez que les migrations add_donor_tables_001 et add_donor_crm_002 existent et sont correctement configurées. "
+                            f"Tables trouvées: {all_tables}"
+                        )
                     elif missing_tables:
                         logger.warning(f"Some expected tables are missing: {missing_tables}")
                         logger.info(f"Successfully created {len(tables_after)}/{len(expected_tables)} expected tables in database {db_name}")
@@ -1347,10 +1428,21 @@ class OrganizationDatabaseManager:
                 # Re-raise ValueError as-is (it's our custom error)
                 raise
             except Exception as verify_error:
+                error_msg = str(verify_error)
                 logger.error(f"Could not verify tables after migration: {verify_error}", exc_info=True)
+                
+                # Check if it's the alembic_version table error
+                if "alembic_version" in error_msg.lower() and "does not exist" in error_msg.lower():
+                    raise ValueError(
+                        f"La table alembic_version n'existe pas dans la base de données '{db_name}' après la migration. "
+                        f"Cela indique que les migrations n'ont pas été exécutées avec succès. "
+                        f"Vérifiez les logs du backend pour voir les erreurs de migration. "
+                        f"Erreur: {error_msg}"
+                    ) from verify_error
+                
                 # Don't fail silently - re-raise to ensure we know about the problem
                 raise ValueError(
-                    f"Erreur lors de la vérification des tables après la migration: {str(verify_error)}. "
+                    f"Erreur lors de la vérification des tables après la migration: {error_msg}. "
                     f"Vérifiez les logs du backend pour plus de détails."
                 ) from verify_error
             
