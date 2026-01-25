@@ -1396,19 +1396,18 @@ class OrganizationDatabaseManager:
                                     migration_conn.commit()
                                     logger.info(f"✓ Dropped alembic_version table")
                             
-                            # Now use command.stamp() + command.upgrade() to force real migrations
-                            # This bypasses Alembic's automatic stamp_revision detection
+                            # Now use command.upgrade() directly without stamp() to force real migrations
+                            # The issue is that stamp() with multiple heads causes Alembic to do stamp_revision
+                            # Instead, we'll call upgrade() directly which should execute migrations
                             if current_rev is None:
-                                logger.info(f"Upgrading using command.stamp() + command.upgrade() with explicit revision path...")
+                                logger.info(f"Upgrading using command.upgrade() directly (no stamp) to force real migrations...")
                                 
-                                # CRITICAL: First stamp the database as 'base' to ensure Alembic knows it's empty
-                                # Then upgrade to base_revision, then to target_revision
-                                # This forces Alembic to execute migrations instead of stamping
-                                logger.info(f"Step 0: Stamping database as 'base' to ensure clean state...")
-                                command.stamp(alembic_cfg, 'base')
-                                logger.info(f"✓ Step 0 completed: database stamped as 'base'")
+                                # CRITICAL: Don't use stamp() - it causes Alembic to do stamp_revision with multiple heads
+                                # Instead, call upgrade() directly which should execute migrations
+                                # Ensure alembic_version table exists but is empty (we already dropped it above)
+                                cls._ensure_alembic_version_table(alembic_db_url)
                                 
-                                logger.info(f"Step 1: Upgrading from 'base' to {base_revision}...")
+                                logger.info(f"Step 1: Upgrading from None to {base_revision}...")
                                 command.upgrade(alembic_cfg, base_revision)
                                 logger.info(f"✓ Step 1 completed: upgraded to {base_revision}")
                                 
