@@ -2096,32 +2096,38 @@ async def seed_example_donors(
     try:
         logger.info(f"Starting seed of {count} example donors for organization {organization_id}")
         
+        # Ensure organization_id is a UUID, not a string
+        org_id = organization_id
+        if isinstance(org_id, str):
+            org_id = UUID(org_id)
+        logger.info(f"Organization ID type: {type(org_id)}, value: {org_id}")
+        
         for i in range(count):
             # Generate random donor data
             first_name = choice(first_names)
             last_name = choice(last_names)
             email = f"{first_name.lower()}.{last_name.lower()}{randint(1, 999)}@{choice(domains)}"
             
-            # Ensure organization_id is a UUID, not a string
-            org_id = organization_id
-            if isinstance(org_id, str):
-                org_id = UUID(org_id)
-            
             # Create donor
-            donor = Donor(
-                id=uuid.uuid4(),
-                organization_id=org_id,
-                email=email,
-                first_name=first_name,
-                last_name=last_name,
-                phone=f"+1{randint(514, 999)}{randint(1000000, 9999999)}" if randint(1, 10) > 2 else None,
-                preferred_language=choice(["fr", "en"]),
-                opt_in_email=randint(1, 10) > 2,
-                opt_in_sms=randint(1, 10) > 5,
-                opt_in_postal=randint(1, 10) > 3,
-                is_anonymous=False,
-                is_active=randint(1, 10) > 1,
-            )
+            try:
+                donor = Donor(
+                    id=uuid.uuid4(),
+                    organization_id=org_id,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    phone=f"+1{randint(514, 999)}{randint(1000000, 9999999)}" if randint(1, 10) > 2 else None,
+                    preferred_language=choice(["fr", "en"]),
+                    opt_in_email=randint(1, 10) > 2,
+                    opt_in_sms=randint(1, 10) > 5,
+                    opt_in_postal=randint(1, 10) > 3,
+                    is_anonymous=False,
+                    is_active=randint(1, 10) > 1,
+                )
+                logger.info(f"Created donor object: {type(donor)}, id: {donor.id}, org_id: {donor.organization_id}, type(org_id): {type(donor.organization_id)}")
+            except Exception as e:
+                logger.error(f"Error creating donor object: {e}", exc_info=True)
+                raise
             
             # Add address (50% chance)
             if randint(1, 10) > 5:
@@ -2133,8 +2139,14 @@ async def seed_example_donors(
                     "country": "Canada"
                 }
             
-            org_db.add(donor)
-            await org_db.flush()  # Ensure donor.id is available
+            try:
+                logger.info(f"Adding donor to session: {type(donor)}")
+                org_db.add(donor)
+                await org_db.flush()  # Ensure donor.id is available
+                logger.info(f"Donor flushed, id: {donor.id}, type: {type(donor.id)}")
+            except Exception as e:
+                logger.error(f"Error adding donor to session: {e}", exc_info=True)
+                raise
             
             # Verify donor.id is set (should be UUID)
             if not donor.id:
@@ -2155,20 +2167,30 @@ async def seed_example_donors(
                 if isinstance(donor_id, str):
                     donor_id = UUID(donor_id)
                 
-                donation = Donation(
-                    id=uuid.uuid4(),
-                    organization_id=org_id,  # Use the validated UUID
-                    donor_id=donor_id,
-                    amount=donation_amount,
-                    donation_type=choice(["one_time", "recurring", "in_memory", "in_honor"]),
-                    payment_method=choice(["credit_card", "debit_card", "bank_transfer", "check", "cash"]),
-                    payment_status=choice(["completed", "completed", "completed", "pending", "failed"]),  # Mostly completed
-                    payment_date=donation_date if randint(1, 10) > 1 else None,
-                    receipt_sent=randint(1, 10) > 3,
-                )
+                try:
+                    donation = Donation(
+                        id=uuid.uuid4(),
+                        organization_id=org_id,  # Use the validated UUID
+                        donor_id=donor_id,
+                        amount=donation_amount,
+                        donation_type=choice(["one_time", "recurring", "in_memory", "in_honor"]),
+                        payment_method=choice(["credit_card", "debit_card", "bank_transfer", "check", "cash"]),
+                        payment_status=choice(["completed", "completed", "completed", "pending", "failed"]),  # Mostly completed
+                        payment_date=donation_date if randint(1, 10) > 1 else None,
+                        receipt_sent=randint(1, 10) > 3,
+                    )
+                    logger.info(f"Created donation object: {type(donation)}, id: {donation.id}, donor_id: {donation.donor_id}, type(donor_id): {type(donation.donor_id)}")
+                except Exception as e:
+                    logger.error(f"Error creating donation object: {e}", exc_info=True)
+                    raise
                 
-                org_db.add(donation)
-                created_donations.append(donation)
+                try:
+                    logger.info(f"Adding donation to session: {type(donation)}")
+                    org_db.add(donation)
+                    created_donations.append(donation)
+                except Exception as e:
+                    logger.error(f"Error adding donation to session: {e}", exc_info=True)
+                    raise
             
             # Update donor total
             donor.total_donated = total_donated
@@ -2191,15 +2213,32 @@ async def seed_example_donors(
             
             # Create activity - ensure current_user.id is an integer
             performed_by_id = int(current_user.id) if current_user.id else None
-            activity = DonorActivity(
-                id=uuid.uuid4(),
-                organization_id=org_id,  # Use the validated UUID
-                donor_id=donor.id,  # This should now be available after flush
-                activity_type="profile_created",
-                activity_data={"created_by": performed_by_id, "seed": True},
-                performed_by=performed_by_id,
-            )
-            org_db.add(activity)
+            
+            # Ensure donor_id is a UUID, not a string
+            activity_donor_id = donor.id
+            if isinstance(activity_donor_id, str):
+                activity_donor_id = UUID(activity_donor_id)
+            
+            try:
+                activity = DonorActivity(
+                    id=uuid.uuid4(),
+                    organization_id=org_id,  # Use the validated UUID
+                    donor_id=activity_donor_id,  # This should now be available after flush
+                    activity_type="profile_created",
+                    activity_data={"created_by": performed_by_id, "seed": True},
+                    performed_by=performed_by_id,
+                )
+                logger.info(f"Created activity object: {type(activity)}, id: {activity.id}, donor_id: {activity.donor_id}, type(donor_id): {type(activity.donor_id)}")
+            except Exception as e:
+                logger.error(f"Error creating activity object: {e}", exc_info=True)
+                raise
+            
+            try:
+                logger.info(f"Adding activity to session: {type(activity)}")
+                org_db.add(activity)
+            except Exception as e:
+                logger.error(f"Error adding activity to session: {e}", exc_info=True)
+                raise
             
             created_donors.append(donor)
         
