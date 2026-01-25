@@ -1429,13 +1429,8 @@ class OrganizationDatabaseManager:
                                     ops = Operations(migration_context)
                                     
                                     # Patch op in the migration module to use our Operations object
-                                    # Save original op
-                                    import alembic.op as op_module
-                                    original_op = op_module
-                                    
-                                    # Replace op with our Operations object
-                                    import sys
-                                    migration_module = sys.modules[base_rev_obj.module.__name__]
+                                    # Use the module directly instead of sys.modules
+                                    migration_module = base_rev_obj.module
                                     original_op_in_module = getattr(migration_module, 'op', None)
                                     setattr(migration_module, 'op', ops)
                                     
@@ -1453,7 +1448,8 @@ class OrganizationDatabaseManager:
                                         if original_op_in_module is not None:
                                             setattr(migration_module, 'op', original_op_in_module)
                                         else:
-                                            delattr(migration_module, 'op')
+                                            if hasattr(migration_module, 'op'):
+                                                delattr(migration_module, 'op')
                                     
                                     # Step 2: Execute target migration
                                     logger.info(f"Step 2: Executing migration {target_revision} directly...")
@@ -1463,7 +1459,7 @@ class OrganizationDatabaseManager:
                                     ops = Operations(migration_context)
                                     
                                     # Patch op in the target migration module
-                                    target_migration_module = sys.modules[target_rev_obj.module.__name__]
+                                    target_migration_module = target_rev_obj.module
                                     original_op_in_target = getattr(target_migration_module, 'op', None)
                                     setattr(target_migration_module, 'op', ops)
                                     
@@ -1481,7 +1477,8 @@ class OrganizationDatabaseManager:
                                         if original_op_in_target is not None:
                                             setattr(target_migration_module, 'op', original_op_in_target)
                                         else:
-                                            delattr(target_migration_module, 'op')
+                                            if hasattr(target_migration_module, 'op'):
+                                                delattr(target_migration_module, 'op')
                                 
                                 manual_engine.dispose()
                             else:
