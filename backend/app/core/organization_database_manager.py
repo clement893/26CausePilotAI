@@ -1948,7 +1948,10 @@ class OrganizationDatabaseManager:
                         logger.warning(f"Some expected tables are missing: {missing_tables}")
                         logger.info(f"Successfully created {len(tables_after)}/{len(expected_tables)} expected tables in database {db_name}")
                     else:
-                        logger.info(f"Successfully created all {len(tables_after)} expected tables in database {db_name}")
+                        logger.info(f"✅ Successfully created all {len(tables_after)} expected tables in database {db_name}")
+                        logger.info(f"✅ MIGRATION CONFIRMÉE: Toutes les tables ont été créées avec succès dans la base de données '{db_name}'")
+                        logger.info(f"✅ Révision finale: {final_rev if final_rev else 'None (à vérifier)'}")
+                        logger.info(f"✅ Tables créées: {', '.join(sorted(tables_after))}")
                 
                 verify_engine.dispose()
             except ValueError:

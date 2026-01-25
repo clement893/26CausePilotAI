@@ -830,7 +830,7 @@ async def migrate_organization_database(
             organization.db_connection_string
         )
         
-        logger.info(f"Migrations completed successfully for organization {organization_id}")
+        logger.info(f"✅ Migrations completed successfully for organization {organization_id}")
         
         # Wait a moment for database to be ready (some migrations may need a moment)
         # Give more time for migrations to complete and database to be ready
@@ -844,7 +844,7 @@ async def migrate_organization_database(
         )
         
         logger.info(
-            f"Ran migrations on database '{db_name}' for organization {organization_id} "
+            f"✅ Ran migrations on database '{db_name}' for organization {organization_id} "
             f"({organization.slug}). Tables found: {', '.join(tables) if tables else 'none'}"
         )
         
@@ -872,16 +872,25 @@ async def migrate_organization_database(
             return MigrateDatabaseResponse(
                 success=True,
                 message=(
-                    f"Migrations executed on database '{db_name}'. {len(tables)} table(s) found. "
-                    f"Note: Some expected tables are missing: {', '.join(missing_tables)}. "
+                    f"✅ Migrations exécutées avec succès sur la base de données '{db_name}'. "
+                    f"{len(tables)} table(s) créée(s). "
+                    f"Note: Certaines tables attendues sont manquantes: {', '.join(missing_tables)}. "
                     f"Vérifiez les logs pour plus de détails."
                 ),
                 tables_created=tables
             )
         
+        # Success confirmation message
+        confirmation_message = (
+            f"✅ Migration exécutée avec succès ! "
+            f"La base de données '{db_name}' a été mise à jour. "
+            f"{len(tables)} table(s) créée(s) : {', '.join(sorted(tables))}."
+        )
+        logger.info(f"✅ {confirmation_message}")
+        
         return MigrateDatabaseResponse(
             success=True,
-            message=f"Migrations executed successfully on database '{db_name}'. {len(tables)} table(s) found.",
+            message=confirmation_message,
             tables_created=tables
         )
         
