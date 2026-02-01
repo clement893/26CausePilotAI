@@ -25,7 +25,7 @@ export default function Chart({ data, type = 'bar', title, height = 300, classNa
             <div
               className={clsx(
                 'w-full rounded-t transition-all hover:opacity-80',
-                point.color || 'bg-gradient-to-t from-blue-500 to-purple-500 dark:bg-primary-400'
+                point.color || 'bg-gradient-to-t from-blue-500 to-purple-500 bg-blue-500'
               )}
               style={{ 
                 height: `${(point.value / maxValue) * 100}%`, 
@@ -34,7 +34,7 @@ export default function Chart({ data, type = 'bar', title, height = 300, classNa
               }}
               title={`${point.label}: ${point.value}`}
             />{' '}
-            <div className="text-xs text-gray-400 dark:text-muted-foreground mt-2 text-center truncate w-full">
+            <div className="text-xs text-gray-400 text-gray-400 mt-2 text-center truncate w-full">
               {point.label}
             </div>
           </div>
@@ -146,8 +146,8 @@ export default function Chart({ data, type = 'bar', title, height = 300, classNa
     }
   };
   return (
-    <div className={clsx('bg-[#13131A] dark:bg-background rounded-lg border border-gray-800 dark:border-border p-6', className)}>
-      {title && <h3 className="text-lg font-semibold text-white dark:text-foreground mb-4">{title}</h3>}
+    <div className={clsx('bg-[#13131A] bg-[#13131A] rounded-lg border border-gray-800 border-gray-800 p-6', className)}>
+      {title && <h3 className="text-lg font-semibold text-white text-white mb-4">{title}</h3>}
       <div style={{ height: `${height}px` }} className="relative">
         {' '}
         {renderChart()}{' '}

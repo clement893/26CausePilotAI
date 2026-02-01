@@ -54,8 +54,8 @@ const providerConfigs: Record<SocialProvider, ProviderConfig> = {
     bgColor: 'bg-background',
     hoverBgColor: 'hover:bg-muted',
     textColor: 'text-foreground',
-    darkBgColor: 'dark:bg-background',
-    darkHoverBgColor: 'dark:hover:bg-muted',
+    darkBgColor: 'bg-[#13131A]',
+    darkHoverBgColor: 'hover:bg-[#1C1C26]',
   },
   github: {
     name: 'GitHub',
@@ -72,7 +72,7 @@ const providerConfigs: Record<SocialProvider, ProviderConfig> = {
     hoverBgColor: 'hover:bg-muted',
     textColor: 'text-background',
     darkBgColor: '',
-    darkHoverBgColor: 'dark:hover:bg-muted',
+    darkHoverBgColor: 'hover:bg-[#1C1C26]',
   },
   microsoft: {
     name: 'Microsoft',
@@ -87,8 +87,8 @@ const providerConfigs: Record<SocialProvider, ProviderConfig> = {
     bgColor: 'bg-background',
     hoverBgColor: 'hover:bg-muted',
     textColor: 'text-foreground',
-    darkBgColor: 'dark:bg-background',
-    darkHoverBgColor: 'dark:hover:bg-muted',
+    darkBgColor: 'bg-[#13131A]',
+    darkHoverBgColor: 'hover:bg-[#1C1C26]',
   },
 };
 

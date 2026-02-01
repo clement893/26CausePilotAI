@@ -8,8 +8,8 @@ export default function ThemeToggle() {
       onClick={toggle}
       className={clsx(
         'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
-        'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
-        isDark ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-[#1C1C26] dark:bg-muted'
+        'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2',
+        isDark ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-[#1C1C26] bg-[#1C1C26]'
       )}
       aria-label="Toggle theme"
       role="switch"
@@ -32,9 +32,9 @@ export function ThemeToggleWithIcon() {
       onClick={toggle}
       className={clsx(
         'p-2 rounded-lg transition-colors',
-        'text-gray-300 dark:text-foreground',
-        'hover:bg-[#1C1C26] dark:hover:bg-muted',
-        'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2'
+        'text-gray-300 text-white',
+        'hover:bg-[#1C1C26] hover:bg-[#1C1C26]',
+        'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2'
       )}
       aria-label="Toggle theme"
     >

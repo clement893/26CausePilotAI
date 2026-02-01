@@ -81,18 +81,18 @@ export default function DragDropList({
             onDragEnd={handleDragEnd}
             className={clsx(
               'flex items-center gap-3 p-4 rounded-lg border transition-all hover-lift',
-              'glass-effect bg-[#13131A] dark:bg-background',
-              'border-gray-800 dark:border-border',
+              'glass-effect bg-[#13131A] bg-[#13131A]',
+              'border-gray-800 border-gray-800',
               isDragging && 'opacity-50 cursor-grabbing',
               isDragOver &&
-                'border-blue-500 dark:border-primary-400 bg-gradient-to-r from-blue-500/20 to-purple-500/20',
-              !item.disabled && 'cursor-grab hover:border-gray-700 dark:hover:border-border',
+                'border-blue-500 border-blue-500 bg-gradient-to-r from-blue-500/20 to-purple-500/20',
+              !item.disabled && 'cursor-grab hover:border-gray-700 hover:border-gray-800',
               item.disabled && 'opacity-50 cursor-not-allowed',
               itemClassName
             )}
           >
             {!item.disabled && (
-              <div className="text-gray-400 dark:text-muted-foreground flex-shrink-0">
+              <div className="text-gray-400 text-gray-400 flex-shrink-0">
                 <GripVertical className="w-5 h-5" />
               </div>
             )}
