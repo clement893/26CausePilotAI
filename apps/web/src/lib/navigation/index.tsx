@@ -18,6 +18,8 @@ import {
   Cog,
   Network,
   Heart,
+  Repeat,
+  DollarSign,
   FileEdit,
   Megaphone,
   UsersRound,
@@ -109,6 +111,11 @@ export function getNavigationConfig(
           icon: <Users className="w-5 h-5" />,
         },
         {
+          name: 'Dons',
+          href: '/dashboard/dons',
+          icon: <DollarSign className="w-5 h-5" />,
+        },
+        {
           name: 'Statistiques',
           href: '/dashboard/base-donateur/statistiques',
           icon: <BarChart3 className="w-5 h-5" />,
@@ -117,6 +124,11 @@ export function getNavigationConfig(
           name: 'Segments',
           href: '/dashboard/base-donateur/segments',
           icon: <PieChart className="w-5 h-5" />,
+        },
+        {
+          name: 'Abonnements',
+          href: '/dashboard/base-donateur/abonnements',
+          icon: <Repeat className="w-5 h-5" />,
         },
       ],
       collapsible: true,
