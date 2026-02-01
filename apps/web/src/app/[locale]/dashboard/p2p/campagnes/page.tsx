@@ -9,7 +9,7 @@ import { Container, Button, useToast } from '@/components/ui';
 import { Plus, Target } from 'lucide-react';
 import { useOrganization } from '@/hooks/useOrganization';
 import { listP2PCampaigns, deleteP2PCampaign } from '@/app/actions/p2p';
-import { P2PCampaignList } from '@/components/p2p';
+// import { P2PCampaignList } from '@/components/p2p/P2PCampaignList';
 import { LoadingSkeleton } from '@/components/ui';
 import { logger } from '@/lib/logger';
 

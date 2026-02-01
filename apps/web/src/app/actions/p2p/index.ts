@@ -28,3 +28,9 @@ export type { ListP2PParticipantsParams, ListP2PParticipantsResult, P2PParticipa
 
 export { getP2PCampaignBySlug } from './getCampaignBySlug';
 export type { GetP2PCampaignBySlugParams, GetP2PCampaignBySlugResult, P2PCampaignPublicDetails } from './getCampaignBySlug';
+
+export { getP2PParticipantStats } from './getParticipantStats';
+export type { GetP2PParticipantStatsParams, GetP2PParticipantStatsResult, P2PParticipantStats } from './getParticipantStats';
+
+export { getP2PParticipantByEmail } from './getParticipantByEmail';
+export type { GetP2PParticipantByEmailParams, GetP2PParticipantByEmailResult, P2PParticipantBasic } from './getParticipantByEmail';
