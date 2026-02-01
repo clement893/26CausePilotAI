@@ -59,7 +59,7 @@ export interface APISettingsProps {
         <Card variant="glass" title="API Credentials" className="border border-gray-800">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 API Key
               </label>
               <div className="flex gap-2">
@@ -88,12 +88,12 @@ export interface APISettingsProps {
                   <Copy className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="mt-1 text-sm text-gray-400text-muted-foreground">
+              <p className="mt-1 text-sm text-gray-400">
                 Your API key for authenticating requests
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 API Secret
               </label>
               <div className="flex gap-2">
@@ -126,7 +126,7 @@ export interface APISettingsProps {
                   <Copy className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="mt-1 text-sm text-gray-400text-muted-foreground">
+              <p className="mt-1 text-sm text-gray-400">
                 Keep your API secret secure and never share it publicly
               </p>
             </div>
@@ -136,7 +136,7 @@ export interface APISettingsProps {
         <Card variant="glass" title="API Configuration" className="border border-gray-800">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Base URL
               </label>
               <Input
@@ -148,7 +148,7 @@ export interface APISettingsProps {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Rate Limit (requests per minute)
               </label>
               <Input
@@ -163,10 +163,10 @@ export interface APISettingsProps {
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <label className="block text-sm font-medium text-whitetext-foreground">
+                <label className="block text-sm font-medium text-white">
                   Enable Webhooks
                 </label>
-                <p className="text-sm text-gray-400text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Receive webhook notifications for events
                 </p>
               </div>
@@ -179,7 +179,7 @@ export interface APISettingsProps {
             </div>{' '}
             {formData.enableWebhooks && (
               <div>
-                <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Webhook URL
                 </label>
                 <Input
@@ -193,10 +193,10 @@ export interface APISettingsProps {
             )}
             <div className="flex items-center justify-between">
               <div>
-                <label className="block text-sm font-medium text-whitetext-foreground">
+                <label className="block text-sm font-medium text-white">
                   Enable API Logging
                 </label>
-                <p className="text-sm text-gray-400text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Log all API requests for debugging
                 </p>
               </div>
