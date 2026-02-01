@@ -1,307 +1,222 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getErrorMessage } from '@/lib/errors';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import Alert from '@/components/ui/Alert';
-import Container from '@/components/ui/Container';
-import Input from '@/components/ui/Input';
-import Loading from '@/components/ui/Loading';
-import Modal from '@/components/ui/Modal';
-import DataTable from '@/components/ui/DataTable';
-import { Column } from '@/components/ui/DataTable';
-import UserRolesEditor from '@/components/admin/UserRolesEditor';
-import UserPermissionsEditor from '@/components/admin/UserPermissionsEditor';
-import RoleDefaultPermissionsEditor from '@/components/admin/RoleDefaultPermissionsEditor';
-import { useUserRoles } from '@/hooks/useRBAC';
+/**
+ * Gestion des utilisateurs - Étape 1.1.4
+ * Liste, filtres (recherche, rôle, statut), pagination, actions (Edit, Activer/Désactiver, Supprimer)
+ */
 
-interface User extends Record<string, unknown> {
-  id: string;
+import { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { apiClient } from '@/lib/api/client';
+import { TokenStorage } from '@/lib/auth/tokenStorage';
+import { getErrorMessage } from '@/lib/errors';
+import { AuthButton } from '@/components/auth';
+import { UserFilters, UserTable, DeleteUserModal } from '@/components/admin/users';
+import type { AdminUserRow } from '@/components/admin/users/UserTable';
+import type { RoleFilter, StatusFilter } from '@/components/admin/users/UserFilters';
+import { deleteUserAction } from '@/app/actions/admin/users/delete';
+import { toggleUserStatusAction } from '@/app/actions/admin/users/toggle-status';
+import { ChevronRight, UserPlus } from 'lucide-react';
+
+interface BackendUser {
+  id: number;
   email: string;
-  name: string;
+  first_name?: string | null;
+  last_name?: string | null;
   is_active: boolean;
-  is_verified: boolean;
-  is_admin?: boolean;
-  created_at: string;
+  created_at?: string;
+  updated_at?: string;
+  last_login_at?: string | null;
+  role?: string;
+}
+
+interface PaginatedResponse {
+  items?: BackendUser[];
+  total?: number;
+  page?: number;
+  page_size?: number;
 }
 
 export default function AdminUsersContent() {
-  const [users, setUsers] = useState<User[]>([]);
+  const { data: session } = useSession();
+  const canEdit = session?.user?.role === 'ADMIN';
+
+  const [users, setUsers] = useState<AdminUserRow[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [rolesModalOpen, setRolesModalOpen] = useState(false);
-  const [permissionsModalOpen, setPermissionsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [search, setSearch] = useState('');
+  const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [deleteModalUser, setDeleteModalUser] = useState<AdminUserRow | null>(null);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const { apiClient } = await import('@/lib/api');
-      const response = await apiClient.get('/v1/users?page=1&page_size=100');
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      params.set('page_size', String(pageSize));
+      if (search) params.set('search', search);
+      if (statusFilter === 'active') params.set('is_active', 'true');
+      if (statusFilter === 'inactive') params.set('is_active', 'false');
 
-      // Backend returns paginated response: { items: [...], total: ..., page: ..., page_size: ... }
-      interface PaginatedResponse<T> {
-        data?: T | { items?: T[] };
-      }
-      const responseData = (response as PaginatedResponse<User[]>).data;
-      let usersData: User[] = [];
+      const res = await apiClient.get<PaginatedResponse>(`/v1/users?${params.toString()}`);
+      const data = res.data;
+      const items = data?.items ?? [];
+      const totalCount = data?.total ?? items.length;
 
-      if (responseData && typeof responseData === 'object') {
-        if ('items' in responseData) {
-          const items = (responseData as { items?: unknown }).items;
-          if (Array.isArray(items) && items.length > 0 && !Array.isArray(items[0])) {
-            usersData = items as User[];
-          }
-        } else if (Array.isArray(responseData)) {
-          usersData = responseData as User[];
-        }
-      }
-
-      setUsers(usersData);
+      setUsers(
+        items.map((u) => ({
+          id: String(u.id),
+          email: u.email,
+          first_name: u.first_name,
+          last_name: u.last_name,
+          is_active: u.is_active,
+          role: u.role,
+          last_login_at: u.last_login_at,
+          created_at: u.created_at,
+          updated_at: u.updated_at,
+        }))
+      );
+      setTotal(totalCount);
+      setError(null);
     } catch (err) {
       setError(getErrorMessage(err, 'Erreur lors du chargement des utilisateurs'));
     } finally {
       setLoading(false);
     }
+  }, [page, pageSize, search, statusFilter]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  const hasActiveFilters =
+    search !== '' || roleFilter !== 'all' || statusFilter !== 'all';
+
+  const resetFilters = () => {
+    setSearch('');
+    setRoleFilter('all');
+    setStatusFilter('all');
   };
 
-  const handleDelete = async () => {
-    if (!selectedUser) return;
-
-    try {
-      const { apiClient } = await import('@/lib/api');
-      await apiClient.delete(`/v1/users/${selectedUser.id}`);
-
-      setUsers(users.filter((u) => u.id !== selectedUser.id));
-      setDeleteModalOpen(false);
-      setSelectedUser(null);
-
-      // Clear any previous errors
-      setError(null);
-    } catch (err) {
-      const errorMessage = getErrorMessage(err, "Erreur lors de la suppression de l'utilisateur");
-      setError(errorMessage);
-    }
+  const handleEdit = (user: AdminUserRow) => {
+    window.location.href = `/admin/users/${user.id}/edit`;
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const columns: Column<User>[] = [
-    {
-      key: 'email',
-      label: 'Email',
-      sortable: true,
-    },
-    {
-      key: 'name',
-      label: 'Nom',
-      sortable: true,
-    },
-    {
-      key: 'is_active',
-      label: 'Statut',
-      render: (value) => (
-        <Badge variant={value ? 'success' : 'default'}>{value ? 'Actif' : 'Inactif'}</Badge>
-      ),
-    },
-    {
-      key: 'roles',
-      label: 'Rôles',
-      render: (_value, row) => {
-        // This will be populated by UserRolesDisplay component
-        return <UserRolesDisplay userId={parseInt(row.id)} />;
-      },
-    },
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (_value, row) => (
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              setSelectedUser(row);
-              setRolesModalOpen(true);
-            }}
-          >
-            Rôles
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              setSelectedUser(row);
-              setPermissionsModalOpen(true);
-            }}
-          >
-            Permissions
-          </Button>
-          <Button
-            size="sm"
-            variant="danger"
-            onClick={() => {
-              setSelectedUser(row);
-              setDeleteModalOpen(true);
-            }}
-          >
-            Supprimer
-          </Button>
-        </div>
-      ),
-    },
-  ];
-
-  if (loading) {
-    return (
-      <Container className="py-8">
-        <Loading />
-      </Container>
+  const handleToggleStatus = async (user: AdminUserRow) => {
+    const token = TokenStorage.getToken();
+    const result = await toggleUserStatusAction(
+      user.id,
+      user.is_active,
+      token ?? undefined
     );
-  }
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === user.id ? { ...u, is_active: result.isActive ?? !u.is_active } : u
+      )
+    );
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteModalUser) return;
+    const token = TokenStorage.getToken();
+    const result = await deleteUserAction(deleteModalUser.id, token ?? undefined);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+    setUsers((prev) => prev.filter((u) => u.id !== deleteModalUser.id));
+    setTotal((t) => Math.max(0, t - 1));
+    setDeleteModalUser(null);
+  };
+
+  const activeCount = users.filter((u) => u.is_active).length;
 
   return (
-    <Container className="py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-white mb-2">Gestion des Utilisateurs</h1>
-        <p className="text-gray-400">Gérez tous les utilisateurs de la plateforme</p>
-      </div>
+    <div className="min-h-screen bg-[var(--background-primary,#0A0A0F)] px-4 py-8">
+      <div className="mx-auto max-w-6xl">
+        {/* Breadcrumb */}
+        <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--text-secondary,#A0A0B0)]">
+          <Link href="/admin" className="hover:text-white">
+            Admin
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-white">Utilisateurs</span>
+        </nav>
 
-      {error && (
-        <Alert variant="error" className="mb-6">
-          {error}
-        </Alert>
-      )}
+        {/* Header */}
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Gestion des Utilisateurs</h1>
+            <p className="mt-1 text-sm text-[var(--text-secondary,#A0A0B0)]">
+              {total} utilisateur{total !== 1 ? 's' : ''} au total
+              {typeof activeCount === 'number' && ` · ${activeCount} actifs`}
+            </p>
+          </div>
+          {canEdit && (
+            <Link href="/admin/users/new">
+              <AuthButton variant="primary" icon={<UserPlus className="h-4 w-4" />}>
+                Ajouter un utilisateur
+              </AuthButton>
+            </Link>
+          )}
+        </div>
 
-      <Card className="mb-6">
-        <div className="flex gap-4 mb-4">
-          <Input
-            placeholder="Rechercher par email ou nom..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1"
+        {error && (
+          <div className="mb-6 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-500">
+            {error}
+          </div>
+        )}
+
+        {/* Filtres */}
+        <div className="mb-6 rounded-xl border border-white/10 bg-[var(--background-secondary,#13131A)] p-4">
+          <UserFilters
+            search={search}
+            onSearchChange={setSearch}
+            roleFilter={roleFilter}
+            onRoleFilterChange={setRoleFilter}
+            statusFilter={statusFilter}
+            onStatusFilterChange={setStatusFilter}
+            onReset={resetFilters}
+            hasActiveFilters={hasActiveFilters}
           />
         </div>
 
-        <DataTable data={filteredUsers} columns={columns} pageSize={10} />
-      </Card>
-
-      {/* Role Default Permissions Section */}
-      <div className="mb-6">
-        <RoleDefaultPermissionsEditor
-          onUpdate={() => {
-            fetchUsers();
-          }}
+        {/* Table */}
+        <UserTable
+          users={users}
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          onEdit={handleEdit}
+          onToggleStatus={handleToggleStatus}
+          onDelete={setDeleteModalUser}
+          canEdit={canEdit ?? false}
+          loading={loading}
         />
       </div>
 
-      {/* Roles Modal */}
-      <Modal
-        isOpen={rolesModalOpen}
-        onClose={() => {
-          setRolesModalOpen(false);
-          setSelectedUser(null);
-        }}
-        title={`Gérer les rôles - ${selectedUser?.email}`}
-        size="lg"
-      >
-        {selectedUser && (
-          <UserRolesEditor
-            userId={parseInt(selectedUser.id)}
-            onUpdate={() => {
-              fetchUsers();
-            }}
-          />
-        )}
-      </Modal>
-
-      {/* Permissions Modal */}
-      <Modal
-        isOpen={permissionsModalOpen}
-        onClose={() => {
-          setPermissionsModalOpen(false);
-          setSelectedUser(null);
-        }}
-        title={`Gérer les permissions - ${selectedUser?.email}`}
-        size="lg"
-      >
-        {selectedUser && (
-          <UserPermissionsEditor
-            userId={parseInt(selectedUser.id)}
-            onUpdate={() => {
-              fetchUsers();
-            }}
-          />
-        )}
-      </Modal>
-
-      {/* Delete Modal */}
-      <Modal
-        isOpen={deleteModalOpen}
-        onClose={() => {
-          setDeleteModalOpen(false);
-          setSelectedUser(null);
-        }}
-        title="Confirmer la suppression"
-      >
-        <p className="mb-4">
-          Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{selectedUser?.email}</strong> ?
-        </p>
-        <div className="flex gap-2 justify-end">
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setDeleteModalOpen(false);
-              setSelectedUser(null);
-            }}
-          >
-            Annuler
-          </Button>
-          <Button variant="danger" onClick={handleDelete}>
-            Supprimer
-          </Button>
-        </div>
-      </Modal>
-    </Container>
-  );
-}
-
-// Component to display user roles in table
-function UserRolesDisplay({ userId }: { userId: number }) {
-  const { roles, loading } = useUserRoles(userId);
-
-  if (loading) {
-    return <span className="text-gray-400">Chargement...</span>;
-  }
-
-  if (roles.length === 0) {
-    return <span className="text-gray-400">Aucun rôle</span>;
-  }
-
-  return (
-    <div className="flex flex-wrap gap-1">
-      {roles.slice(0, 2).map((role) => (
-        <Badge key={role.id} variant="default" className="text-xs">
-          {role.name}
-        </Badge>
-      ))}
-      {roles.length > 2 && (
-        <Badge variant="default" className="text-xs">
-          +{roles.length - 2}
-        </Badge>
-      )}
+      <DeleteUserModal
+        isOpen={!!deleteModalUser}
+        onClose={() => setDeleteModalUser(null)}
+        onConfirm={handleDeleteConfirm}
+        userName={
+          deleteModalUser
+            ? [deleteModalUser.first_name, deleteModalUser.last_name].filter(Boolean).join(' ')
+            : undefined
+        }
+        userEmail={deleteModalUser?.email ?? ''}
+      />
     </div>
   );
 }

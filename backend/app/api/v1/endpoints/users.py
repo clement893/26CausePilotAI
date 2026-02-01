@@ -411,3 +411,46 @@ async def update_current_user(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to update user profile"
         )
+
+
+@router.put("/{user_id}", response_model=UserResponse)
+@rate_limit_decorator("20/hour")
+async def update_user(
+    request: Request,
+    user_id: int,
+    user_data: UserUpdate,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> UserResponse:
+    """
+    Update a user (admin/superadmin only).
+    Allows updating first_name, last_name, email, avatar, is_active.
+    """
+    from app.dependencies import is_admin_or_superadmin
+
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    if not is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only administrators can update users",
+        )
+
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    if user_data.email and user_data.email != user.email:
+        existing = await db.execute(select(User).where(User.email == user_data.email))
+        if existing.scalar_one_or_none():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email is already taken",
+            )
+
+    update_data = user_data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(user, field, value)
+    await db.commit()
+    await db.refresh(user)
+    return user
