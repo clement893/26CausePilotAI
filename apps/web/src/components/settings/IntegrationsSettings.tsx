@@ -90,13 +90,13 @@ export interface IntegrationsSettingsProps {
           {Object.entries(groupedIntegrations).map(([category, categoryIntegrations]) => (
             <div key={category}>
               {' '}
-              <h3 className="text-sm font-semibold text-foreground mb-3"> {category} </h3>{' '}
+              <h3 className="text-sm font-semibold text-white mb-3"> {category} </h3>{' '}
               <div className="space-y-3">
                 {' '}
                 {categoryIntegrations.map((integration) => (
                   <div
                     key={integration.id}
-                    className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-mutedhover:bg-muted transition-colors"
+                    className="flex items-center justify-between p-4 border border-gray-800 rounded-lg hover:bg-[#252532] hover:text-white transition-colors"
                   >
                     {' '}
                     <div className="flex-1">
@@ -108,7 +108,7 @@ export interface IntegrationsSettingsProps {
                         )}{' '}
                         <div>
                           {' '}
-                          <h4 className="font-medium text-foreground"> {integration.name} </h4>{' '}
+                          <h4 className="font-medium text-white"> {integration.name} </h4>{' '}
                           <p className="text-sm text-muted-foreground">
                             {' '}
                             {integration.description}{' '}
