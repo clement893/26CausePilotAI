@@ -103,7 +103,7 @@ export default function Sidebar({
           className={clsx(
             'flex items-center justify-between px-lg py-md rounded-lg transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px]',
             // Improved spacing and touch target (UX/UI improvements - Batch 8, 17)
-            isActive ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/40 text-white dark:text-primary-100 font-medium border-l-4 border-l-blue-500' : 'text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted',
+            isActive ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 bg-blue-500/20 text-white text-blue-300 font-medium border-l-4 border-l-blue-500' : 'text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]',
             level > 0 && 'ml-lg' // Increased indentation for nested items
           )}
         >
@@ -127,7 +127,7 @@ export default function Sidebar({
           {!collapsed && (
             <div className="flex items-center space-x-2 flex-shrink-0">
               {item.badge && (
-                <span className="px-2 py-0.5 text-xs font-medium bg-primary-100 dark:bg-primary-900/40 text-primary-800 dark:text-primary-200 rounded-full">
+                <span className="px-2 py-0.5 text-xs font-medium bg-primary-100 bg-blue-500/20 text-primary-800 text-blue-200 rounded-full">
                   {item.badge}
                 </span>
               )}
@@ -165,25 +165,25 @@ export default function Sidebar({
   return (
     <aside
       className={clsx(
-        'bg-[#13131A] dark:bg-background border-r border-gray-800 dark:border-border h-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex flex-col',
+        'bg-[#13131A] bg-[#13131A] border-r border-gray-800 border-gray-800 h-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex flex-col',
         collapsed ? 'w-16' : 'w-64 md:w-72 lg:w-80',
         className
       )}
     >
       {/* Header: User info + Notifications (top left) */}
       {user && (
-        <div className="p-lg border-b border-gray-800 dark:border-border flex-shrink-0">
+        <div className="p-lg border-b border-gray-800 border-gray-800 flex-shrink-0">
           <div className={clsx('flex items-center gap-3', collapsed && 'justify-center')}>
-            <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center flex-shrink-0 min-w-[44px] min-h-[44px]">
-              <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
+            <div className="w-10 h-10 rounded-full bg-primary-100 bg-blue-500/20 flex items-center justify-center flex-shrink-0 min-w-[44px] min-h-[44px]">
+              <span className="text-sm font-medium text-primary-700 text-blue-300">
                 {user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
               </span>
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0 flex items-center gap-2">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white dark:text-foreground truncate">{user.name || 'Utilisateur'}</p>
-                  <p className="text-xs text-gray-400 dark:text-muted-foreground truncate">{user.email}</p>
+                  <p className="text-sm font-medium text-white text-white truncate">{user.name || 'Utilisateur'}</p>
+                  <p className="text-xs text-gray-400 text-gray-400 truncate">{user.email}</p>
                 </div>
                 {notificationsComponent && <div className="flex-shrink-0">{notificationsComponent}</div>}
               </div>
@@ -195,7 +195,7 @@ export default function Sidebar({
 
       {/* Search Bar (UX/UI improvements - Batch 8) */}
       {showSearch && !collapsed && (
-        <div className="px-lg py-md border-b border-gray-800 dark:border-border flex-shrink-0">
+        <div className="px-lg py-md border-b border-gray-800 border-gray-800 flex-shrink-0">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
@@ -229,12 +229,12 @@ export default function Sidebar({
 
       {/* Footer: Collapse, Close button (mobile), Home, Theme Toggle, Logout (bottom) */}
       {(onToggleCollapse || onClose || onHomeClick || themeToggleComponent || onLogoutClick) && (
-        <div className="p-lg border-t border-gray-800 dark:border-border flex-shrink-0">
+        <div className="p-lg border-t border-gray-800 border-gray-800 flex-shrink-0">
           <div className={clsx('flex items-center gap-2', collapsed || isMobile ? 'justify-center flex-wrap' : 'justify-start')}>
             {onToggleCollapse && (
               <button
                 onClick={onToggleCollapse}
-                className="p-2 rounded-lg hover:bg-[#1C1C26] dark:hover:bg-muted text-gray-300 dark:text-foreground transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-[#1C1C26] hover:bg-[#1C1C26] text-gray-300 text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
@@ -249,7 +249,7 @@ export default function Sidebar({
             {onClose && (
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-[#1C1C26] dark:hover:bg-muted text-gray-300 dark:text-foreground transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-[#1C1C26] hover:bg-[#1C1C26] text-gray-300 text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Fermer le menu"
                 title="Fermer le menu"
               >
@@ -259,7 +259,7 @@ export default function Sidebar({
             {onHomeClick && (
               <button
                 onClick={onHomeClick}
-                className="p-2 rounded-lg hover:bg-[#1C1C26] dark:hover:bg-muted text-gray-300 dark:text-foreground transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-[#1C1C26] hover:bg-[#1C1C26] text-gray-300 text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Retour à l'accueil"
                 title="Retour à l'accueil"
               >
@@ -272,7 +272,7 @@ export default function Sidebar({
             {onLogoutClick && (
               <button
                 onClick={onLogoutClick}
-                className="p-2 rounded-lg hover:bg-error-100 dark:hover:bg-error-900/40 text-error-600 dark:text-error-400 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-error-100 hover:bg-red-500/20 text-error-600 text-red-400 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Déconnexion"
                 title="Déconnexion"
               >

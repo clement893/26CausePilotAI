@@ -40,28 +40,28 @@ export interface AlertProps extends BaseComponentProps, ClosableProps, IconProps
 
 const variantClasses = {
   info: {
-    container: 'bg-[#13131A] dark:bg-primary-900 border-l-4 border-l-blue-500 dark:border-primary-800 border-gray-800 dark:border-primary-800',
-    text: 'text-gray-300 dark:text-primary-100',
-    title: 'text-white dark:text-primary-50 font-semibold',
-    icon: 'text-blue-500 dark:text-primary-400',
+    container: 'bg-[#13131A] bg-blue-500/20 border-l-4 border-l-blue-500 border-blue-500/30 border-gray-800 border-blue-500/30',
+    text: 'text-gray-300 text-blue-300',
+    title: 'text-white text-white font-semibold',
+    icon: 'text-blue-500 text-blue-400',
   },
   success: {
-    container: 'bg-[#13131A] dark:bg-secondary-900 border-l-4 border-l-green-500 dark:border-secondary-800 border-gray-800 dark:border-secondary-800',
-    text: 'text-gray-300 dark:text-secondary-100',
-    title: 'text-white dark:text-secondary-50 font-semibold',
-    icon: 'text-green-500 dark:text-secondary-400',
+    container: 'bg-[#13131A] bg-green-500/20 border-l-4 border-l-green-500 border-green-500/30 border-gray-800 border-green-500/30',
+    text: 'text-gray-300 text-green-300',
+    title: 'text-white text-white font-semibold',
+    icon: 'text-green-500 text-green-400',
   },
   warning: {
-    container: 'bg-[#13131A] dark:bg-warning-900 border-l-4 border-l-yellow-500 dark:border-warning-800 border-gray-800 dark:border-warning-800',
-    text: 'text-gray-300 dark:text-warning-100',
-    title: 'text-white dark:text-warning-50 font-semibold',
-    icon: 'text-yellow-500 dark:text-warning-400',
+    container: 'bg-[#13131A] bg-yellow-500/20 border-l-4 border-l-yellow-500 border-yellow-500/30 border-gray-800 border-yellow-500/30',
+    text: 'text-gray-300 text-yellow-300',
+    title: 'text-white text-white font-semibold',
+    icon: 'text-yellow-500 text-yellow-400',
   },
   error: {
-    container: 'bg-[#13131A] dark:bg-error-900 border-l-4 border-l-red-500 dark:border-error-800 border-gray-800 dark:border-error-800',
-    text: 'text-gray-300 dark:text-error-100',
-    title: 'text-white dark:text-error-50 font-semibold',
-    icon: 'text-red-500 dark:text-error-400',
+    container: 'bg-[#13131A] bg-red-500/20 border-l-4 border-l-red-500 border-red-500/30 border-gray-800 border-red-500/30',
+    text: 'text-gray-300 text-red-300',
+    title: 'text-white text-white font-semibold',
+    icon: 'text-red-500 text-red-400',
   },
 };
 

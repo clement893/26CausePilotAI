@@ -61,10 +61,10 @@ export default function Pagination({
           disabled={currentPage === 1}
           className={clsx(
             'px-3 py-2 rounded-md text-sm font-medium transition-colors',
-            'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400',
             currentPage === 1
-              ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
-              : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+              ? 'bg-[#1C1C26] bg-[#1C1C26] text-gray-500 text-gray-400 cursor-not-allowed'
+              : 'bg-[#13131A] bg-[#13131A] text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]'
           )}
           aria-label="First page"
         >
@@ -77,10 +77,10 @@ export default function Pagination({
         disabled={currentPage === 1}
         className={clsx(
           'px-3 py-2 rounded-md text-sm font-medium transition-colors',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400',
           currentPage === 1
-            ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
-            : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+            ? 'bg-[#1C1C26] bg-[#1C1C26] text-gray-500 text-gray-400 cursor-not-allowed'
+            : 'bg-[#13131A] bg-[#13131A] text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]'
         )}
         aria-label="Previous page"
       >
@@ -90,7 +90,7 @@ export default function Pagination({
       {pageNumbers.map((page, index) => {
         if (page === 'ellipsis') {
           return (
-            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-500 dark:text-muted-foreground">
+            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-500 text-gray-400">
               ...
             </span>
           );
@@ -103,10 +103,10 @@ export default function Pagination({
             onClick={() => onPageChange(pageNum)}
             className={clsx(
               'px-4 py-2 rounded-md text-sm font-medium transition-colors',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+              'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400',
               isActive
-                ? 'bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-primary-500 text-white dark:text-background'
-                : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+                ? 'bg-gradient-to-r from-blue-500 to-purple-500 bg-blue-500 text-white text-white'
+                : 'bg-[#13131A] bg-[#13131A] text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]'
             )}
             aria-label={`Page ${pageNum}`}
             aria-current={isActive ? 'page' : undefined}
@@ -120,10 +120,10 @@ export default function Pagination({
         disabled={currentPage === totalPages}
         className={clsx(
           'px-3 py-2 rounded-md text-sm font-medium transition-colors',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400',
           currentPage === totalPages
-            ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
-            : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+            ? 'bg-[#1C1C26] bg-[#1C1C26] text-gray-500 text-gray-400 cursor-not-allowed'
+            : 'bg-[#13131A] bg-[#13131A] text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]'
         )}
           aria-label="Next page"
       >
@@ -135,10 +135,10 @@ export default function Pagination({
           disabled={currentPage === totalPages}
           className={clsx(
             'px-3 py-2 rounded-md text-sm font-medium transition-colors',
-            'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400',
             currentPage === totalPages
-              ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
-              : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+              ? 'bg-[#1C1C26] bg-[#1C1C26] text-gray-500 text-gray-400 cursor-not-allowed'
+              : 'bg-[#13131A] bg-[#13131A] text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]'
           )}
           aria-label="Last page"
         >

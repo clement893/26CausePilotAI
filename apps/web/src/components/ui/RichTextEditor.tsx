@@ -181,7 +181,7 @@ export default function RichTextEditor({
     <button
       type="button"
       onClick={() => execCommand(command, value)}
-      className="p-2 hover:bg-[#252532] dark:hover:bg-muted rounded transition-colors text-gray-300 dark:text-foreground"
+      className="p-2 hover:bg-[#252532] hover:bg-[#1C1C26] rounded transition-colors text-gray-300 text-white"
       aria-label={label}
       disabled={disabled}
     >
@@ -192,23 +192,23 @@ export default function RichTextEditor({
   return (
     <div className={clsx('flex flex-col', className)}>
       {label && (
-        <label className="block text-sm font-medium text-gray-300 dark:text-foreground mb-1">{label}</label>
+        <label className="block text-sm font-medium text-gray-300 text-white mb-1">{label}</label>
       )}
 
       <div
         className={clsx(
           'border rounded-lg overflow-hidden form-input-glow',
-          'bg-[#13131A] dark:bg-background',
+          'bg-[#13131A] bg-[#1C1C26]',
           error
-            ? 'border-error-500 dark:border-error-400'
+            ? 'border-error-500 border-red-500/30'
             : isFocused
-              ? 'border-primary-500 dark:border-primary-400 ring-2 ring-primary-500 dark:ring-primary-400'
-              : 'border-gray-800 dark:border-border',
+              ? 'border-primary-500 border-blue-500 ring-2 ring-primary-500 ring-blue-400'
+              : 'border-gray-800 border-gray-800',
           disabled && 'opacity-60 cursor-not-allowed'
         )}
       >
         {toolbar && (
-          <div className="flex items-center gap-1 p-2 border-b border-gray-800 dark:border-border glass-effect bg-[#1C1C26] dark:bg-muted">
+          <div className="flex items-center gap-1 p-2 border-b border-gray-800 border-gray-800 glass-effect bg-[#1C1C26] bg-[#1C1C26]">
             <ToolbarButton
               command="bold"
               icon={
@@ -260,7 +260,7 @@ export default function RichTextEditor({
               label="Souligné"
             />
 
-            <div className="w-px h-6 bg-gray-800 dark:bg-muted mx-1" />
+            <div className="w-px h-6 bg-gray-800 bg-[#1C1C26] mx-1" />
 
             <ToolbarButton
               command="formatBlock"
@@ -308,7 +308,7 @@ export default function RichTextEditor({
               label="Liste numérotée"
             />
 
-            <div className="w-px h-6 bg-gray-800 dark:bg-muted mx-1" />
+            <div className="w-px h-6 bg-gray-800 bg-[#1C1C26] mx-1" />
 
             <ToolbarButton
               command="justifyLeft"
@@ -355,12 +355,12 @@ export default function RichTextEditor({
               label="Aligner à droite"
             />
 
-            <div className="w-px h-6 bg-gray-800 dark:bg-muted mx-1" />
+            <div className="w-px h-6 bg-gray-800 bg-[#1C1C26] mx-1" />
 
             <button
               type="button"
               onClick={handleLinkClick}
-              className="p-2 hover:bg-[#252532] dark:hover:bg-muted rounded transition-colors text-gray-300 dark:text-foreground"
+              className="p-2 hover:bg-[#252532] hover:bg-[#1C1C26] rounded transition-colors text-gray-300 text-white"
               aria-label="Insérer un lien"
               disabled={disabled}
             >
@@ -399,9 +399,9 @@ export default function RichTextEditor({
           onBlur={() => setIsFocused(false)}
           className={clsx(
             'p-4 outline-none',
-            'text-white dark:text-foreground',
+            'text-white text-white',
             'min-h-[200px]',
-            'bg-[#13131A] dark:bg-background',
+            'bg-[#13131A] bg-[#1C1C26]',
             disabled && 'cursor-not-allowed'
           )}
           style={{ minHeight }}
@@ -422,13 +422,13 @@ export default function RichTextEditor({
       `}</style>
 
       {error && (
-        <p className="mt-1 text-sm text-red-400 dark:text-error-400" role="alert">
+        <p className="mt-1 text-sm text-red-400 text-red-400" role="alert">
           {error}
         </p>
       )}
 
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-400 dark:text-muted-foreground">{helperText}</p>
+        <p className="mt-1 text-sm text-gray-400 text-gray-400">{helperText}</p>
       )}
 
       {/* Link Dialog */}
