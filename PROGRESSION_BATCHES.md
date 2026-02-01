@@ -173,12 +173,28 @@
 
 **Progression:** 6/6 (100%) ✅ COMPLÉTÉ
 
+### Batch 13: Tables et Données Avancés (8 composants)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `51f4a2c` - feat(ui): Batch 13 - Alignement tables et données
+
+- [x] `DataTableEnhanced.tsx` - Toolbar dark theme ✅
+- [x] `VirtualTable.tsx` - Backgrounds dark, custom scrollbar ✅
+- [x] `TableSearchBar.tsx` - Utilise Input avec glow ✅
+- [x] `TableFilters.tsx` - Selects avec glassmorphism ✅
+- [x] `TablePagination.tsx` - Text dark theme ✅
+- [x] `AdvancedCharts.tsx` - Glassmorphism, dark backgrounds ✅
+- [x] `KanbanBoard.tsx` - Colonnes avec glassmorphism ✅
+- [x] `Calendar.tsx` - Events avec gradients ✅
+
+**Progression:** 8/8 (100%) ✅ COMPLÉTÉ
+
 ---
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 12
-- **Composants modifiés:** 62/357+ (17.4%)
+- **Batches complétés:** 13
+- **Composants modifiés:** 70/357+ (19.6%)
 - **Dernière mise à jour:** 2026-02-01
 
 ---
