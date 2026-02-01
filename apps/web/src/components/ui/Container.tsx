@@ -31,7 +31,12 @@ export default function Container({ children, className, maxWidth = 'xl', paddin
 
   return (
     <div
-      className={clsx('mx-auto', maxWidthClass, padding && 'px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-14', className)}
+      className={clsx(
+        'mx-auto',
+        maxWidthClass, 
+        padding && 'px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-14',
+        className
+      )}
       style={containerStyle}
     >
       {children}

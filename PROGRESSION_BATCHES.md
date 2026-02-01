@@ -78,12 +78,25 @@
 
 **Progression:** 5/5 (100%) ✅ COMPLÉTÉ
 
+### Batch 6: Utilitaires et Autres Composants (5 composants)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `3220513` - feat(ui): Batch 6 - Alignement des composants utilitaires
+
+- [x] `Avatar.tsx` - Bordures avec gradients optionnels ✅
+- [x] `Divider.tsx` - Style dark ✅
+- [x] `Heading.tsx` - Support gradient-text ✅
+- [x] `Text.tsx` - Couleurs alignées avec palette ✅
+- [x] `EmptyState.tsx` - Style moderne ✅
+
+**Progression:** 5/5 (100%) ✅ COMPLÉTÉ
+
 ---
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 5
-- **Composants modifiés:** 25/357+ (7.0%)
+- **Batches complétés:** 6
+- **Composants modifiés:** 30/357+ (8.4%)
 - **Dernière mise à jour:** 2026-02-01
 
 ---
@@ -123,6 +136,13 @@
 - **Commit:** `89e267d`
 - **Composants:** DataTable, Table, Chart, Timeline, List
 - **Message:** "feat(ui): Batch 5 - Alignement des composants de tables et données avec design system dark"
+- **Statut:** ✅ Committé avec succès
+
+### Batch 6 - Commit 6 ✅
+- **Date:** 2026-02-01
+- **Commit:** `3220513`
+- **Composants:** Avatar, Divider, Heading, Text, EmptyState
+- **Message:** "feat(ui): Batch 6 - Alignement des composants utilitaires avec design system dark"
 - **Statut:** ✅ Committé avec succès
 
 ---

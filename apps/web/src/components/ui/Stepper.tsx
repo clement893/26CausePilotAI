@@ -73,11 +73,11 @@ export default function Stepper({
                   'flex items-center justify-center rounded-full transition-all',
                   'focus:outline-none focus:ring-2 focus:ring-offset-2',
                   showStepNumbers ? 'w-10 h-10 text-sm font-medium' : 'w-8 h-8',
-                  status === 'completed' && 'bg-primary-600 dark:bg-primary-500 text-background',
+                  status === 'completed' && 'bg-gradient-to-r from-green-500 to-cyan-500 dark:bg-primary-500 text-white dark:text-background',
                   status === 'current' &&
-                    'bg-primary-600 dark:bg-primary-500 text-background ring-2 ring-primary-200 dark:ring-primary-800',
-                  status === 'error' && 'bg-error-600 dark:bg-error-500 text-background',
-                  status === 'upcoming' && 'bg-muted text-muted-foreground',
+                    'bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-primary-500 text-white dark:text-background ring-4 ring-blue-500/30 dark:ring-primary-800',
+                  status === 'error' && 'bg-gradient-to-r from-red-500 to-pink-500 dark:bg-error-500 text-white dark:text-background',
+                  status === 'upcoming' && 'bg-[#1C1C26] dark:bg-muted text-gray-400 dark:text-muted-foreground border-2 border-gray-700 dark:border-border',
                   isClickable && 'cursor-pointer hover:scale-105',
                   !isClickable && 'cursor-not-allowed'
                 )}
@@ -113,34 +113,33 @@ export default function Stepper({
                 <span
                   className={clsx(
                     'text-sm font-medium',
-                    status === 'current' && 'text-primary-600 dark:text-primary-400',
-                    status === 'completed' && 'text-foreground',
-                    status === 'error' && 'text-error-600 dark:text-error-400',
-                    status === 'upcoming' && 'text-muted-foreground'
+                    status === 'current' && 'text-white dark:text-primary-400',
+                    status === 'completed' && 'text-green-400 dark:text-foreground',
+                    status === 'error' && 'text-red-500 dark:text-error-400',
+                    status === 'upcoming' && 'text-gray-400 dark:text-muted-foreground'
                   )}
                 >
-                  {' '}
-                  {step.label}{' '}
+                  {step.label}
                   {step.optional && (
-                    <span className="text-muted-foreground ml-1"> (optionnel) </span>
-                  )}{' '}
-                </span>{' '}
+                    <span className="text-gray-500 dark:text-muted-foreground ml-1"> (optionnel)</span>
+                  )}
+                </span>
                 {step.description && (
-                  <span className="text-xs text-muted-foreground mt-0.5"> {step.description} </span>
-                )}{' '}
+                  <span className="text-xs text-gray-400 dark:text-muted-foreground mt-0.5">{step.description}</span>
+                )}
               </div>{' '}
             </div>{' '}
-            {/* Connector Line */}{' '}
+            {/* Connector Line */}
             {index < steps.length - 1 && (
               <div
                 className={clsx(
                   'flex-1',
                   isHorizontal ? 'mx-4 h-0.5' : 'my-2 w-0.5 h-8 ml-4',
-                  index < currentStep ? 'bg-primary-600 dark:bg-primary-500' : 'bg-muted'
+                  index < currentStep ? 'bg-gradient-to-r from-green-500 to-cyan-500 dark:bg-primary-500' : 'bg-[#1C1C26] dark:bg-muted'
                 )}
                 aria-hidden="true"
               />
-            )}{' '}
+            )}
           </div>
         );
       })}{' '}
