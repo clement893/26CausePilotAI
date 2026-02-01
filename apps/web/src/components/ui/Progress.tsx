@@ -23,24 +23,24 @@ export default function Progress({
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const sizes = { sm: 'h-1', md: 'h-2', lg: 'h-4' };
   const variants: Record<ColorVariant, string> = {
-    default: 'bg-gradient-to-r from-blue-500 to-purple-500 bg-blue-500',
-    success: 'bg-gradient-to-r from-green-500 to-cyan-500 bg-green-500',
-    warning: 'bg-gradient-to-r from-orange-500 to-red-500 bg-yellow-500',
-    error: 'bg-gradient-to-r from-red-500 to-pink-500 bg-red-500',
-    info: 'bg-gradient-to-r from-cyan-500 to-blue-500 bg-blue-500',
+    default: 'bg-gradient-to-r from-blue-500 to-purple-500',
+    success: 'bg-gradient-to-r from-green-500 to-cyan-500',
+    warning: 'bg-gradient-to-r from-orange-500 to-red-500',
+    error: 'bg-gradient-to-r from-red-500 to-pink-500',
+    info: 'bg-gradient-to-r from-cyan-500 to-blue-500',
   };
 
   return (
     <div className={clsx('w-full', className)}>
       {(showLabel || label) && (
         <div className="flex justify-between items-center mb-1">
-          <span className="text-sm font-medium text-white text-white">{label || 'Progress'}</span>
+          <span className="text-sm font-medium text-white">{label || 'Progress'}</span>
           {showLabel && (
-            <span className="text-sm text-gray-400 text-gray-400">{Math.round(percentage)}%</span>
+            <span className="text-sm text-gray-400">{Math.round(percentage)}%</span>
           )}
         </div>
       )}
-      <div className={clsx('w-full bg-[#1C1C26] bg-[#1C1C26] rounded-full overflow-hidden', sizes[size])}>
+      <div className={clsx('w-full bg-[#1C1C26] rounded-full overflow-hidden', sizes[size])}>
         <div
           className={clsx('h-full rounded-full transition-all duration-300', variants[variant])}
           style={{ width: `${percentage}%` }}

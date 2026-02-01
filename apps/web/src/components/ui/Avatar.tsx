@@ -73,10 +73,10 @@ export default function Avatar({
     <div
       className={clsx(
         'relative inline-flex items-center justify-center',
-        'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 bg-[#1C1C26]',
+        'rounded-full bg-[#1C1C26]',
         'text-white text-gray-400',
         'overflow-hidden',
-        'border-2 border-gray-800 border-transparent',
+        'border-2 border-transparent',
         sizeClasses[size],
         onClick && 'cursor-pointer hover:opacity-80 transition-opacity hover:scale-105',
         className
@@ -91,7 +91,7 @@ export default function Avatar({
       {status && (
         <span
           className={clsx(
-            'absolute bottom-0 right-0 rounded-full border-2 border-[#13131A] border-[#13131A]',
+            'absolute bottom-0 right-0 rounded-full border-2 border-[#13131A]',
             statusClasses[status],
             statusSizeClasses[size]
           )}
