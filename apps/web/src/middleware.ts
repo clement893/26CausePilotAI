@@ -69,6 +69,7 @@ export async function middleware(request: NextRequest) {
     '/auth/signin',
     '/auth/callback', // OAuth callback - needs to be public to receive token
     '/auth/google/testing', // Google OAuth test page
+    '/auth/google/diagnostic', // Google OAuth diagnostic page
     '/auth/forgot-password',
     '/auth/reset-password',
     '/auth/error',

@@ -13,6 +13,29 @@ This document describes the complete authentication and security configuration f
    - `http://localhost:3000/api/auth/callback/google` (development)
    - `https://your-domain.com/api/auth/callback/google` (production)
 
+### ⚠️ Important: Redirect URI Configuration
+
+NextAuth automatically generates the redirect URI using the format:
+```
+{NEXTAUTH_URL}/api/auth/callback/google
+```
+
+**The redirect URI in Google Cloud Console MUST match exactly:**
+- ✅ Correct: `https://your-domain.com/api/auth/callback/google`
+- ❌ Wrong: `https://your-domain.com/api/auth/callback/google/` (trailing slash)
+- ❌ Wrong: `https://your-domain.com/api/auth/callback/Google` (wrong case)
+- ❌ Wrong: `http://your-domain.com/api/auth/callback/google` (http in production)
+
+**Steps to configure:**
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
+2. Click on your OAuth 2.0 Client ID
+3. In "Authorized redirect URIs", add:
+   - Development: `http://localhost:3000/api/auth/callback/google`
+   - Production: `https://your-domain.com/api/auth/callback/google`
+4. Save changes (may take a few minutes to propagate)
+
+**See [GOOGLE_OAUTH_FIX.md](../docs/GOOGLE_OAUTH_FIX.md) for detailed troubleshooting.**
+
 ### Required Environment Variables
 
 ```env
@@ -207,6 +230,19 @@ curl -H "Authorization: Bearer YOUR_TOKEN" http://localhost:3000/api/protected
 
 - Verify that `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are correct
 - Verify that the redirect URI is configured in Google Cloud Console
+
+### Error "redirect_uri_mismatch" (400)
+
+This error means the redirect URI in Google Cloud Console doesn't match the one used by NextAuth.
+
+**Solution:**
+1. Check your `NEXTAUTH_URL` environment variable (should be your domain without trailing slash)
+2. The redirect URI should be exactly: `{NEXTAUTH_URL}/api/auth/callback/google`
+3. Add this exact URI to Google Cloud Console → Credentials → OAuth 2.0 Client ID → Authorized redirect URIs
+4. Wait a few minutes for changes to propagate
+5. Clear browser cache and try again
+
+**See [GOOGLE_OAUTH_FIX.md](../docs/GOOGLE_OAUTH_FIX.md) for detailed step-by-step instructions.**
 
 ### Error "NEXTAUTH_SECRET is not set"
 
