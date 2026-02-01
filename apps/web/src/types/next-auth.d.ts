@@ -7,7 +7,7 @@ import 'next-auth';
 import 'next-auth/jwt';
 
 /** Rôles cahier des charges Section 2.4 - Matrice des Permissions */
-export type Role = 'ADMIN' | 'DIRECTOR' | 'MANAGER';
+export type Role = 'ADMIN' | 'DIRECTOR' | 'MANAGER' | 'SUPER_ADMIN';
 
 declare module 'next-auth' {
   interface Session {

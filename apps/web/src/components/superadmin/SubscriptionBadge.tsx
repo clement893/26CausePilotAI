@@ -12,14 +12,17 @@ interface SubscriptionBadgeProps {
   className?: string;
 }
 
-const PLAN_COLORS: Record<string, { bg: string; text: string }> = {
+type PlanKey = 'FREE' | 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE';
+type StatusKey = 'ACTIVE' | 'CANCELED' | 'EXPIRED' | 'TRIAL';
+
+const PLAN_COLORS: Record<PlanKey, { bg: string; text: string }> = {
   FREE: { bg: 'bg-gray-500/20', text: 'text-gray-400' },
   STARTER: { bg: 'bg-blue-500/20', text: 'text-blue-400' },
   PROFESSIONAL: { bg: 'bg-purple-500/20', text: 'text-purple-400' },
   ENTERPRISE: { bg: 'bg-orange-500/20', text: 'text-orange-400' },
 };
 
-const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
+const STATUS_COLORS: Record<StatusKey, { bg: string; text: string }> = {
   ACTIVE: { bg: 'bg-green-500/20', text: 'text-green-400' },
   TRIAL: { bg: 'bg-yellow-500/20', text: 'text-yellow-400' },
   CANCELED: { bg: 'bg-red-500/20', text: 'text-red-400' },
