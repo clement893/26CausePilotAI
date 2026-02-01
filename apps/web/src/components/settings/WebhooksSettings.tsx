@@ -95,109 +95,85 @@ export default function WebhooksSettings({
   };
   return (
     <div className={clsx('space-y-6', className)}>
-      {' '}
-      <Card className="bg-background">
-        {' '}
+      <Card variant="glass" className="border border-gray-800 dark:border-border">
         <div className="flex items-center justify-between mb-6">
-          {' '}
           <div>
-            {' '}
-            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              {' '}
-              <Webhook className="w-5 h-5" /> Webhooks{' '}
-            </h3>{' '}
-            <p className="text-sm text-muted-foreground mt-1">
-              {' '}
-              Configure webhook endpoints to receive real-time events{' '}
-            </p>{' '}
-          </div>{' '}
-          <Button variant="primary" onClick={() => setShowCreateModal(true)}>
-            {' '}
-            <Plus className="w-4 h-4 mr-2" /> Create Webhook{' '}
-          </Button>{' '}
-        </div>{' '}
+            <h3 className="text-lg font-semibold text-white dark:text-foreground flex items-center gap-2">
+              <Webhook className="w-5 h-5 text-blue-400" /> Webhooks
+            </h3>
+            <p className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
+              Configure webhook endpoints to receive real-time events
+            </p>
+          </div>
+          <Button variant="gradient" onClick={() => setShowCreateModal(true)}>
+            <Plus className="w-4 h-4 mr-2" /> Create Webhook
+          </Button>
+        </div>
         {webhooks.length === 0 ? (
           <div className="text-center py-12">
-            {' '}
-            <Webhook className="w-12 h-12 text-muted-foreground mx-auto mb-4" />{' '}
-            <p className="text-muted-foreground">No webhooks configured</p>{' '}
+            <Webhook className="w-12 h-12 text-gray-500 dark:text-muted-foreground mx-auto mb-4" />
+            <p className="text-gray-400 dark:text-muted-foreground">No webhooks configured</p>
           </div>
         ) : (
           <div className="space-y-4">
-            {' '}
             {webhooks.map((webhook) => (
-              <div key={webhook.id} className="p-4 border border-border rounded-lg bg-muted">
-                {' '}
+              <div key={webhook.id} className="p-4 border border-gray-800 dark:border-border rounded-lg glass-effect bg-[#1C1C26] dark:bg-muted">
                 <div className="flex items-start justify-between">
-                  {' '}
                   <div className="flex-1">
-                    {' '}
                     <div className="flex items-center gap-2 mb-2">
-                      {' '}
-                      <span className="font-medium text-foreground"> {webhook.name} </span>{' '}
+                      <span className="font-medium text-white dark:text-foreground">{webhook.name}</span>
                       {webhook.active ? (
                         <Badge variant="success">
-                          {' '}
-                          <CheckCircle className="w-3 h-3 mr-1" /> Active{' '}
+                          <CheckCircle className="w-3 h-3 mr-1" /> Active
                         </Badge>
                       ) : (
                         <Badge variant="default">Inactive</Badge>
-                      )}{' '}
-                    </div>{' '}
-                    <div className="text-sm text-muted-foreground mb-2 font-mono">
-                      {' '}
-                      {webhook.url}{' '}
-                    </div>{' '}
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
-                      {' '}
+                      )}
+                    </div>
+                    <div className="text-sm text-gray-400 dark:text-muted-foreground mb-2 font-mono">
+                      {webhook.url}
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-muted-foreground mb-2">
                       <div>
-                        {' '}
-                        Success: {webhook.successCount} ({getSuccessRate(webhook)}%){' '}
-                      </div>{' '}
+                        Success: {webhook.successCount} ({getSuccessRate(webhook)}%)
+                      </div>
                       {webhook.failureCount > 0 && (
-                        <div className="text-error-600 dark:text-error-400">
-                          {' '}
-                          Failures: {webhook.failureCount}{' '}
+                        <div className="text-red-400 dark:text-error-400">
+                          Failures: {webhook.failureCount}
                         </div>
-                      )}{' '}
+                      )}
                       {webhook.lastTriggered && (
                         <div>
-                          {' '}
-                          Last triggered: {new Date(webhook.lastTriggered).toLocaleString()}{' '}
+                          Last triggered: {new Date(webhook.lastTriggered).toLocaleString()}
                         </div>
-                      )}{' '}
-                    </div>{' '}
+                      )}
+                    </div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      {' '}
                       {webhook.events.map((event) => (
                         <Badge key={event} variant="info" className="text-xs px-2 py-0.5">
-                          {' '}
-                          {event}{' '}
+                          {event}
                         </Badge>
-                      ))}{' '}
-                    </div>{' '}
-                  </div>{' '}
+                      ))}
+                    </div>
+                  </div>
                   <div className="flex items-center gap-2">
-                    {' '}
                     <Switch
                       checked={webhook.active}
                       onChange={(e) => handleToggle(webhook.id, e.target.checked)}
-                    />{' '}
-                    <Button variant="ghost" size="sm" onClick={() => setEditingWebhook(webhook)}>
-                      {' '}
-                      <Edit className="w-4 h-4 mr-2" /> Edit{' '}
-                    </Button>{' '}
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(webhook.id)}>
-                      {' '}
-                      <Trash2 className="w-4 h-4 mr-2" /> Delete{' '}
-                    </Button>{' '}
-                  </div>{' '}
-                </div>{' '}
+                    />
+                    <Button variant="ghost" size="sm" onClick={() => setEditingWebhook(webhook)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+                      <Edit className="w-4 h-4 mr-2" /> Edit
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(webhook.id)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+                      <Trash2 className="w-4 h-4 mr-2" /> Delete
+                    </Button>
+                  </div>
+                </div>
               </div>
-            ))}{' '}
+            ))}
           </div>
-        )}{' '}
-      </Card>{' '}
+        )}
+      </Card>
       {/* Create Webhook Modal */}{' '}
       <Modal
         isOpen={showCreateModal}
@@ -228,19 +204,15 @@ export default function WebhooksSettings({
             required
           />{' '}
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
-              {' '}
-              Events to Subscribe{' '}
-            </label>{' '}
-            <div className="space-y-2 max-h-64 overflow-y-auto">
-              {' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              Events to Subscribe
+            </label>
+            <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
               {availableEvents.map((event) => (
                 <label
                   key={event.id}
-                  className="flex items-center gap-3 p-3 border border-border rounded-lg cursor-pointer hover:bg-muted dark:hover:bg-muted"
+                  className="flex items-center gap-3 p-3 border border-gray-700 dark:border-border rounded-lg cursor-pointer hover:bg-[#252532] dark:hover:bg-muted glass-effect bg-[#1C1C26] dark:bg-background"
                 >
-                  {' '}
                   <input
                     type="checkbox"
                     checked={formData.events.includes(event.id)}
@@ -254,38 +226,34 @@ export default function WebhooksSettings({
                         });
                       }
                     }}
-                  />{' '}
-                  <span className="text-sm text-foreground">{event.label}</span>{' '}
+                  />
+                  <span className="text-sm text-white dark:text-foreground">{event.label}</span>
                 </label>
-              ))}{' '}
-            </div>{' '}
-          </div>{' '}
-          <div className="p-3 bg-info-50 dark:bg-info-900/20 rounded-lg border border-info-200 dark:border-info-800">
-            {' '}
+              ))}
+            </div>
+          </div>
+          <div className="p-3 bg-blue-500/20 dark:bg-info-900/20 rounded-lg border border-blue-500/30 dark:border-info-800">
             <div className="flex items-start gap-2">
-              {' '}
-              <AlertCircle className="w-4 h-4 text-info-600 dark:text-info-400 flex-shrink-0 mt-0.5" />{' '}
-              <div className="text-xs text-info-900 dark:text-info-200">
-                {' '}
+              <AlertCircle className="w-4 h-4 text-blue-400 dark:text-info-400 flex-shrink-0 mt-0.5" />
+              <div className="text-xs text-blue-200 dark:text-info-200">
                 We'll send a POST request to your URL with event data. Make sure your endpoint is
-                ready to receive webhooks.{' '}
-              </div>{' '}
-            </div>{' '}
-          </div>{' '}
+                ready to receive webhooks.
+              </div>
+            </div>
+          </div>
           <div className="flex items-center justify-end gap-3">
-            {' '}
             <Button
               variant="ghost"
               onClick={() => {
                 setShowCreateModal(false);
                 setFormData({ name: '', url: '', events: [] });
               }}
+              className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted"
             >
-              {' '}
-              Cancel{' '}
-            </Button>{' '}
+              Cancel
+            </Button>
             <Button
-              variant="primary"
+              variant="gradient"
               onClick={handleCreate}
               loading={loading}
               disabled={

@@ -54,121 +54,103 @@ export interface APISettingsProps {
   };
   return (
     <form onSubmit={handleSubmit} className={className}>
-      {' '}
       <div className="space-y-6">
-        {' '}
-        {/* API Credentials */}{' '}
-        <Card title="API Credentials">
-          {' '}
+        {/* API Credentials */}
+        <Card variant="glass" title="API Credentials" className="border border-gray-800 dark:border-border">
           <div className="space-y-4">
-            {' '}
             <div>
-              {' '}
-              <label className="block text-sm font-medium text-foreground mb-2">
-                {' '}
-                API Key{' '}
-              </label>{' '}
+              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+                API Key
+              </label>
               <div className="flex gap-2">
-                {' '}
                 <Input
                   type={showApiKey ? 'text' : 'password'}
                   value={settings?.apiKey || '••••••••••••••••'}
                   readOnly
                   className="flex-1"
-                />{' '}
+                />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => setShowApiKey(!showApiKey)}
+                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
                 >
-                  {' '}
-                  {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}{' '}
-                </Button>{' '}
+                  {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </Button>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => settings?.apiKey && handleCopy(settings.apiKey)}
+                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
                 >
-                  {' '}
-                  <Copy className="w-4 h-4" />{' '}
-                </Button>{' '}
-              </div>{' '}
-              <p className="mt-1 text-sm text-muted-foreground">
-                {' '}
-                Your API key for authenticating requests{' '}
-              </p>{' '}
-            </div>{' '}
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </div>
+              <p className="mt-1 text-sm text-gray-400 dark:text-muted-foreground">
+                Your API key for authenticating requests
+              </p>
+            </div>
             <div>
-              {' '}
-              <label className="block text-sm font-medium text-foreground mb-2">
-                {' '}
-                API Secret{' '}
-              </label>{' '}
+              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+                API Secret
+              </label>
               <div className="flex gap-2">
-                {' '}
                 <Input
                   type={showApiSecret ? 'text' : 'password'}
                   value={settings?.apiSecret || '••••••••••••••••'}
                   readOnly
                   className="flex-1"
-                />{' '}
+                />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => setShowApiSecret(!showApiSecret)}
+                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
                 >
-                  {' '}
                   {showApiSecret ? (
                     <EyeOff className="w-4 h-4" />
                   ) : (
                     <Eye className="w-4 h-4" />
-                  )}{' '}
-                </Button>{' '}
+                  )}
+                </Button>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={() => settings?.apiSecret && handleCopy(settings.apiSecret)}
+                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
                 >
-                  {' '}
-                  <Copy className="w-4 h-4" />{' '}
-                </Button>{' '}
-              </div>{' '}
-              <p className="mt-1 text-sm text-muted-foreground">
-                {' '}
-                Keep your API secret secure and never share it publicly{' '}
-              </p>{' '}
-            </div>{' '}
-          </div>{' '}
-        </Card>{' '}
-        {/* API Configuration */}{' '}
-        <Card title="API Configuration">
-          {' '}
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </div>
+              <p className="mt-1 text-sm text-gray-400 dark:text-muted-foreground">
+                Keep your API secret secure and never share it publicly
+              </p>
+            </div>
+          </div>
+        </Card>
+        {/* API Configuration */}
+        <Card variant="glass" title="API Configuration" className="border border-gray-800 dark:border-border">
           <div className="space-y-4">
-            {' '}
             <div>
-              {' '}
-              <label className="block text-sm font-medium text-foreground mb-2">
-                {' '}
-                Base URL{' '}
-              </label>{' '}
+              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+                Base URL
+              </label>
               <Input
                 value={formData.baseUrl}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFormData({ ...formData, baseUrl: e.target.value })
                 }
                 placeholder="https://api.example.com"
-              />{' '}
-            </div>{' '}
+              />
+            </div>
             <div>
-              {' '}
-              <label className="block text-sm font-medium text-foreground mb-2">
-                {' '}
-                Rate Limit (requests per minute){' '}
-              </label>{' '}
+              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+                Rate Limit (requests per minute)
+              </label>
               <Input
                 type="number"
                 value={formData.rateLimit}
@@ -177,21 +159,17 @@ export interface APISettingsProps {
                 }
                 min={1}
                 max={10000}
-              />{' '}
-            </div>{' '}
+              />
+            </div>
             <div className="flex items-center justify-between">
-              {' '}
               <div>
-                {' '}
-                <label className="block text-sm font-medium text-foreground">
-                  {' '}
-                  Enable Webhooks{' '}
-                </label>{' '}
-                <p className="text-sm text-muted-foreground">
-                  {' '}
-                  Receive webhook notifications for events{' '}
-                </p>{' '}
-              </div>{' '}
+                <label className="block text-sm font-medium text-white dark:text-foreground">
+                  Enable Webhooks
+                </label>
+                <p className="text-sm text-gray-400 dark:text-muted-foreground">
+                  Receive webhook notifications for events
+                </p>
+              </div>
               <Switch
                 checked={formData.enableWebhooks}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -201,58 +179,48 @@ export interface APISettingsProps {
             </div>{' '}
             {formData.enableWebhooks && (
               <div>
-                {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  {' '}
-                  Webhook URL{' '}
-                </label>{' '}
+                <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+                  Webhook URL
+                </label>
                 <Input
                   value={formData.webhookUrl}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setFormData({ ...formData, webhookUrl: e.target.value })
                   }
                   placeholder="https://your-app.com/webhooks"
-                />{' '}
+                />
               </div>
-            )}{' '}
+            )}
             <div className="flex items-center justify-between">
-              {' '}
               <div>
-                {' '}
-                <label className="block text-sm font-medium text-foreground">
-                  {' '}
-                  Enable API Logging{' '}
-                </label>{' '}
-                <p className="text-sm text-muted-foreground">
-                  {' '}
-                  Log all API requests for debugging{' '}
-                </p>{' '}
-              </div>{' '}
+                <label className="block text-sm font-medium text-white dark:text-foreground">
+                  Enable API Logging
+                </label>
+                <p className="text-sm text-gray-400 dark:text-muted-foreground">
+                  Log all API requests for debugging
+                </p>
+              </div>
               <Switch
                 checked={formData.enableLogging}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFormData({ ...formData, enableLogging: e.target.checked })
                 }
-              />{' '}
-            </div>{' '}
-          </div>{' '}
-        </Card>{' '}
-        {/* Actions */}{' '}
+              />
+            </div>
+          </div>
+        </Card>
+        {/* Actions */}
         <div className="flex justify-between items-center">
-          {' '}
           <Link href="/api-connections/testing">
-            {' '}
-            <Button type="button" variant="outline">
-              {' '}
-              <ExternalLink className="w-4 h-4 mr-2 inline" /> Test API Connections{' '}
-            </Button>{' '}
-          </Link>{' '}
-          <Button type="submit" variant="primary" loading={isSaving}>
-            {' '}
-            <Save className="w-4 h-4 mr-2 inline" /> Save API Settings{' '}
-          </Button>{' '}
-        </div>{' '}
-      </div>{' '}
+            <Button type="button" variant="outline" className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+              <ExternalLink className="w-4 h-4 mr-2 inline" /> Test API Connections
+            </Button>
+          </Link>
+          <Button type="submit" variant="gradient" loading={isSaving}>
+            <Save className="w-4 h-4 mr-2 inline" /> Save API Settings
+          </Button>
+        </div>
+      </div>
     </form>
   );
 }

@@ -139,18 +139,18 @@ export default function APIKeys({
 
   return (
     <div className={clsx('space-y-6', className)}>
-      <Card className="bg-background">
+      <Card variant="glass" className="border border-gray-800 dark:border-border">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Key className="w-5 h-5" />
+            <h3 className="text-lg font-semibold text-white dark:text-foreground flex items-center gap-2">
+              <Key className="w-5 h-5 text-blue-400" />
               API Keys
             </h3>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
               Manage your API keys for programmatic access
             </p>
           </div>
-          <Button variant="primary" onClick={() => setShowCreateModal(true)}>
+          <Button variant="gradient" onClick={() => setShowCreateModal(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Create API Key
           </Button>
@@ -158,20 +158,20 @@ export default function APIKeys({
 
         {apiKeys.length === 0 ? (
           <div className="text-center py-12">
-            <Key className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No API keys created yet</p>
+            <Key className="w-12 h-12 text-gray-500 dark:text-muted-foreground mx-auto mb-4" />
+            <p className="text-gray-400 dark:text-muted-foreground">No API keys created yet</p>
           </div>
         ) : (
           <div className="space-y-4">
             {apiKeys.map((key) => (
               <div
                 key={key.id}
-                className="p-4 border border-border rounded-lg bg-muted"
+                className="p-4 border border-gray-800 dark:border-border rounded-lg glass-effect bg-[#1C1C26] dark:bg-muted"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-foreground">
+                      <span className="font-medium text-white dark:text-foreground">
                         {key.name}
                       </span>
                       {isExpired(key.expiresAt) && (
@@ -185,7 +185,7 @@ export default function APIKeys({
                     </div>
 
                     <div className="flex items-center gap-2 mb-2">
-                      <code className="text-sm font-mono bg-background px-2 py-1 rounded border border-border text-foreground">
+                      <code className="text-sm font-mono bg-[#0A0A0F] dark:bg-background px-2 py-1 rounded border border-gray-700 dark:border-border text-white dark:text-foreground">
                         {key.key && visibleKeys.has(key.id)
                           ? key.key
                           : maskKey(key.key || '', key.prefix)}
@@ -194,7 +194,7 @@ export default function APIKeys({
                         <>
                           <button
                             onClick={() => toggleKeyVisibility(key.id)}
-                            className="p-1 text-muted-foreground hover:text-foreground"
+                            className="p-1 text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground"
                           >
                             {visibleKeys.has(key.id) ? (
                               <EyeOff className="w-4 h-4" />
@@ -204,7 +204,7 @@ export default function APIKeys({
                           </button>
                           <button
                             onClick={() => copyToClipboard(key.key)}
-                            className="p-1 text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400"
+                            className="p-1 text-gray-400 dark:text-muted-foreground hover:text-blue-400 dark:hover:text-primary-400"
                             title="Copy to clipboard"
                           >
                             <Copy className="w-4 h-4" />
@@ -212,14 +212,14 @@ export default function APIKeys({
                         </>
                       )}
                       {!key.key && (
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-gray-400 dark:text-muted-foreground">
                           Key is hidden for security (only shown once on
                           creation)
                         </span>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         Created {new Date(key.createdAt).toLocaleDateString()}
@@ -248,6 +248,7 @@ export default function APIKeys({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleDelete(key.id)}
+                    className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Delete
@@ -276,14 +277,14 @@ export default function APIKeys({
           />
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
               Scopes
             </label>
             <div className="space-y-2">
               {availableScopes.map((scope) => (
                 <label
                   key={scope.id}
-                  className="flex items-start gap-3 p-3 border border-border rounded-lg cursor-pointer hover:bg-muted"
+                  className="flex items-start gap-3 p-3 border border-gray-700 dark:border-border rounded-lg cursor-pointer hover:bg-[#252532] dark:hover:bg-muted glass-effect bg-[#1C1C26] dark:bg-background"
                 >
                   <input
                     type="checkbox"
@@ -300,10 +301,10 @@ export default function APIKeys({
                     className="mt-0.5"
                   />
                   <div>
-                    <div className="text-sm font-medium text-foreground">
+                    <div className="text-sm font-medium text-white dark:text-foreground">
                       {scope.label}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-gray-400 dark:text-muted-foreground">
                       {scope.description}
                     </div>
                   </div>
@@ -316,11 +317,12 @@ export default function APIKeys({
             <Button
               variant="ghost"
               onClick={() => setShowCreateModal(false)}
+              className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted"
             >
               Cancel
             </Button>
             <Button
-              variant="primary"
+              variant="gradient"
               onClick={handleCreate}
               loading={loading}
               disabled={
@@ -345,10 +347,10 @@ export default function APIKeys({
       >
         {createdKey && (
           <div className="space-y-4">
-            <div className="p-4 bg-warning-50 dark:bg-warning-900/20 rounded-lg border border-warning-200 dark:border-warning-800">
+            <div className="p-4 bg-yellow-500/20 dark:bg-warning-900/20 rounded-lg border border-yellow-500/30 dark:border-warning-800">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-warning-600 dark:text-warning-400 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-warning-800 dark:text-warning-200">
+                <AlertTriangle className="w-5 h-5 text-yellow-400 dark:text-warning-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-yellow-200 dark:text-warning-200">
                   <div className="font-medium mb-1">
                     Important: Save this key now
                   </div>
@@ -361,16 +363,17 @@ export default function APIKeys({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
                 Your API Key
               </label>
               <div className="flex items-center gap-2">
-                <code className="flex-1 font-mono text-sm bg-muted px-4 py-2 rounded border border-border text-foreground break-all">
+                <code className="flex-1 font-mono text-sm bg-[#0A0A0F] dark:bg-muted px-4 py-2 rounded border border-gray-700 dark:border-border text-white dark:text-foreground break-all">
                   {createdKey.key}
                 </code>
                 <Button
                   variant="outline"
                   onClick={() => copyToClipboard(createdKey.key)}
+                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
                 >
                   <Copy className="w-4 h-4 mr-2" />
                   Copy
@@ -380,7 +383,7 @@ export default function APIKeys({
 
             <div className="flex justify-end">
               <Button
-                variant="primary"
+                variant="gradient"
                 onClick={() => {
                   setShowKeyModal(false);
                   setCreatedKey(null);

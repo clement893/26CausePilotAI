@@ -144,11 +144,9 @@ export default function OrganizationSettings({
   );
   return (
     <div className={clsx('space-y-6', className)}>
-      {' '}
       <form onSubmit={handleSubmit} className="space-y-6">
-        {' '}
-        {/* Organization Information */}{' '}
-        <Card title="Organization Information" className="bg-background">
+        {/* Organization Information */}
+        <Card variant="glass" title="Organization Information" className="border border-gray-800 dark:border-border">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -203,8 +201,8 @@ export default function OrganizationSettings({
             />{' '}
           </div>{' '}
         </Card>{' '}
-        {/* Address */}{' '}
-        <Card title="Address" className="bg-background">
+        {/* Address */}
+        <Card variant="glass" title="Address" className="border border-gray-800 dark:border-border">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -258,8 +256,8 @@ export default function OrganizationSettings({
             </div>{' '}
           </div>{' '}
         </Card>{' '}
-        {/* Regional Settings */}{' '}
-        <Card title="Regional Settings" className="bg-background">
+        {/* Regional Settings */}
+        <Card variant="glass" title="Regional Settings" className="border border-gray-800 dark:border-border">
           {' '}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {' '}
@@ -277,22 +275,19 @@ export default function OrganizationSettings({
             />{' '}
           </div>{' '}
         </Card>{' '}
-        {/* Error Message */}{' '}
+        {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-danger-50 dark:bg-danger-900/20 rounded-lg border border-danger-200 dark:border-danger-800 text-sm text-danger-800 dark:text-danger-200">
-            {' '}
-            {errors.submit}{' '}
+          <div className="p-3 bg-red-500/20 dark:bg-danger-900/20 rounded-lg border border-red-500/30 dark:border-danger-800 text-sm text-red-400 dark:text-danger-200">
+            {errors.submit}
           </div>
-        )}{' '}
-        {/* Save Button */}{' '}
+        )}
+        {/* Save Button */}
         <div className="flex justify-end">
-          {' '}
-          <Button type="submit" variant="primary" loading={loading}>
-            {' '}
-            <Save className="w-4 h-4 mr-2" /> Save Settings{' '}
-          </Button>{' '}
-        </div>{' '}
-      </form>{' '}
+          <Button type="submit" variant="gradient" loading={loading}>
+            <Save className="w-4 h-4 mr-2" /> Save Settings
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }
