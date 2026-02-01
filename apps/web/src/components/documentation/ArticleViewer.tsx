@@ -73,30 +73,30 @@ export function ArticleViewer({ slug, className = '' }: ArticleViewerProps) {
 
   if (isLoading) {
     return (
-      <Card className={className}>
-        <div className="text-center py-8 text-muted-foreground">Loading article...</div>
+      <Card variant="glass" className={`${className} border border-gray-800`}>
+        <div className="text-center py-8 text-gray-400">Loading article...</div>
       </Card>
     );
   }
 
   if (!article) {
     return (
-      <Card className={className}>
-        <div className="text-center py-8 text-muted-foreground">
-          <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <p>Article not found</p>
+      <Card variant="glass" className={`${className} border border-gray-800`}>
+        <div className="text-center py-8 text-gray-400">
+          <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+          <p className="text-white">Article not found</p>
         </div>
       </Card>
     );
   }
 
   return (
-    <Card className={className}>
+    <Card variant="glass" className={`${className} border border-gray-800`}>
       <article>
         <header className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
-          {article.excerpt && <p className="text-lg text-muted-foreground mb-4">{article.excerpt}</p>}
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <h1 className="text-3xl font-bold mb-2 text-white">{article.title}</h1>
+          {article.excerpt && <p className="text-lg text-gray-400 mb-4">{article.excerpt}</p>}
+          <div className="flex items-center gap-4 text-sm text-gray-400">
             <span className="flex items-center gap-1">
               <Eye className="h-4 w-4" />
               {article.view_count} views
@@ -110,21 +110,22 @@ export function ArticleViewer({ slug, className = '' }: ArticleViewerProps) {
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
             {article.tags.map((tag) => (
-              <span key={tag} className="px-2 py-1 bg-muted rounded text-sm">
+              <span key={tag} className="px-2 py-1 glass-effect bg-[#1C1C26] border border-gray-800 rounded text-sm text-gray-300">
                 {tag}
               </span>
             ))}
           </div>
         )}
 
-        <div className="border-t border-border pt-6">
-          <h3 className="text-sm font-semibold mb-3">Was this article helpful?</h3>
+        <div className="border-t border-gray-800 pt-6">
+          <h3 className="text-sm font-semibold mb-3 text-white">Was this article helpful?</h3>
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleFeedback(true)}
               disabled={feedbackSubmitted}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532]"
             >
               <ThumbsUp className="h-4 w-4 mr-2" />
               Yes ({article.helpful_count})
@@ -134,6 +135,7 @@ export function ArticleViewer({ slug, className = '' }: ArticleViewerProps) {
               size="sm"
               onClick={() => handleFeedback(false)}
               disabled={feedbackSubmitted}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532]"
             >
               <ThumbsDown className="h-4 w-4 mr-2" />
               No ({article.not_helpful_count})

@@ -41,7 +41,7 @@ export default function LocaleSwitcher() {
       <Button
         variant="secondary"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
         aria-label="Switch language"
       >
         <Globe className="w-4 h-4" />
@@ -55,23 +55,23 @@ export default function LocaleSwitcher() {
           <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
 
           {/* Dropdown */}
-          <div className="absolute right-0 mt-2 w-48 bg-background rounded-lg shadow-lg border border-border z-20">
+          <div className="absolute right-0 mt-2 w-48 glass-effect bg-[#1C1C26] rounded-lg shadow-lg border border-gray-800 z-20">
             <div className="py-1">
               {locales.map((loc) => (
                 <button
                   key={loc}
                   onClick={() => handleLocaleChange(loc)}
                   className={clsx(
-                    'w-full px-4 py-2 text-left text-sm flex items-center justify-between hover:bg-muted dark:hover:bg-muted transition-colors',
-                    locale === loc && 'bg-muted'
+                    'w-full px-4 py-2 text-left text-sm flex items-center justify-between hover:bg-[#252532] transition-colors text-gray-300',
+                    locale === loc && 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white'
                   )}
                   dir={isRTL(loc) ? 'rtl' : 'ltr'}
                 >
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{localeNativeNames[loc]}</span>
-                    <span className="text-xs text-muted-foreground">{localeNames[loc]}</span>
+                    <span className="text-xs text-gray-400">{localeNames[loc]}</span>
                   </div>
-                  {locale === loc && <Check className="w-4 h-4 text-primary-600 dark:text-primary-400" />}
+                  {locale === loc && <Check className="w-4 h-4 text-blue-400" />}
                 </button>
               ))}
             </div>

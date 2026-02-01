@@ -71,12 +71,12 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
   };
 
   return (
-    <Card className={className}>
-      <h3 className="text-lg font-semibold mb-4">Send Feedback</h3>
+    <Card variant="glass" className={`${className} border border-gray-800`}>
+      <h3 className="text-lg font-semibold mb-4 text-white">Send Feedback</h3>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-2">Type</label>
+          <label className="block text-sm font-medium mb-2 text-white">Type</label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {feedbackTypes.map((ft) => {
               const Icon = ft.icon;
@@ -96,8 +96,8 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
                   }}
                   className={`flex items-center gap-2 p-2 rounded-lg border transition-colors ${
                     type === ft.value
-                      ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                      : 'border-border hover:border-border dark:hover:border-border'
+                      ? 'border-blue-500 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white'
+                      : 'border-gray-800 glass-effect bg-[#1C1C26] hover:bg-[#252532] text-gray-300'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -109,37 +109,41 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Subject <span className="text-error-500">*</span>
+          <label className="block text-sm font-medium mb-2 text-white">
+            Subject <span className="text-red-400">*</span>
           </label>
-          <Input
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            placeholder="Brief description of your feedback"
-            required
-          />
+          <div className="form-input-glow">
+            <Input
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Brief description of your feedback"
+              required
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Message <span className="text-error-500">*</span>
+          <label className="block text-sm font-medium mb-2 text-white">
+            Message <span className="text-red-400">*</span>
           </label>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Please provide details..."
-            rows={6}
-            className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary-500"
-            required
-          />
+          <div className="form-input-glow">
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Please provide details..."
+              rows={6}
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Priority</label>
+          <label className="block text-sm font-medium mb-2 text-white">Priority</label>
           <select
             value={priority}
             onChange={(e) => setPriority(Number(e.target.value))}
-            className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+            className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value={1}>Low</option>
             <option value={2}>Medium</option>
@@ -150,7 +154,7 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
 
         <Button
           type="submit"
-          variant="primary"
+          variant="gradient"
           disabled={isSubmitting || !subject.trim() || !message.trim()}
           className="w-full"
         >

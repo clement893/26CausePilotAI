@@ -85,13 +85,13 @@ export function LeadCaptureForm({
 
   return (
     <div className={className}>
-      {title && <h3 className="text-xl font-semibold mb-2">{title}</h3>}
-      {description && <p className="text-muted-foreground mb-6">{description}</p>}
+      {title && <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>}
+      {description && <p className="text-gray-400 mb-6">{description}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {fields.includes('name') && (
-          <div className="relative">
-            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="relative form-input-glow">
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 z-10" />
             <Input
               type="text"
               placeholder="Full Name"
@@ -105,8 +105,8 @@ export function LeadCaptureForm({
         )}
 
         {fields.includes('email') && (
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="relative form-input-glow">
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 z-10" />
             <Input
               type="email"
               placeholder="Email Address"
@@ -120,8 +120,8 @@ export function LeadCaptureForm({
         )}
 
         {fields.includes('phone') && (
-          <div className="relative">
-            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="relative form-input-glow">
+            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 z-10" />
             <Input
               type="tel"
               placeholder="Phone Number"
@@ -134,30 +134,32 @@ export function LeadCaptureForm({
         )}
 
         {fields.includes('company') && (
-          <Input
-            type="text"
-            placeholder="Company Name"
-            value={formData.company || ''}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('company', e.target.value)}
-            disabled={isLoading}
-          />
+          <div className="form-input-glow">
+            <Input
+              type="text"
+              placeholder="Company Name"
+              value={formData.company || ''}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('company', e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
         )}
 
         {fields.includes('message') && (
-          <div className="relative">
-            <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+          <div className="relative form-input-glow">
+            <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-gray-400 z-10" />
             <textarea
               placeholder="Message"
               value={formData.message || ''}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('message', e.target.value)}
               disabled={isLoading}
-              className="w-full px-10 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-10 py-3 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={4}
             />
           </div>
         )}
 
-        <Button type="submit" disabled={isLoading || !formData.email?.trim()} variant="primary" fullWidth>
+        <Button type="submit" disabled={isLoading || !formData.email?.trim()} variant="gradient" fullWidth>
           {isLoading ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -169,14 +171,14 @@ export function LeadCaptureForm({
         </Button>
 
         {status === 'success' && (
-          <div className="flex items-center gap-2 text-sm text-success-600 dark:text-success-400 p-3 bg-success-50 dark:bg-success-900/20 rounded-lg">
+          <div className="flex items-center gap-2 text-sm text-green-400 p-3 glass-effect bg-green-500/10 border border-green-500/50 rounded-lg">
             <CheckCircle className="h-4 w-4" />
             <span>{message}</span>
           </div>
         )}
 
         {status === 'error' && (
-          <div className="flex items-center gap-2 text-sm text-error-600 dark:text-error-400 p-3 bg-error-50 dark:bg-error-900/20 rounded-lg">
+          <div className="flex items-center gap-2 text-sm text-red-400 p-3 glass-effect bg-red-500/10 border border-red-500/50 rounded-lg">
             <AlertCircle className="h-4 w-4" />
             <span>{message}</span>
           </div>

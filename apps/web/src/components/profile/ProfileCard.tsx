@@ -54,7 +54,7 @@ export interface ProfileCardProps {
     }
   };
   return (
-    <Card className={clsx('p-6', className)}>
+    <Card variant="glass" className={clsx('p-6 border border-gray-800', className)}>
       {' '}
       <div className="flex flex-col sm:flex-row gap-6">
         {' '}
@@ -69,7 +69,7 @@ export interface ProfileCardProps {
               name={displayName}
               fallback={initials}
               size="xl"
-              className="border-4 border-primary-200 dark:border-primary-800"
+              className="border-4 border-blue-500/50"
             />{' '}
           </div>{' '}
         </div>{' '}
@@ -80,11 +80,11 @@ export interface ProfileCardProps {
             {' '}
             <div className="flex items-center gap-3 mb-2">
               {' '}
-              <h2 className="text-2xl font-bold text-foreground"> {displayName} </h2>{' '}
+              <h2 className="text-2xl font-bold text-white"> {displayName} </h2>{' '}
               {user.is_admin && (
                 <Badge
                   variant="default"
-                  className="flex items-center gap-1 bg-primary-500 text-background"
+                  className="flex items-center gap-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white"
                 >
                   {' '}
                   <Shield className="w-3 h-3" /> Admin{' '}
@@ -92,7 +92,7 @@ export interface ProfileCardProps {
               )}{' '}
               {user.is_active === false && <Badge variant="error">Inactive</Badge>}{' '}
             </div>{' '}
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2 text-sm text-gray-400">
               {' '}
               <div className="flex items-center gap-2">
                 {' '}
@@ -121,7 +121,7 @@ export interface ProfileCardProps {
                 variant="outline"
                 size="sm"
                 onClick={onEdit}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
               >
                 {' '}
                 <Edit className="w-4 h-4" /> Edit Profile{' '}

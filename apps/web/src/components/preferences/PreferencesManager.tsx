@@ -221,11 +221,11 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
 
   if (isLoading) {
     return (
-      <Card className={className}>
+      <Card variant="glass" className={`${className} border border-gray-800`}>
         <div className="flex items-center justify-center py-12">
           <div className="flex flex-col items-center gap-3">
-            <RefreshCw className="h-6 w-6 animate-spin text-primary-500" />
-            <p className="text-sm text-muted-foreground">Loading preferences...</p>
+            <RefreshCw className="h-6 w-6 animate-spin text-blue-400" />
+            <p className="text-sm text-gray-400">Loading preferences...</p>
           </div>
         </div>
       </Card>
@@ -233,17 +233,17 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
   }
 
   return (
-    <Card className={className}>
+    <Card variant="glass" className={`${className} border border-gray-800`}>
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          <Settings className="h-5 w-5" /> Preferences
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-white">
+          <Settings className="h-5 w-5 text-blue-400" /> Preferences
         </h3>
         {hasChanges && (
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={handleReset} disabled={isSaving}>
+            <Button variant="outline" size="sm" onClick={handleReset} disabled={isSaving} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
               <X className="h-4 w-4 mr-2" /> Reset
             </Button>
-            <Button variant="primary" size="sm" onClick={handleSave} disabled={isSaving}>
+            <Button variant="gradient" size="sm" onClick={handleSave} disabled={isSaving}>
               <Save className="h-4 w-4 mr-2" /> {isSaving ? 'Saving...' : 'Save'}
             </Button>
           </div>
@@ -259,7 +259,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
       <div className="space-y-6">
         {/* Appearance Section */}
         <div>
-          <h4 className="text-sm font-semibold mb-4 text-foreground">Appearance</h4>
+          <h4 className="text-sm font-semibold mb-4 text-white">Appearance</h4>
           <div className="space-y-4">
             {/* Theme Preference */}
             <div>
@@ -270,6 +270,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
                 onChange={(e) => handleChange('theme', e.target.value)}
                 helperText="Choose your preferred color theme"
                 fullWidth
+                className="border-gray-700 bg-[#1C1C26] text-white"
               />
             </div>
             {/* Language Preference */}
@@ -281,6 +282,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
                 onChange={(e) => handleChange('language', e.target.value)}
                 helperText="Select your preferred language"
                 fullWidth
+                className="border-gray-700 bg-[#1C1C26] text-white"
               />
             </div>
           </div>
@@ -288,7 +290,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
 
         {/* Date & Time Section */}
         <div>
-          <h4 className="text-sm font-semibold mb-4 text-foreground">Date & Time</h4>
+          <h4 className="text-sm font-semibold mb-4 text-white">Date & Time</h4>
           <div className="space-y-4">
             {/* Timezone */}
             <div>
@@ -299,6 +301,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
                 onChange={(e) => handleChange('timezone', e.target.value)}
                 helperText="Select your timezone"
                 fullWidth
+                className="border-gray-700 bg-[#1C1C26] text-white"
               />
             </div>
             {/* Date Format */}
@@ -310,6 +313,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
                 onChange={(e) => handleChange('date_format', e.target.value)}
                 helperText="Choose your preferred date format"
                 fullWidth
+                className="border-gray-700 bg-[#1C1C26] text-white"
               />
             </div>
             {/* Time Format */}
@@ -321,6 +325,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
                 onChange={(e) => handleChange('time_format', e.target.value)}
                 helperText="Choose 12-hour or 24-hour time format"
                 fullWidth
+                className="border-gray-700 bg-[#1C1C26] text-white"
               />
             </div>
           </div>
@@ -328,14 +333,14 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
 
         {/* Notifications Section */}
         <div>
-          <h4 className="text-sm font-semibold mb-4 text-foreground">Notifications</h4>
+          <h4 className="text-sm font-semibold mb-4 text-white">Notifications</h4>
           <div className="space-y-4">
             <Switch
               label="Email Notifications"
               checked={editedPreferences.email_notifications !== false}
               onChange={(e) => handleChange('email_notifications', e.target.checked)}
             />
-            <p className="text-sm text-muted-foreground ml-0">
+            <p className="text-sm text-gray-400 ml-0">
               Receive email notifications about important updates and activities
             </p>
           </div>
@@ -350,7 +355,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
 
           return (
             <div key={key}>
-              <h4 className="text-sm font-semibold mb-4 text-foreground capitalize">
+              <h4 className="text-sm font-semibold mb-4 text-white capitalize">
                 {key.replace(/_/g, '')}
               </h4>
               <div className="space-y-4">
@@ -361,25 +366,29 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
                     onChange={(e) => handleChange(key, e.target.checked)}
                   />
                 ) : typeof value === 'number' ? (
-                  <Input
-                    type="number"
-                    label={key.replace(/_/g, '')}
-                    value={value}
-                    onChange={(e) => handleChange(key, Number(e.target.value))}
-                    fullWidth
-                  />
+                  <div className="form-input-glow">
+                    <Input
+                      type="number"
+                      label={key.replace(/_/g, '')}
+                      value={value}
+                      onChange={(e) => handleChange(key, Number(e.target.value))}
+                      fullWidth
+                    />
+                  </div>
                 ) : typeof value === 'object' && value !== null ? (
-                  <div className="p-4 bg-muted rounded-lg">
-                    <p className="text-sm text-muted-foreground mb-2">{key.replace(/_/g, '')} (JSON object)</p>
-                    <pre className="text-xs overflow-auto">{JSON.stringify(value, null, 2)}</pre>
+                  <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
+                    <p className="text-sm text-gray-400 mb-2">{key.replace(/_/g, '')} (JSON object)</p>
+                    <pre className="text-xs overflow-auto text-gray-300">{JSON.stringify(value, null, 2)}</pre>
                   </div>
                 ) : (
-                  <Input
-                    label={key.replace(/_/g, '')}
-                    value={String(value || '')}
-                    onChange={(e) => handleChange(key, e.target.value)}
-                    fullWidth
-                  />
+                  <div className="form-input-glow">
+                    <Input
+                      label={key.replace(/_/g, '')}
+                      value={String(value || '')}
+                      onChange={(e) => handleChange(key, e.target.value)}
+                      fullWidth
+                    />
+                  </div>
                 )}
               </div>
             </div>

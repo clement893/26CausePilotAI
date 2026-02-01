@@ -174,7 +174,7 @@ export function ProfileForm({
   };
 
   return (
-    <Card className={clsx('p-6', className)}>
+    <Card variant="glass" className={clsx('p-6 border border-gray-800', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Avatar Upload */}
         <div className="flex flex-col items-center gap-4">
@@ -184,7 +184,7 @@ export function ProfileForm({
             name={displayName}
             fallback={initials}
             size="xl"
-            className="border-4 border-primary-200 dark:border-primary-800"
+            className="border-4 border-blue-500/50"
           />
           <input
             ref={fileInputRef}
@@ -197,7 +197,7 @@ export function ProfileForm({
             type="button"
             variant="outline"
             size="sm"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             disabled={isUploadingAvatar}
             onClick={() => {
               fileInputRef.current?.click();
@@ -210,52 +210,58 @@ export function ProfileForm({
 
         {/* Form Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Input
-            label="First Name"
-            value={formData.first_name || ''}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormData((prev) => ({
-                ...prev,
-                first_name: e.target.value,
-              }))
-            }
-            leftIcon={<User className="w-4 h-4" />}
-            error={errors.first_name}
-          />
-          <Input
-            label="Last Name"
-            value={formData.last_name || ''}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormData((prev) => ({
-                ...prev,
-                last_name: e.target.value,
-              }))
-            }
-            leftIcon={<User className="w-4 h-4" />}
-            error={errors.last_name}
-          />
-          <Input
-            label="Email"
-            type="email"
-            value={formData.email || ''}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormData((prev) => ({
-                ...prev,
-                email: e.target.value,
-              }))
-            }
-            leftIcon={<Mail className="w-4 h-4" />}
-            error={errors.email}
-            required
-            className="md:col-span-2"
-          />
+          <div className="form-input-glow">
+            <Input
+              label="First Name"
+              value={formData.first_name || ''}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  first_name: e.target.value,
+                }))
+              }
+              leftIcon={<User className="w-4 h-4" />}
+              error={errors.first_name}
+            />
+          </div>
+          <div className="form-input-glow">
+            <Input
+              label="Last Name"
+              value={formData.last_name || ''}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  last_name: e.target.value,
+                }))
+              }
+              leftIcon={<User className="w-4 h-4" />}
+              error={errors.last_name}
+            />
+          </div>
+          <div className="form-input-glow md:col-span-2">
+            <Input
+              label="Email"
+              type="email"
+              value={formData.email || ''}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  email: e.target.value,
+                }))
+              }
+              leftIcon={<Mail className="w-4 h-4" />}
+              error={errors.email}
+              required
+              className="md:col-span-2"
+            />
+          </div>
         </div>
 
         {/* Submit Button */}
         <div className="flex justify-end gap-3">
           <Button
             type="submit"
-            variant="primary"
+            variant="gradient"
             disabled={isLoading}
             className="min-w-[120px]"
           >

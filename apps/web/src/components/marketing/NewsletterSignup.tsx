@@ -78,27 +78,31 @@ export function NewsletterSignup({
         {showNameFields && (
           <div className="grid grid-cols-2 gap-2">
             {' '}
-            <Input
-              type="text"
-              placeholder="First name"
-              value={firstName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
-              disabled={isLoading}
-            />{' '}
-            <Input
-              type="text"
-              placeholder="Last name"
-              value={lastName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
-              disabled={isLoading}
-            />{' '}
+            <div className="form-input-glow">
+              <Input
+                type="text"
+                placeholder="First name"
+                value={firstName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+            <div className="form-input-glow">
+              <Input
+                type="text"
+                placeholder="Last name"
+                value={lastName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
           </div>
         )}{' '}
         <div className="flex gap-2">
           {' '}
-          <div className="flex-1 relative">
+          <div className="flex-1 relative form-input-glow">
             {' '}
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />{' '}
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 z-10" />{' '}
             <Input
               type="email"
               placeholder={placeholder}
@@ -109,19 +113,19 @@ export function NewsletterSignup({
               required
             />{' '}
           </div>{' '}
-          <Button type="submit" disabled={isLoading || !email.trim()} variant="primary">
+          <Button type="submit" disabled={isLoading || !email.trim()} variant="gradient">
             {' '}
             {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : buttonText}{' '}
           </Button>{' '}
         </div>{' '}
         {status === 'success' && (
-          <div className="flex items-center gap-2 text-sm text-success-600 dark:text-success-400">
+          <div className="flex items-center gap-2 text-sm text-green-400">
             {' '}
             <CheckCircle className="h-4 w-4" /> <span>{message}</span>{' '}
           </div>
         )}{' '}
         {status === 'error' && (
-          <div className="flex items-center gap-2 text-sm text-error-600 dark:text-error-400">
+          <div className="flex items-center gap-2 text-sm text-red-400">
             {' '}
             <AlertCircle className="h-4 w-4" /> <span>{message}</span>{' '}
           </div>
