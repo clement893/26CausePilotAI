@@ -98,7 +98,7 @@ export default function TreeView({
         <div
           className={clsx(
             'flex items-center py-1 px-2 rounded-md cursor-pointer transition-colors',
-            'hover:bg-[#1C1C26] hover:bg-[#1C1C26]',
+            'hover:bg-[#1C1C26]',
             selected &&
               (selectedClassName ||
                 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white text-blue-300 border-l-4 border-l-blue-500'),
@@ -111,7 +111,7 @@ export default function TreeView({
           {/* Expand/Collapse Icon */}
           {hasChildren && (
             <button
-              className="mr-1 p-0.5 hover:bg-[#252532] hover:bg-[#1C1C26] rounded transition-colors text-gray-400 text-white"
+              className="mr-1 p-0.5 hover:bg-[#1C1C26] rounded transition-colors text-gray-400 text-white"
               onClick={(e) => {
                 e.stopPropagation();
                 toggleExpanded(node);
@@ -164,8 +164,8 @@ export default function TreeView({
     <div
       className={clsx(
         'tree-view',
-        'glass-effect bg-[#13131A] bg-[#13131A]',
-        'border border-gray-800 border-gray-800 rounded-lg',
+        'glass-effect bg-[#13131A]',
+        'border border-gray-800 rounded-lg',
         'p-2',
         className
       )}

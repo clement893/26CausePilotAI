@@ -58,13 +58,13 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             checked={checked}
             className={clsx(
-              'text-blue-500 text-blue-400 border-gray-700 border-gray-800 rounded',
-              'bg-[#1C1C26] bg-[#1C1C26] transition-all duration-200',
+              'text-blue-400 border-gray-700 border-gray-800 rounded',
+              'bg-[#1C1C26] transition-all duration-200',
               'focus:ring-2 focus:ring-offset-0 focus:outline-none',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'checked:bg-gradient-to-r checked:from-blue-500 checked:to-purple-500',
               error
-                ? 'border-error-500 border-red-500/30 focus:ring-error-500/20'
+                ? 'border-red-500/30 focus:ring-error-500/20'
                 : 'focus:ring-primary/20',
               className
             )}
@@ -78,7 +78,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             <span
               className={clsx(
                 'ml-2 text-sm font-medium',
-                error ? 'text-error-600 text-red-400' : 'text-gray-300 text-white',
+                error ? 'text-red-400' : 'text-white',
                 props.disabled && 'opacity-50'
               )}
             >
@@ -87,7 +87,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           )}
         </label>
         {error && (
-          <Text variant="small" className="mt-2 text-error-600 text-red-400" role="alert">
+          <Text variant="small" className="mt-2 text-red-400" role="alert">
             {error}
           </Text>
         )}

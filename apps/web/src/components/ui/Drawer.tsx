@@ -221,15 +221,15 @@ export default function Drawer({
 
   return (
     <div
-      className={clsx('fixed inset-0 z-50', overlay && 'bg-black/50 bg-white/10 backdrop-blur-sm', overlayClassName)}
+      className={clsx('fixed inset-0 z-50', overlay && 'bg-white/10 backdrop-blur-sm', overlayClassName)}
       onClick={closeOnOverlayClick ? onClose : undefined}
     >
       <div
         ref={drawerRef}
         className={clsx(
-          'fixed glass-effect bg-[#13131A] bg-[#13131A] shadow-strong',
+          'fixed glass-effect bg-[#13131A] shadow-strong',
           'flex flex-col',
-          'border border-gray-800 border-gray-800',
+          'border border-gray-800',
           positionClasses[position],
           sizeClass,
           isOpen ? animation.enter : animation.exit,
@@ -244,16 +244,16 @@ export default function Drawer({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-4 border-b border-gray-800 border-gray-800">
+          <div className="flex items-center justify-between p-4 border-b border-gray-800">
             {title && (
-              <h2 id="drawer-title" className="text-lg font-semibold text-white text-white">
+              <h2 id="drawer-title" className="text-lg font-semibold text-white">
                 {title}
               </h2>
             )}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="ml-auto text-gray-400 text-gray-400 hover:text-white hover:text-gray-400 transition-colors"
+                className="ml-auto text-gray-400 hover:text-gray-400 transition-colors"
                 aria-label="Close drawer"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
