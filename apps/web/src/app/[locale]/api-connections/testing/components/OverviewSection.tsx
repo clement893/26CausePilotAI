@@ -48,28 +48,28 @@ export function OverviewSection({
       return {
         color: 'success',
         label: 'Excellent',
-        bgColor: 'bg-success-50 bg-green-500/20',
-        textColor: 'text-success-600 text-green-400',
+        bgColor: 'bg-green-500/20',
+        textColor: 'text-green-400',
       };
     if (score >= 75)
       return {
         color: 'info',
         label: 'Good',
-        bgColor: 'bg-info-50 bg-blue-500/20',
-        textColor: 'text-info-600 text-blue-400',
+        bgColor: 'bg-blue-500/20',
+        textColor: 'text-blue-400',
       };
     if (score >= 50)
       return {
         color: 'warning',
         label: 'Fair',
-        bgColor: 'bg-warning-50 bg-yellow-500/20',
-        textColor: 'text-warning-600 text-yellow-400',
+        bgColor: 'bg-yellow-500/20',
+        textColor: 'text-yellow-400',
       };
     return {
       color: 'error',
       label: 'Poor',
-      bgColor: 'bg-error-50 bg-red-500/20',
-      textColor: 'text-error-600 text-red-400',
+      bgColor: 'bg-red-500/20',
+      textColor: 'text-red-400',
     };
   };
 
