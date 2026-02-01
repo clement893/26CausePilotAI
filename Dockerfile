@@ -13,6 +13,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/types/package.json ./packages/types/
 COPY packages/core/package.json ./packages/core/
+COPY packages/database/package.json ./packages/database/
 
 # Install dependencies
 # Sharp will automatically download prebuilt binaries (faster than building from source)
@@ -36,6 +37,7 @@ COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=deps /app/apps/web/package.json ./apps/web/package.json
 COPY --from=deps /app/packages/types/package.json ./packages/types/package.json
 COPY --from=deps /app/packages/core/package.json ./packages/core/package.json
+COPY --from=deps /app/packages/database/package.json ./packages/database/package.json
 # Reinstall to recreate symlinks for binaries
 # Railway caches .pnpm-store automatically via railway.json, so pnpm will reuse cached packages
 # Use --prefer-offline to use cache if available, but don't fail if not
@@ -55,6 +57,9 @@ RUN test -f packages/types/dist/theme.d.ts || (echo "ERROR: theme.d.ts not found
 # Copy only what's needed for build (apps/web and shared packages)
 COPY apps/web ./apps/web
 COPY packages ./packages
+# Generate Prisma client (required for API routes that use @prisma/client at build time)
+ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
+RUN pnpm exec prisma generate --schema=packages/database/prisma/schema.prisma
 # Copy the API manifest script (needed for api:manifest build step)
 # Copy directly to apps/web/scripts so it's accessible during build
 RUN mkdir -p apps/web/scripts
