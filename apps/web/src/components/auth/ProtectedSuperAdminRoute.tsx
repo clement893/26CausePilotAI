@@ -312,12 +312,12 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
         <Card className="max-w-md w-full">
           <div className="p-6">
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-error-600 text-red-400 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-error-900 text-red-200 mb-1">
+                <h4 className="font-semibold text-red-200 mb-1">
                   Accès Refusé
                 </h4>
-                <p className="text-sm text-error-800 text-red-300">
+                <p className="text-sm text-red-300">
                   Seuls les superadmins peuvent accéder à cette page.
                 </p>
               </div>

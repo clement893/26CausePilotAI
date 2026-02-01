@@ -18,11 +18,11 @@ export default function Section({
   actions,
 }: SectionProps) {
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 border-gray-800', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-semibold mb-2 text-white text-white">{title}</h2>
-          {description && <p className="text-gray-400 text-gray-400 text-sm">{description}</p>}
+          <h2 className="text-2xl font-semibold mb-2 text-white">{title}</h2>
+          {description && <p className="text-gray-400 text-sm">{description}</p>}
         </div>
         {actions && <div>{actions}</div>}
       </div>

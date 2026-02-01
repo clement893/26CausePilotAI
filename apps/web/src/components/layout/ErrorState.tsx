@@ -10,13 +10,13 @@ export default function ErrorState({
   onRetry,
 }: ErrorStateProps) {
   return (
-    <div className="glass-effect bg-[#13131A] bg-[#13131A] border border-red-500/30 border-red-500/30 rounded-lg p-8">
+    <div className="glass-effect bg-[#13131A] border border-red-500/30 rounded-lg p-8">
       <EmptyState
         title={title}
         description={description}
         icon={
           <svg
-            className="w-16 h-16 text-red-400 text-red-400"
+            className="w-16 h-16 text-red-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
