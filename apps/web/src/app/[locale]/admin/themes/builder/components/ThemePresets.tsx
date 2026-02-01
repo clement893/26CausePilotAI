@@ -41,22 +41,22 @@ export function ThemePresets({ presets, onSelect }: ThemePresetsProps) {
               {/* Color Preview */}
               <div className="flex gap-2 mb-4">
                 <div
-                  className="w-8 h-8 rounded-full border-2 border-border"
+                  className="w-8 h-8 rounded-full border-2 border-gray-800"
                   style={{ backgroundColor: preset.config.primary_color }}
                   title="Primary"
                 />
                 <div
-                  className="w-8 h-8 rounded-full border-2 border-border"
+                  className="w-8 h-8 rounded-full border-2 border-gray-800"
                   style={{ backgroundColor: preset.config.secondary_color }}
                   title="Secondary"
                 />
                 <div
-                  className="w-8 h-8 rounded-full border-2 border-border"
+                  className="w-8 h-8 rounded-full border-2 border-gray-800"
                   style={{ backgroundColor: preset.config.success_color }}
                   title="Success"
                 />
                 <div
-                  className="w-8 h-8 rounded-full border-2 border-border"
+                  className="w-8 h-8 rounded-full border-2 border-gray-800"
                   style={{ backgroundColor: preset.config.danger_color }}
                   title="Danger"
                 />

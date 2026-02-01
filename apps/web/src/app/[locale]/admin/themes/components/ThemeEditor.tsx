@@ -412,7 +412,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
           {state.activeTab === 'preview' && <ThemePreview config={state.config} />}
         </div>
 
-        <div className="flex justify-between items-center gap-3 mt-6 pt-6 border-t border-border">
+        <div className="flex justify-between items-center gap-3 mt-6 pt-6 border-t border-gray-800">
           {isTemplate && (
             <Button onClick={handleResetToDefault} variant="outline" disabled={resetting || saving}>
               <RotateCcw className={`w-4 h-4 mr-2 ${resetting ? 'animate-spin' : ''}`} />

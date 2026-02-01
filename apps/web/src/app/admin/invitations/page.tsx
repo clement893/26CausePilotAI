@@ -264,7 +264,7 @@ export default function InvitationsPage() {
             </Card>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse bg-background rounded-lg shadow">
+              <table className="w-full border-collapse bg-[#13131A] rounded-lg shadow">
                 <thead>
                   <tr className="bg-[#1C1C26] border-b border-gray-800">
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">

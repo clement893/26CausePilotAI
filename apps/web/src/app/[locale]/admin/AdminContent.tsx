@@ -133,7 +133,7 @@ export default function AdminContent() {
               <Sparkles className="w-6 h-6 text-blue-400" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-foreground">Service Tests</h3>
+              <h3 className="text-xl font-semibold text-white">Service Tests</h3>
               <p className="text-sm text-gray-400">
                 Test and verify the configuration of integrated services
               </p>

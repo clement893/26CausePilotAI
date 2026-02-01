@@ -124,7 +124,7 @@ export default function ExampleFileUploadPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Upload de Fichiers</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple Upload de Fichiers</h1>
         <p className="text-gray-400">
           Upload de fichiers avec preview, barre de progression et validation
         </p>
@@ -134,7 +134,7 @@ export default function ExampleFileUploadPage() {
         {/* Image Upload */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Upload d'Images</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Upload d'Images</h2>
             <div className="space-y-4">
               <div
                 className="border-2 border-dashed border-gray-800 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
@@ -170,7 +170,7 @@ export default function ExampleFileUploadPage() {
                           />
                         )}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground truncate">
+                          <p className="text-sm font-medium text-white truncate">
                             {uploadedFile.file.name}
                           </p>
                           <p className="text-xs text-gray-400">
@@ -213,7 +213,7 @@ export default function ExampleFileUploadPage() {
         {/* Document Upload */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Upload de Documents</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Upload de Documents</h2>
             <div className="space-y-4">
               <div
                 className="border-2 border-dashed border-gray-800 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
@@ -243,7 +243,7 @@ export default function ExampleFileUploadPage() {
                           {getFileIcon(uploadedFile.file)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground truncate">
+                          <p className="text-sm font-medium text-white truncate">
                             {uploadedFile.file.name}
                           </p>
                           <p className="text-xs text-gray-400">
@@ -287,7 +287,7 @@ export default function ExampleFileUploadPage() {
       {/* Code Example */}
       <Card className="mt-6">
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Points clés de cet exemple :
           </h3>
           <ul className="space-y-2 text-sm text-gray-400">

@@ -133,7 +133,7 @@ export function FontUploader({
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
           <Type className="w-5 h-5" />
           Gestion des Polices
         </h3>
@@ -172,7 +172,7 @@ export function FontUploader({
 
       {/* Fonts List */}
       <div>
-        <h4 className="text-md font-semibold text-foreground mb-3">Polices Disponibles ({fonts.length})</h4>
+        <h4 className="text-md font-semibold text-white mb-3">Polices Disponibles ({fonts.length})</h4>
         {loading ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
@@ -208,7 +208,7 @@ export function FontUploader({
                             {isSelected && <Check className="w-3 h-3" />}
                           </button>
                         )}
-                        <h5 className="font-semibold text-foreground truncate">{font.name}</h5>
+                        <h5 className="font-semibold text-white truncate">{font.name}</h5>
                       </div>
                       <p className="text-sm text-gray-400 mb-2">
                         <span className="font-mono">{font.font_family}</span>

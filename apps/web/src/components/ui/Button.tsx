@@ -91,7 +91,7 @@ const variants = {
     '[color:var(--color-primary-500)]',
   ].join(' '),
   ghost: [
-    'text-foreground',
+    'text-white',
     'hover:bg-[#1C1C26]',
     'focus:ring-primary-500',
     'focus:ring-blue-400',

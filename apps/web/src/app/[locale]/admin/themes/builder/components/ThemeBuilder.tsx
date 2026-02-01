@@ -63,8 +63,8 @@ export function ThemeBuilder() {
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-2xl font-bold text-foreground">Theme Builder</h2>
-              <p className="text-muted-foreground mt-1">
+              <h2 className="text-2xl font-bold text-white">Theme Builder</h2>
+              <p className="text-gray-400 mt-1">
                 Create and customize themes with visual controls and live preview
               </p>
             </div>

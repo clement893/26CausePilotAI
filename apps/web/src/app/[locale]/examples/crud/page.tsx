@@ -166,7 +166,7 @@ export default function ExampleCRUDPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple CRUD Complet</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple CRUD Complet</h1>
         <p className="text-gray-400">
           Exemple complet de gestion CRUD avec modals, validation et gestion d'états
         </p>
@@ -192,7 +192,7 @@ export default function ExampleCRUDPage() {
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
+                  <h3 className="text-lg font-semibold text-white">{item.name}</h3>
                   <p className="text-sm text-gray-400 mt-1">{item.description}</p>
                 </div>
                 <span
@@ -282,7 +282,7 @@ export default function ExampleCRUDPage() {
             fullWidth
           />
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Statut</label>
+            <label className="block text-sm font-medium text-white mb-2">Statut</label>
             <select
               value={formData.status}
               onChange={(e) =>
@@ -337,7 +337,7 @@ export default function ExampleCRUDPage() {
             fullWidth
           />
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Statut</label>
+            <label className="block text-sm font-medium text-white mb-2">Statut</label>
             <select
               value={formData.status}
               onChange={(e) =>
@@ -368,7 +368,7 @@ export default function ExampleCRUDPage() {
       {/* Code Example */}
       <Card className="mt-6">
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Points clés de cet exemple :
           </h3>
           <ul className="space-y-2 text-sm text-gray-400">

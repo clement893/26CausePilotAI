@@ -45,7 +45,7 @@ export default function ExampleModalPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Modal / Dialog</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple Modal / Dialog</h1>
         <p className="text-gray-400">
           Modals simples, confirmations et formulaires dans modals
         </p>
@@ -55,7 +55,7 @@ export default function ExampleModalPage() {
         {/* Simple Modal */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Modal Simple</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Modal Simple</h2>
             <p className="text-sm text-gray-400 mb-4">
               Modal basique avec titre et contenu
             </p>
@@ -68,7 +68,7 @@ export default function ExampleModalPage() {
         {/* Form Modal */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Modal avec Formulaire</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Modal avec Formulaire</h2>
             <p className="text-sm text-gray-400 mb-4">
               Modal contenant un formulaire avec validation
             </p>
@@ -81,7 +81,7 @@ export default function ExampleModalPage() {
         {/* Confirm Modal */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Modal de Confirmation</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Modal de Confirmation</h2>
             <p className="text-sm text-gray-400 mb-4">
               Modal de confirmation pour actions critiques
             </p>
@@ -94,7 +94,7 @@ export default function ExampleModalPage() {
         {/* Info Modal */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Modal d'Information</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Modal d'Information</h2>
             <p className="text-sm text-gray-400 mb-4">
               Modal pour afficher des informations
             </p>
@@ -198,7 +198,7 @@ export default function ExampleModalPage() {
       {/* Code Example */}
       <Card className="mt-6">
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Points clés de cet exemple :
           </h3>
           <ul className="space-y-2 text-sm text-gray-400">

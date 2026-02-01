@@ -133,7 +133,7 @@ export default function RBACPage() {
       <Container>
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-foreground mb-2">Gestion RBAC</h1>
+            <h1 className="text-4xl font-bold text-white mb-2">Gestion RBAC</h1>
             <p className="text-gray-400">Gestion des rôles et permissions</p>
           </div>
           <Button onClick={() => setShowCreateModal(true)}>Créer un rôle</Button>
@@ -150,7 +150,7 @@ export default function RBACPage() {
           <div className="lg:col-span-1">
             <Card>
               <div className="p-6">
-                <h2 className="text-xl font-bold text-foreground mb-4">Rôles</h2>
+                <h2 className="text-xl font-bold text-white mb-4">Rôles</h2>
                 {loading ? (
                   <div className="text-center py-8">
                     <Loading />
@@ -169,7 +169,7 @@ export default function RBACPage() {
                         >
                           <div className="w-full">
                             <div className="flex items-center justify-between">
-                              <div className="font-medium text-foreground">{role.name}</div>
+                              <div className="font-medium text-white">{role.name}</div>
                               {role.is_system && (
                                 <Badge variant="info" className="ml-2 text-xs">
                                   Système
@@ -208,7 +208,7 @@ export default function RBACPage() {
                   <div className="flex justify-between items-start mb-6">
                     <div>
                       <div className="flex items-center gap-2">
-                        <h2 className="text-2xl font-bold text-foreground">{selectedRole.name}</h2>
+                        <h2 className="text-2xl font-bold text-white">{selectedRole.name}</h2>
                         {selectedRole.is_system && <Badge variant="info">Système</Badge>}
                         {!selectedRole.is_active && <Badge variant="warning">Inactif</Badge>}
                       </div>
@@ -217,7 +217,7 @@ export default function RBACPage() {
                       )}
                       <p className="text-sm text-gray-400 mt-1">
                         Slug:{' '}
-                        <code className="bg-muted px-1 py-0.5 rounded">{selectedRole.slug}</code>
+                        <code className="bg-[#1C1C26] px-1 py-0.5 rounded">{selectedRole.slug}</code>
                       </p>
                     </div>
                     <div className="flex gap-2">
@@ -243,7 +243,7 @@ export default function RBACPage() {
                   </div>
 
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">Permissions</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">Permissions</h3>
                     <RolePermissionsEditor role={selectedRole} onUpdate={handlePermissionsUpdate} />
                   </div>
                 </div>
@@ -328,7 +328,7 @@ export default function RBACPage() {
             </>
           }
         >
-          <p className="text-foreground">
+          <p className="text-white">
             Êtes-vous sûr de vouloir supprimer le rôle <strong>{selectedRole?.name}</strong> ?
           </p>
           <p className="text-sm text-gray-400 mt-2">

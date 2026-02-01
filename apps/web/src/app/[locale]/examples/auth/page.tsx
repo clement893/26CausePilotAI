@@ -129,7 +129,7 @@ export default function ExampleAuthPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Authentification</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple Authentification</h1>
         <p className="text-gray-400">
           Exemples de formulaires d'authentification avec validation et gestion d'erreurs
         </p>
@@ -165,7 +165,7 @@ export default function ExampleAuthPage() {
         {activeTab === 'login' && (
           <Card>
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Connexion</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Connexion</h2>
 
               {loginError && (
                 <Alert variant="error" className="mb-4">
@@ -218,7 +218,7 @@ export default function ExampleAuthPage() {
         {activeTab === 'register' && (
           <Card>
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Inscription</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Inscription</h2>
 
               <form onSubmit={handleRegister} className="space-y-4">
                 <Input
@@ -274,7 +274,7 @@ export default function ExampleAuthPage() {
         {activeTab === 'forgot' && (
           <Card>
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-6">
+              <h2 className="text-2xl font-bold text-white mb-6">
                 Réinitialiser le mot de passe
               </h2>
 
@@ -308,7 +308,7 @@ export default function ExampleAuthPage() {
         {/* Code Example */}
         <Card className="mt-6">
           <div className="p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">
+            <h3 className="text-lg font-semibold text-white mb-4">
               Points clés de cet exemple :
             </h3>
             <ul className="space-y-2 text-sm text-gray-400">

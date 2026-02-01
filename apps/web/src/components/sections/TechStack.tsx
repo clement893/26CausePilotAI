@@ -53,7 +53,7 @@ export default function TechStack() {
           {' '}
           <h2
             id="tech-stack-heading"
-            className="text-4xl md:text-5xl font-bold text-foreground mb-4"
+            className="text-4xl md:text-5xl font-bold text-white mb-4"
           >
             {' '}
             Stack Technologique{' '}
@@ -74,7 +74,7 @@ export default function TechStack() {
               {' '}
               <div className="flex items-start justify-between mb-3">
                 {' '}
-                <h3 className="text-lg font-bold text-foreground">{tech.name}</h3>{' '}
+                <h3 className="text-lg font-bold text-white">{tech.name}</h3>{' '}
                 <Badge
                   variant={categoryColors[tech.category]}
                   aria-label={`Catégorie: ${tech.category}`}

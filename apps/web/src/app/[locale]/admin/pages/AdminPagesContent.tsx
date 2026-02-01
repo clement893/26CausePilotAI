@@ -100,7 +100,7 @@ export default function AdminPagesContent() {
       render: (_value, page) => (
         <div className="flex items-center gap-2">
           <FileText className="w-4 h-4 text-gray-400" />
-          <span className="font-medium text-foreground">{page.title}</span>
+          <span className="font-medium text-white">{page.title}</span>
         </div>
       ),
     },
@@ -237,7 +237,7 @@ export default function AdminPagesContent() {
         title="Supprimer la page"
       >
         <div className="space-y-4">
-          <p className="text-foreground">
+          <p className="text-white">
             Êtes-vous sûr de vouloir supprimer la page <strong>{selectedPage?.title}</strong> ?
           </p>
           <p className="text-sm text-gray-400">Cette action est irréversible.</p>

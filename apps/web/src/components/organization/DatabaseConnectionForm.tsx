@@ -1355,7 +1355,7 @@ export function DatabaseConnectionForm({
             <div className="mt-6 space-y-2">
               <div className="flex items-center gap-2">
                 <Info className="w-5 h-5 text-info-600" />
-                <h3 className="text-sm font-medium text-foreground">
+                <h3 className="text-sm font-medium text-white">
                   Tables qui seront créées lors de la migration
                 </h3>
               </div>
@@ -1394,7 +1394,7 @@ export function DatabaseConnectionForm({
           {(currentConnectionString || connectionString) && (
             <div className="mt-6 space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-foreground">
+                <h3 className="text-sm font-medium text-white">
                   Tables de la base de données
                   {databaseName && (
                     <span className="text-xs text-gray-400 ml-2">
@@ -1432,7 +1432,7 @@ export function DatabaseConnectionForm({
                           key={table}
                           className="px-3 py-2 rounded-md bg-[#13131A] border border-gray-800 text-sm"
                         >
-                          <p className="font-mono font-semibold text-foreground">{table}</p>
+                          <p className="font-mono font-semibold text-white">{table}</p>
                           {tableInfo && (
                             <p className="text-xs text-gray-400 mt-0.5">
                               {tableInfo.description}

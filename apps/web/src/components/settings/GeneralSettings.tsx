@@ -144,7 +144,7 @@ export interface GeneralSettingsData {
       <Card variant="glass" title="Language & Localization" className="border border-gray-800">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Language
             </label>
             <Select
@@ -155,7 +155,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Timezone
             </label>
             <Select
@@ -166,7 +166,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Date Format
             </label>
             <Select
@@ -177,7 +177,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Time Format
             </label>
             <Select
@@ -190,7 +190,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Week Starts On
             </label>
             <Select
@@ -208,7 +208,7 @@ export interface GeneralSettingsData {
       <Card variant="glass" title="Appearance" className="border border-gray-800">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-whitetext-foreground mb-2">Theme</label>
+            <label className="block text-sm font-medium text-white mb-2">Theme</label>
             <Select
               value={formData.theme}
               onChange={(value) =>
@@ -225,7 +225,7 @@ export interface GeneralSettingsData {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground">
+              <label className="block text-sm font-medium text-white">
                 Enable Notifications
               </label>
               <p className="text-sm text-gray-400">Receive in-app notifications</p>
@@ -239,7 +239,7 @@ export interface GeneralSettingsData {
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground">
+              <label className="block text-sm font-medium text-white">
                 Email Notifications
               </label>
               <p className="text-sm text-gray-400">

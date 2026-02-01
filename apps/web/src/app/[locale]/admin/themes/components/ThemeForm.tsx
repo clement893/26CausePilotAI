@@ -26,7 +26,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
   return (
     <div className="space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+        <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
           Nom technique <span className="text-danger">*</span>
         </label>
         <Input
@@ -56,7 +56,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
       </div>
 
       <div>
-        <label htmlFor="display_name" className="block text-sm font-medium text-foreground mb-2">
+        <label htmlFor="display_name" className="block text-sm font-medium text-white mb-2">
           Nom d'affichage <span className="text-danger">*</span>
         </label>
         <Input
@@ -86,7 +86,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-foreground mb-2">
+        <label htmlFor="description" className="block text-sm font-medium text-white mb-2">
           Description
         </label>
         <Textarea
@@ -117,7 +117,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="primary_color" className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="primary_color" className="block text-sm font-medium text-white mb-2">
             Couleur primaire <span className="text-danger">*</span>
           </label>
           <Input
@@ -138,7 +138,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
         <div>
           <label
             htmlFor="secondary_color"
-            className="block text-sm font-medium text-foreground mb-2"
+            className="block text-sm font-medium text-white mb-2"
           >
             Couleur secondaire <span className="text-danger">*</span>
           </label>
@@ -160,7 +160,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="danger_color" className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="danger_color" className="block text-sm font-medium text-white mb-2">
             Couleur danger <span className="text-danger">*</span>
           </label>
           <Input
@@ -179,7 +179,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
         </div>
 
         <div>
-          <label htmlFor="warning_color" className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="warning_color" className="block text-sm font-medium text-white mb-2">
             Couleur avertissement <span className="text-danger">*</span>
           </label>
           <Input
@@ -200,7 +200,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="info_color" className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="info_color" className="block text-sm font-medium text-white mb-2">
             Couleur info <span className="text-danger">*</span>
           </label>
           <Input
@@ -219,7 +219,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
         </div>
 
         <div>
-          <label htmlFor="success_color" className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="success_color" className="block text-sm font-medium text-white mb-2">
             Couleur succès <span className="text-danger">*</span>
           </label>
           <Input
@@ -240,7 +240,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="font_family" className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="font_family" className="block text-sm font-medium text-white mb-2">
             Police de caractères
           </label>
           <Input
@@ -254,7 +254,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
               <div className="flex items-start gap-2">
                 <Type className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-foreground mb-1">
+                  <p className="text-xs font-medium text-white mb-1">
                     Polices personnalisées sélectionnées
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -275,7 +275,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
         </div>
 
         <div>
-          <label htmlFor="border_radius" className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="border_radius" className="block text-sm font-medium text-white mb-2">
             Rayon des bordures
           </label>
           <Input

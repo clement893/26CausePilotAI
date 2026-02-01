@@ -37,28 +37,28 @@ function ERPDashboardContent() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <a
             href="/erp/orders"
-            className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
+            className="p-4 border border-gray-800 rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
             <h3 className="font-semibold text-white mb-1">Manage Orders</h3>
             <p className="text-sm text-gray-400">View and manage all orders</p>
           </a>
           <a
             href="/erp/invoices"
-            className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
+            className="p-4 border border-gray-800 rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
             <h3 className="font-semibold text-white mb-1">Manage Invoices</h3>
             <p className="text-sm text-gray-400">View and manage all invoices</p>
           </a>
           <a
             href="/erp/clients"
-            className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
+            className="p-4 border border-gray-800 rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
             <h3 className="font-semibold text-white mb-1">Manage Clients</h3>
             <p className="text-sm text-gray-400">View and manage all clients</p>
           </a>
           <a
             href="/erp/inventory"
-            className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
+            className="p-4 border border-gray-800 rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
             <h3 className="font-semibold text-white mb-1">Manage Inventory</h3>
             <p className="text-sm text-gray-400">View and manage inventory</p>

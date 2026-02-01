@@ -104,7 +104,7 @@ export default function AdminArticlesContent() {
       render: (_value, article) => (
         <div className="flex items-center gap-2">
           <FileText className="w-4 h-4 text-gray-400" />
-          <span className="font-medium text-foreground">{article.title}</span>
+          <span className="font-medium text-white">{article.title}</span>
         </div>
       ),
     },
@@ -241,7 +241,7 @@ export default function AdminArticlesContent() {
         title="Supprimer l'article"
       >
         <div className="space-y-4">
-          <p className="text-foreground">
+          <p className="text-white">
             Êtes-vous sûr de vouloir supprimer l'article <strong>{selectedArticle?.title}</strong> ?
           </p>
           <p className="text-sm text-gray-400">Cette action est irréversible.</p>

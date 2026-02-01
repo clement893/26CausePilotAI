@@ -81,7 +81,7 @@ export function ThemeManager() {
     <Card title="Gestionnaire de Thème Avancé" className="space-y-6">
       {/* Presets */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-foreground">Presets de Thème</h3>
+        <h3 className="text-sm font-semibold text-white">Presets de Thème</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {Object.entries(themePresets).map(([name]) => (
             <button
@@ -102,7 +102,7 @@ export function ThemeManager() {
 
       {/* Colors */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-foreground">Couleurs</h3>
+        <h3 className="text-sm font-semibold text-white">Couleurs</h3>
         <ColorInput label="Primary" value={theme.primary} onChange={(v) => updateColor('primary', v)} />
         <ColorInput
           label="Secondary"
@@ -116,7 +116,7 @@ export function ThemeManager() {
 
       {/* Typography - Fonts */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-foreground">Typographie - Polices</h3>
+        <h3 className="text-sm font-semibold text-white">Typographie - Polices</h3>
         <div>
           <label className="block text-xs text-gray-400 mb-1">
             Police principale (corps de texte)
@@ -147,7 +147,7 @@ export function ThemeManager() {
 
       {/* Typography - Text Colors */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-foreground">Typographie - Couleurs de texte</h3>
+        <h3 className="text-sm font-semibold text-white">Typographie - Couleurs de texte</h3>
         <ColorInput
           label="Couleur des titres"
           value={theme.textHeading}
@@ -177,7 +177,7 @@ export function ThemeManager() {
 
       {/* Error & Validation Colors */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-foreground">Couleurs d'erreur et validation</h3>
+        <h3 className="text-sm font-semibold text-white">Couleurs d'erreur et validation</h3>
         <ColorInput
           label="Couleur d'erreur"
           value={theme.errorColor}
@@ -198,7 +198,7 @@ export function ThemeManager() {
 
       {/* Border Radius */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-foreground">Style</h3>
+        <h3 className="text-sm font-semibold text-white">Style</h3>
         <div>
           <label className="block text-xs text-gray-400 mb-1">Border Radius</label>
           <Select

@@ -170,7 +170,7 @@ export default function NotificationSettings({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="text-blue-400">{icon}</div>
-              <span className="text-sm font-medium text-whitetext-foreground">Enable {title}</span>
+              <span className="text-sm font-medium text-white">Enable {title}</span>
             </div>
             <Switch
               checked={isEnabled}
@@ -188,14 +188,14 @@ export default function NotificationSettings({
                 />
               )}
               <div className="pt-4 border-t border-gray-800">
-                <div className="text-sm font-medium text-whitetext-foreground mb-3">
+                <div className="text-sm font-medium text-white mb-3">
                   Notification Types
                 </div>
                 <div className="space-y-3">
                   {notificationTypes.map((type) => (
                     <div key={type.key} className="flex items-center justify-between py-2">
                       <div className="flex-1">
-                        <div className="text-sm font-medium text-whitetext-foreground">
+                        <div className="text-sm font-medium text-white">
                           {type.label}
                         </div>
                         <div className="text-xs text-gray-400">

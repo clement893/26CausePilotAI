@@ -346,7 +346,7 @@ function DatabaseTestContent() {
 
         {/* Instructions */}
         <Card title="About Database Health Check">
-          <div className="space-y-4 text-sm text-foreground">
+          <div className="space-y-4 text-sm text-white">
             <p>This tool performs comprehensive health checks on your database including:</p>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Table existence verification</li>

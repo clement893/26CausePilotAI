@@ -249,7 +249,7 @@ export default function BlogPostEditPage() {
             <Card>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Title *</label>
+                  <label className="block text-sm font-medium text-white mb-2">Title *</label>
                   <Input
                     value={post.title || ''}
                     onChange={(e) => handleTitleChange(e.target.value)}
@@ -260,7 +260,7 @@ export default function BlogPostEditPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Excerpt</label>
+                  <label className="block text-sm font-medium text-white mb-2">Excerpt</label>
                   <Textarea
                     value={post.excerpt || ''}
                     onChange={(e) => setPost({ ...post, excerpt: e.target.value })}
@@ -270,7 +270,7 @@ export default function BlogPostEditPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     Content *
                   </label>
                   <RichTextEditor
@@ -290,7 +290,7 @@ export default function BlogPostEditPage() {
             <Card title="Publish">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Status</label>
+                  <label className="block text-sm font-medium text-white mb-2">Status</label>
                   <Select
                     options={[
                       { label: 'Draft', value: 'draft' },
@@ -305,7 +305,7 @@ export default function BlogPostEditPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Slug *</label>
+                  <label className="block text-sm font-medium text-white mb-2">Slug *</label>
                   <Input
                     value={post.slug || ''}
                     onChange={(e) => setPost({ ...post, slug: e.target.value })}
@@ -321,7 +321,7 @@ export default function BlogPostEditPage() {
             <Card title="Categories & Tags">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Category</label>
+                  <label className="block text-sm font-medium text-white mb-2">Category</label>
                   <Select
                     options={[
                       { label: 'Uncategorized', value: '' },
@@ -338,7 +338,7 @@ export default function BlogPostEditPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-white mb-2">Tags</label>
                   <Input
                     placeholder="Add tags (comma-separated)"
                     value={tags.join(', ')}

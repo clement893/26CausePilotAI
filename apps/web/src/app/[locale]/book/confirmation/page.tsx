@@ -21,7 +21,7 @@ export default function ConfirmationPage() {
           <div className="inline-flex items-center justify-center w-24 h-24 bg-success-100 rounded-full mb-6">
             <CheckCircle className="w-12 h-12 text-success-600" aria-hidden="true" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             Réservation confirmée
           </h1>
           {bookingReference && (

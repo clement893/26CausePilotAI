@@ -41,7 +41,7 @@ export default function ExampleSettingsPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Paramètres</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple Paramètres</h1>
         <p className="text-gray-400">
           Une page de paramètres complète avec différents types de configurations
         </p>
@@ -74,7 +74,7 @@ export default function ExampleSettingsPage() {
             <div className="p-6">
               {activeTab === 'general' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-6">Paramètres Généraux</h2>
+                  <h2 className="text-2xl font-bold text-white mb-6">Paramètres Généraux</h2>
                   <div className="space-y-6">
                     <div>
                       <Select
@@ -113,7 +113,7 @@ export default function ExampleSettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
+                      <label className="block text-sm font-medium text-white mb-2">
                         Thème
                       </label>
                       <div className="flex gap-4">
@@ -139,7 +139,7 @@ export default function ExampleSettingsPage() {
 
               {activeTab === 'notifications' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-6">Notifications</h2>
+                  <h2 className="text-2xl font-bold text-white mb-6">Notifications</h2>
                   <div className="space-y-4">
                     {Object.entries(settings.notifications).map(([key, value]) => (
                       <div
@@ -147,7 +147,7 @@ export default function ExampleSettingsPage() {
                         className="flex items-center justify-between p-4 bg-[#1C1C26] rounded-lg"
                       >
                         <div>
-                          <div className="font-medium text-foreground capitalize">{key}</div>
+                          <div className="font-medium text-white capitalize">{key}</div>
                           <div className="text-sm text-gray-400">
                             {key === 'email' && 'Recevoir des notifications par email'}
                             {key === 'push' && 'Recevoir des notifications push'}
@@ -171,7 +171,7 @@ export default function ExampleSettingsPage() {
 
               {activeTab === 'privacy' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-6">Confidentialité</h2>
+                  <h2 className="text-2xl font-bold text-white mb-6">Confidentialité</h2>
                   <div className="space-y-4">
                     {Object.entries(settings.privacy).map(([key, value]) => (
                       <div
@@ -179,7 +179,7 @@ export default function ExampleSettingsPage() {
                         className="flex items-center justify-between p-4 bg-[#1C1C26] rounded-lg"
                       >
                         <div>
-                          <div className="font-medium text-foreground">
+                          <div className="font-medium text-white">
                             {key === 'profileVisible' && 'Profil visible'}
                             {key === 'showEmail' && "Afficher l'email"}
                             {key === 'showPhone' && 'Afficher le téléphone'}
@@ -209,10 +209,10 @@ export default function ExampleSettingsPage() {
 
               {activeTab === 'security' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-6">Sécurité</h2>
+                  <h2 className="text-2xl font-bold text-white mb-6">Sécurité</h2>
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-semibold text-foreground mb-4">
+                      <h3 className="text-lg font-semibold text-white mb-4">
                         Changer le mot de passe
                       </h3>
                       <div className="space-y-4">
@@ -244,12 +244,12 @@ export default function ExampleSettingsPage() {
                       </div>
                     </div>
                     <div className="border-t border-gray-800 pt-6">
-                      <h3 className="text-lg font-semibold text-foreground mb-4">
+                      <h3 className="text-lg font-semibold text-white mb-4">
                         Authentification à deux facteurs
                       </h3>
                       <div className="flex items-center justify-between p-4 bg-[#1C1C26] rounded-lg">
                         <div>
-                          <div className="font-medium text-foreground">2FA activée</div>
+                          <div className="font-medium text-white">2FA activée</div>
                           <div className="text-sm text-gray-400">
                             Protégez votre compte avec une authentification à deux facteurs
                           </div>

@@ -18,7 +18,7 @@ export default function CheckoutPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="min-h-screen bg-[#13131A] flex items-center justify-center">
       <Container>
         <div className="text-center max-w-2xl mx-auto">
           <p className="text-gray-400">Redirection en cours...</p>

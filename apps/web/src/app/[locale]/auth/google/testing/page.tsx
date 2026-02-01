@@ -159,7 +159,7 @@ function GoogleAuthTestContent() {
                     Test Google Authentication
                   </Button>
                 </div>
-                <div className="mt-4 p-4 bg-muted rounded">
+                <div className="mt-4 p-4 bg-[#1C1C26] rounded">
                   <p className="text-sm text-gray-400 mb-2">Authorization URL:</p>
                   <code className="text-xs break-all">{authUrl}</code>
                 </div>

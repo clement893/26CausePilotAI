@@ -167,7 +167,7 @@ function OrganizationDetailsContent() {
         </Button>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">{organization.name}</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">{organization.name}</h1>
             <p className="text-gray-400">/{organization.slug}</p>
           </div>
           <Badge variant={organization.isActive ? 'success' : 'default'} className="text-lg px-4 py-2">
@@ -186,7 +186,7 @@ function OrganizationDetailsContent() {
             {(modules || []).map((module) => (
               <div
                 key={module.id}
-                className="flex items-center justify-between p-4 rounded-lg border border-border bg-muted/30"
+                className="flex items-center justify-between p-4 rounded-lg border border-gray-800 bg-[#1C1C26]/30"
               >
                 <div className="flex items-center gap-3">
                   {module.isEnabled ? (
@@ -194,7 +194,7 @@ function OrganizationDetailsContent() {
                   ) : (
                     <X className="w-5 h-5 text-gray-400" />
                   )}
-                  <span className="font-medium text-foreground">
+                  <span className="font-medium text-white">
                     {MODULE_LABELS[module.moduleKey] || module.moduleKey}
                   </span>
                 </div>
@@ -217,7 +217,7 @@ function OrganizationDetailsContent() {
           </p>
 
           {/* Invite Form */}
-          <form onSubmit={handleInviteMember} className="mb-6 p-4 rounded-lg bg-muted/30">
+          <form onSubmit={handleInviteMember} className="mb-6 p-4 rounded-lg bg-[#1C1C26]/30">
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <Input
@@ -231,7 +231,7 @@ function OrganizationDetailsContent() {
               <select
                 value={inviteRole}
                 onChange={(e) => setInviteRole(e.target.value as any)}
-                className="px-3 py-2 rounded-lg border border-border bg-background text-foreground"
+                className="px-3 py-2 rounded-lg border border-gray-800 bg-[#13131A] text-white"
               >
                 <option value="admin">Admin</option>
                 <option value="member">Member</option>
@@ -252,14 +252,14 @@ function OrganizationDetailsContent() {
               members.map((member) => (
                 <div
                   key={member.id}
-                  className="flex items-center justify-between p-3 rounded-lg border border-border"
+                  className="flex items-center justify-between p-3 rounded-lg border border-gray-800"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
                       <Users className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">{member.userEmail}</p>
+                      <p className="font-medium text-white">{member.userEmail}</p>
                       <p className="text-xs text-gray-400 capitalize">{member.role}</p>
                     </div>
                   </div>
@@ -292,7 +292,7 @@ function OrganizationDetailsContent() {
                 <BarChart3 className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-2xl font-bold text-white">
                   {(modules || []).filter((m) => m.isEnabled).length}
                 </p>
                 <p className="text-sm text-gray-400">Modules activés</p>
@@ -303,7 +303,7 @@ function OrganizationDetailsContent() {
                 <Users className="w-6 h-6 text-success-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">{(members || []).length}</p>
+                <p className="text-2xl font-bold text-white">{(members || []).length}</p>
                 <p className="text-sm text-gray-400">Membres</p>
               </div>
             </div>
@@ -312,7 +312,7 @@ function OrganizationDetailsContent() {
                 <Building className="w-6 h-6 text-info-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-2xl font-bold text-white">
                   {organization.isActive ? 'Actif' : 'Inactif'}
                 </p>
                 <p className="text-sm text-gray-400">Statut</p>

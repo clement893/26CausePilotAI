@@ -28,7 +28,7 @@ export default function PaymentPage() {
     <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center">
       <Container>
         <div className="text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-muted rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#1C1C26] rounded-full mb-4">
             <Lock className="w-8 h-8 text-gray-400" aria-hidden="true" />
           </div>
           <p className="text-gray-400">Redirection en cours...</p>

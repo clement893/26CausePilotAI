@@ -86,7 +86,7 @@ function DashboardContent() {
                 <div className="p-3 bg-blue-500 rounded-lg">
                   <Brain className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">About CausePilot AI</h2>
+                <h2 className="text-2xl font-bold text-white">About CausePilot AI</h2>
               </div>
               <p className="text-base text-gray-400 mb-4 leading-relaxed">
                 CausePilot AI is an intelligent fundraising platform designed for modern nonprofits. 
@@ -111,7 +111,7 @@ function DashboardContent() {
       {/* Key Features Grid */}
       <MotionDiv variant="slideUp" delay={200}>
         <div className="mb-4">
-          <h3 className="text-xl font-semibold text-foreground mb-2">Key Features</h3>
+          <h3 className="text-xl font-semibold text-white mb-2">Key Features</h3>
           <p className="text-sm text-gray-400">Explore what CausePilot AI can do for your organization</p>
         </div>
         <Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="normal">
@@ -122,7 +122,7 @@ function DashboardContent() {
                   <Brain className="w-6 h-6 text-blue-400" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-foreground mb-1">AI Copilot</h4>
+                  <h4 className="font-semibold text-white mb-1">AI Copilot</h4>
                   <p className="text-sm text-gray-400">
                     Get intelligent recommendations on when to ask, how much to ask, and who to target using generative AI.
                   </p>
@@ -137,7 +137,7 @@ function DashboardContent() {
                 <Users className="w-6 h-6 text-green-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-foreground mb-1">Donor Management</h4>
+                <h4 className="font-semibold text-white mb-1">Donor Management</h4>
                 <p className="text-sm text-gray-400">
                   A 360-degree view of your supporters. Track history, preferences, and engagement in one secure CRM.
                 </p>
@@ -152,7 +152,7 @@ function DashboardContent() {
                 <Zap className="w-6 h-6 text-blue-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-foreground mb-1">Automated Campaigns</h4>
+                <h4 className="font-semibold text-white mb-1">Automated Campaigns</h4>
                 <p className="text-sm text-gray-400">
                   Set up multi-channel communication flows that nurture donors automatically while you sleep.
                 </p>
@@ -167,7 +167,7 @@ function DashboardContent() {
                 <Heart className="w-6 h-6 text-green-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-foreground mb-1">Smart Donation Forms</h4>
+                <h4 className="font-semibold text-white mb-1">Smart Donation Forms</h4>
                 <p className="text-sm text-gray-400">
                   Conversion-optimized forms that adapt suggested amounts based on donor history and profile.
                 </p>
@@ -182,7 +182,7 @@ function DashboardContent() {
                 <BarChart3 className="w-6 h-6 text-yellow-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-foreground mb-1">Impact Analytics</h4>
+                <h4 className="font-semibold text-white mb-1">Impact Analytics</h4>
                 <p className="text-sm text-gray-400">
                   Real-time dashboards that turn complex data into actionable insights for your board and team.
                 </p>
@@ -197,7 +197,7 @@ function DashboardContent() {
                 <Shield className="w-6 h-6 text-red-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-foreground mb-1">Secure & Compliant</h4>
+                <h4 className="font-semibold text-white mb-1">Secure & Compliant</h4>
                 <p className="text-sm text-gray-400">
                   Enterprise-grade security with automated tax receipting and compliance built-in.
                 </p>
@@ -217,34 +217,34 @@ function DashboardContent() {
                 <User className="w-6 h-6 text-blue-400" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-foreground">Your Profile</h3>
+                <h3 className="text-xl font-semibold text-white">Your Profile</h3>
                 <p className="text-sm text-gray-400">Account information</p>
               </div>
             </div>
             <Stack gap="normal">
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+              <div className="flex items-center gap-3 p-3 bg-[#1C1C26]/50 rounded-lg">
                 <User className="w-5 h-5 text-gray-400" />
                 <div className="flex-1">
                   <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                     Name
                   </p>
-                  <p className="text-base font-semibold text-foreground mt-0.5">
+                  <p className="text-base font-semibold text-white mt-0.5">
                     {user?.name || 'N/A'}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+              <div className="flex items-center gap-3 p-3 bg-[#1C1C26]/50 rounded-lg">
                 <Mail className="w-5 h-5 text-gray-400" />
                 <div className="flex-1">
                   <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                     Email
                   </p>
-                  <p className="text-base font-semibold text-foreground mt-0.5">
+                  <p className="text-base font-semibold text-white mt-0.5">
                     {user?.email || 'N/A'}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-[#1C1C26]/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   {user?.is_active ? (
                     <CheckCircle2 className="w-5 h-5 text-green-400" />
@@ -261,7 +261,7 @@ function DashboardContent() {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-[#1C1C26]/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   {user?.is_verified ? (
                     <CheckCircle2 className="w-5 h-5 text-green-400" />
@@ -288,7 +288,7 @@ function DashboardContent() {
                 <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-foreground">Get Started</h3>
+                <h3 className="text-xl font-semibold text-white">Get Started</h3>
                 <p className="text-sm text-gray-400">Quick access to key features</p>
               </div>
             </div>
@@ -358,7 +358,7 @@ function DashboardContent() {
               <Shield className="w-6 h-6 text-green-400" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-foreground">System Status</h3>
+              <h3 className="text-xl font-semibold text-white">System Status</h3>
               <p className="text-sm text-gray-400">All systems operational</p>
             </div>
           </div>
@@ -404,7 +404,7 @@ function DashboardContent() {
               <Sparkles className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-foreground">AI Assistant</h3>
+              <h3 className="text-xl font-semibold text-white">AI Assistant</h3>
               <p className="text-sm text-gray-400">Ask questions about CausePilot AI and get intelligent assistance</p>
             </div>
           </div>

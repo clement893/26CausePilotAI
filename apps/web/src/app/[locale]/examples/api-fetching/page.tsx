@@ -140,7 +140,7 @@ export default function ExampleAPIFetchingPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple API / Data Fetching</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple API / Data Fetching</h1>
         <p className="text-gray-400">
           Exemples de récupération de données avec retry, cache et optimistic updates
         </p>
@@ -150,7 +150,7 @@ export default function ExampleAPIFetchingPage() {
         {/* Example 1: useApi with retry */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">1. useApi avec Retry</h2>
+            <h2 className="text-xl font-bold text-white mb-4">1. useApi avec Retry</h2>
             <div className="space-y-4">
               {isLoading ? (
                 <div className="flex items-center gap-2 text-gray-400">
@@ -188,7 +188,7 @@ export default function ExampleAPIFetchingPage() {
         {/* Example 2: useRetry hook */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">2. useRetry Hook</h2>
+            <h2 className="text-xl font-bold text-white mb-4">2. useRetry Hook</h2>
             <div className="space-y-4">
               {isRetrying && (
                 <div className="text-sm text-warning-600 text-yellow-400">
@@ -212,7 +212,7 @@ export default function ExampleAPIFetchingPage() {
         {/* Example 3: Optimistic Updates */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">3. Optimistic Updates</h2>
+            <h2 className="text-xl font-bold text-white mb-4">3. Optimistic Updates</h2>
             <div className="space-y-4">
               {optimisticData.length === 0 ? (
                 <p className="text-sm text-gray-400">Aucune donnée optimiste</p>
@@ -255,7 +255,7 @@ export default function ExampleAPIFetchingPage() {
         {/* Example 4: Cache and Refetch */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">4. Cache et Refetch</h2>
+            <h2 className="text-xl font-bold text-white mb-4">4. Cache et Refetch</h2>
             <div className="space-y-4">
               {isCachedLoading ? (
                 <div className="flex items-center gap-2 text-gray-400">
@@ -282,7 +282,7 @@ export default function ExampleAPIFetchingPage() {
       {/* Code Example */}
       <Card className="mt-6">
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Points clés de cet exemple :
           </h3>
           <ul className="space-y-2 text-sm text-gray-400">

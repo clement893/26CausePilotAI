@@ -244,7 +244,7 @@ function ProjectsContent() {
       <Container>
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <p className="text-foreground">Gérez vos projets et leurs statuts</p>
+            <p className="text-white">Gérez vos projets et leurs statuts</p>
           </div>
           <Button
             onClick={() => {

@@ -122,7 +122,7 @@ function ClientTicketsContent() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Support Tickets</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">Support Tickets</h1>
           <p className="text-gray-400">Get help from our support team</p>
         </div>
         <Button onClick={() => setShowCreateModal(true)}>Create Ticket</Button>

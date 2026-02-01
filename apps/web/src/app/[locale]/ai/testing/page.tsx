@@ -139,7 +139,7 @@ function AITestContent() {
           {/* Health Check */}
           <div className="mb-6 p-4 bg-[#1C1C26] rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold text-foreground">Health Check</h2>
+              <h2 className="text-lg font-semibold text-white">Health Check</h2>
               <Button variant="primary" onClick={checkHealth} size="sm">
                 Check Status
               </Button>
@@ -147,15 +147,15 @@ function AITestContent() {
             {healthStatus && (
               <div className="mt-2 text-sm space-y-2">
                 <div className="flex items-center gap-2">
-                  <strong className="text-foreground">Configured:</strong>
+                  <strong className="text-white">Configured:</strong>
                   <Badge variant={healthStatus.configured ? 'success' : 'error'}>
                     {healthStatus.configured ? 'Yes' : 'No'}
                   </Badge>
                 </div>
-                <p className="text-foreground">
+                <p className="text-white">
                   <strong>Model:</strong> {healthStatus.model ? String(healthStatus.model) : 'N/A'}
                 </p>
-                <p className="text-foreground">
+                <p className="text-white">
                   <strong>Available:</strong> {healthStatus.available ? 'Yes' : 'No'}
                 </p>
                 {healthStatus.error && (
@@ -169,7 +169,7 @@ function AITestContent() {
 
           {/* Mode Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2 text-foreground">Mode</label>
+            <label className="block text-sm font-medium mb-2 text-white">Mode</label>
             <Tabs defaultTab={mode} onChange={(value) => setMode(value as 'simple' | 'chat')}>
               <TabList>
                 <Tab value="simple">Simple Chat</Tab>
@@ -194,7 +194,7 @@ function AITestContent() {
                 fullWidth
               />
               <div>
-                <label className="block text-sm font-medium mb-1 text-foreground">
+                <label className="block text-sm font-medium mb-1 text-white">
                   Temperature: {temperature}
                 </label>
                 <input
@@ -256,7 +256,7 @@ function AITestContent() {
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-foreground">Messages</label>
+                  <label className="block text-sm font-medium text-white">Messages</label>
                   <Button variant="primary" onClick={addMessage} size="sm">
                     + Add Message
                   </Button>
@@ -314,7 +314,7 @@ function AITestContent() {
           {/* Response Display */}
           {response && (
             <Alert variant="success" title="AI Response" className="mt-6">
-              <div className="text-foreground whitespace-pre-wrap mt-2">{response}</div>
+              <div className="text-white whitespace-pre-wrap mt-2">{response}</div>
             </Alert>
           )}
         </Card>

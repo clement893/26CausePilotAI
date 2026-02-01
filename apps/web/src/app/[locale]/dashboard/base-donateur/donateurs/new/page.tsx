@@ -166,7 +166,7 @@ export default function NewDonorPage() {
             Retour à la liste
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Nouveau donateur</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Nouveau donateur</h1>
         <p className="text-gray-400">Ajouter un nouveau donateur à votre base de données</p>
       </div>
 
@@ -246,7 +246,7 @@ export default function NewDonorPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <label htmlFor="email" className="block text-sm font-semibold text-foreground">
+                  <label htmlFor="email" className="block text-sm font-semibold text-white">
                     Email <span className="text-destructive">*</span>
                   </label>
                   <Tooltip content="L'email doit être unique et sera utilisé pour les communications">
@@ -265,7 +265,7 @@ export default function NewDonorPage() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="phone" className="block text-sm font-semibold text-foreground">
+                <label htmlFor="phone" className="block text-sm font-semibold text-white">
                   Téléphone
                 </label>
                 <Input
@@ -281,7 +281,7 @@ export default function NewDonorPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label htmlFor="first_name" className="block text-sm font-semibold text-foreground">
+                <label htmlFor="first_name" className="block text-sm font-semibold text-white">
                   Prénom
                 </label>
                 <Input
@@ -295,7 +295,7 @@ export default function NewDonorPage() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="last_name" className="block text-sm font-semibold text-foreground">
+                <label htmlFor="last_name" className="block text-sm font-semibold text-white">
                   Nom de famille
                 </label>
                 <Input
@@ -321,14 +321,14 @@ export default function NewDonorPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label htmlFor="preferred_language" className="block text-sm font-semibold text-foreground">
+                <label htmlFor="preferred_language" className="block text-sm font-semibold text-white">
                   Langue préférée
                 </label>
                 <select
                   id="preferred_language"
                   value={formData.preferred_language}
                   onChange={(e) => handleChange('preferred_language', e.target.value)}
-                  className="w-full h-12 px-4 py-2 border-2 rounded-lg bg-background text-foreground focus:border-primary focus:outline-none transition-colors"
+                  className="w-full h-12 px-4 py-2 border-2 rounded-lg bg-[#13131A] text-white focus:border-primary focus:outline-none transition-colors"
                 >
                   <option value="fr">Français</option>
                   <option value="en">English</option>

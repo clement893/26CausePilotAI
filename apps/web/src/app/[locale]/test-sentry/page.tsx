@@ -65,7 +65,7 @@ export default function TestSentryPage() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Sentry Testing Page</h1>
+          <h1 className="text-3xl font-bold text-white">Sentry Testing Page</h1>
           <p className="text-gray-400 mt-2">
             Use these buttons to test Sentry error tracking and monitoring
           </p>
@@ -78,7 +78,7 @@ export default function TestSentryPage() {
         )}
 
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Test Error Tracking</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">Test Error Tracking</h2>
           <div className="space-y-4">
             <div>
               <p className="text-sm text-gray-400 mb-2">
@@ -119,12 +119,12 @@ export default function TestSentryPage() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-foreground mb-4">Browser Console Test</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">Browser Console Test</h2>
           <p className="text-sm text-gray-400 mb-4">
             Open browser DevTools (F12) and run this in the console:
           </p>
-          <div className="bg-muted p-4 rounded-lg font-mono text-sm">
-            <code className="text-foreground">
+          <div className="bg-[#1C1C26] p-4 rounded-lg font-mono text-sm">
+            <code className="text-white">
               throw new Error('Sentry Test Error - ' + new Date().toISOString())
             </code>
           </div>
@@ -155,7 +155,7 @@ export default function TestSentryPage() {
         </Card>
 
         <Card className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-2">🔗 Quick Links</h3>
+          <h3 className="text-lg font-semibold text-white mb-2">🔗 Quick Links</h3>
           <div className="space-y-2">
             <a
               href="/monitoring/errors"

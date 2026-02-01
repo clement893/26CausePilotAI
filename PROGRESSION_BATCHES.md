@@ -1001,6 +1001,22 @@
 
 ---
 
+## 🔄 Suite alignement (2026-02-01)
+
+### Composants – thème explicite
+- **Button, ThemeManager, FontUploader, DatabaseConnectionForm** : `text-foreground` → `text-white`
+- **Sections (Hero, Features, TechStack)** : `text-foreground` → `text-white`
+- **SocialAuth, CompanyCounter, ContactCounter** : `text-foreground` → `text-white`
+- **Settings (Security, General, Notification)** : correction typos `text-whitetext-foreground` → `text-white`
+
+### Pages app – thème explicite
+- **Accueil, docs, sitemap, dashboard** : `bg-background` → `bg-[#13131A]`, `text-foreground` → `text-white`
+- **Super-admin, reseau, admin, erp, examples, client, base-donateur, book, cities, etc.** : `text-foreground` → `text-white`, `bg-background` → `bg-[#13131A]`, `border-border` → `border-gray-800`, `bg-muted` → `bg-[#1C1C26]`
+- **Auth (login, register)** : `text-muted-foreground` → `text-gray-400`
+- **Résultat** : 0 occurrence restante de `text-muted-foreground`, `bg-muted`, `border-border`, `bg-background`, `text-foreground` dans `apps/web/src` (fichiers .tsx)
+
+---
+
 ## 📝 Notes
 
 - Chaque batch est commité séparément

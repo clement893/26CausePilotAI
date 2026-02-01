@@ -170,7 +170,7 @@ const featureCategories: FeatureCategory[] = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#13131A]">
       {/* Modern Hero Section - Dark Green & Burnt Orange Branding */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#1a4d2e] bg-[#0f2e1a]">
         {/* Animated Background Elements */}
@@ -258,13 +258,13 @@ export default function HomePage() {
       <Stats />
 
       {/* Core Value Proposition */}
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-[#13131A]">
         <Container>
           <div className="text-center mb-16">
             <Badge variant="info" className="mb-4">
               Pourquoi Cause Pilot ?
             </Badge>
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
               Une plateforme complète
               <br />
               <span className="text-[#1a4d2e]">
@@ -284,13 +284,13 @@ export default function HomePage() {
                     {category.icon}
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-foreground mb-3">{category.title}</h3>
+                <h3 className="text-2xl font-bold text-white mb-3">{category.title}</h3>
                 <p className="text-gray-400 mb-6">{category.description}</p>
                 <ul className="space-y-3 flex-1">
                   {category.features.slice(0, 4).map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2">
                       <CheckCircle2 className="w-5 h-5 text-success-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-foreground">{feature.title}</span>
+                      <span className="text-sm text-white">{feature.title}</span>
                     </li>
                   ))}
                 </ul>
@@ -307,7 +307,7 @@ export default function HomePage() {
             <Badge variant="success" className="mb-4">
               Témoignages
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Ce que disent nos clients
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
@@ -342,9 +342,9 @@ export default function HomePage() {
                     <Star key={i} className="w-5 h-5 fill-[#cc5500] text-[#cc5500]" />
                   ))}
                 </div>
-                <p className="text-foreground mb-6 text-lg italic">"{testimonial.content}"</p>
+                <p className="text-white mb-6 text-lg italic">"{testimonial.content}"</p>
                 <div>
-                  <p className="font-semibold text-foreground">{testimonial.name}</p>
+                  <p className="font-semibold text-white">{testimonial.name}</p>
                   <p className="text-sm text-gray-400">{testimonial.role}</p>
                 </div>
               </Card>
@@ -354,13 +354,13 @@ export default function HomePage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-[#13131A]">
         <Container>
           <div className="text-center mb-16">
             <Badge variant="warning" className="mb-4">
               Avantages
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Pourquoi choisir Cause Pilot ?
             </h2>
           </div>
@@ -370,7 +370,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Brain className="w-8 h-8 text-[#1a4d2e]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">IA Avancée</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">IA Avancée</h3>
               <p className="text-gray-400">
                 Optimisez vos campagnes avec l'intelligence artificielle
               </p>
@@ -380,7 +380,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <TrendingUp className="w-8 h-8 text-[#cc5500]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">+35% de dons</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">+35% de dons</h3>
               <p className="text-gray-400">
                 Augmentez vos collectes grâce à nos algorithmes
               </p>
@@ -390,7 +390,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Zap className="w-8 h-8 text-[#2d5016]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Installation rapide</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">Installation rapide</h3>
               <p className="text-gray-400">
                 Démarrez en moins de 5 minutes
               </p>
@@ -400,7 +400,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <MessageSquare className="w-8 h-8 text-[#b45309]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Support 24/7</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">Support 24/7</h3>
               <p className="text-gray-400">
                 Une équipe dédiée pour vous accompagner
               </p>
@@ -410,7 +410,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Globe className="w-8 h-8 text-[#1a4d2e]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Multi-pays</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">Multi-pays</h3>
               <p className="text-gray-400">
                 Collectez dans 40+ pays
               </p>
@@ -420,7 +420,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <DollarSign className="w-8 h-8 text-[#cc5500]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Frais réduits</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">Frais réduits</h3>
               <p className="text-gray-400">
                 Les tarifs les plus compétitifs
               </p>
@@ -430,7 +430,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Calendar className="w-8 h-8 text-[#2d5016]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Planification</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">Planification</h3>
               <p className="text-gray-400">
                 Planifiez vos campagnes à l'avance
               </p>
@@ -440,7 +440,7 @@ export default function HomePage() {
               <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Shield className="w-8 h-8 text-[#b45309]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">100% Sécurisé</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">100% Sécurisé</h3>
               <p className="text-gray-400">
                 Conformité RGPD totale
               </p>

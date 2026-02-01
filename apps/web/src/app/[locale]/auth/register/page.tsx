@@ -176,7 +176,7 @@ export default function RegisterPage() {
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 from-[#1C1C26] to-[#1C1C26]">
       <Container className="w-full max-w-md">
         <Card>
-          <h1 className="text-3xl font-bold text-center text-foreground mb-8">Register</h1>
+          <h1 className="text-3xl font-bold text-center text-white mb-8">Register</h1>
 
           {error && (
             <Alert variant="error" title="Erreur" className="mb-4">
@@ -244,7 +244,7 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          <p className="text-center text-muted-foreground mt-6">
+          <p className="text-center text-gray-400 mt-6">
             Already have an account?{' '}
             <Link
               href="/auth/login"

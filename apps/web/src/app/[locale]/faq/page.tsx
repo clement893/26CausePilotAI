@@ -130,7 +130,7 @@ export default function FAQPage() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#13131A]">
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -168,7 +168,7 @@ export default function FAQPage() {
                   className={`px-4 py-2 border font-bold transition-colors ${
                     selectedCategory === category
                       ? 'bg-foreground text-background border-foreground'
-                      : 'bg-background text-white border-foreground hover:bg-[#1C1C26]'
+                      : 'bg-[#13131A] text-white border-foreground hover:bg-[#1C1C26]'
                   }`}
                 >
                   {category}

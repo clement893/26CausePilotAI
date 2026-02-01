@@ -9,10 +9,10 @@ import { Container } from '@/components/ui';
 
 export default function CityDetailPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#13131A]">
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             Détails de la ville
           </h1>
           <p className="text-xl text-gray-400 mb-8">

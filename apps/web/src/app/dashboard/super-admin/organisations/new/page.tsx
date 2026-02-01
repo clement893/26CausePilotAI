@@ -65,7 +65,7 @@ function NewOrganizationContent() {
           <ArrowLeft className="w-4 h-4" />
           Retour
         </Button>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Nouvelle organisation</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Nouvelle organisation</h1>
         <p className="text-gray-400">Créez une nouvelle organisation avec sa base de données séparée</p>
       </div>
 
@@ -78,7 +78,7 @@ function NewOrganizationContent() {
           )}
 
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
               Nom de l'organisation *
             </label>
             <Input
@@ -92,7 +92,7 @@ function NewOrganizationContent() {
           </div>
 
           <div>
-            <label htmlFor="slug" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="slug" className="block text-sm font-medium text-white mb-2">
               Slug (identifiant unique) *
             </label>
             <Input

@@ -165,7 +165,7 @@ function CheckMySuperAdminStatusContent() {
                     </Badge>
                   </div>
                 )}
-                <div className="pt-4 border-t border-border">
+                <div className="pt-4 border-t border-gray-800">
                   <Button onClick={checkStatus} variant="outline" className="w-full">
                     <RefreshCw className="w-4 h-4 mr-2" />
                     Actualiser le statut

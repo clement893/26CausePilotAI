@@ -10,7 +10,7 @@ export default function ExampleDashboardPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Dashboard</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple Dashboard</h1>
         <p className="text-gray-400">
           Un exemple de tableau de bord avec widgets et statistiques
         </p>
@@ -44,7 +44,7 @@ export default function ExampleDashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Activité Récente</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Activité Récente</h2>
             <div className="space-y-4">
               {[
                 {
@@ -69,7 +69,7 @@ export default function ExampleDashboardPage() {
                     <span className="text-info-600 font-semibold">{activity.name.charAt(0)}</span>
                   </div>
                   <div className="flex-1">
-                    <p className="text-foreground">
+                    <p className="text-white">
                       <span className="font-semibold">{activity.name}</span> {activity.action}{' '}
                       {activity.amount && (
                         <span className="font-semibold text-success-600 text-green-400">
@@ -90,7 +90,7 @@ export default function ExampleDashboardPage() {
 
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Campagnes en Cours</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Campagnes en Cours</h2>
             <div className="space-y-4">
               {[
                 { name: 'Campagne Hiver 2024', progress: 75, amount: '30,000€', target: '40,000€' },
@@ -99,7 +99,7 @@ export default function ExampleDashboardPage() {
               ].map((campaign, index) => (
                 <div key={index} className="pb-4 border-b border-gray-800 last:border-0">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-foreground">{campaign.name}</h3>
+                    <h3 className="font-semibold text-white">{campaign.name}</h3>
                     <Badge variant="success">{campaign.progress}%</Badge>
                   </div>
                   <div className="w-full bg-[#1C1C26] rounded-full h-2 mb-2">
@@ -122,7 +122,7 @@ export default function ExampleDashboardPage() {
       {/* Quick Actions */}
       <Card>
         <div className="p-6">
-          <h2 className="text-xl font-bold text-foreground mb-4">Actions Rapides</h2>
+          <h2 className="text-xl font-bold text-white mb-4">Actions Rapides</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
               <span className="text-2xl mb-2">➕</span>

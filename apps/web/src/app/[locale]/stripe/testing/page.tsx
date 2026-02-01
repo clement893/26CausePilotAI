@@ -121,7 +121,7 @@ function StripeTestContent() {
   return (
     <Container className="py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Stripe Test</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Stripe Test</h1>
         <p className="text-gray-400">
           Test Stripe integration for subscriptions and payments
         </p>
@@ -215,9 +215,9 @@ function StripeTestContent() {
       {/* Instructions */}
       <Card className="mt-6">
         <h2 className="text-xl font-semibold mb-4">How to Test</h2>
-        <div className="space-y-4 text-sm text-foreground">
+        <div className="space-y-4 text-sm text-white">
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">1. Check Configuration</h3>
+            <h3 className="font-semibold mb-1 text-white">1. Check Configuration</h3>
             <p>Verify that Stripe API keys are configured in environment variables:</p>
             <ul className="list-disc list-inside ml-4 mt-1">
               <li>STRIPE_SECRET_KEY</li>
@@ -225,7 +225,7 @@ function StripeTestContent() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">2. Test Checkout</h3>
+            <h3 className="font-semibold mb-1 text-white">2. Test Checkout</h3>
             <p>Click "Subscribe" on a plan to create a Stripe checkout session. Use test card:</p>
             <ul className="list-disc list-inside ml-4 mt-1">
               <li>Card: 4242 4242 4242 4242</li>
@@ -234,7 +234,7 @@ function StripeTestContent() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">3. Customer Portal</h3>
+            <h3 className="font-semibold mb-1 text-white">3. Customer Portal</h3>
             <p>
               If you have an active subscription, use "Open Customer Portal" to test the Stripe
               customer portal.

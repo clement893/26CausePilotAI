@@ -10,7 +10,7 @@ import { Clock, Target, BookOpen, CheckCircle } from 'lucide-react';
 
 export default function MasterclassPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#13131A]">
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto">
           {/* Header */}

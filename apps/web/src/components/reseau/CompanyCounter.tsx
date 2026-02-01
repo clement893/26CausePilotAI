@@ -13,7 +13,7 @@ export default function CompanyCounter({
   return (
     <div className="flex items-center gap-2">
       {' '}
-      <span className="text-sm font-medium text-foreground">
+      <span className="text-sm font-medium text-white">
         {' '}
         {filtered} entreprise{filtered !== 1 ? 's' : ''}{' '}
       </span>{' '}

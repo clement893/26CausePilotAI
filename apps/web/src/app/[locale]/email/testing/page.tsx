@@ -176,19 +176,19 @@ function EmailTestContent() {
             {healthStatus && (
               <div className="mt-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <strong className="text-sm text-foreground">Configured:</strong>
+                  <strong className="text-sm text-white">Configured:</strong>
                   <Badge variant={healthStatus.configured ? 'success' : 'error'}>
                     {healthStatus.configured ? '✅ Yes' : '❌ No'}
                   </Badge>
                 </div>
                 <div className="text-sm">
-                  <p className="text-foreground">
+                  <p className="text-white">
                     <strong>From Email:</strong> {healthStatus.from_email || 'N/A'}
                   </p>
-                  <p className="text-foreground">
+                  <p className="text-white">
                     <strong>From Name:</strong> {healthStatus.from_name || 'N/A'}
                   </p>
-                  <p className="text-foreground">
+                  <p className="text-white">
                     <strong>Status:</strong> {healthStatus.status || 'N/A'}
                   </p>
                 </div>
@@ -198,7 +198,7 @@ function EmailTestContent() {
 
           {/* Email Type Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2 text-foreground">Email Type</label>
+            <label className="block text-sm font-medium mb-2 text-white">Email Type</label>
             <Tabs
               defaultTab={emailType}
               onChange={(value) => setEmailType(value as 'test' | 'welcome' | 'custom')}
@@ -315,9 +315,9 @@ function EmailTestContent() {
 
         {/* Instructions */}
         <Card title="How to Test">
-          <div className="space-y-4 text-sm text-foreground">
+          <div className="space-y-4 text-sm text-white">
             <div>
-              <h3 className="font-semibold mb-1 text-foreground">1. Health Check</h3>
+              <h3 className="font-semibold mb-1 text-white">1. Health Check</h3>
               <p>Click "Check Status" to verify SendGrid configuration. You should see:</p>
               <ul className="list-disc list-inside ml-4 mt-1">
                 <li>Configured: ✅ Yes</li>
@@ -326,17 +326,17 @@ function EmailTestContent() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-1 text-foreground">2. Test Email</h3>
+              <h3 className="font-semibold mb-1 text-white">2. Test Email</h3>
               <p>
                 Select "Test Email" and enter your email address. This sends a simple test email.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-1 text-foreground">3. Welcome Email</h3>
+              <h3 className="font-semibold mb-1 text-white">3. Welcome Email</h3>
               <p>Select "Welcome Email" to send a formatted welcome email template.</p>
             </div>
             <div>
-              <h3 className="font-semibold mb-1 text-foreground">4. Custom Email</h3>
+              <h3 className="font-semibold mb-1 text-white">4. Custom Email</h3>
               <p>Select "Custom Email" to send a fully customized email with HTML content.</p>
             </div>
             <Alert variant="warning" title="⚠️ Important" className="mt-4">

@@ -126,7 +126,7 @@ export default function AdminMediaContent() {
       render: (_value, media) => (
         <div className="flex items-center gap-2">
           {getMediaIcon(media.mime_type)}
-          <span className="font-medium text-foreground">{media.filename}</span>
+          <span className="font-medium text-white">{media.filename}</span>
         </div>
       ),
     },
@@ -266,7 +266,7 @@ export default function AdminMediaContent() {
         title="Supprimer le fichier"
       >
         <div className="space-y-4">
-          <p className="text-foreground">
+          <p className="text-white">
             Êtes-vous sûr de vouloir supprimer le fichier <strong>{selectedMedia?.filename}</strong>{' '}
             ?
           </p>

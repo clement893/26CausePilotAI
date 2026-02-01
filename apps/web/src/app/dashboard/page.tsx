@@ -18,11 +18,11 @@ function DashboardContent() {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-gray-400">Name</p>
-              <p className="text-lg font-semibold text-foreground">{user?.name}</p>
+              <p className="text-lg font-semibold text-white">{user?.name}</p>
             </div>
             <div>
               <p className="text-sm text-gray-400">Email</p>
-              <p className="text-lg font-semibold text-foreground">{user?.email}</p>
+              <p className="text-lg font-semibold text-white">{user?.email}</p>
             </div>
             <div>
               <p className="text-sm text-gray-400">Status</p>

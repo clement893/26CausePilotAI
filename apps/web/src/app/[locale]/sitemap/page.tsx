@@ -35,7 +35,7 @@ function SitemapPageContent() {
       <Container className="max-w-6xl">
         <Card className="p-8">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Plan du Site</h1>
+            <h1 className="text-4xl font-bold text-white mb-4">Plan du Site</h1>
             <p className="text-gray-400">
               Retrouvez tous les liens et pages disponibles sur le site. Utilisez ce plan pour
               naviguer facilement.
@@ -45,7 +45,7 @@ function SitemapPageContent() {
           <div className="space-y-8">
             {Object.entries(sitePages).map(([category, pages]) => (
               <div key={category} className="border-b border-gray-800 pb-6 last:border-b-0">
-                <h2 className="text-2xl font-semibold text-foreground mb-4">{category}</h2>
+                <h2 className="text-2xl font-semibold text-white mb-4">{category}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {pages.map((page) => {
                     // Check if user can access: no auth required, or authenticated and (no admin required or is admin/superadmin)
@@ -67,7 +67,7 @@ function SitemapPageContent() {
                         {canAccess ? (
                           <Link href={page.path} className="block">
                             <div className="flex items-start justify-between mb-2">
-                              <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition">
+                              <h3 className="text-lg font-medium text-white group-hover:text-primary transition">
                                 {page.title}
                               </h3>
                               <div className="flex gap-1 ml-2">
@@ -125,7 +125,7 @@ function SitemapPageContent() {
           </div>
 
           <div className="mt-8 pt-8 border-t border-gray-800">
-            <h2 className="text-xl font-semibold text-foreground mb-4">Sitemap XML</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">Sitemap XML</h2>
             <p className="text-gray-400 mb-4">
               Pour les moteurs de recherche, vous pouvez également accéder au sitemap XML :
             </p>
@@ -139,15 +139,15 @@ function SitemapPageContent() {
 
           {/* Note explicative sur la logique d'accès */}
           <div className="mt-8 pt-8 border-t border-gray-800">
-            <h2 className="text-xl font-semibold text-foreground mb-4">
+            <h2 className="text-xl font-semibold text-white mb-4">
               📋 Note sur l'accès aux pages
             </h2>
             <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-6 space-y-4">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">
+                <h3 className="font-semibold text-white mb-2">
                   Pages publiques (accessibles sans connexion)
                 </h3>
-                <p className="text-sm text-foreground mb-2">
+                <p className="text-sm text-white mb-2">
                   Ces pages sont accessibles à tous les visiteurs, même sans compte utilisateur :
                 </p>
                 <ul className="list-disc list-inside text-sm text-gray-400 space-y-1 ml-4">
@@ -158,13 +158,13 @@ function SitemapPageContent() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                   Pages protégées
                   <Badge variant="default" className="text-xs">
                     Auth
                   </Badge>
                 </h3>
-                <p className="text-sm text-foreground mb-2">
+                <p className="text-sm text-white mb-2">
                   Ces pages nécessitent une authentification. Si vous n'êtes pas connecté, vous
                   serez redirigé vers la page de connexion :
                 </p>
@@ -176,13 +176,13 @@ function SitemapPageContent() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                   Pages d'administration
                   <Badge variant="error" className="text-xs">
                     Admin
                   </Badge>
                 </h3>
-                <p className="text-sm text-foreground mb-2">
+                <p className="text-sm text-white mb-2">
                   Ces pages nécessitent à la fois une authentification et des droits administrateur.
                   Seuls les administrateurs peuvent y accéder :
                 </p>
@@ -196,7 +196,7 @@ function SitemapPageContent() {
 
               <div className="pt-4 border-t border-blue-500/30">
                 <p className="text-sm text-gray-400">
-                  <strong className="text-foreground">Indicateurs visuels :</strong> Les pages
+                  <strong className="text-white">Indicateurs visuels :</strong> Les pages
                   protégées sont affichées avec des badges colorés. Les pages non accessibles
                   apparaissent en gris avec la mention "(Connexion requise)". Si vous êtes connecté
                   et avez les permissions nécessaires, vous pouvez cliquer directement sur les

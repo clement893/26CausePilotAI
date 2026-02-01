@@ -82,7 +82,7 @@ export default function SecuritySettings({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-whitetext-foreground flex items-center gap-2">
+                <div className="text-sm font-medium text-white flex items-center gap-2">
                   <Key className="w-4 h-4 text-blue-400" /> Password
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
@@ -97,7 +97,7 @@ export default function SecuritySettings({
             </div>
             <div className="flex items-center justify-between pt-2 border-t border-gray-800">
               <div>
-                <div className="text-sm font-medium text-whitetext-foreground">
+                <div className="text-sm font-medium text-white">
                   Require Strong Password
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
@@ -118,7 +118,7 @@ export default function SecuritySettings({
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <Shield className="w-5 h-5 text-blue-400text-primary-400" />
-                  <span className="text-sm font-medium text-whitetext-foreground">
+                  <span className="text-sm font-medium text-white">
                     Two-Factor Authentication
                   </span>
                   {formData.twoFactorEnabled && <Badge variant="success">Enabled</Badge>}
@@ -153,7 +153,7 @@ export default function SecuritySettings({
         <Card variant="glass" title="Session Management" className="border border-gray-800">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Session Timeout (minutes)
               </label>
               <Input
@@ -167,7 +167,7 @@ export default function SecuritySettings({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Password Expiry (days)
               </label>
               <Input
@@ -187,7 +187,7 @@ export default function SecuritySettings({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-whitetext-foreground">
+                <div className="text-sm font-medium text-white">
                   Login Notifications
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
@@ -201,7 +201,7 @@ export default function SecuritySettings({
             </div>
             <div className="flex items-center justify-between pt-2 border-t border-gray-800">
               <div>
-                <div className="text-sm font-medium text-whitetext-foreground">
+                <div className="text-sm font-medium text-white">
                   Suspicious Activity Alerts
                 </div>
                 <div className="text-xs text-gray-400 mt-1">

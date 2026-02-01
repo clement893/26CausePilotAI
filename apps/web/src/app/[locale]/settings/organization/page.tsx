@@ -498,7 +498,7 @@ export default function OrganizationSettingsPage() {
           )}
 
           <div className="mt-8">
-            <div className="bg-background border border-border rounded-lg p-8 text-center">
+            <div className="bg-[#13131A] border border-gray-800 rounded-lg p-8 text-center">
               <h3 className="text-xl font-semibold mb-2">
                 {t('noOrganization.title') || 'No Organization Found'}
               </h3>

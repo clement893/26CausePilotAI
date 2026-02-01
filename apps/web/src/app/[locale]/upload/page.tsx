@@ -181,8 +181,8 @@ function UploadContent() {
   return (
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Test S3 Upload</h1>
-        <p className="text-foreground">Testez l'upload de fichiers vers AWS S3</p>
+        <h1 className="text-4xl font-bold text-white mb-2">Test S3 Upload</h1>
+        <p className="text-white">Testez l'upload de fichiers vers AWS S3</p>
       </div>
 
       {error && (
@@ -213,7 +213,7 @@ function UploadContent() {
 
             {selectedFiles.length > 0 && (
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-sm font-medium text-white">
                   Fichiers sélectionnés ({selectedFiles.length}):
                 </p>
                 <div className="space-y-2">
@@ -225,7 +225,7 @@ function UploadContent() {
                       <div className="flex items-center gap-3">
                         {getFileIcon(file.type)}
                         <div>
-                          <p className="text-sm font-medium text-foreground">{file.name}</p>
+                          <p className="text-sm font-medium text-white">{file.name}</p>
                           <p className="text-xs text-gray-400">
                             {formatFileSize(file.size)}
                           </p>
@@ -309,7 +309,7 @@ function UploadContent() {
                       <XCircle className="w-5 h-5 text-error-600 text-red-400 flex-shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
+                      <p className="text-sm font-medium text-white truncate">{file.name}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <p className="text-xs text-gray-400">{formatFileSize(file.size)}</p>
                         <span className="text-gray-400">•</span>
@@ -349,7 +349,7 @@ function UploadContent() {
 
         {/* Instructions */}
         <Card title="Instructions">
-          <div className="space-y-4 text-sm text-foreground">
+          <div className="space-y-4 text-sm text-white">
             <div>
               <h3 className="font-semibold mb-2">Types de fichiers acceptés:</h3>
               <ul className="list-disc list-inside space-y-1 ml-2">
@@ -381,15 +381,15 @@ function UploadContent() {
         <Card title="Statut du service">
           <div className="space-y-4">
             <div className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg">
-              <span className="text-sm font-medium text-foreground">Connexion S3</span>
+              <span className="text-sm font-medium text-white">Connexion S3</span>
               <Badge variant="success">Connecté</Badge>
             </div>
             <div className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg">
-              <span className="text-sm font-medium text-foreground">Bucket configuré</span>
+              <span className="text-sm font-medium text-white">Bucket configuré</span>
               <Badge variant="success">Actif</Badge>
             </div>
             <div className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg">
-              <span className="text-sm font-medium text-foreground">Permissions</span>
+              <span className="text-sm font-medium text-white">Permissions</span>
               <Badge variant="success">OK</Badge>
             </div>
           </div>

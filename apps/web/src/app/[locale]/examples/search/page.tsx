@@ -103,7 +103,7 @@ export default function ExampleSearchPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Recherche Avancée</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple Recherche Avancée</h1>
         <p className="text-gray-400">
           Barre de recherche avec autocomplete, filtres avancés et résultats en temps réel
         </p>
@@ -113,7 +113,7 @@ export default function ExampleSearchPage() {
         {/* Search Bar */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Recherche avec Autocomplete</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Recherche avec Autocomplete</h2>
             <SearchBar
               entityType="users"
               placeholder="Rechercher des utilisateurs, projets..."
@@ -128,13 +128,13 @@ export default function ExampleSearchPage() {
         {/* Advanced Filters */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <Filter className="w-5 h-5" />
               Filtres Avancés
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Type</label>
+                <label className="block text-sm font-medium text-white mb-2">Type</label>
                 <select
                   value={filters.type}
                   onChange={(e) => handleFilterChange('type', e.target.value)}
@@ -147,7 +147,7 @@ export default function ExampleSearchPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Plage de dates
                 </label>
                 <Input
@@ -165,7 +165,7 @@ export default function ExampleSearchPage() {
         <Card>
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-foreground">Résultats de Recherche</h2>
+              <h2 className="text-xl font-bold text-white">Résultats de Recherche</h2>
               {isSearching && (
                 <div className="text-sm text-gray-400">Recherche en cours...</div>
               )}
@@ -191,7 +191,7 @@ export default function ExampleSearchPage() {
                   >
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="font-semibold text-foreground">{result.title}</h3>
+                        <h3 className="font-semibold text-white">{result.title}</h3>
                         <p className="text-sm text-gray-400 mt-1">{result.description}</p>
                       </div>
                       <span className="px-2 py-1 text-xs rounded bg-info-100 text-info-800 bg-blue-500/20 text-blue-200">
@@ -209,7 +209,7 @@ export default function ExampleSearchPage() {
       {/* Code Example */}
       <Card className="mt-6">
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Points clés de cet exemple :
           </h3>
           <ul className="space-y-2 text-sm text-gray-400">

@@ -668,7 +668,7 @@ function ContactsContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-gray-800"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle Excel
@@ -692,7 +692,7 @@ function ContactsContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-gray-800"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle ZIP (avec photos)
@@ -732,7 +732,7 @@ function ContactsContent() {
                                 handleDeleteAll();
                                 setShowActionsMenu(false);
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-destructive hover:bg-destructive/10 border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-destructive hover:bg-destructive/10 border-t border-gray-800"
                               disabled={loading || contacts.length === 0}
                             >
                               <Trash2 className="w-3.5 h-3.5" />

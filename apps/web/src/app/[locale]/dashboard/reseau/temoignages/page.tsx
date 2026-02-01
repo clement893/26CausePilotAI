@@ -23,7 +23,7 @@ function TemoignagesContent() {
 
       <Card>
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-foreground">Témoignages</h2>
+          <h2 className="text-2xl font-bold text-white">Témoignages</h2>
         </div>
       </Card>
     </MotionDiv>

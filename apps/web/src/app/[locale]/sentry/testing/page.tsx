@@ -143,7 +143,7 @@ function SentryTestContent() {
   return (
     <Container className="py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Sentry Test</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Sentry Test</h1>
         <p className="text-gray-400">
           Test Sentry error tracking and monitoring integration
         </p>
@@ -317,9 +317,9 @@ function SentryTestContent() {
       {/* Instructions */}
       <Card>
         <h2 className="text-xl font-semibold mb-4">How to Test</h2>
-        <div className="space-y-4 text-sm text-foreground">
+        <div className="space-y-4 text-sm text-white">
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">1. Check Configuration</h3>
+            <h3 className="font-semibold mb-1 text-white">1. Check Configuration</h3>
             <p>Verify that Sentry is configured in environment variables:</p>
             <ul className="list-disc list-inside ml-4 mt-1">
               <li>NEXT_PUBLIC_SENTRY_DSN (required)</li>
@@ -328,28 +328,28 @@ function SentryTestContent() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">2. Test Exception Capture</h3>
+            <h3 className="font-semibold mb-1 text-white">2. Test Exception Capture</h3>
             <p>
               Click "Capture Test Exception" to send a test error to Sentry. Check your Sentry
               dashboard to see the error appear.
             </p>
           </div>
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">3. Test Message Capture</h3>
+            <h3 className="font-semibold mb-1 text-white">3. Test Message Capture</h3>
             <p>
               Use the message buttons to send different severity levels (info, warning, error) to
               Sentry.
             </p>
           </div>
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">4. User Context</h3>
+            <h3 className="font-semibold mb-1 text-white">4. User Context</h3>
             <p>
               Set user context to associate errors with specific users. This helps track which users
               are experiencing issues.
             </p>
           </div>
           <div>
-            <h3 className="font-semibold mb-1 text-foreground">5. Error Boundary</h3>
+            <h3 className="font-semibold mb-1 text-white">5. Error Boundary</h3>
             <p>
               The "Throw Unhandled Error" button tests the Error Boundary component, which catches
               React errors and reports them to Sentry.

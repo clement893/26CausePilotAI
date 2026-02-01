@@ -28,7 +28,7 @@ function ReseauContent() {
                   <UserCircle className="w-8 h-8 text-blue-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-foreground">Contacts</h3>
+                  <h3 className="text-lg font-semibold text-white">Contacts</h3>
                   <p className="text-sm text-gray-400">Gérez vos contacts</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-gray-400" />
@@ -45,7 +45,7 @@ function ReseauContent() {
                   <Building2 className="w-8 h-8 text-blue-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-foreground">Entreprises</h3>
+                  <h3 className="text-lg font-semibold text-white">Entreprises</h3>
                   <p className="text-sm text-gray-400">Gérez vos entreprises</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-gray-400" />
@@ -62,7 +62,7 @@ function ReseauContent() {
                   <MessageSquare className="w-8 h-8 text-blue-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-foreground">Témoignages</h3>
+                  <h3 className="text-lg font-semibold text-white">Témoignages</h3>
                   <p className="text-sm text-gray-400">Gérez vos témoignages</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-gray-400" />
@@ -74,7 +74,7 @@ function ReseauContent() {
 
       <Card>
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Module Réseau</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Module Réseau</h2>
           <p className="text-gray-400">
             Bienvenue dans le Module Réseau. Utilisez le menu latéral pour accéder aux différentes
             sections.

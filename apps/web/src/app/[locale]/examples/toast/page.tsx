@@ -70,7 +70,7 @@ export default function ExampleToastPage() {
   return (
     <Container className="py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Notifications / Toast</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Exemple Notifications / Toast</h1>
         <p className="text-gray-400">
           Système de notifications toast avec différents types et durées
         </p>
@@ -80,7 +80,7 @@ export default function ExampleToastPage() {
         {/* Toast Types */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Types de Notifications</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Types de Notifications</h2>
             <div className="space-y-3">
               <Button onClick={handleSuccess} variant="outline" className="w-full justify-start">
                 <CheckCircle className="w-4 h-4 mr-2 text-success-600" />
@@ -105,7 +105,7 @@ export default function ExampleToastPage() {
         {/* Toast Options */}
         <Card>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Options Avancées</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Options Avancées</h2>
             <div className="space-y-3">
               <Button onClick={handlePersistent} variant="outline" className="w-full justify-start">
                 <Bell className="w-4 h-4 mr-2" />
@@ -126,7 +126,7 @@ export default function ExampleToastPage() {
         {/* Toast History */}
         <Card className="md:col-span-2">
           <div className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Historique des Notifications</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Historique des Notifications</h2>
             {toastHistory.length === 0 ? (
               <p className="text-gray-400 text-center py-8">Aucune notification envoyée</p>
             ) : (
@@ -147,7 +147,7 @@ export default function ExampleToastPage() {
                       {(toast.type === 'info' ||
                         toast.type === 'persistent' ||
                         toast.type === 'custom') && <Info className="w-4 h-4 text-info-600" />}
-                      <span className="text-sm text-foreground">{toast.message}</span>
+                      <span className="text-sm text-white">{toast.message}</span>
                     </div>
                     <span className="text-xs text-gray-400">{toast.time}</span>
                   </div>
@@ -161,7 +161,7 @@ export default function ExampleToastPage() {
       {/* Code Example */}
       <Card className="mt-6">
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Points clés de cet exemple :
           </h3>
           <ul className="space-y-2 text-sm text-gray-400">

@@ -23,7 +23,7 @@ export function ThemeTabs({ activeTab, onTabChange }: ThemeTabsProps) {
   ];
 
   return (
-    <div className="border-b border-border">
+    <div className="border-b border-gray-800">
       <nav className="flex space-x-1" aria-label="Tabs">
         {tabs.map((tab) => (
           <button

@@ -47,12 +47,12 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
       {/* Colors Section */}
       <Card>
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Colors</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">Colors</h3>
           <Grid columns={{ mobile: 1, tablet: 2 }} gap="normal">
             <div>
               <label
                 htmlFor="primary_color"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Primary Color
               </label>
@@ -76,7 +76,7 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
             <div>
               <label
                 htmlFor="secondary_color"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Secondary Color
               </label>
@@ -100,7 +100,7 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
             <div>
               <label
                 htmlFor="success_color"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Success Color
               </label>
@@ -124,7 +124,7 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
             <div>
               <label
                 htmlFor="danger_color"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Danger Color
               </label>
@@ -148,7 +148,7 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
             <div>
               <label
                 htmlFor="warning_color"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Warning Color
               </label>
@@ -172,7 +172,7 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
             <div>
               <label
                 htmlFor="info_color"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Info Color
               </label>
@@ -199,12 +199,12 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
       {/* Typography Section */}
       <Card>
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Typography</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">Typography</h3>
           <Stack gapValue="1rem">
             <div>
               <label
                 htmlFor="font_family"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Font Family
               </label>
@@ -221,7 +221,7 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
             <div>
               <label
                 htmlFor="border_radius"
-                className="block text-sm font-medium text-foreground mb-1"
+                className="block text-sm font-medium text-white mb-1"
               >
                 Border Radius
               </label>
@@ -242,11 +242,11 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
       {localConfig.layout && (
         <Card>
           <div className="p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Layout</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Layout</h3>
             <Stack gapValue="1rem">
               {localConfig.layout.spacing && (
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Spacing Unit
                   </label>
                   <Input

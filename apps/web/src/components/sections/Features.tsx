@@ -52,7 +52,7 @@ export default function Features() {
         {' '}
         <div className="text-center mb-16">
           {' '}
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {' '}
             Fonctionnalités{' '}
           </h2>{' '}
@@ -67,7 +67,7 @@ export default function Features() {
             <Card key={index} hover className="text-center">
               {' '}
               <div className="text-5xl mb-4">{feature.icon}</div>{' '}
-              <h3 className="text-xl font-bold text-foreground mb-3"> {feature.title} </h3>{' '}
+              <h3 className="text-xl font-bold text-white mb-3"> {feature.title} </h3>{' '}
               <p className="text-gray-400 leading-relaxed"> {feature.description} </p>{' '}
             </Card>
           ))}{' '}

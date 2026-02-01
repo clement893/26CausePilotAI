@@ -58,7 +58,7 @@ export default function CampaignsPage() {
   if (orgLoading || isLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="mb-8 h-16 animate-pulse rounded-lg bg-muted/60" />
+        <div className="mb-8 h-16 animate-pulse rounded-lg bg-[#1C1C26]/60" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <LoadingSkeleton variant="card" count={6} />
         </div>
@@ -103,7 +103,7 @@ export default function CampaignsPage() {
           <div className="mx-auto mb-6 w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
             <Target className="w-10 h-10 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold text-foreground mb-2">Aucune campagne créée</h3>
+          <h3 className="text-xl font-semibold text-white mb-2">Aucune campagne créée</h3>
           <p className="text-gray-400 mb-8 max-w-md mx-auto">
             Lancez votre première campagne de collecte pour mobiliser vos donateurs.
           </p>

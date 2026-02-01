@@ -140,7 +140,7 @@ function BecomeSuperAdminContent() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400 font-medium">Email:</span>
-                  <span className="text-foreground">{user.email}</span>
+                  <span className="text-white">{user.email}</span>
                 </div>
                 {isSuperAdmin !== null && (
                   <div className="flex items-center justify-between">
@@ -190,7 +190,7 @@ function BecomeSuperAdminContent() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     <Mail className="w-4 h-4 inline mr-1" />
                     Email de l'utilisateur
                   </label>
@@ -203,7 +203,7 @@ function BecomeSuperAdminContent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     <Key className="w-4 h-4 inline mr-1" />
                     Clé Bootstrap
                   </label>
@@ -253,7 +253,7 @@ function BecomeSuperAdminContent() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     <Mail className="w-4 h-4 inline mr-1" />
                     Email de l'utilisateur
                   </label>
@@ -338,7 +338,7 @@ function BecomeSuperAdminContent() {
         {/* Information */}
         <Section title="Informations">
           <Card>
-            <div className="space-y-4 text-foreground">
+            <div className="space-y-4 text-white">
               <div>
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
                   <Shield className="w-5 h-5" />À propos des Superadmins:
@@ -354,7 +354,7 @@ function BecomeSuperAdminContent() {
                   </li>
                   <li>
                     Assurez-vous que la variable{' '}
-                    <code className="bg-muted px-1 rounded">BOOTSTRAP_SUPERADMIN_KEY</code> est
+                    <code className="bg-[#1C1C26] px-1 rounded">BOOTSTRAP_SUPERADMIN_KEY</code> est
                     définie dans votre backend
                   </li>
                 </ul>

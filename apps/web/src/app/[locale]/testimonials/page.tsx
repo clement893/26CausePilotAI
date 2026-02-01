@@ -80,7 +80,7 @@ export default function TestimonialsPage() {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#13131A]">
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -130,14 +130,14 @@ export default function TestimonialsPage() {
                 {/* Navigation Arrows */}
                 <button
                   onClick={prevTestimonial}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-gray-800 hover:border-foreground transition-colors"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-[#13131A] border border-gray-800 hover:border-foreground transition-colors"
                   aria-label="Témoignage précédent"
                 >
                   <ChevronLeft className="w-6 h-6 text-white" aria-hidden="true" />
                 </button>
                 <button
                   onClick={nextTestimonial}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-gray-800 hover:border-foreground transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-[#13131A] border border-gray-800 hover:border-foreground transition-colors"
                   aria-label="Témoignage suivant"
                 >
                   <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" />

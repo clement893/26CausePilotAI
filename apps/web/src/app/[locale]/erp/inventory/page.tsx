@@ -23,7 +23,7 @@ function ERPInventoryContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Inventory Management</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Inventory Management</h1>
         <p className="text-gray-400">Manage products and stock levels</p>
       </div>
 

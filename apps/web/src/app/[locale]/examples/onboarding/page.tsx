@@ -83,7 +83,7 @@ export default function ExampleOnboardingPage() {
             <div className="mb-8">
               {currentStep === 1 && (
                 <div>
-                  <h2 className="text-3xl font-bold text-foreground mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-4">
                     Bienvenue sur la plateforme !
                   </h2>
                   <p className="text-gray-400 mb-6">
@@ -117,7 +117,7 @@ export default function ExampleOnboardingPage() {
 
               {currentStep === 2 && (
                 <div>
-                  <h2 className="text-3xl font-bold text-foreground mb-4">Votre Organisation</h2>
+                  <h2 className="text-3xl font-bold text-white mb-4">Votre Organisation</h2>
                   <p className="text-gray-400 mb-6">Parlez-nous de votre organisation.</p>
                   <div>
                     <Input
@@ -134,7 +134,7 @@ export default function ExampleOnboardingPage() {
 
               {currentStep === 3 && (
                 <div>
-                  <h2 className="text-3xl font-bold text-foreground mb-4">Votre Rôle</h2>
+                  <h2 className="text-3xl font-bold text-white mb-4">Votre Rôle</h2>
                   <p className="text-gray-400 mb-6">
                     Comment allez-vous utiliser la plateforme ?
                   </p>
@@ -176,7 +176,7 @@ export default function ExampleOnboardingPage() {
                       />
                     </svg>
                   </div>
-                  <h2 className="text-3xl font-bold text-foreground mb-4">Félicitations !</h2>
+                  <h2 className="text-3xl font-bold text-white mb-4">Félicitations !</h2>
                   <p className="text-gray-400 mb-6">
                     Votre profil est maintenant configuré. Vous êtes prêt à commencer à utiliser la
                     plateforme.

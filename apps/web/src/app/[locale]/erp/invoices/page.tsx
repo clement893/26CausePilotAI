@@ -52,7 +52,7 @@ function ERPInvoicesContent() {
       sortable: true,
       render: (value: unknown, row: ERPInvoiceListResponse['items'][0]) => (
         <div>
-          <p className="font-medium text-foreground">
+          <p className="font-medium text-white">
             {(value ? String(value) : '') || row.client_email || 'N/A'}
           </p>
           {row.client_email && value ? (
@@ -78,7 +78,7 @@ function ERPInvoicesContent() {
               ? 'bg-success-100 text-success-800 bg-green-500/20 text-green-300'
               : value === 'open'
                 ? 'bg-warning-100 text-warning-800 bg-yellow-500/20 text-yellow-300'
-                : 'bg-[#1C1C26] text-foreground'
+                : 'bg-[#1C1C26] text-white'
           }`}
         >
           {value as string}
@@ -113,14 +113,14 @@ function ERPInvoicesContent() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">All Invoices</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">All Invoices</h1>
           <p className="text-gray-400">View and manage all invoices in the system</p>
         </div>
         <div className="flex gap-2">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-800 rounded-lg bg-background"
+            className="px-3 py-2 border border-gray-800 rounded-lg bg-[#13131A]"
           >
             <option value="">All Status</option>
             <option value="paid">Paid</option>

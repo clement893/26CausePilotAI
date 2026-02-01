@@ -545,7 +545,7 @@ function CompaniesContent() {
                           className="fixed inset-0 z-10"
                           onClick={() => setShowActionsMenu(false)}
                         />
-                        <div className="absolute right-0 mt-1 w-48 bg-background border border-gray-800 rounded-md shadow-lg z-20">
+                        <div className="absolute right-0 mt-1 w-48 bg-[#13131A] border border-gray-800 rounded-md shadow-lg z-20">
                           <div className="py-1">
                             <button
                               onClick={() => {
@@ -571,7 +571,7 @@ function CompaniesContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-gray-800"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle Excel
@@ -595,7 +595,7 @@ function CompaniesContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-gray-800"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle ZIP (avec logos)

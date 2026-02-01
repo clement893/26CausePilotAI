@@ -46,7 +46,7 @@ function ERPClientsContent() {
       sortable: true,
       render: (value, row) => (
         <div>
-          <p className="font-medium text-foreground">{value as string}</p>
+          <p className="font-medium text-white">{value as string}</p>
           <p className="text-xs text-gray-400">{row.email}</p>
         </div>
       ),
@@ -107,7 +107,7 @@ function ERPClientsContent() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">All Clients</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">All Clients</h1>
           <p className="text-gray-400">View and manage all clients in the system</p>
         </div>
         <div className="flex gap-2">

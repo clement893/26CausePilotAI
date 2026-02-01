@@ -80,7 +80,7 @@ export default function Hero() {
         </Badge>
 
         <h1
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.1] px-2 animate-fade-in"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4 sm:mb-6 leading-[1.1] px-2 animate-fade-in"
           style={{ animationDelay: '0.1s' }}
         >
           <span className="block mb-2">CAUSE PILOT</span>

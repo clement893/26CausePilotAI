@@ -109,7 +109,7 @@ export default function ExamplesPage() {
   return (
     <Container className="py-12">
       <div className="mb-12 text-center">
-        <h1 className="text-5xl font-bold text-foreground mb-4">Exemples</h1>
+        <h1 className="text-5xl font-bold text-white mb-4">Exemples</h1>
         <p className="text-xl text-gray-400">
           Découvrez des exemples de pages et composants pour vous inspirer
         </p>
@@ -121,7 +121,7 @@ export default function ExamplesPage() {
             <Card className="h-full hover:shadow-xl transition-shadow cursor-pointer">
               <div className="p-8 text-center">
                 <div className="text-6xl mb-4">{example.icon}</div>
-                <h2 className="text-2xl font-bold text-foreground mb-3">{example.title}</h2>
+                <h2 className="text-2xl font-bold text-white mb-3">{example.title}</h2>
                 <p className="text-gray-400 mb-6">{example.description}</p>
                 <Button variant="outline" className="w-full">
                   Voir l'exemple
@@ -135,7 +135,7 @@ export default function ExamplesPage() {
       <div className="mt-16 max-w-3xl mx-auto">
         <Card>
           <div className="p-8 text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Besoin d'aide ?</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Besoin d'aide ?</h2>
             <p className="text-gray-400 mb-6">
               Ces exemples sont conçus pour vous aider à comprendre comment utiliser les composants
               et créer vos propres pages. N'hésitez pas à explorer le code source pour voir comment

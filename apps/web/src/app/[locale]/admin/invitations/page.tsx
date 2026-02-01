@@ -207,7 +207,7 @@ export default function InvitationsPage() {
       label: 'Email',
       sortable: true,
       render: (_value: unknown, invitation: Invitation) => (
-        <div className="font-medium text-foreground">{invitation.email}</div>
+        <div className="font-medium text-white">{invitation.email}</div>
       ),
     },
     {
@@ -289,7 +289,7 @@ export default function InvitationsPage() {
         <Container>
           <div className="mb-8 flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">Gestion des Invitations</h1>
+              <h1 className="text-4xl font-bold text-white mb-2">Gestion des Invitations</h1>
               <p className="text-gray-400">
                 Gérer les invitations envoyées aux utilisateurs
               </p>
@@ -302,7 +302,7 @@ export default function InvitationsPage() {
             {Object.entries(statusCounts).map(([status, count]) => (
               <Card key={status}>
                 <div className="p-4 text-center">
-                  <div className="text-2xl font-bold text-foreground">{count}</div>
+                  <div className="text-2xl font-bold text-white">{count}</div>
                   <div className="text-sm text-gray-400 capitalize">
                     {status === 'all' ? 'Total' : getStatusLabel(status)}
                   </div>

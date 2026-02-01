@@ -338,7 +338,7 @@ export default function DonateursPage() {
                     info(`Filtre appliqué: ${newFilter ? 'Actifs uniquement' : 'Inactifs uniquement'}`);
                   }
                 }}
-                className="px-4 py-2 border-2 rounded-lg bg-background text-foreground focus:border-primary focus:outline-none transition-colors"
+                className="px-4 py-2 border-2 rounded-lg bg-[#13131A] text-white focus:border-primary focus:outline-none transition-colors"
               >
                 <option value="all">Tous les statuts</option>
                 <option value="true">Actifs uniquement</option>
@@ -381,7 +381,7 @@ export default function DonateursPage() {
           <div className="mx-auto mb-6 w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
             <User className="w-10 h-10 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold text-foreground mb-2">Aucun donateur trouvé</h3>
+          <h3 className="text-xl font-semibold text-white mb-2">Aucun donateur trouvé</h3>
           <p className="text-gray-400 mb-8 max-w-md mx-auto">
             {searchTerm ? 'Essayez avec d\'autres termes de recherche.' : 'Commencez par ajouter votre premier donateur.'}
           </p>
@@ -481,11 +481,11 @@ export default function DonateursPage() {
             <Card className="border-2 border-gray-800/50">
               <div className="p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-sm text-gray-400">
-                  Affichage de <span className="font-semibold text-foreground">
+                  Affichage de <span className="font-semibold text-white">
                     {(pagination.page - 1) * pagination.pageSize + 1}
-                  </span> à <span className="font-semibold text-foreground">
+                  </span> à <span className="font-semibold text-white">
                     {Math.min(pagination.page * pagination.pageSize, pagination.total)}
-                  </span> sur <span className="font-semibold text-foreground">{pagination.total}</span> donateurs
+                  </span> sur <span className="font-semibold text-white">{pagination.total}</span> donateurs
                 </p>
                 <div className="flex gap-2">
                   <Button

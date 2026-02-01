@@ -171,7 +171,7 @@ function LoginContent() {
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 from-[#1C1C26] to-[#1C1C26]">
       <Container className="w-full max-w-md">
         <Card>
-          <h1 className="text-3xl font-bold text-center text-foreground mb-8">Login</h1>
+          <h1 className="text-3xl font-bold text-center text-white mb-8">Login</h1>
 
           {error && (
             <Alert variant="error" title="Erreur" className="mb-4">

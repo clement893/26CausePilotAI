@@ -158,7 +158,7 @@ export default function DonorDetailPage() {
             <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
               <AlertCircle className="w-8 h-8 text-destructive" />
             </div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               {error ? 'Erreur de chargement' : 'Donateur non trouvé'}
             </h3>
             <p className="text-destructive mb-6">{error || 'Le donateur demandé n\'existe pas ou a été supprimé.'}</p>
@@ -188,7 +188,7 @@ export default function DonorDetailPage() {
         </Tooltip>
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-3xl font-bold text-white mb-2">
               {donor.first_name || donor.last_name
                 ? `${donor.first_name || ''} ${donor.last_name || ''}`.trim()
                 : donor.email}
