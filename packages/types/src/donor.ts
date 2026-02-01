@@ -310,6 +310,31 @@ export interface DonorSegmentList {
   total_pages: number;
 }
 
+// ============= Segment Suggestion Types =============
+
+export interface SegmentSuggestion {
+  id: string;
+  organization_id: string;
+  name: string;
+  description: string;
+  criteria: Record<string, any>;
+  donor_count: number;
+  cluster_id?: string;
+  confidence?: number;
+  is_accepted: boolean;
+  accepted_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SegmentSuggestionList {
+  items: SegmentSuggestion[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
 // ============= Donor Communication Types =============
 
 export interface DonorCommunication {

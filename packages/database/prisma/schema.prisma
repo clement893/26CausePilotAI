@@ -100,6 +100,7 @@ model Organization {
   emailTemplates    EmailTemplate[]
   audiences         Audience[]
   workflows         Workflow[]
+  segmentSuggestions SegmentSuggestion[]
 
   // Timestamps
   createdAt   DateTime @default(now())
@@ -732,4 +733,32 @@ model Workflow {
   @@index([organizationId])
   @@index([status])
   @@map("workflows")
+}
+
+// ============= Étape 5.1.2 - Segmentation Intelligente =============
+model SegmentSuggestion {
+  id          String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  name        String   // Nom du segment suggéré (ex: "Donateurs à haut potentiel")
+  description String   @db.Text // Description du segment
+  criteria    Json     // Critères de segmentation (ex: {min_total_donated: 1000, min_score: 70})
+  donorCount  Int      @default(0) // Nombre de donateurs correspondant aux critères
+  
+  // Métadonnées du clustering
+  clusterId   String?  // ID du cluster (pour regrouper les suggestions similaires)
+  confidence  Float?   // Score de confiance (0-1) de la suggestion
+  
+  // Statut
+  isAccepted  Boolean  @default(false) // Si l'utilisateur a accepté et créé le segment
+  acceptedAt  DateTime? // Date d'acceptation
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([isAccepted])
+  @@index([clusterId])
+  @@map("segment_suggestions")
 }
