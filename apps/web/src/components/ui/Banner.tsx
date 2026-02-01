@@ -19,27 +19,27 @@ const variantStyles: Record<
   { bg: string; border: string; text: string; icon: ReactNode }
 > = {
   info: {
-    bg: 'bg-[#13131A] dark:bg-info-900',
-    border: 'border-l-4 border-l-blue-500 border-gray-800 dark:border-info-800',
-    text: 'text-white dark:text-info-200',
+    bg: 'bg-[#13131A] bg-blue-500/20',
+    border: 'border-l-4 border-l-blue-500 border-gray-800 border-blue-500/30',
+    text: 'text-white text-blue-200',
     icon: <Info className="w-5 h-5" />,
   },
   success: {
-    bg: 'bg-[#13131A] dark:bg-success-900',
-    border: 'border-l-4 border-l-green-500 border-gray-800 dark:border-success-800',
-    text: 'text-white dark:text-success-200',
+    bg: 'bg-[#13131A] bg-green-500/20',
+    border: 'border-l-4 border-l-green-500 border-gray-800 border-green-500/30',
+    text: 'text-white text-green-200',
     icon: <CheckCircle className="w-5 h-5" />,
   },
   warning: {
-    bg: 'bg-[#13131A] dark:bg-warning-900',
-    border: 'border-l-4 border-l-yellow-500 border-gray-800 dark:border-warning-800',
-    text: 'text-white dark:text-warning-200',
+    bg: 'bg-[#13131A] bg-yellow-500/20',
+    border: 'border-l-4 border-l-yellow-500 border-gray-800 border-yellow-500/30',
+    text: 'text-white text-yellow-200',
     icon: <AlertTriangle className="w-5 h-5" />,
   },
   error: {
-    bg: 'bg-[#13131A] dark:bg-error-900',
-    border: 'border-l-4 border-l-red-500 border-gray-800 dark:border-error-800',
-    text: 'text-white dark:text-error-200',
+    bg: 'bg-[#13131A] bg-red-500/20',
+    border: 'border-l-4 border-l-red-500 border-gray-800 border-red-500/30',
+    text: 'text-white text-red-200',
     icon: <AlertCircle className="w-5 h-5" />,
   },
 };
@@ -86,7 +86,7 @@ export default function Banner({
             variant="ghost"
             size="sm"
             onClick={handleClose}
-            className="flex-shrink-0 p-1 text-gray-400 hover:text-white dark:hover:text-foreground"
+            className="flex-shrink-0 p-1 text-gray-400 hover:text-white hover:text-white"
             aria-label="Fermer"
           >
             <X className="w-4 h-4" />

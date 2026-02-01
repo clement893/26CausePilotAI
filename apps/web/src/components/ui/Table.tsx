@@ -10,7 +10,7 @@ interface TableProps {
 export function Table({ children, className, style }: TableProps) {
   return (
     <div className="overflow-x-auto -mx-1 px-1 custom-scrollbar" style={style}>
-      <table className={clsx('min-w-full divide-y divide-gray-800 dark:divide-border', className)}>{children}</table>
+      <table className={clsx('min-w-full divide-y divide-gray-800 divide-gray-800', className)}>{children}</table>
     </div>
   );
 }
@@ -23,7 +23,7 @@ interface TableHeadProps {
 
 export function TableHead({ children, className, style }: TableHeadProps) {
   return (
-    <thead className={clsx('bg-[#1C1C26] dark:bg-muted sticky top-0 z-10', className)} style={style}>
+    <thead className={clsx('bg-[#1C1C26] bg-[#1C1C26] sticky top-0 z-10', className)} style={style}>
       {children}
     </thead>
   );
@@ -47,7 +47,7 @@ export function TableBody({
   return (
     <tbody
       className={clsx(
-        'bg-[#13131A] dark:bg-background divide-y divide-gray-800 dark:divide-border',
+        'bg-[#13131A] bg-[#13131A] divide-y divide-gray-800 divide-gray-800',
         striped && '[&>tr:nth-child(even)]:bg-[#1C1C26] dark:[&>tr:nth-child(even)]:bg-muted',
         hover && '[&>tr:hover]:bg-[#1C1C26] dark:[&>tr:hover]:bg-muted transition-colors',
         className
@@ -94,8 +94,8 @@ export function TableHeader({
   return (
     <th
       className={clsx(
-        'px-6 py-4 text-left text-xs font-semibold text-gray-300 dark:text-muted-foreground uppercase tracking-wider',
-        sortable && 'cursor-pointer select-none hover:text-white dark:hover:text-foreground transition-colors',
+        'px-6 py-4 text-left text-xs font-semibold text-gray-300 text-gray-400 uppercase tracking-wider',
+        sortable && 'cursor-pointer select-none hover:text-white hover:text-white transition-colors',
         className
       )}
       onClick={sortable ? onSort : undefined}
@@ -109,8 +109,8 @@ export function TableHeader({
               className={clsx(
                 'w-3 h-3',
                 sortDirection === 'asc'
-                  ? 'text-blue-500 dark:text-primary-400'
-                  : 'text-gray-500 dark:text-muted-foreground'
+                  ? 'text-blue-500 text-blue-400'
+                  : 'text-gray-500 text-gray-400'
               )}
               fill="currentColor"
               viewBox="0 0 20 20"

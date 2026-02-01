@@ -214,7 +214,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
         {label && (
-          <label htmlFor={fileId} className="block text-sm font-medium text-gray-300 dark:text-foreground mb-1">
+          <label htmlFor={fileId} className="block text-sm font-medium text-gray-300 text-white mb-1">
             {label}
           </label>
         )}
@@ -225,24 +225,24 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             htmlFor={fileId}
             className={clsx(
               'flex flex-col items-center justify-center w-full h-32',
-              'border-2 border-gray-700 dark:border-border border-dashed rounded-lg',
-              'cursor-pointer bg-[#1C1C26] dark:bg-muted',
-              'hover:bg-[#252532] dark:hover:bg-muted',
+              'border-2 border-gray-700 border-gray-800 border-dashed rounded-lg',
+              'cursor-pointer bg-[#1C1C26] bg-[#1C1C26]',
+              'hover:bg-[#252532] hover:bg-[#1C1C26]',
               'transition-colors',
-              error && 'border-error-500 dark:border-error-400',
+              error && 'border-error-500 border-red-500/30',
               className
             )}
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg className="w-10 h-10 mb-3 text-gray-400 dark:text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-10 h-10 mb-3 text-gray-400 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p className="mb-2 text-sm text-gray-300 dark:text-foreground">
+              <p className="mb-2 text-sm text-gray-300 text-white">
                 <span className="font-semibold">Cliquez pour télécharger</span> ou glissez-déposez
               </p>
-              <p className="text-xs text-gray-400 dark:text-muted-foreground">{accept ? `Types acceptés: ${accept}` : 'Tous les types de fichiers'}</p>
+              <p className="text-xs text-gray-400 text-gray-400">{accept ? `Types acceptés: ${accept}` : 'Tous les types de fichiers'}</p>
               {fileName && (
-                <p className="mt-2 text-sm text-white dark:text-foreground font-medium">
+                <p className="mt-2 text-sm text-white text-white font-medium">
                   {fileName}
                 </p>
               )}
@@ -251,12 +251,12 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
         </div>
 
         {error && (
-          <p className="mt-1 text-sm text-error-600 dark:text-error-400" role="alert">
+          <p className="mt-1 text-sm text-error-600 text-red-400" role="alert">
             {error}
           </p>
         )}
 
-        {helperText && !error && <p className="mt-1 text-sm text-gray-400 dark:text-muted-foreground">{helperText}</p>}
+        {helperText && !error && <p className="mt-1 text-sm text-gray-400 text-gray-400">{helperText}</p>}
       </div>
     );
   }

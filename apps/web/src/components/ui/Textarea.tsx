@@ -36,10 +36,10 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
         {label && (
-          <label htmlFor={textareaId} className="block text-sm font-medium text-gray-300 dark:text-foreground mb-2">
+          <label htmlFor={textareaId} className="block text-sm font-medium text-gray-300 text-white mb-2">
             {label}
             {props.required && (
-              <span className="text-error-500 dark:text-error-400 ml-1" aria-label="required">
+              <span className="text-error-500 text-red-400 ml-1" aria-label="required">
                 *
               </span>
             )}
@@ -48,7 +48,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         <div className="relative form-input-glow">
           {leftIcon && (
-            <div className="absolute left-3 top-3 text-gray-400 dark:text-muted-foreground">{leftIcon}</div>
+            <div className="absolute left-3 top-3 text-gray-400 text-gray-400">{leftIcon}</div>
           )}
 
           <textarea
@@ -56,15 +56,15 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             id={textareaId}
             className={clsx(
               'block w-full border rounded-lg transition-all duration-200',
-              'bg-[#1C1C26] dark:bg-[var(--color-input)]',
-              'text-white dark:text-[var(--color-foreground)]',
-              'placeholder:text-gray-500 dark:placeholder:text-[var(--color-muted-foreground)]',
+              'bg-[#1C1C26] bg-[#1C1C26]',
+              'text-white text-white',
+              'placeholder:text-gray-500 placeholder-gray-400',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'resize-y',
               error
-                ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
-                : 'border-gray-700 dark:border-[var(--color-border)] focus:ring-primary/20',
+                ? 'border-error-500 border-red-500/30 focus:ring-error-500/20'
+                : 'border-gray-700 border-gray-800 focus:ring-primary/20',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className
@@ -80,12 +80,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           />
 
           {rightIcon && (
-            <div className="absolute right-3 top-3 text-gray-400 dark:text-muted-foreground">{rightIcon}</div>
+            <div className="absolute right-3 top-3 text-gray-400 text-gray-400">{rightIcon}</div>
           )}
         </div>
 
         {error && (
-          <Text variant="small" className="mt-2 text-error-600 dark:text-error-400" role="alert">
+          <Text variant="small" className="mt-2 text-error-600 text-red-400" role="alert">
             {error}
           </Text>
         )}
