@@ -223,7 +223,7 @@ function UploadContent() {
                         {getFileIcon(file.type)}
                         <div>
                           <p className="text-sm font-medium text-foreground">{file.name}</p>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
+                          <p className="text-xs text-gray-600 text-gray-400">
                             {formatFileSize(file.size)}
                           </p>
                         </div>
@@ -237,7 +237,7 @@ function UploadContent() {
 
             <div className="flex flex-col gap-3">
               {selectedFiles.length === 0 && (
-                <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                <p className="text-sm text-gray-500 text-gray-400 italic">
                   Sélectionnez des fichiers ci-dessus pour activer le bouton d'upload
                 </p>
               )}
@@ -297,24 +297,24 @@ function UploadContent() {
               {uploadedFiles.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                  className="flex items-center justify-between p-4 bg-gray-100 bg-[#1C1C26] rounded-lg border border-gray-200 border-gray-800"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     {file.status === 'success' ? (
-                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-green-600 text-green-400 flex-shrink-0" />
                     ) : (
-                      <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <XCircle className="w-5 h-5 text-red-600 text-red-400 flex-shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                      <p className="text-sm font-medium text-gray-900 text-gray-300 truncate">
                         {file.name}
                       </p>
                       <div className="flex items-center gap-2 mt-1">
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                        <p className="text-xs text-gray-600 text-gray-400">
                           {formatFileSize(file.size)}
                         </p>
-                        <span className="text-gray-400 dark:text-gray-500">•</span>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                        <span className="text-gray-400 text-gray-500">•</span>
+                        <p className="text-xs text-gray-600 text-gray-400">
                           {new Date(file.uploadedAt).toLocaleString('fr-FR')}
                         </p>
                       </div>
@@ -337,7 +337,7 @@ function UploadContent() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDelete(file.id)}
-                      className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500"
+                      className="text-red-600 hover:text-red-700 text-red-400 hover:text-red-500"
                     >
                       Supprimer
                     </Button>
@@ -350,7 +350,7 @@ function UploadContent() {
 
         {/* Instructions */}
         <Card title="Instructions">
-          <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="space-y-4 text-sm text-gray-700 text-gray-300">
             <div>
               <h3 className="font-semibold mb-2">Types de fichiers acceptés:</h3>
               <ul className="list-disc list-inside space-y-1 ml-2">
@@ -369,7 +369,7 @@ function UploadContent() {
             </div>
             <div>
               <h3 className="font-semibold mb-2">Note:</h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p className="text-xs text-gray-600 text-gray-400">
                 Cette page simule l'upload vers S3. Dans un environnement de production, vous devrez
                 configurer les credentials AWS et utiliser l'API backend pour générer les URLs de
                 pré-signature S3.
@@ -381,20 +381,20 @@ function UploadContent() {
         {/* Status */}
         <Card title="Statut du service">
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+            <div className="flex items-center justify-between p-3 bg-gray-100 bg-[#1C1C26] rounded-lg">
+              <span className="text-sm font-medium text-gray-900 text-gray-300">
                 Connexion S3
               </span>
               <Badge variant="success">Connecté</Badge>
             </div>
-            <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+            <div className="flex items-center justify-between p-3 bg-gray-100 bg-[#1C1C26] rounded-lg">
+              <span className="text-sm font-medium text-gray-900 text-gray-300">
                 Bucket configuré
               </span>
               <Badge variant="success">Actif</Badge>
             </div>
-            <div className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+            <div className="flex items-center justify-between p-3 bg-gray-100 bg-[#1C1C26] rounded-lg">
+              <span className="text-sm font-medium text-gray-900 text-gray-300">
                 Permissions
               </span>
               <Badge variant="success">OK</Badge>
