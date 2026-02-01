@@ -130,11 +130,11 @@ export default function TestSentryPage() {
           </div>
         </Card>
 
-        <Card className="p-6 bg-info-50 dark:bg-info-900/20 border-info-200 dark:border-info-800">
-          <h3 className="text-lg font-semibold text-info-900 dark:text-info-100 mb-2">
+        <Card className="p-6 bg-blue-500/20 border-blue-500/30">
+          <h3 className="text-lg font-semibold text-blue-300 mb-2">
             📊 Check Your Results
           </h3>
-          <ul className="text-sm text-info-700 dark:text-info-300 space-y-1">
+          <ul className="text-sm text-blue-200 space-y-1">
             <li>
               • Go to your{' '}
               <a
@@ -159,13 +159,13 @@ export default function TestSentryPage() {
           <div className="space-y-2">
             <a
               href="/monitoring/errors"
-              className="block text-info-600 dark:text-info-400 hover:underline"
+              className="block text-info-600 text-blue-400 hover:underline"
             >
               → Error Tracking Dashboard
             </a>
             <a
               href="/monitoring/performance"
-              className="block text-info-600 dark:text-info-400 hover:underline"
+              className="block text-info-600 text-blue-400 hover:underline"
             >
               → Performance Dashboard
             </a>
@@ -173,7 +173,7 @@ export default function TestSentryPage() {
               href="https://sentry.io"
               target="_blank"
               rel="noopener noreferrer"
-              className="block text-info-600 dark:text-info-400 hover:underline"
+              className="block text-info-600 text-blue-400 hover:underline"
             >
               → Sentry Dashboard
             </a>

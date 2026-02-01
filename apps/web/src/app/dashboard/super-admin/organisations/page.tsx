@@ -66,8 +66,8 @@ function OrganisationsContent() {
       </div>
 
       {error && (
-        <Card className="mb-6 border-error-200 bg-error-50 dark:bg-error-900/20">
-          <p className="text-error-600 dark:text-error-400">{error}</p>
+        <Card className="mb-6 border-error-200 bg-red-500/20">
+          <p className="text-error-600 text-red-400">{error}</p>
         </Card>
       )}
 
@@ -99,7 +99,7 @@ function OrganisationsContent() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
                     <Building className="w-6 h-6 text-primary" />
                   </div>
                   <div>
@@ -172,7 +172,7 @@ function OrganisationsContent() {
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
                 <Building className="w-6 h-6 text-primary" />
               </div>
               <div>
@@ -183,7 +183,7 @@ function OrganisationsContent() {
           </Card>
           <Card>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-success-100 dark:bg-success-900/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
                 <BarChart3 className="w-6 h-6 text-success-600" />
               </div>
               <div>
@@ -196,7 +196,7 @@ function OrganisationsContent() {
           </Card>
           <Card>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-info-100 dark:bg-info-900/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
                 <Users className="w-6 h-6 text-info-600" />
               </div>
               <div>
