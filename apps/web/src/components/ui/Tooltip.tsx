@@ -51,20 +51,20 @@ export default function Tooltip({
       {isVisible && (
         <div
           className={clsx(
-            'absolute z-50 px-3 py-2 text-sm text-background',
-            'bg-foreground rounded-md shadow-lg',
+            'absolute z-50 px-3 py-2 text-sm text-white dark:text-background',
+            'glass-effect bg-[#13131A] dark:bg-foreground rounded-md shadow-lg',
+            'border border-gray-800 dark:border-border',
             'whitespace-nowrap pointer-events-none',
             positionClasses[position],
             className
           )}
         >
-          {' '}
-          {content}{' '}
+          {content}
           <div
             className={clsx('absolute w-0 h-0 border-4 border-transparent', arrowClasses[position])}
-          />{' '}
+          />
         </div>
-      )}{' '}
+      )}
     </div>
   );
 }

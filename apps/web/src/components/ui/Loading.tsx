@@ -16,24 +16,29 @@ export default function Loading({
   const spinner = (
     <div
       className={clsx(
-        'border-primary-600 dark:border-primary-400 border-t-transparent rounded-full animate-spin',
+        'rounded-full animate-spin border-t-transparent',
+        'border-blue-500 dark:border-primary-400',
         sizes[size],
         className
       )}
+      style={{
+        borderImage: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%) 1',
+        borderTopColor: 'transparent',
+      }}
     />
   );
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-background/90 z-50">
-        {' '}
-        {spinner} {text && <p className="mt-4 text-muted-foreground">{text}</p>}{' '}
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/50 dark:bg-background/90 backdrop-blur-sm z-50">
+        {spinner}
+        {text && <p className="mt-4 text-gray-300 dark:text-muted-foreground">{text}</p>}
       </div>
     );
   }
   return (
     <div className="flex flex-col items-center justify-center">
-      {' '}
-      {spinner} {text && <p className="mt-2 text-sm text-muted-foreground">{text}</p>}{' '}
+      {spinner}
+      {text && <p className="mt-2 text-sm text-gray-300 dark:text-muted-foreground">{text}</p>}
     </div>
   );
 }
