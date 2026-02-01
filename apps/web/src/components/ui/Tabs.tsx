@@ -90,13 +90,13 @@ export default function Tabs({
 
     const variantClasses = {
       default: {
-        container: 'border-b border-border',
+        container: 'border-b border-gray-800 dark:border-border',
         tab: (isActive: boolean) =>
           clsx(
             'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
             isActive
-              ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-              : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+              ? 'border-blue-500 dark:border-primary-500 text-white dark:text-primary-400 bg-gradient-to-r from-blue-500/10 to-purple-500/10'
+              : 'border-transparent text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground hover:border-gray-700 dark:hover:border-border'
           ),
       },
       pills: {
@@ -105,20 +105,20 @@ export default function Tabs({
           clsx(
             'px-4 py-2 text-sm font-medium rounded-full transition-colors',
             isActive
-              ? 'bg-primary-600 dark:bg-primary-500 text-background'
-              : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              ? 'bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-primary-500 text-white dark:text-background'
+              : 'bg-[#1C1C26] dark:bg-muted text-gray-400 dark:text-muted-foreground hover:bg-[#252532] dark:hover:bg-muted/80'
           ),
       },
       underline: {
-        container: 'border-b border-border',
+        container: 'border-b border-gray-800 dark:border-border',
         tab: (isActive: boolean) =>
           clsx(
             'px-4 py-2 text-sm font-medium transition-colors relative',
             isActive
-              ? 'text-primary-600 dark:text-primary-400'
-              : 'text-muted-foreground hover:text-foreground',
+              ? 'text-white dark:text-primary-400'
+              : 'text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground',
             isActive &&
-              'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary-600 dark:after:bg-primary-500'
+              'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 dark:after:bg-primary-500'
           ),
       },
     };
@@ -147,8 +147,8 @@ export default function Tabs({
                   className={clsx(
                     'ml-1 px-2 py-0.5 text-xs rounded-full',
                     activeTab === tab.id
-                      ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300'
-                      : 'bg-muted text-muted-foreground'
+                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/30 text-white dark:text-primary-300'
+                      : 'bg-[#1C1C26] dark:bg-muted text-gray-400 dark:text-muted-foreground'
                   )}
                 >
                   {tab.badge}
@@ -173,7 +173,7 @@ export default function Tabs({
 // TabList Component
 export function TabList({ children, className }: TabListProps) {
   return (
-    <div className={clsx('flex border-b border-border overflow-x-auto', className)}>{children}</div>
+    <div className={clsx('flex border-b border-gray-800 dark:border-border overflow-x-auto', className)}>{children}</div>
   );
 }
 
@@ -190,8 +190,8 @@ export function Tab({ children, value, disabled, className }: TabProps) {
       className={clsx(
         'px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap flex-shrink-0',
         isActive
-          ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-          : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
+          ? 'border-blue-500 dark:border-primary-500 text-white dark:text-primary-400 bg-gradient-to-r from-blue-500/10 to-purple-500/10'
+          : 'border-transparent text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground hover:border-gray-700 dark:hover:border-border',
         disabled && 'opacity-50 cursor-not-allowed',
         className
       )}

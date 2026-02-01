@@ -60,11 +60,11 @@ export default function Pagination({
           onClick={() => onPageChange(1)}
           disabled={currentPage === 1}
           className={clsx(
-            'px-3 py-2 rounded-md text-sm font-medium',
+            'px-3 py-2 rounded-md text-sm font-medium transition-colors',
             'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
             currentPage === 1
-              ? 'bg-muted text-muted-foreground cursor-not-allowed'
-              : 'bg-background text-foreground hover:bg-muted'
+              ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
+              : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
           )}
           aria-label="First page"
         >
@@ -76,11 +76,11 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className={clsx(
-          'px-3 py-2 rounded-md text-sm font-medium',
+          'px-3 py-2 rounded-md text-sm font-medium transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
           currentPage === 1
-            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-            : 'bg-background text-foreground hover:bg-muted'
+            ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
+            : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
         )}
         aria-label="Previous page"
       >
@@ -90,9 +90,8 @@ export default function Pagination({
       {pageNumbers.map((page, index) => {
         if (page === 'ellipsis') {
           return (
-            <span key={`ellipsis-${index}`} className="px-3 py-2 text-muted-foreground">
-              {' '}
-              ...{' '}
+            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-500 dark:text-muted-foreground">
+              ...
             </span>
           );
         }
@@ -103,52 +102,49 @@ export default function Pagination({
             key={pageNum}
             onClick={() => onPageChange(pageNum)}
             className={clsx(
-              'px-4 py-2 rounded-md text-sm font-medium',
+              'px-4 py-2 rounded-md text-sm font-medium transition-colors',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
               isActive
-                ? 'bg-primary-600 dark:bg-primary-500 text-background'
-                : 'bg-background text-foreground hover:bg-muted'
+                ? 'bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-primary-500 text-white dark:text-background'
+                : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
             )}
             aria-label={`Page ${pageNum}`}
             aria-current={isActive ? 'page' : undefined}
           >
-            {' '}
-            {pageNum}{' '}
+            {pageNum}
           </button>
         );
-      })}{' '}
+      })}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className={clsx(
-          'px-3 py-2 rounded-md text-sm font-medium',
+          'px-3 py-2 rounded-md text-sm font-medium transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
           currentPage === totalPages
-            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-            : 'bg-background text-foreground hover:bg-muted'
+            ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
+            : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
         )}
-        aria-label="Next page"
+          aria-label="Next page"
       >
-        {' '}
-        ›{' '}
-      </button>{' '}
+        ›
+      </button>
       {showFirstLast && (
         <button
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage === totalPages}
           className={clsx(
-            'px-3 py-2 rounded-md text-sm font-medium',
+            'px-3 py-2 rounded-md text-sm font-medium transition-colors',
             'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
             currentPage === totalPages
-              ? 'bg-muted text-muted-foreground cursor-not-allowed'
-              : 'bg-background text-foreground hover:bg-muted'
+              ? 'bg-[#1C1C26] dark:bg-muted text-gray-500 dark:text-muted-foreground cursor-not-allowed'
+              : 'bg-[#13131A] dark:bg-background text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
           )}
           aria-label="Last page"
         >
-          {' '}
-          »»{' '}
+          »»
         </button>
-      )}{' '}
+      )}
     </nav>
   );
 }
