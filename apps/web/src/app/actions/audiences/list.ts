@@ -29,7 +29,10 @@ export async function listAudiencesAction(
       name: r.name,
       description: r.description,
       type: r.type,
-      donatorCount: r._count.donators,
+      donatorCount:
+        r.type === 'STATIC'
+          ? r._count.donators
+          : r.cachedDonatorCount ?? 0,
     }));
     return { audiences };
   } catch (e) {

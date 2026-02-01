@@ -596,6 +596,8 @@ model Audience {
 
   // STATIC: liste de donateurs via relation; DYNAMIC: règles de segmentation
   rules Json? // Règles pour segments dynamiques (ex: segment, lastDonationDate, etc.)
+  // DYNAMIC: nombre de donateurs (mis à jour par "Rafraîchir" - Étape 3.2.2)
+  cachedDonatorCount Int?
 
   // Organisation (multi-tenant)
   organizationId String
