@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Container, Card, StatsCard, LoadingSkeleton, useToast } from '@/components/ui';
+import { Container, Card, LoadingSkeleton, useToast } from '@/components/ui';
 import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
 import {
   getPlatformStats,
@@ -159,34 +159,54 @@ function PlatformMonitoringContent() {
       {platformStats && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <StatsCard
-              title="Organisations"
-              value={platformStats.organizations.total.toString()}
-              icon={<Building className="w-5 h-5" />}
-              className="bg-blue-500/20 border-blue-500/30"
-              subtitle={`${platformStats.organizations.active} actives`}
-            />
-            <StatsCard
-              title="Utilisateurs"
-              value={platformStats.users.total.toString()}
-              icon={<Users className="w-5 h-5" />}
-              className="bg-green-500/20 border-green-500/30"
-              subtitle={`${platformStats.users.active} actifs`}
-            />
-            <StatsCard
-              title="Modules Activés"
-              value={platformStats.modules.total_enabled.toString()}
-              icon={<Package className="w-5 h-5" />}
-              className="bg-purple-500/20 border-purple-500/30"
-              subtitle={`${platformStats.modules.total_configured} configurés`}
-            />
-            <StatsCard
-              title="Membres"
-              value={platformStats.members.total.toString()}
-              icon={<UserCheck className="w-5 h-5" />}
-              className="bg-orange-500/20 border-orange-500/30"
-              subtitle={`${platformStats.members.joined} rejoints`}
-            />
+            <Card className="bg-blue-500/20 border-blue-500/30">
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Building className="w-5 h-5 text-primary" />
+                  <h3 className="text-sm font-medium text-[var(--text-secondary,#A0A0B0)]">Organisations</h3>
+                </div>
+                <p className="text-2xl font-bold text-white">{platformStats.organizations.total}</p>
+                <p className="text-xs text-[var(--text-tertiary,#6B6B7B)] mt-1">
+                  {platformStats.organizations.active} actives
+                </p>
+              </div>
+            </Card>
+            <Card className="bg-green-500/20 border-green-500/30">
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Users className="w-5 h-5 text-primary" />
+                  <h3 className="text-sm font-medium text-[var(--text-secondary,#A0A0B0)]">Utilisateurs</h3>
+                </div>
+                <p className="text-2xl font-bold text-white">{platformStats.users.total}</p>
+                <p className="text-xs text-[var(--text-tertiary,#6B6B7B)] mt-1">
+                  {platformStats.users.active} actifs
+                </p>
+              </div>
+            </Card>
+            <Card className="bg-purple-500/20 border-purple-500/30">
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Package className="w-5 h-5 text-primary" />
+                  <h3 className="text-sm font-medium text-[var(--text-secondary,#A0A0B0)]">Modules Activés</h3>
+                </div>
+                <p className="text-2xl font-bold text-white">{platformStats.modules.total_enabled}</p>
+                <p className="text-xs text-[var(--text-tertiary,#6B6B7B)] mt-1">
+                  {platformStats.modules.total_configured} configurés
+                </p>
+              </div>
+            </Card>
+            <Card className="bg-orange-500/20 border-orange-500/30">
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <UserCheck className="w-5 h-5 text-primary" />
+                  <h3 className="text-sm font-medium text-[var(--text-secondary,#A0A0B0)]">Membres</h3>
+                </div>
+                <p className="text-2xl font-bold text-white">{platformStats.members.total}</p>
+                <p className="text-xs text-[var(--text-tertiary,#6B6B7B)] mt-1">
+                  {platformStats.members.joined} rejoints
+                </p>
+              </div>
+            </Card>
           </div>
 
           {/* Recent Activity */}
