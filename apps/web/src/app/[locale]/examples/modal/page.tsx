@@ -185,7 +185,7 @@ export default function ExampleModalPage() {
         }
       >
         <div className="flex items-start gap-3">
-          <Info className="w-5 h-5 text-info-600 dark:text-info-400 mt-0.5" />
+          <Info className="w-5 h-5 text-info-600 text-blue-400 mt-0.5" />
           <div>
             <p className="text-muted-foreground">
               Ceci est une modal d'information. Elle peut être utilisée pour afficher des messages

@@ -72,7 +72,7 @@ export default function ExampleDashboardPage() {
                     <p className="text-foreground">
                       <span className="font-semibold">{activity.name}</span> {activity.action}{' '}
                       {activity.amount && (
-                        <span className="font-semibold text-success-600 dark:text-success-400">
+                        <span className="font-semibold text-success-600 text-green-400">
                           {activity.amount}
                         </span>
                       )}

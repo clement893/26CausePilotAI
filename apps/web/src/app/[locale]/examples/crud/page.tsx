@@ -198,7 +198,7 @@ export default function ExampleCRUDPage() {
                 <span
                   className={`px-2 py-1 text-xs rounded ${
                     item.status === 'active'
-                      ? 'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200'
+                      ? 'bg-success-100 text-success-800 bg-green-500/20 text-green-200'
                       : 'bg-muted text-foreground'
                   }`}
                 >

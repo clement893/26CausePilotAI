@@ -194,7 +194,7 @@ export default function ExampleSearchPage() {
                         <h3 className="font-semibold text-foreground">{result.title}</h3>
                         <p className="text-sm text-muted-foreground mt-1">{result.description}</p>
                       </div>
-                      <span className="px-2 py-1 text-xs rounded bg-info-100 text-info-800 dark:bg-info-900 dark:text-info-200">
+                      <span className="px-2 py-1 text-xs rounded bg-info-100 text-info-800 bg-blue-500/20 text-blue-200">
                         {result.type}
                       </span>
                     </div>
