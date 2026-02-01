@@ -45,7 +45,7 @@ import {
  */
 export default function DemoComponentsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [switchValue, setSwitch Value] = useState(false);
+  const [switchValue, setSwitchValue] = useState(false);
   const [checkboxValue, setCheckboxValue] = useState(false);
 
   return (
