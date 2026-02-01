@@ -180,6 +180,11 @@ export function getNavigationConfig(
           icon: <Mail className="w-5 h-5" />,
         },
         {
+          name: 'Campagnes email',
+          href: '/dashboard/marketing/campagnes',
+          icon: <Mail className="w-5 h-5" />,
+        },
+        {
           name: 'Médias sociaux',
           href: '/dashboard/campagnes/medias-sociaux',
           icon: <Share2 className="w-5 h-5" />,
