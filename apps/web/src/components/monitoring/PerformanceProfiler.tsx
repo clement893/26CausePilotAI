@@ -40,33 +40,38 @@ export default function PerformanceProfiler() {
   };
 
   const getDurationColor = (duration: number): string => {
-    if (duration > 3000) return 'text-error-600 dark:text-error-400';
-    if (duration > 1000) return 'text-warning-600 dark:text-warning-400';
-    return 'text-success-600 dark:text-success-400';
+    if (duration > 3000) return 'text-red-400';
+    if (duration > 1000) return 'text-yellow-400';
+    return 'text-green-400';
   };
 
   return (
-    <Card>
+    <Card variant="glass" className="border border-gray-800">
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Performance Profiler</h3>
+          <h3 className="text-lg font-semibold text-white">Performance Profiler</h3>
           <div className="flex gap-2">
             <Button
               size="sm"
-              variant="outline"
+              variant="gradient"
               onClick={handleStartProfiling}
               disabled={isProfiling}
             >
               {isProfiling ? 'Profiling...' : 'Start Profiling'}
             </Button>
-            <Button size="sm" variant="ghost" onClick={handleClearProfiles}>
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              onClick={handleClearProfiles}
+              className="text-gray-400 hover:bg-[#252532] hover:text-white"
+            >
               Clear
             </Button>
           </div>
         </div>
 
         {Object.keys(profiles).length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-gray-400">
             No profiling data available. Start profiling to see results.
           </div>
         ) : (
@@ -76,7 +81,7 @@ export default function PerformanceProfiler() {
               .map(([name, duration]) => (
                 <div
                   key={name}
-                  className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                  className="flex items-center justify-between p-3 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift"
                 >
                   <div className="flex items-center gap-3">
                     <Badge variant="default">{name}</Badge>
@@ -93,7 +98,7 @@ export default function PerformanceProfiler() {
           </div>
         )}
 
-        <div className="mt-4 text-xs text-muted-foreground">
+        <div className="mt-4 text-xs text-gray-400">
           <p>
             Profiling helps identify performance bottlenecks in your
             application.

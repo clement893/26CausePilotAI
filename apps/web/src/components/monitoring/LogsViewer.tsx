@@ -55,10 +55,10 @@ export default function LogsViewer() {
   const logCounts = logStore.getLogCounts();
 
   return (
-    <Card>
+    <Card variant="glass" className="border border-gray-800">
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Logs</h3>
+          <h3 className="text-lg font-semibold text-white">Logs</h3>
           <div className="flex gap-2">
             <Badge variant="default">Debug: {logCounts.debug}</Badge>
             <Badge variant="info">Info: {logCounts.info}</Badge>
@@ -72,11 +72,11 @@ export default function LogsViewer() {
             placeholder="Search logs..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1"
+            className="flex-1 form-input-glow"
           />
           <Dropdown
             trigger={
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
                 Level: {levelFilter}
               </Button>
             }
@@ -92,21 +92,22 @@ export default function LogsViewer() {
             variant="outline"
             size="sm"
             onClick={() => logStore.clearLogs()}
+            className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
           >
             Clear
           </Button>
         </div>
 
-        <div className="space-y-2 max-h-96 overflow-y-auto">
+        <div className="space-y-2 max-h-96 overflow-y-auto custom-scrollbar">
           {logs.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
+            <div className="text-center py-8 text-gray-400">
               No logs found
             </div>
           ) : (
             logs.map((log) => (
               <div
                 key={log.id}
-                className="p-3 bg-muted rounded-lg text-sm font-mono"
+                className="p-3 glass-effect bg-[#1C1C26] rounded-lg text-sm font-mono border border-gray-800 hover-lift"
               >
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant={getLevelColor(log.level)}>
@@ -115,14 +116,14 @@ export default function LogsViewer() {
                   {log.service && (
                     <Badge variant="default">{log.service}</Badge>
                   )}
-                  <span className="text-muted-foreground">
+                  <span className="text-gray-500">
                     {new Date(log.timestamp).toLocaleTimeString()}
                   </span>
                 </div>
-                <div className="text-foreground">{log.message}</div>
+                <div className="text-white">{log.message}</div>
                 {log.context &&
                   Object.keys(log.context).length > 0 && (
-                    <div className="mt-2 text-xs text-muted-foreground">
+                    <div className="mt-2 text-xs text-gray-400">
                       {JSON.stringify(log.context, null, 2)}
                     </div>
                   )}
