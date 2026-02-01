@@ -189,12 +189,28 @@
 
 **Progression:** 8/8 (100%) ✅ COMPLÉTÉ
 
+### Batch 14: Utilitaires et Cards Restants (8 composants)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `3684da7` - feat(ui): Batch 14 - Alignement utilitaires et cards
+
+- [x] `ThemeToggle.tsx` - Gradient pour dark mode ✅
+- [x] `CRUDModal.tsx` - Delete icon avec border ✅
+- [x] `SkipLink.tsx` - Gradient background ✅
+- [x] `DragDropList.tsx` - Glassmorphism, hover-lift ✅
+- [x] `FAQItem.tsx` - Utilise Card avec variant glass ✅
+- [x] `PricingCardSimple.tsx` - Gradient-border, badges gradients ✅
+- [x] `ServiceTestCard.tsx` - Glassmorphism, gradients ✅
+- [x] `ExportButton.tsx` - Border dark theme ✅
+
+**Progression:** 8/8 (100%) ✅ COMPLÉTÉ
+
 ---
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 13
-- **Composants modifiés:** 70/357+ (19.6%)
+- **Batches complétés:** 14
+- **Composants modifiés:** 78/357+ (21.8%)
 - **Dernière mise à jour:** 2026-02-01
 
 ---
