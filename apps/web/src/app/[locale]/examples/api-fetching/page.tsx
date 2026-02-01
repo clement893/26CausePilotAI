@@ -158,13 +158,13 @@ export default function ExampleAPIFetchingPage() {
                   Chargement...
                 </div>
               ) : error ? (
-                <div className="flex items-center gap-2 text-error-600 dark:text-error-400">
+                <div className="flex items-center gap-2 text-error-600 text-red-400">
                   <XCircle className="w-4 h-4" />
                   Erreur: {error.message}
                 </div>
               ) : posts ? (
                 <div>
-                  <div className="flex items-center gap-2 text-success-600 dark:text-success-400 mb-2">
+                  <div className="flex items-center gap-2 text-success-600 text-green-400 mb-2">
                     <CheckCircle className="w-4 h-4" />
                     {posts.length} posts chargés
                   </div>
@@ -191,12 +191,12 @@ export default function ExampleAPIFetchingPage() {
             <h2 className="text-xl font-bold text-foreground mb-4">2. useRetry Hook</h2>
             <div className="space-y-4">
               {isRetrying && (
-                <div className="text-sm text-warning-600 dark:text-warning-400">
+                <div className="text-sm text-warning-600 text-yellow-400">
                   Tentative {attempt} en cours...
                 </div>
               )}
               {lastError && (
-                <div className="text-sm text-error-600 dark:text-error-400">
+                <div className="text-sm text-error-600 text-red-400">
                   Erreur: {lastError.message}
                 </div>
               )}

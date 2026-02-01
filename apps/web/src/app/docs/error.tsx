@@ -34,18 +34,18 @@ export default function DocsError({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 bg-[#0A0A0F] flex items-center justify-center p-4">
       <Card className="max-w-md w-full" aria-label="Error message">
         <div className="text-center">
           <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" aria-hidden="true" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 text-white mb-2">
             Erreur de chargement
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-gray-600 text-gray-400 mb-6">
             Une erreur s'est produite lors du chargement de la documentation. Veuillez réessayer.
           </p>
           {error.message && (
-            <p className="text-sm text-red-600 dark:text-red-400 mb-4 font-mono bg-red-50 dark:bg-red-900/20 p-2 rounded">
+            <p className="text-sm text-red-600 text-red-400 mb-4 font-mono bg-red-50 bg-red-500/20 p-2 rounded">
               {error.message}
             </p>
           )}
