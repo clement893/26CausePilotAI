@@ -14,12 +14,12 @@ import { ErrorBoundary } from '@/components/errors';
 export default function ClientPortalLayout({ children }: { children: React.ReactNode }) {
   return (
     <ErrorBoundary>
-      <div className="flex min-h-screen bg-muted">
+      <div className="flex min-h-screen bg-[#0A0A0F]">
         {/* Sidebar Navigation */}
-        <aside className="w-64 bg-background border-r border-border p-6">
+        <aside className="w-64 bg-[#13131A] border-r border-gray-800 p-6">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-foreground">Client Portal</h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400">
               Manage your orders, invoices, and projects
             </p>
           </div>

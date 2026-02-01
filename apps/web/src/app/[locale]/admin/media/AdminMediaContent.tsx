@@ -134,21 +134,21 @@ export default function AdminMediaContent() {
       key: 'file_path',
       label: 'Chemin',
       render: (_value, media) => (
-        <span className="text-sm text-muted-foreground font-mono">{media.file_path}</span>
+        <span className="text-sm text-gray-400 font-mono">{media.file_path}</span>
       ),
     },
     {
       key: 'file_size',
       label: 'Taille',
       render: (_value, media) => (
-        <span className="text-sm text-muted-foreground">{formatFileSize(media.file_size)}</span>
+        <span className="text-sm text-gray-400">{formatFileSize(media.file_size)}</span>
       ),
     },
     {
       key: 'mime_type',
       label: 'Type',
       render: (_value, media) => (
-        <span className="text-sm text-muted-foreground">{media.mime_type || 'N/A'}</span>
+        <span className="text-sm text-gray-400">{media.mime_type || 'N/A'}</span>
       ),
     },
     {
@@ -164,7 +164,7 @@ export default function AdminMediaContent() {
       key: 'created_at',
       label: 'Créé le',
       render: (_value, media) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(media.created_at).toLocaleDateString('fr-FR')}
         </span>
       ),
@@ -270,7 +270,7 @@ export default function AdminMediaContent() {
             Êtes-vous sûr de vouloir supprimer le fichier <strong>{selectedMedia?.filename}</strong>{' '}
             ?
           </p>
-          <p className="text-sm text-muted-foreground">Cette action est irréversible.</p>
+          <p className="text-sm text-gray-400">Cette action est irréversible.</p>
           <div className="flex gap-3 justify-end">
             <Button
               variant="outline"

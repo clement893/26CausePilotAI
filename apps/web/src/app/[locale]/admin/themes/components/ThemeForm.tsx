@@ -42,7 +42,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
             formData.name === 'TemplateTheme2'
           }
         />
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs text-gray-400 mt-1">
           Nom unique utilisé pour identifier le thème (sans espaces, en minuscules)
           {(formData.name === 'template-theme' ||
             formData.name === 'TemplateTheme' ||
@@ -72,7 +72,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
             formData.name === 'TemplateTheme2'
           }
         />
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs text-gray-400 mt-1">
           Nom affiché dans l'interface d'administration
           {(formData.name === 'template-theme' ||
             formData.name === 'TemplateTheme' ||
@@ -102,7 +102,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
             formData.name === 'TemplateTheme2'
           }
         />
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs text-gray-400 mt-1">
           Description optionnelle du thème
           {(formData.name === 'template-theme' ||
             formData.name === 'TemplateTheme' ||
@@ -250,7 +250,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
             placeholder="Inter, sans-serif"
           />
           {hasSelectedFonts && (
-            <div className="mt-2 p-3 bg-muted rounded-md border border-border">
+            <div className="mt-2 p-3 bg-[#1C1C26] rounded-md border border-gray-800">
               <div className="flex items-start gap-2">
                 <Type className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -264,7 +264,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
                       </Badge>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+                  <p className="text-xs text-gray-400 mt-2 flex items-center gap-1">
                     <Info className="w-3 h-3" />
                     Gérer les polices dans l'onglet "Polices"
                   </p>

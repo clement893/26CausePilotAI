@@ -125,7 +125,7 @@ export default function ExampleFileUploadPage() {
     <Container className="py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Upload de Fichiers</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Upload de fichiers avec preview, barre de progression et validation
         </p>
       </div>
@@ -137,12 +137,12 @@ export default function ExampleFileUploadPage() {
             <h2 className="text-xl font-bold text-foreground mb-4">Upload d'Images</h2>
             <div className="space-y-4">
               <div
-                className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
+                className="border-2 border-dashed border-gray-800 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
                 onClick={() => imageInputRef.current?.click()}
               >
-                <ImageIcon className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground mb-2">Cliquez pour uploader une image</p>
-                <p className="text-sm text-muted-foreground">
+                <ImageIcon className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                <p className="text-gray-400 mb-2">Cliquez pour uploader une image</p>
+                <p className="text-sm text-gray-400">
                   PNG, JPG, GIF (aucune limite de taille)
                 </p>
                 <input
@@ -160,7 +160,7 @@ export default function ExampleFileUploadPage() {
                 {uploadedFiles
                   .filter((f) => f.file.type.startsWith('image/'))
                   .map((uploadedFile) => (
-                    <div key={uploadedFile.id} className="border border-border rounded-lg p-3">
+                    <div key={uploadedFile.id} className="border border-gray-800 rounded-lg p-3">
                       <div className="flex items-center gap-3">
                         {uploadedFile.preview && (
                           <img
@@ -173,18 +173,18 @@ export default function ExampleFileUploadPage() {
                           <p className="text-sm font-medium text-foreground truncate">
                             {uploadedFile.file.name}
                           </p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-gray-400">
                             {formatFileSize(uploadedFile.file.size)}
                           </p>
                           {uploadedFile.status === 'uploading' && (
                             <div className="mt-2">
-                              <div className="w-full bg-muted rounded-full h-2">
+                              <div className="w-full bg-[#1C1C26] rounded-full h-2">
                                 <div
                                   className="bg-primary-600 h-2 rounded-full transition-all"
                                   style={{ width: `${uploadedFile.progress}%` }}
                                 />
                               </div>
-                              <p className="text-xs text-muted-foreground mt-1">
+                              <p className="text-xs text-gray-400 mt-1">
                                 {uploadedFile.progress}%
                               </p>
                             </div>
@@ -216,12 +216,12 @@ export default function ExampleFileUploadPage() {
             <h2 className="text-xl font-bold text-foreground mb-4">Upload de Documents</h2>
             <div className="space-y-4">
               <div
-                className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
+                className="border-2 border-dashed border-gray-800 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <FileText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground mb-2">Cliquez pour uploader un document</p>
-                <p className="text-sm text-muted-foreground">PDF, DOC, XLS jusqu'à 10MB</p>
+                <FileText className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                <p className="text-gray-400 mb-2">Cliquez pour uploader un document</p>
+                <p className="text-sm text-gray-400">PDF, DOC, XLS jusqu'à 10MB</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -237,7 +237,7 @@ export default function ExampleFileUploadPage() {
                 {uploadedFiles
                   .filter((f) => !f.file.type.startsWith('image/'))
                   .map((uploadedFile) => (
-                    <div key={uploadedFile.id} className="border border-border rounded-lg p-3">
+                    <div key={uploadedFile.id} className="border border-gray-800 rounded-lg p-3">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-blue-500/20 rounded flex items-center justify-center">
                           {getFileIcon(uploadedFile.file)}
@@ -246,18 +246,18 @@ export default function ExampleFileUploadPage() {
                           <p className="text-sm font-medium text-foreground truncate">
                             {uploadedFile.file.name}
                           </p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-gray-400">
                             {formatFileSize(uploadedFile.file.size)}
                           </p>
                           {uploadedFile.status === 'uploading' && (
                             <div className="mt-2">
-                              <div className="w-full bg-muted rounded-full h-2">
+                              <div className="w-full bg-[#1C1C26] rounded-full h-2">
                                 <div
                                   className="bg-primary-600 h-2 rounded-full transition-all"
                                   style={{ width: `${uploadedFile.progress}%` }}
                                 />
                               </div>
-                              <p className="text-xs text-muted-foreground mt-1">
+                              <p className="text-xs text-gray-400 mt-1">
                                 {uploadedFile.progress}%
                               </p>
                             </div>
@@ -290,7 +290,7 @@ export default function ExampleFileUploadPage() {
           <h3 className="text-lg font-semibold text-foreground mb-4">
             Points clés de cet exemple :
           </h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
+          <ul className="space-y-2 text-sm text-gray-400">
             <li>✅ Preview d'images avant upload</li>
             <li>✅ Barre de progression</li>
             <li>✅ Validation taille/type de fichiers</li>

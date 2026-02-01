@@ -60,7 +60,7 @@ function ClientTicketsContent() {
               ? 'bg-success-100 text-success-800'
               : value === 'resolved'
                 ? 'bg-info-100 text-info-800'
-                : 'bg-muted text-foreground'
+                : 'bg-[#1C1C26] text-white'
           }`}
         >
           {value as string}
@@ -78,7 +78,7 @@ function ClientTicketsContent() {
               ? 'bg-error-100 text-error-800'
               : value === 'high'
                 ? 'bg-warning-100 text-warning-800'
-                : 'bg-muted text-foreground'
+                : 'bg-[#1C1C26] text-white'
           }`}
         >
           {value as string}
@@ -123,7 +123,7 @@ function ClientTicketsContent() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-foreground mb-2">Support Tickets</h1>
-          <p className="text-muted-foreground">Get help from our support team</p>
+          <p className="text-gray-400">Get help from our support team</p>
         </div>
         <Button onClick={() => setShowCreateModal(true)}>Create Ticket</Button>
       </div>
@@ -180,7 +180,7 @@ function CreateTicketForm({
           type="text"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          className="w-full px-3 py-2 border border-border rounded-lg"
+          className="w-full px-3 py-2 border border-gray-800 rounded-lg"
           required
         />
       </div>
@@ -189,7 +189,7 @@ function CreateTicketForm({
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full px-3 py-2 border border-border rounded-lg"
+          className="w-full px-3 py-2 border border-gray-800 rounded-lg"
           rows={4}
           required
         />
@@ -200,7 +200,7 @@ function CreateTicketForm({
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
-            className="w-full px-3 py-2 border border-border rounded-lg"
+            className="w-full px-3 py-2 border border-gray-800 rounded-lg"
           >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
@@ -213,7 +213,7 @@ function CreateTicketForm({
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-3 py-2 border border-border rounded-lg"
+            className="w-full px-3 py-2 border border-gray-800 rounded-lg"
           >
             <option value="general">General</option>
             <option value="technical">Technical</option>

@@ -115,7 +115,7 @@ export default function ExampleDataTablePage() {
           className={`px-2 py-1 text-xs rounded ${
             value === 'active'
               ? 'bg-success-100 text-success-800 bg-green-500/20 text-green-200'
-              : 'bg-muted text-foreground'
+              : 'bg-[#1C1C26] text-white'
           }`}
         >
           {value as string}
@@ -203,7 +203,7 @@ export default function ExampleDataTablePage() {
         <h1 className="text-4xl font-bold text-foreground mb-2">
           Exemple Tableau de Données Avancé
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Tableau avec tri, filtres, recherche, export et actions batch
         </p>
       </div>
@@ -233,7 +233,7 @@ export default function ExampleDataTablePage() {
           <h3 className="text-lg font-semibold text-foreground mb-4">
             Points clés de cet exemple :
           </h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
+          <ul className="space-y-2 text-sm text-gray-400">
             <li>✅ Tri par colonnes</li>
             <li>✅ Filtres avancés</li>
             <li>✅ Recherche en temps réel</li>

@@ -42,7 +42,7 @@ export default function ExampleSettingsPage() {
     <Container className="py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Paramètres</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Une page de paramètres complète avec différents types de configurations
         </p>
       </div>
@@ -144,11 +144,11 @@ export default function ExampleSettingsPage() {
                     {Object.entries(settings.notifications).map(([key, value]) => (
                       <div
                         key={key}
-                        className="flex items-center justify-between p-4 bg-muted rounded-lg"
+                        className="flex items-center justify-between p-4 bg-[#1C1C26] rounded-lg"
                       >
                         <div>
                           <div className="font-medium text-foreground capitalize">{key}</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-sm text-gray-400">
                             {key === 'email' && 'Recevoir des notifications par email'}
                             {key === 'push' && 'Recevoir des notifications push'}
                             {key === 'sms' && 'Recevoir des notifications par SMS'}
@@ -176,7 +176,7 @@ export default function ExampleSettingsPage() {
                     {Object.entries(settings.privacy).map(([key, value]) => (
                       <div
                         key={key}
-                        className="flex items-center justify-between p-4 bg-muted rounded-lg"
+                        className="flex items-center justify-between p-4 bg-[#1C1C26] rounded-lg"
                       >
                         <div>
                           <div className="font-medium text-foreground">
@@ -184,7 +184,7 @@ export default function ExampleSettingsPage() {
                             {key === 'showEmail' && "Afficher l'email"}
                             {key === 'showPhone' && 'Afficher le téléphone'}
                           </div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-sm text-gray-400">
                             {key === 'profileVisible' &&
                               'Permettre aux autres utilisateurs de voir votre profil'}
                             {key === 'showEmail' && 'Afficher votre adresse email publiquement'}
@@ -243,14 +243,14 @@ export default function ExampleSettingsPage() {
                         <Button>Changer le mot de passe</Button>
                       </div>
                     </div>
-                    <div className="border-t border-border pt-6">
+                    <div className="border-t border-gray-800 pt-6">
                       <h3 className="text-lg font-semibold text-foreground mb-4">
                         Authentification à deux facteurs
                       </h3>
-                      <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
+                      <div className="flex items-center justify-between p-4 bg-[#1C1C26] rounded-lg">
                         <div>
                           <div className="font-medium text-foreground">2FA activée</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-sm text-gray-400">
                             Protégez votre compte avec une authentification à deux facteurs
                           </div>
                         </div>
@@ -261,7 +261,7 @@ export default function ExampleSettingsPage() {
                 </div>
               )}
 
-              <div className="mt-8 pt-6 border-t border-border flex justify-end">
+              <div className="mt-8 pt-6 border-t border-gray-800 flex justify-end">
                 <Button>Enregistrer les modifications</Button>
               </div>
             </div>

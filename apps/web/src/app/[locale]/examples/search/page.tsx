@@ -104,7 +104,7 @@ export default function ExampleSearchPage() {
     <Container className="py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Recherche Avancée</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Barre de recherche avec autocomplete, filtres avancés et résultats en temps réel
         </p>
       </div>
@@ -138,7 +138,7 @@ export default function ExampleSearchPage() {
                 <select
                   value={filters.type}
                   onChange={(e) => handleFilterChange('type', e.target.value)}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                  className="w-full px-3 py-2 border border-gray-800 rounded-lg bg-[#13131A]"
                 >
                   <option value="">Tous les types</option>
                   <option value="user">Utilisateurs</option>
@@ -167,18 +167,18 @@ export default function ExampleSearchPage() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-foreground">Résultats de Recherche</h2>
               {isSearching && (
-                <div className="text-sm text-muted-foreground">Recherche en cours...</div>
+                <div className="text-sm text-gray-400">Recherche en cours...</div>
               )}
             </div>
 
             {results.length === 0 && searchQuery && !isSearching ? (
               <div className="text-center py-8">
-                <Search className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">Aucun résultat trouvé pour "{searchQuery}"</p>
+                <Search className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                <p className="text-gray-400">Aucun résultat trouvé pour "{searchQuery}"</p>
               </div>
             ) : results.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-muted-foreground">
+                <p className="text-gray-400">
                   Entrez une recherche pour voir les résultats
                 </p>
               </div>
@@ -187,12 +187,12 @@ export default function ExampleSearchPage() {
                 {results.map((result) => (
                   <div
                     key={result.id}
-                    className="p-4 border border-border rounded-lg hover:bg-muted transition-colors cursor-pointer"
+                    className="p-4 border border-gray-800 rounded-lg hover:bg-[#1C1C26] transition-colors cursor-pointer"
                   >
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-semibold text-foreground">{result.title}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">{result.description}</p>
+                        <p className="text-sm text-gray-400 mt-1">{result.description}</p>
                       </div>
                       <span className="px-2 py-1 text-xs rounded bg-info-100 text-info-800 bg-blue-500/20 text-blue-200">
                         {result.type}
@@ -212,7 +212,7 @@ export default function ExampleSearchPage() {
           <h3 className="text-lg font-semibold text-foreground mb-4">
             Points clés de cet exemple :
           </h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
+          <ul className="space-y-2 text-sm text-gray-400">
             <li>✅ Recherche avec autocomplete</li>
             <li>✅ Filtres avancés</li>
             <li>✅ Résultats en temps réel</li>

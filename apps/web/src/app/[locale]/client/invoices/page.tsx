@@ -59,7 +59,7 @@ function ClientInvoicesContent() {
               ? 'bg-success-100 text-success-800'
               : value === 'pending'
                 ? 'bg-warning-100 text-warning-800'
-                : 'bg-muted text-foreground'
+                : 'bg-[#1C1C26] text-white'
           }`}
         >
           {value as string}
@@ -94,7 +94,7 @@ function ClientInvoicesContent() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">My Invoices</h1>
-        <p className="text-muted-foreground">View and download your invoices</p>
+        <p className="text-gray-400">View and download your invoices</p>
       </div>
 
       <DataTable

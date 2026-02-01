@@ -137,7 +137,7 @@ function AITestContent() {
       <div className="max-w-4xl mx-auto space-y-6">
         <Card title="AI Test Interface">
           {/* Health Check */}
-          <div className="mb-6 p-4 bg-muted rounded-lg">
+          <div className="mb-6 p-4 bg-[#1C1C26] rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-semibold text-foreground">Health Check</h2>
               <Button variant="primary" onClick={checkHealth} size="sm">

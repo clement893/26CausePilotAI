@@ -23,7 +23,7 @@ export function ComponentTestCard({
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-xl font-semibold">Frontend Components & Hooks Test</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-gray-400 mt-1">
             Test critical React hooks, services, and API client functionality
           </p>
         </div>
@@ -58,7 +58,7 @@ export function ComponentTestCard({
                     ? 'bg-green-500/20 border-green-500/30'
                     : test.status === 'error'
                       ? 'bg-red-500/20 border-red-500/30'
-                      : 'bg-muted border-border'
+                      : 'bg-[#1C1C26] border-gray-800'
                 }`}
                 role="listitem"
               >
@@ -77,14 +77,14 @@ export function ComponentTestCard({
                         />
                       ) : (
                         <Loader2
-                          className="h-4 w-4 text-muted-foreground animate-spin flex-shrink-0"
+                          className="h-4 w-4 text-gray-400 animate-spin flex-shrink-0"
                           aria-hidden="true"
                         />
                       )}
                       <span className="font-semibold">{test.name}</span>
                     </div>
                     {test.message && (
-                      <p className="text-sm text-muted-foreground mt-1">{test.message}</p>
+                      <p className="text-sm text-gray-400 mt-1">{test.message}</p>
                     )}
                   </div>
                 </div>
@@ -110,10 +110,10 @@ export function ComponentTestCard({
                   <strong>API Client - POST Request:</strong> Tests POST request functionality
                 </li>
               </ul>
-              <p className="text-sm mt-2 text-muted-foreground">
+              <p className="text-sm mt-2 text-gray-400">
                 💡 <strong>Note:</strong> Click "Run Tests" to execute these tests. For
                 comprehensive testing, use the test suite:{' '}
-                <code className="text-xs bg-muted px-1 py-0.5 rounded">pnpm test</code>
+                <code className="text-xs bg-[#1C1C26] px-1 py-0.5 rounded">pnpm test</code>
               </p>
             </div>
           </Alert>

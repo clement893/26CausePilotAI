@@ -47,7 +47,7 @@ function ERPClientsContent() {
       render: (value, row) => (
         <div>
           <p className="font-medium text-foreground">{value as string}</p>
-          <p className="text-xs text-muted-foreground">{row.email}</p>
+          <p className="text-xs text-gray-400">{row.email}</p>
         </div>
       ),
     },
@@ -78,7 +78,7 @@ function ERPClientsContent() {
           className={`px-2 py-1 rounded text-xs ${
             value
               ? 'bg-success-100 text-success-800 bg-green-500/20 text-green-300'
-              : 'bg-muted text-foreground'
+              : 'bg-[#1C1C26] text-white'
           }`}
         >
           {value ? 'Active' : 'Inactive'}
@@ -108,7 +108,7 @@ function ERPClientsContent() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-foreground mb-2">All Clients</h1>
-          <p className="text-muted-foreground">View and manage all clients in the system</p>
+          <p className="text-gray-400">View and manage all clients in the system</p>
         </div>
         <div className="flex gap-2">
           <select
@@ -117,7 +117,7 @@ function ERPClientsContent() {
               const val = e.target.value;
               setActiveFilter(val === '' ? null : val === 'true');
             }}
-            className="px-3 py-2 border border-border rounded-lg bg-background"
+            className="px-3 py-2 border border-gray-800 rounded-lg bg-[#13131A]"
           >
             <option value="">All Clients</option>
             <option value="true">Active Only</option>

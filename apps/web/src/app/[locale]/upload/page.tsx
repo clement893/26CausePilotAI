@@ -220,13 +220,13 @@ function UploadContent() {
                   {selectedFiles.map((file, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                      className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg"
                     >
                       <div className="flex items-center gap-3">
                         {getFileIcon(file.type)}
                         <div>
                           <p className="text-sm font-medium text-foreground">{file.name}</p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-gray-400">
                             {formatFileSize(file.size)}
                           </p>
                         </div>
@@ -240,7 +240,7 @@ function UploadContent() {
 
             <div className="flex flex-col gap-3">
               {selectedFiles.length === 0 && (
-                <p className="text-sm text-muted-foreground italic">
+                <p className="text-sm text-gray-400 italic">
                   Sélectionnez des fichiers ci-dessus pour activer le bouton d'upload
                 </p>
               )}
@@ -300,7 +300,7 @@ function UploadContent() {
               {uploadedFiles.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center justify-between p-4 bg-muted rounded-lg border border-border"
+                  className="flex items-center justify-between p-4 bg-[#1C1C26] rounded-lg border border-gray-800"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     {file.status === 'success' ? (
@@ -311,9 +311,9 @@ function UploadContent() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
-                        <span className="text-muted-foreground">•</span>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-gray-400">{formatFileSize(file.size)}</p>
+                        <span className="text-gray-400">•</span>
+                        <p className="text-xs text-gray-400">
                           {new Date(file.uploadedAt).toLocaleString('fr-FR')}
                         </p>
                       </div>
@@ -368,7 +368,7 @@ function UploadContent() {
             </div>
             <div>
               <h3 className="font-semibold mb-2">Note:</h3>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-gray-400">
                 Cette page simule l'upload vers S3. Dans un environnement de production, vous devrez
                 configurer les credentials AWS et utiliser l'API backend pour générer les URLs de
                 pré-signature S3.
@@ -380,15 +380,15 @@ function UploadContent() {
         {/* Status */}
         <Card title="Statut du service">
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg">
               <span className="text-sm font-medium text-foreground">Connexion S3</span>
               <Badge variant="success">Connecté</Badge>
             </div>
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg">
               <span className="text-sm font-medium text-foreground">Bucket configuré</span>
               <Badge variant="success">Actif</Badge>
             </div>
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg">
               <span className="text-sm font-medium text-foreground">Permissions</span>
               <Badge variant="success">OK</Badge>
             </div>

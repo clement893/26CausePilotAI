@@ -103,7 +103,7 @@ export default function AdminArticlesContent() {
       label: 'Titre',
       render: (_value, article) => (
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-muted-foreground" />
+          <FileText className="w-4 h-4 text-gray-400" />
           <span className="font-medium text-foreground">{article.title}</span>
         </div>
       ),
@@ -112,7 +112,7 @@ export default function AdminArticlesContent() {
       key: 'slug',
       label: 'Slug',
       render: (_value, article) => (
-        <span className="text-sm text-muted-foreground font-mono">/{article.slug}</span>
+        <span className="text-sm text-gray-400 font-mono">/{article.slug}</span>
       ),
     },
     {
@@ -132,7 +132,7 @@ export default function AdminArticlesContent() {
       key: 'created_at',
       label: 'Créé le',
       render: (_value, article) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(article.created_at).toLocaleDateString('fr-FR')}
         </span>
       ),
@@ -244,7 +244,7 @@ export default function AdminArticlesContent() {
           <p className="text-foreground">
             Êtes-vous sûr de vouloir supprimer l'article <strong>{selectedArticle?.title}</strong> ?
           </p>
-          <p className="text-sm text-muted-foreground">Cette action est irréversible.</p>
+          <p className="text-sm text-gray-400">Cette action est irréversible.</p>
           <div className="flex gap-3 justify-end">
             <Button
               variant="outline"

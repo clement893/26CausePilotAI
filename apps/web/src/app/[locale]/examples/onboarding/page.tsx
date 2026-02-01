@@ -57,20 +57,20 @@ export default function ExampleOnboardingPage() {
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
                           currentStep >= step.number
-                            ? 'bg-primary-600 text-background'
-                            : 'bg-muted text-muted-foreground'
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-[#1C1C26] text-gray-400'
                         }`}
                       >
                         {currentStep > step.number ? '✓' : step.number}
                       </div>
-                      <div className="mt-2 text-xs text-center text-muted-foreground hidden sm:block">
+                      <div className="mt-2 text-xs text-center text-gray-400 hidden sm:block">
                         {step.title}
                       </div>
                     </div>
                     {index < steps.length - 1 && (
                       <div
                         className={`h-1 flex-1 mx-2 ${
-                          currentStep > step.number ? 'bg-primary' : 'bg-muted'
+                          currentStep > step.number ? 'bg-blue-500' : 'bg-[#1C1C26]'
                         }`}
                       />
                     )}
@@ -86,7 +86,7 @@ export default function ExampleOnboardingPage() {
                   <h2 className="text-3xl font-bold text-foreground mb-4">
                     Bienvenue sur la plateforme !
                   </h2>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-gray-400 mb-6">
                     Nous sommes ravis de vous accueillir. Commençons par quelques informations de
                     base.
                   </p>
@@ -118,7 +118,7 @@ export default function ExampleOnboardingPage() {
               {currentStep === 2 && (
                 <div>
                   <h2 className="text-3xl font-bold text-foreground mb-4">Votre Organisation</h2>
-                  <p className="text-muted-foreground mb-6">Parlez-nous de votre organisation.</p>
+                  <p className="text-gray-400 mb-6">Parlez-nous de votre organisation.</p>
                   <div>
                     <Input
                       label="Nom de l'organisation *"
@@ -135,7 +135,7 @@ export default function ExampleOnboardingPage() {
               {currentStep === 3 && (
                 <div>
                   <h2 className="text-3xl font-bold text-foreground mb-4">Votre Rôle</h2>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-gray-400 mb-6">
                     Comment allez-vous utiliser la plateforme ?
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -177,7 +177,7 @@ export default function ExampleOnboardingPage() {
                     </svg>
                   </div>
                   <h2 className="text-3xl font-bold text-foreground mb-4">Félicitations !</h2>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-gray-400 mb-6">
                     Votre profil est maintenant configuré. Vous êtes prêt à commencer à utiliser la
                     plateforme.
                   </p>

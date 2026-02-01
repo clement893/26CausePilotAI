@@ -53,7 +53,7 @@ function ClientProjectsContent() {
               ? 'bg-success-100 text-success-800'
               : value === 'completed'
                 ? 'bg-info-100 text-info-800'
-                : 'bg-muted text-foreground'
+                : 'bg-[#1C1C26] text-white'
           }`}
         >
           {value as string}
@@ -69,10 +69,10 @@ function ClientProjectsContent() {
           typeof value === 'number' ? value : typeof value === 'string' ? parseFloat(value) : 0;
         return (
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-muted rounded-full h-2">
+            <div className="flex-1 bg-[#1C1C26] rounded-full h-2">
               <div className="bg-primary-500 h-2 rounded-full" style={{ width: `${progress}%` }} />
             </div>
-            <span className="text-sm text-muted-foreground">{progress}%</span>
+            <span className="text-sm text-gray-400">{progress}%</span>
           </div>
         );
       },
@@ -99,7 +99,7 @@ function ClientProjectsContent() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">My Projects</h1>
-        <p className="text-muted-foreground">Track your project progress and status</p>
+        <p className="text-gray-400">Track your project progress and status</p>
       </div>
 
       <DataTable

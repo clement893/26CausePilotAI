@@ -222,7 +222,7 @@ export default function ProfileSecurityPage() {
             description={t('description') || 'Manage your security settings'}
           />
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-400">
               {t('errors.loadFailed') || 'Failed to load security settings'}
             </p>
           </div>

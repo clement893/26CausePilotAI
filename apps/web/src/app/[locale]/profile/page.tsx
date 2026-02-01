@@ -234,7 +234,7 @@ export default function ProfilePage() {
             description={t('description') || 'User profile page'}
           />
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-400">
               {t('errors.loadFailed') || 'Failed to load profile'}
             </p>
           </div>
@@ -317,9 +317,9 @@ export default function ProfilePage() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-start gap-3">
-                <Hash className="w-4 h-4 mt-1 text-muted-foreground" />
+                <Hash className="w-4 h-4 mt-1 text-gray-400" />
                 <div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-400">
                     {t('databaseInfo.userId') || 'User ID'}
                   </p>
                   <p className="font-medium">{user.id}</p>
@@ -327,9 +327,9 @@ export default function ProfilePage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <Mail className="w-4 h-4 mt-1 text-muted-foreground" />
+                <Mail className="w-4 h-4 mt-1 text-gray-400" />
                 <div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-400">
                     {t('databaseInfo.email') || 'Email'}
                   </p>
                   <p className="font-medium">{user.email}</p>
@@ -343,7 +343,7 @@ export default function ProfilePage() {
                   <XCircle className="w-4 h-4 mt-1 text-error-500" />
                 )}
                 <div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-400">
                     {t('databaseInfo.status') || 'Status'}
                   </p>
                   <p className="font-medium">
@@ -361,9 +361,9 @@ export default function ProfilePage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <Calendar className="w-4 h-4 mt-1 text-muted-foreground" />
+                <Calendar className="w-4 h-4 mt-1 text-gray-400" />
                 <div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-400">
                     {t('databaseInfo.createdAt') || 'Created At'}
                   </p>
                   <p className="font-medium">{formatDate(user.created_at)}</p>
@@ -372,9 +372,9 @@ export default function ProfilePage() {
 
               {user.updated_at && (
                 <div className="flex items-start gap-3 md:col-span-2">
-                  <Clock className="w-4 h-4 mt-1 text-muted-foreground" />
+                  <Clock className="w-4 h-4 mt-1 text-gray-400" />
                   <div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       {t('databaseInfo.updatedAt') || 'Last Updated'}
                     </p>
                     <p className="font-medium">{formatDate(user.updated_at)}</p>

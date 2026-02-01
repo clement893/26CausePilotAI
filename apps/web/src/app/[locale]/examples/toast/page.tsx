@@ -71,7 +71,7 @@ export default function ExampleToastPage() {
     <Container className="py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Notifications / Toast</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Système de notifications toast avec différents types et durées
         </p>
       </div>
@@ -128,13 +128,13 @@ export default function ExampleToastPage() {
           <div className="p-6">
             <h2 className="text-xl font-bold text-foreground mb-4">Historique des Notifications</h2>
             {toastHistory.length === 0 ? (
-              <p className="text-muted-foreground text-center py-8">Aucune notification envoyée</p>
+              <p className="text-gray-400 text-center py-8">Aucune notification envoyée</p>
             ) : (
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {toastHistory.map((toast, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                    className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg"
                   >
                     <div className="flex items-center gap-3">
                       {toast.type === 'success' && (
@@ -149,7 +149,7 @@ export default function ExampleToastPage() {
                         toast.type === 'custom') && <Info className="w-4 h-4 text-info-600" />}
                       <span className="text-sm text-foreground">{toast.message}</span>
                     </div>
-                    <span className="text-xs text-muted-foreground">{toast.time}</span>
+                    <span className="text-xs text-gray-400">{toast.time}</span>
                   </div>
                 ))}
               </div>
@@ -164,7 +164,7 @@ export default function ExampleToastPage() {
           <h3 className="text-lg font-semibold text-foreground mb-4">
             Points clés de cet exemple :
           </h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
+          <ul className="space-y-2 text-sm text-gray-400">
             <li>✅ 4 types de notifications (success, error, warning, info)</li>
             <li>✅ Durée personnalisable</li>
             <li>✅ Notifications persistantes (duration: 0)</li>

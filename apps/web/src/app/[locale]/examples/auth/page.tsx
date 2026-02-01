@@ -130,7 +130,7 @@ export default function ExampleAuthPage() {
     <Container className="py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Authentification</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Exemples de formulaires d'authentification avec validation et gestion d'erreurs
         </p>
       </div>
@@ -192,7 +192,7 @@ export default function ExampleAuthPage() {
                   required
                   fullWidth
                 />
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-400">
                   <p className="mb-2">Compte de démonstration :</p>
                   <p>Email: demo@example.com</p>
                   <p>Mot de passe: password123</p>
@@ -311,7 +311,7 @@ export default function ExampleAuthPage() {
             <h3 className="text-lg font-semibold text-foreground mb-4">
               Points clés de cet exemple :
             </h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-sm text-gray-400">
               <li>✅ Validation des formulaires côté client</li>
               <li>✅ Gestion des erreurs avec handleApiError</li>
               <li>✅ États de chargement (loading states)</li>

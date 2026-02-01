@@ -141,7 +141,7 @@ export default function ExampleAPIFetchingPage() {
     <Container className="py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Exemple API / Data Fetching</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Exemples de récupération de données avec retry, cache et optimistic updates
         </p>
       </div>
@@ -153,7 +153,7 @@ export default function ExampleAPIFetchingPage() {
             <h2 className="text-xl font-bold text-foreground mb-4">1. useApi avec Retry</h2>
             <div className="space-y-4">
               {isLoading ? (
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-gray-400">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Chargement...
                 </div>
@@ -168,7 +168,7 @@ export default function ExampleAPIFetchingPage() {
                     <CheckCircle className="w-4 h-4" />
                     {posts.length} posts chargés
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-gray-400">
                     {posts.slice(0, 3).map((post) => (
                       <div key={post.id} className="mb-2">
                         <strong>{post.title}</strong>
@@ -204,7 +204,7 @@ export default function ExampleAPIFetchingPage() {
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Tester Retry
               </Button>
-              <p className="text-xs text-muted-foreground">Tentative: {attempt} / 3</p>
+              <p className="text-xs text-gray-400">Tentative: {attempt} / 3</p>
             </div>
           </div>
         </Card>
@@ -215,7 +215,7 @@ export default function ExampleAPIFetchingPage() {
             <h2 className="text-xl font-bold text-foreground mb-4">3. Optimistic Updates</h2>
             <div className="space-y-4">
               {optimisticData.length === 0 ? (
-                <p className="text-sm text-muted-foreground">Aucune donnée optimiste</p>
+                <p className="text-sm text-gray-400">Aucune donnée optimiste</p>
               ) : (
                 <div className="space-y-2">
                   {optimisticData.slice(0, 3).map((post) => (
@@ -258,22 +258,22 @@ export default function ExampleAPIFetchingPage() {
             <h2 className="text-xl font-bold text-foreground mb-4">4. Cache et Refetch</h2>
             <div className="space-y-4">
               {isCachedLoading ? (
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-gray-400">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Chargement...
                 </div>
               ) : cachedData ? (
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-400">
                   {cachedData.length} posts en cache
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">Cache vide</p>
+                <p className="text-sm text-gray-400">Cache vide</p>
               )}
               <Button onClick={handleInvalidateCache} variant="outline" size="sm">
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Invalider le cache
               </Button>
-              <p className="text-xs text-muted-foreground">Clé de cache: {cacheKey}</p>
+              <p className="text-xs text-gray-400">Clé de cache: {cacheKey}</p>
             </div>
           </div>
         </Card>
@@ -285,7 +285,7 @@ export default function ExampleAPIFetchingPage() {
           <h3 className="text-lg font-semibold text-foreground mb-4">
             Points clés de cet exemple :
           </h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
+          <ul className="space-y-2 text-sm text-gray-400">
             <li>✅ useApi hook avec retry automatique</li>
             <li>✅ useRetry hook pour retry personnalisé</li>
             <li>✅ Optimistic updates pour UX améliorée</li>

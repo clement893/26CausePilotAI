@@ -144,7 +144,7 @@ export default function ProfileActivityPage() {
             {activities.length > 0 ? (
               <ActivityTimeline activities={activities} showUserInfo={false} groupByDate={true} />
             ) : (
-              <div className="text-center py-12 text-muted-foreground">
+              <div className="text-center py-12 text-gray-400">
                 <p>{t('empty') || 'No activity found'}</p>
               </div>
             )}

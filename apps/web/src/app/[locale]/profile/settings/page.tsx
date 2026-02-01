@@ -152,7 +152,7 @@ export default function ProfileSettingsPage() {
             description={t('description') || 'Manage your account settings'}
           />
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-400">
               {t('errors.loadFailed') || 'Failed to load settings'}
             </p>
           </div>

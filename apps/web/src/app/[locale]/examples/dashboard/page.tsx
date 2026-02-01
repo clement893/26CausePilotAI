@@ -11,7 +11,7 @@ export default function ExampleDashboardPage() {
     <Container className="py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Exemple Dashboard</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Un exemple de tableau de bord avec widgets et statistiques
         </p>
       </div>
@@ -63,7 +63,7 @@ export default function ExampleDashboardPage() {
               ].map((activity, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-3 pb-4 border-b border-border last:border-0"
+                  className="flex items-start gap-3 pb-4 border-b border-gray-800 last:border-0"
                 >
                   <div className="w-10 h-10 bg-info-100 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-info-600 font-semibold">{activity.name.charAt(0)}</span>
@@ -80,7 +80,7 @@ export default function ExampleDashboardPage() {
                         <span className="font-semibold">{activity.campaign}</span>
                       )}
                     </p>
-                    <p className="text-sm text-muted-foreground">{activity.time}</p>
+                    <p className="text-sm text-gray-400">{activity.time}</p>
                   </div>
                 </div>
               ))}
@@ -97,18 +97,18 @@ export default function ExampleDashboardPage() {
                 { name: 'Aide aux Familles', progress: 45, amount: '9,000€', target: '20,000€' },
                 { name: 'Éducation', progress: 90, amount: '18,000€', target: '20,000€' },
               ].map((campaign, index) => (
-                <div key={index} className="pb-4 border-b border-border last:border-0">
+                <div key={index} className="pb-4 border-b border-gray-800 last:border-0">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-semibold text-foreground">{campaign.name}</h3>
                     <Badge variant="success">{campaign.progress}%</Badge>
                   </div>
-                  <div className="w-full bg-muted rounded-full h-2 mb-2">
+                  <div className="w-full bg-[#1C1C26] rounded-full h-2 mb-2">
                     <div
                       className="bg-primary-600 h-2 rounded-full transition-all"
                       style={{ width: `${campaign.progress}%` }}
                     />
                   </div>
-                  <div className="flex justify-between text-sm text-muted-foreground">
+                  <div className="flex justify-between text-sm text-gray-400">
                     <span>{campaign.amount} collectés</span>
                     <span>Objectif: {campaign.target}</span>
                   </div>

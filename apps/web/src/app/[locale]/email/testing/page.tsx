@@ -166,7 +166,7 @@ function EmailTestContent() {
           {/* Health Check */}
           <Card title="SendGrid Health Check" className="mb-6">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 Verify SendGrid configuration and connection status
               </p>
               <Button variant="primary" onClick={checkHealth} loading={isCheckingHealth} size="sm">
