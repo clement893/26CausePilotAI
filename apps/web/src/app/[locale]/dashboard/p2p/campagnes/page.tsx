@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Container, Button, Card, useToast } from '@/components/ui';
 import { Plus, Target } from 'lucide-react';
 import { useOrganization } from '@/hooks/useOrganization';
-import { listP2PCampaigns, deleteP2PCampaign } from '@/app/actions/p2p';
+import { listP2PCampaigns } from '@/app/actions/p2p';
 // import { P2PCampaignList } from '@/components/p2p';
 import { LoadingSkeleton } from '@/components/ui';
 import { logger } from '@/lib/logger';
@@ -16,7 +16,7 @@ import { logger } from '@/lib/logger';
 export default function P2PCampagnesPage() {
   const router = useRouter();
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
-  const { error: showErrorToast, success: showSuccessToast } = useToast();
+  const { error: showErrorToast } = useToast();
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
