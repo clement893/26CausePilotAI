@@ -479,7 +479,7 @@ describe('ServiceTestCard Component', () => {
       );
 
       const link = container.querySelector('a');
-      expect(link).toHaveClass('dark:border-primary-800');
+      expect(link).toHaveClass('border-blue-500/30');
     });
 
     it('applies dark mode classes for backgrounds', () => {
@@ -494,8 +494,7 @@ describe('ServiceTestCard Component', () => {
       );
 
       const link = container.querySelector('a');
-      expect(link).toHaveClass('dark:from-success-900/60');
-      expect(link).toHaveClass('dark:to-success-800/60');
+      expect(link).toHaveClass('bg-[#13131A]');
     });
 
     it('applies dark mode classes for text', () => {
@@ -510,10 +509,10 @@ describe('ServiceTestCard Component', () => {
       );
 
       const title = container.querySelector('h3');
-      expect(title).toHaveClass('dark:text-warning-100');
+      expect(title).toHaveClass('text-yellow-300');
 
       const description = container.querySelector('p');
-      expect(description).toHaveClass('dark:text-warning-200');
+      expect(description).toHaveClass('text-yellow-200');
     });
   });
 });

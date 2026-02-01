@@ -101,8 +101,8 @@ export const InCard: Story = {
     },
   },
   render: (args) => (
-    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm max-w-md">
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+    <div className="p-6 bg-[#1C1C26] rounded-lg border border-gray-800 shadow-sm max-w-md">
+      <h2 className="text-xl font-semibold text-white mb-4">
         Sign in to your account
       </h2>
       <SocialAuth {...args} />

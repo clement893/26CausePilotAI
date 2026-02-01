@@ -59,11 +59,11 @@ const InteractiveMFA = (args: any) => {
 
   if (verified) {
     return (
-      <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+      <div className="p-6 bg-[#1C1C26] rounded-lg border border-gray-800">
+        <h3 className="text-lg font-semibold text-white mb-2">
           ✓ MFA Enabled
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-gray-400">
           Two-factor authentication has been successfully enabled for your account.
         </p>
       </div>

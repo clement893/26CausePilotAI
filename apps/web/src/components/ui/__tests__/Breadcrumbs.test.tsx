@@ -78,7 +78,7 @@ describe('Breadcrumbs Component', () => {
     it('applies special styling to last item', () => {
       render(<Breadcrumbs items={mockItems} />);
       const lastItem = screen.getByText('Current Page');
-      expect(lastItem).toHaveClass('text-gray-500', 'dark:text-gray-400', 'font-medium');
+      expect(lastItem).toHaveClass('text-gray-500', 'text-gray-400', 'font-medium');
     });
 
     it('does not apply last item styling to non-last items', () => {
