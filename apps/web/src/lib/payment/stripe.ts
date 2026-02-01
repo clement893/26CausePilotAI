@@ -107,3 +107,44 @@ export async function confirmStripePayment(
     paymentIntentId: paymentIntent.id,
   };
 }
+
+export interface RefundStripePaymentParams {
+  paymentIntentId: string;
+  amount?: number; // optional partial refund (in currency units)
+  reason?: 'duplicate' | 'fraudulent' | 'requested_by_customer';
+}
+
+export interface RefundStripePaymentResult {
+  refundId: string;
+  status: string;
+}
+
+/**
+ * Rembourse un paiement Stripe (Étape 2.2.5).
+ * Récupère la charge du PaymentIntent puis crée un refund.
+ */
+export async function refundStripePayment(
+  params: RefundStripePaymentParams
+): Promise<RefundStripePaymentResult> {
+  const stripe = getStripeClient();
+  const pi = await stripe.paymentIntents.retrieve(params.paymentIntentId);
+  const chargeId = typeof pi.latest_charge === 'string' ? pi.latest_charge : pi.latest_charge?.id;
+  if (!chargeId) {
+    throw new Error('No charge found for this payment intent');
+  }
+  const reason = (params.reason ?? 'requested_by_customer') as
+    | 'duplicate'
+    | 'fraudulent'
+    | 'requested_by_customer';
+  const refund = await stripe.refunds.create({
+    charge: chargeId,
+    reason,
+    ...(params.amount != null && params.amount > 0
+      ? { amount: Math.round(params.amount * 100) }
+      : {}),
+  });
+  return {
+    refundId: refund.id,
+    status: refund.status ?? 'succeeded',
+  };
+}

@@ -241,6 +241,15 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
     });
     createdDonationId = donation.id;
 
+    const captureId = typeof resource?.id === 'string' ? resource.id : undefined;
+    if (captureId) {
+      const existingMeta = (pi.metadata as Record<string, unknown>) ?? {};
+      await tx.paymentIntent.update({
+        where: { id: pi.id },
+        data: { metadata: { ...existingMeta, paypalCaptureId: captureId } },
+      });
+    }
+
     const donator = sub.donator;
     if (donator) {
       const amountNum = Number(sub.amount);

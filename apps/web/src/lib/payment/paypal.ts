@@ -101,3 +101,42 @@ export async function capturePayPalPayment(
     captureId,
   };
 }
+
+export interface RefundPayPalCaptureParams {
+  captureId: string;
+  amount?: number;
+  currency?: string;
+  note?: string;
+}
+
+export interface RefundPayPalCaptureResult {
+  refundId: string;
+  status: string;
+}
+
+/**
+ * Rembourse une capture PayPal (Étape 2.2.5).
+ */
+export async function refundPayPalCapture(
+  params: RefundPayPalCaptureParams
+): Promise<RefundPayPalCaptureResult> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const paypal = require('@paypal/checkout-server-sdk');
+  const client = getPayPalClient();
+  const request = new paypal.payments.CapturesRefundRequest(params.captureId);
+  const body: { amount?: { value: string; currency_code: string }; note_to_payer?: string } = {};
+  if (params.amount != null && params.amount > 0 && params.currency) {
+    body.amount = {
+      value: params.amount.toFixed(2),
+      currency_code: params.currency.toUpperCase(),
+    };
+  }
+  if (params.note) body.note_to_payer = params.note;
+  request.requestBody(body);
+  const response = await client.execute(request);
+  const result = response.result as { id?: string; status?: string };
+  return {
+    refundId: result.id ?? '',
+    status: result.status ?? 'COMPLETED',
+  };
+}
