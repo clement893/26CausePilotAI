@@ -25,15 +25,18 @@ export default function Chart({ data, type = 'bar', title, height = 300, classNa
             <div
               className={clsx(
                 'w-full rounded-t transition-all hover:opacity-80',
-                point.color || 'bg-primary-500 dark:bg-primary-400'
+                point.color || 'bg-gradient-to-t from-blue-500 to-purple-500 dark:bg-primary-400'
               )}
-              style={{ height: `${(point.value / maxValue) * 100}%`, backgroundColor: point.color }}
+              style={{ 
+                height: `${(point.value / maxValue) * 100}%`, 
+                backgroundColor: point.color || undefined,
+                background: point.color ? undefined : 'linear-gradient(to top, #3B82F6, #8B5CF6)'
+              }}
               title={`${point.label}: ${point.value}`}
             />{' '}
-            <div className="text-xs text-muted-foreground mt-2 text-center truncate w-full">
-              {' '}
-              {point.label}{' '}
-            </div>{' '}
+            <div className="text-xs text-gray-400 dark:text-muted-foreground mt-2 text-center truncate w-full">
+              {point.label}
+            </div>
           </div>
         ))}{' '}
       </div>
@@ -143,9 +146,8 @@ export default function Chart({ data, type = 'bar', title, height = 300, classNa
     }
   };
   return (
-    <div className={clsx('bg-background rounded-lg border border-border p-6', className)}>
-      {' '}
-      {title && <h3 className="text-lg font-semibold text-foreground mb-4"> {title} </h3>}{' '}
+    <div className={clsx('bg-[#13131A] dark:bg-background rounded-lg border border-gray-800 dark:border-border p-6', className)}>
+      {title && <h3 className="text-lg font-semibold text-white dark:text-foreground mb-4">{title}</h3>}
       <div style={{ height: `${height}px` }} className="relative">
         {' '}
         {renderChart()}{' '}

@@ -9,8 +9,8 @@ interface TableProps {
 
 export function Table({ children, className, style }: TableProps) {
   return (
-    <div className="overflow-x-auto -mx-1 px-1" style={style}>
-      <table className={clsx('min-w-full divide-y divide-border', className)}>{children}</table>
+    <div className="overflow-x-auto -mx-1 px-1 custom-scrollbar" style={style}>
+      <table className={clsx('min-w-full divide-y divide-gray-800 dark:divide-border', className)}>{children}</table>
     </div>
   );
 }
@@ -23,7 +23,7 @@ interface TableHeadProps {
 
 export function TableHead({ children, className, style }: TableHeadProps) {
   return (
-    <thead className={clsx('bg-muted', className)} style={style}>
+    <thead className={clsx('bg-[#1C1C26] dark:bg-muted sticky top-0 z-10', className)} style={style}>
       {children}
     </thead>
   );
@@ -47,9 +47,9 @@ export function TableBody({
   return (
     <tbody
       className={clsx(
-        'bg-background divide-y divide-border',
-        striped && '[&>tr:nth-child(even)]:bg-muted',
-        hover && '[&>tr:hover]:bg-muted',
+        'bg-[#13131A] dark:bg-background divide-y divide-gray-800 dark:divide-border',
+        striped && '[&>tr:nth-child(even)]:bg-[#1C1C26] dark:[&>tr:nth-child(even)]:bg-muted',
+        hover && '[&>tr:hover]:bg-[#1C1C26] dark:[&>tr:hover]:bg-muted transition-colors',
         className
       )}
       style={style}
@@ -94,8 +94,8 @@ export function TableHeader({
   return (
     <th
       className={clsx(
-        'px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider',
-        sortable && 'cursor-pointer select-none',
+        'px-6 py-4 text-left text-xs font-semibold text-gray-300 dark:text-muted-foreground uppercase tracking-wider',
+        sortable && 'cursor-pointer select-none hover:text-white dark:hover:text-foreground transition-colors',
         className
       )}
       onClick={sortable ? onSort : undefined}
@@ -109,8 +109,8 @@ export function TableHeader({
               className={clsx(
                 'w-3 h-3',
                 sortDirection === 'asc'
-                  ? 'text-primary-600 dark:text-primary-400'
-                  : 'text-muted-foreground'
+                  ? 'text-blue-500 dark:text-primary-400'
+                  : 'text-gray-500 dark:text-muted-foreground'
               )}
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -137,7 +137,7 @@ export function TableCell({ children, className, colSpan, onClick, style }: Tabl
     <td
       colSpan={colSpan}
       onClick={onClick}
-      className={clsx('px-6 py-4 whitespace-nowrap text-sm text-foreground', className)}
+      className={clsx('px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-foreground', className)}
       style={style}
     >
       {children}
