@@ -99,6 +99,7 @@ model Organization {
   emailCampaigns    EmailCampaign[]
   emailTemplates    EmailTemplate[]
   audiences         Audience[]
+  workflows         Workflow[]
 
   // Timestamps
   createdAt   DateTime @default(now())
@@ -657,4 +658,29 @@ model EmailCampaign {
   @@index([status])
   @@index([scheduledAt])
   @@map("email_campaigns")
+}
+
+// ============= Étape 3.3.2 - Workflow (Automatisation) =============
+enum WorkflowStatus {
+  DRAFT
+  ACTIVE
+}
+
+model Workflow {
+  id             String         @id @default(cuid())
+  name           String
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  status         WorkflowStatus @default(DRAFT)
+
+  // Graphe (nœuds et connexions au format React Flow / XYFlow)
+  nodes Json? // Array de { id, type, position, data }
+  edges Json? // Array de { id, source, target }
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+  @@map("workflows")
 }

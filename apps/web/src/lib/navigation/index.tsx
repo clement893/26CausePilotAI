@@ -190,6 +190,11 @@ export function getNavigationConfig(
           icon: <Users className="w-5 h-5" />,
         },
         {
+          name: 'Workflows',
+          href: '/dashboard/marketing/workflows',
+          icon: <Repeat className="w-5 h-5" />,
+        },
+        {
           name: 'Médias sociaux',
           href: '/dashboard/campagnes/medias-sociaux',
           icon: <Share2 className="w-5 h-5" />,
