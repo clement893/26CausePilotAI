@@ -141,43 +141,43 @@ export default function BillingDashboard({
   return (
     <div className={clsx('space-y-6', className)}>
       {/* Subscription Overview */}
-      <Card variant="glass" title="Subscription Overview" className="border border-gray-800 dark:border-border">
+      <Card variant="glass" title="Subscription Overview" className="border border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-400 dark:text-muted-foreground">Current Plan</span>
+              <span className="text-sm text-gray-400">Current Plan</span>
               {getStatusBadge(subscription?.status)}
             </div>
-            <div className="text-2xl font-bold text-white dark:text-foreground">
+            <div className="text-2xl font-bold text-white">
               {subscription?.plan || 'Free Plan'}
             </div>
-            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
+            <div className="text-sm text-gray-400 mt-1">
               {subscription?.amount
                 ? `${subscription.currency} ${subscription.amount}/month`
                 : 'No active subscription'}
             </div>
           </div>
-          <div className="p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
-            <div className="text-sm text-gray-400 dark:text-muted-foreground mb-2">Next Billing Date</div>
-            <div className="text-2xl font-bold text-white dark:text-foreground">
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
+            <div className="text-sm text-gray-400 mb-2">Next Billing Date</div>
+            <div className="text-2xl font-bold text-white">
               {subscription?.currentPeriodEnd
                 ? new Date(subscription.currentPeriodEnd).toLocaleDateString()
                 : 'N/A'}
             </div>
-            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1 flex items-center gap-1">
+            <div className="text-sm text-gray-400 mt-1 flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               Auto-renewal enabled
             </div>
           </div>
-          <div className="p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
-            <div className="text-sm text-gray-400 dark:text-muted-foreground mb-2">Payment Method</div>
-            <div className="text-lg font-semibold text-white dark:text-foreground flex items-center gap-2">
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
+            <div className="text-sm text-gray-400 mb-2">Payment Method</div>
+            <div className="text-lg font-semibold text-white flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
               {paymentMethod
                 ? `${paymentMethod.brand} •••• ${paymentMethod.last4}`
                 : 'No payment method'}
             </div>
-            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
+            <div className="text-sm text-gray-400 mt-1">
               {paymentMethod?.type || 'Add payment method'}
             </div>
           </div>
@@ -186,17 +186,17 @@ export default function BillingDashboard({
 
       {/* Usage Overview */}
       {usage && (
-        <Card variant="glass" title="Usage This Month" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Usage This Month" className="border border-gray-800">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-white dark:text-foreground">
+              <span className="text-sm font-medium text-white">
                 {usage.current} / {usage.limit} {usage.unit}
               </span>
-              <span className="text-sm text-gray-400 dark:text-muted-foreground">
+              <span className="text-sm text-gray-400">
                 {Math.round(usagePercentage)}% used
               </span>
             </div>
-            <div className="w-full bg-[#1C1C26] dark:bg-muted rounded-full h-3">
+            <div className="w-full bg-[#1C1C26] rounded-full h-3">
               <div
                 className={clsx(
                   'h-3 rounded-full transition-all',
@@ -210,7 +210,7 @@ export default function BillingDashboard({
               />
             </div>
             {usagePercentage >= 90 && (
-              <div className="flex items-center gap-2 text-sm text-orange-400 dark:text-warning-400">
+              <div className="flex items-center gap-2 text-sm text-orange-400">
                 <AlertCircle className="w-4 h-4" />
                 You're approaching your usage limit
               </div>
@@ -221,13 +221,13 @@ export default function BillingDashboard({
 
       {/* Upcoming Invoice */}
       {upcomingInvoice && (
-        <Card variant="glass" title="Upcoming Invoice" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Upcoming Invoice" className="border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-2xl font-bold text-white dark:text-foreground">
+              <div className="text-2xl font-bold text-white">
                 {upcomingInvoice.currency} {upcomingInvoice.amount}
               </div>
-              <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
+              <div className="text-sm text-gray-400 mt-1">
                 Due on {new Date(upcomingInvoice.date).toLocaleDateString()}
               </div>
             </div>
@@ -238,23 +238,23 @@ export default function BillingDashboard({
 
       {/* Billing History Chart */}
       {billingHistory.length > 0 && (
-        <Card variant="glass" title="Billing History" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Billing History" className="border border-gray-800">
           <Chart type="line" data={billingHistory} title="Monthly Billing" height={200} />
         </Card>
       )}
 
       {/* Quick Actions */}
-      <Card variant="glass" title="Quick Actions" className="border border-gray-800 dark:border-border">
+      <Card variant="glass" title="Quick Actions" className="border border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Button variant="outline" fullWidth className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+          <Button variant="outline" fullWidth className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
             <CreditCard className="w-4 h-4 mr-2" />
             Update Payment Method
           </Button>
-          <Button variant="outline" fullWidth className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+          <Button variant="outline" fullWidth className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
             <TrendingUp className="w-4 h-4 mr-2" />
             Upgrade Plan
           </Button>
-          <Button variant="outline" fullWidth className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+          <Button variant="outline" fullWidth className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
             <DollarSign className="w-4 h-4 mr-2" />
             View Invoices
           </Button>

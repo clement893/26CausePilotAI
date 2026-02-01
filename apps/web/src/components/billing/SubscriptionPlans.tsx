@@ -63,7 +63,7 @@ export default function SubscriptionPlans({
         <span
           className={clsx(
             'text-sm font-medium',
-            billingInterval === 'month' ? 'text-white dark:text-foreground' : 'text-gray-400 dark:text-muted-foreground'
+            billingInterval === 'month' ? 'text-white' : 'text-gray-400'
           )}
         >
           Monthly
@@ -72,13 +72,13 @@ export default function SubscriptionPlans({
           onClick={() => setBillingInterval(billingInterval === 'month' ? 'year' : 'month')}
           className={clsx(
             'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
-            'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400',
-            billingInterval === 'year' ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-[#1C1C26] dark:bg-muted'
+            'focus:outline-none focus:ring-2 focus:ring-blue-500',
+            billingInterval === 'year' ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-[#1C1C26]'
           )}
         >
           <span
             className={clsx(
-              'inline-block h-4 w-4 transform rounded-full bg-white dark:bg-background transition-transform',
+              'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
               billingInterval === 'year' ? 'translate-x-6' : 'translate-x-1'
             )}
           />
@@ -86,7 +86,7 @@ export default function SubscriptionPlans({
         <span
           className={clsx(
             'text-sm font-medium',
-            billingInterval === 'year' ? 'text-white dark:text-foreground' : 'text-gray-400 dark:text-muted-foreground'
+            billingInterval === 'year' ? 'text-white' : 'text-gray-400'
           )}
         >
           Yearly
@@ -107,8 +107,8 @@ export default function SubscriptionPlans({
               key={plan.id}
               variant={isPopular ? 'gradient-border' : 'glass'}
               className={clsx(
-                'relative border border-gray-800 dark:border-border hover-lift',
-                isCurrentPlan && 'ring-2 ring-green-500 dark:ring-success-400'
+                'relative border border-gray-800 hover-lift',
+                isCurrentPlan && 'ring-2 ring-green-500'
               )}
             >
               {isPopular && (
@@ -121,26 +121,26 @@ export default function SubscriptionPlans({
                 {/* Plan Header */}
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="text-blue-400 dark:text-primary-400">
+                    <div className="text-blue-400">
                       {getPlanIcon(plan)}
                     </div>
-                    <h3 className="text-xl font-bold text-white dark:text-foreground">{plan.name}</h3>
+                    <h3 className="text-xl font-bold text-white">{plan.name}</h3>
                   </div>
-                  <p className="text-sm text-gray-400 dark:text-muted-foreground">{plan.description}</p>
+                  <p className="text-sm text-gray-400">{plan.description}</p>
                 </div>
 
                 {/* Price */}
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-white dark:text-foreground">
+                    <span className="text-4xl font-bold text-white">
                       {getDisplayPrice(plan)}
                     </span>
-                    <span className="text-sm text-gray-400 dark:text-muted-foreground">
+                    <span className="text-sm text-gray-400">
                       /{billingInterval === 'month' ? 'month' : 'year'}
                     </span>
                   </div>
                   {billingInterval === 'year' && (
-                    <div className="text-xs text-gray-400 dark:text-muted-foreground mt-1">
+                    <div className="text-xs text-gray-400 mt-1">
                       {plan.currency} {((plan.price * 10) / 12).toFixed(2)}/month billed annually
                     </div>
                   )}
@@ -151,16 +151,16 @@ export default function SubscriptionPlans({
                   {plan.features.map((feature, index) => (
                     <div key={index} className="flex items-start gap-3">
                       {feature.included ? (
-                        <Check className="w-5 h-5 text-green-400 dark:text-success-400 flex-shrink-0 mt-0.5" />
+                        <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                       ) : (
-                        <X className="w-5 h-5 text-gray-500 dark:text-muted-foreground flex-shrink-0 mt-0.5" />
+                        <X className="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5" />
                       )}
                       <span
                         className={clsx(
                           'text-sm',
                           feature.included
-                            ? 'text-gray-300 dark:text-foreground'
-                            : 'text-gray-500 dark:text-muted-foreground line-through'
+                            ? 'text-gray-300'
+                            : 'text-gray-500 line-through'
                         )}
                       >
                         {feature.name}
@@ -176,7 +176,7 @@ export default function SubscriptionPlans({
                   onClick={() => onSelectPlan?.(plan)}
                   disabled={isCurrentPlan}
                   className={clsx(
-                    !isPopular && 'border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20'
+                    !isPopular && 'border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white'
                   )}
                 >
                   {isCurrentPlan ? 'Current Plan' : plan.ctaText || `Select ${plan.name}`}

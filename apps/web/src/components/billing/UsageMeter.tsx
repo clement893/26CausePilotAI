@@ -50,21 +50,21 @@ export default function UsageMeter({
           variant: 'error' as const,
           icon: <AlertTriangle className="w-4 h-4" />,
           message: 'Usage limit nearly reached',
-          color: 'text-error-600 dark:text-error-400',
+          color: 'text-red-400',
         };
       case 'warning':
         return {
           variant: 'warning' as const,
           icon: <TrendingUp className="w-4 h-4" />,
           message: 'Approaching usage limit',
-          color: 'text-warning-600 dark:text-warning-400',
+          color: 'text-yellow-400',
         };
       default:
         return {
           variant: 'success' as const,
           icon: <CheckCircle className="w-4 h-4" />,
           message: 'Usage within limits',
-          color: 'text-success-600 dark:text-success-400',
+          color: 'text-green-400',
         };
     }
   };
@@ -72,11 +72,11 @@ export default function UsageMeter({
   const statusConfig = getStatusConfig();
 
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-white dark:text-foreground">{label}</h3>
+          <h3 className="text-sm font-semibold text-white">{label}</h3>
           <Badge variant={statusConfig.variant}>
             <span className="flex items-center gap-1">
               {statusConfig.icon}
@@ -88,10 +88,10 @@ export default function UsageMeter({
         {/* Usage Display */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400 dark:text-muted-foreground">
+            <span className="text-gray-400">
               {current.toLocaleString()} {unit} used
             </span>
-            <span className="text-gray-400 dark:text-muted-foreground">
+            <span className="text-gray-400">
               {limit.toLocaleString()} {unit} limit
             </span>
           </div>
@@ -114,17 +114,17 @@ export default function UsageMeter({
 
         {/* Details */}
         {showDetails && (
-          <div className="pt-4 border-t border-gray-800 dark:border-border">
+          <div className="pt-4 border-t border-gray-800">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <div className="text-gray-400 dark:text-muted-foreground">Remaining</div>
-                <div className="text-lg font-semibold text-white dark:text-foreground">
+                <div className="text-gray-400">Remaining</div>
+                <div className="text-lg font-semibold text-white">
                   {remaining.toLocaleString()} {unit}
                 </div>
               </div>
               <div>
-                <div className="text-gray-400 dark:text-muted-foreground">Used</div>
-                <div className="text-lg font-semibold text-white dark:text-foreground">
+                <div className="text-gray-400">Used</div>
+                <div className="text-lg font-semibold text-white">
                   {current.toLocaleString()} {unit}
                 </div>
               </div>

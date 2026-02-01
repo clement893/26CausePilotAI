@@ -103,7 +103,7 @@ export default function BillingSettings({ settings, onSave, className }: Billing
       <form onSubmit={handleSubmit} className="space-y-6">
         {' '}
         {/* Subscription Settings */}{' '}
-        <Card title="Subscription Settings" className="bg-background">
+        <Card variant="glass" title="Subscription Settings" className="border border-gray-800">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -111,8 +111,8 @@ export default function BillingSettings({ settings, onSave, className }: Billing
               {' '}
               <div>
                 {' '}
-                <div className="text-sm font-medium text-foreground"> Auto-Renewal </div>{' '}
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-sm font-medium text-white"> Auto-Renewal </div>{' '}
+                <div className="text-xs text-gray-400 mt-1">
                   {' '}
                   Automatically renew your subscription at the end of each billing period{' '}
                 </div>{' '}
@@ -125,7 +125,7 @@ export default function BillingSettings({ settings, onSave, className }: Billing
           </div>{' '}
         </Card>{' '}
         {/* Notification Settings */}{' '}
-        <Card title="Notifications" className="bg-background">
+        <Card variant="glass" title="Notifications" className="border border-gray-800">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -133,11 +133,11 @@ export default function BillingSettings({ settings, onSave, className }: Billing
               {' '}
               <div>
                 {' '}
-                <div className="text-sm font-medium text-foreground flex items-center gap-2">
+                <div className="text-sm font-medium text-white flex items-center gap-2">
                   {' '}
                   <Bell className="w-4 h-4" /> Email Notifications{' '}
                 </div>{' '}
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   {' '}
                   Receive email notifications about billing and invoices{' '}
                 </div>{' '}
@@ -160,7 +160,7 @@ export default function BillingSettings({ settings, onSave, className }: Billing
           </div>{' '}
         </Card>{' '}
         {/* Billing Address */}{' '}
-        <Card title="Billing Address" className="bg-background">
+        <Card variant="glass" title="Billing Address" className="border border-gray-800">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -214,7 +214,7 @@ export default function BillingSettings({ settings, onSave, className }: Billing
           </div>{' '}
         </Card>{' '}
         {/* Tax Information */}{' '}
-        <Card title="Tax Information" className="bg-background">
+        <Card variant="glass" title="Tax Information" className="border border-gray-800">
           {' '}
           <Input
             label="Tax ID / VAT Number (Optional)"
@@ -225,7 +225,7 @@ export default function BillingSettings({ settings, onSave, className }: Billing
           />{' '}
         </Card>{' '}
         {/* Regional Settings */}{' '}
-        <Card title="Regional Settings" className="bg-background">
+        <Card variant="glass" title="Regional Settings" className="border border-gray-800">
           {' '}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {' '}
@@ -245,7 +245,7 @@ export default function BillingSettings({ settings, onSave, className }: Billing
         </Card>{' '}
         {/* Error Message */}{' '}
         {errors.submit && (
-          <div className="p-3 bg-error-50 dark:bg-error-900/20 rounded-lg border border-error-200 dark:border-error-800 text-sm text-error-800 dark:text-error-200">
+          <div className="p-3 bg-red-500/20 rounded-lg border border-red-500/30 text-sm text-red-400">
             {' '}
             {errors.submit}{' '}
           </div>

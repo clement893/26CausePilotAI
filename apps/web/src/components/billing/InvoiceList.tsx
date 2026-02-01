@@ -53,8 +53,8 @@ export default function InvoiceList({
       sortable: true,
       render: (_value, invoice) => (
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-gray-500 dark:text-muted-foreground" />
-          <span className="font-medium text-white dark:text-foreground">{invoice.number}</span>
+          <FileText className="w-4 h-4 text-gray-500" />
+          <span className="font-medium text-white">{invoice.number}</span>
         </div>
       ),
     },
@@ -63,7 +63,7 @@ export default function InvoiceList({
       label: 'Date',
       sortable: true,
       render: (value) => (
-        <span className="text-white dark:text-foreground">{new Date(value as string).toLocaleDateString()}</span>
+        <span className="text-white">{new Date(value as string).toLocaleDateString()}</span>
       ),
     },
     {
@@ -71,7 +71,7 @@ export default function InvoiceList({
       label: 'Due Date',
       sortable: true,
       render: (value) => (
-        <span className="text-white dark:text-foreground">{new Date(value as string).toLocaleDateString()}</span>
+        <span className="text-white">{new Date(value as string).toLocaleDateString()}</span>
       ),
     },
     {
@@ -79,7 +79,7 @@ export default function InvoiceList({
       label: 'Amount',
       sortable: true,
       render: (_value, invoice) => (
-        <span className="font-semibold text-white dark:text-foreground">
+        <span className="font-semibold text-white">
           {invoice.currency} {invoice.amount.toFixed(2)}
         </span>
       ),
@@ -96,12 +96,12 @@ export default function InvoiceList({
       render: (_, invoice) => (
         <div className="flex items-center gap-2">
           {' '}
-          <Button variant="ghost" size="sm" onClick={() => onViewInvoice?.(invoice)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+          <Button variant="ghost" size="sm" onClick={() => onViewInvoice?.(invoice)} className="text-gray-300 hover:bg-[#252532] hover:text-white">
             <span className="flex items-center gap-2">
               <Eye className="w-4 h-4" /> View
             </span>
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => onDownloadInvoice?.(invoice)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+          <Button variant="ghost" size="sm" onClick={() => onDownloadInvoice?.(invoice)} className="text-gray-300 hover:bg-[#252532] hover:text-white">
             <span className="flex items-center gap-2">
               <Download className="w-4 h-4" /> Download
             </span>
@@ -111,19 +111,19 @@ export default function InvoiceList({
     },
   ];
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-white dark:text-foreground">Invoices</h3>
+        <h3 className="text-lg font-semibold text-white">Invoices</h3>
         <div className="flex items-center gap-2">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className={clsx(
               'px-3 py-2 border rounded-lg text-sm form-input-glow',
-              'bg-[#1C1C26] dark:bg-background',
-              'text-white dark:text-foreground',
-              'border-gray-700 dark:border-border',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
+              'bg-[#1C1C26]',
+              'text-white',
+              'border-gray-700',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500'
             )}
           >
             <option value="all">All Status</option>
