@@ -112,26 +112,26 @@ export function PerformanceDashboard() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Performance Dashboard</h2>
-        <Button onClick={fetchStats} variant="outline" size="sm">
+        <h2 className="text-2xl font-bold text-white gradient-text">Performance Dashboard</h2>
+        <Button onClick={fetchStats} variant="outline" size="sm" className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
           Refresh
         </Button>
       </div>
 
       {/* Current Metrics */}
       {metrics && (
-        <Card title="Current Page Metrics">
+        <Card variant="glass" title="Current Page Metrics" className="border border-gray-800">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {(['lcp', 'fcp', 'ttfb', 'cls', 'inp'] as const).map((metric) => {
               const value = metrics[metric];
               const rating = getRating(metric, value);
               return (
-                <div key={metric} className="border rounded-lg p-4">
+                <div key={metric} className="border border-gray-800 rounded-lg p-4 glass-effect bg-[#1C1C26] hover-lift">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold uppercase">{metric}</span>
+                    <span className="text-sm font-semibold uppercase text-white">{metric}</span>
                     <Badge variant={getRatingColor(rating)}>{rating}</Badge>
                   </div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-2xl font-bold text-white">
                     {formatValue(value, metric === 'cls' ? '' : 'ms')}
                   </p>
                 </div>
@@ -143,31 +143,31 @@ export function PerformanceDashboard() {
 
       {/* Performance Stats */}
       {stats && (
-        <Card title="Performance Statistics">
+        <Card variant="glass" title="Performance Statistics" className="border border-gray-800">
           <div className="space-y-4">
             <div className="grid grid-cols-4 gap-4 text-sm">
               <div>
-                <span className="text-muted-foreground">Metric</span>
+                <span className="text-gray-400">Metric</span>
               </div>
               <div>
-                <span className="text-muted-foreground">Average</span>
+                <span className="text-gray-400">Average</span>
               </div>
               <div>
-                <span className="text-muted-foreground">P75</span>
+                <span className="text-gray-400">P75</span>
               </div>
               <div>
-                <span className="text-muted-foreground">P95</span>
+                <span className="text-gray-400">P95</span>
               </div>
             </div>
             {(['lcp', 'fcp', 'ttfb', 'cls', 'inp'] as const).map((metric) => (
               <div key={metric} className="grid grid-cols-4 gap-4">
-                <div className="font-semibold uppercase">{metric}</div>
-                <div>{formatValue(stats.average[metric], metric === 'cls' ? '' : 'ms')}</div>
-                <div>{formatValue(stats.p75[metric], metric === 'cls' ? '' : 'ms')}</div>
-                <div>{formatValue(stats.p95[metric], metric === 'cls' ? '' : 'ms')}</div>
+                <div className="font-semibold uppercase text-white">{metric}</div>
+                <div className="text-white">{formatValue(stats.average[metric], metric === 'cls' ? '' : 'ms')}</div>
+                <div className="text-white">{formatValue(stats.p75[metric], metric === 'cls' ? '' : 'ms')}</div>
+                <div className="text-white">{formatValue(stats.p95[metric], metric === 'cls' ? '' : 'ms')}</div>
               </div>
             ))}
-            <div className="text-sm text-muted-foreground mt-4">
+            <div className="text-sm text-gray-400 mt-4">
               Total Samples: {stats.totalSamples}
             </div>
           </div>
@@ -175,10 +175,10 @@ export function PerformanceDashboard() {
       )}
 
       {isLoading && !metrics && (
-        <Card>
+        <Card variant="glass" className="border border-gray-800">
           <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">Loading performance metrics...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+            <p className="mt-4 text-gray-400">Loading performance metrics...</p>
           </div>
         </Card>
       )}

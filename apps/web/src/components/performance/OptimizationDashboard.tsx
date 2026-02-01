@@ -201,12 +201,12 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
   const ttfbStatus = getMetricStatus(metrics.ttfb, { good: 600, needsImprovement: 800 });
 
   return (
-    <Card className={clsx('p-6', className)}>
+    <Card variant="glass" className={clsx('p-6 border border-gray-800', className)}>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-foreground"> Performance Dashboard </h3>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h3 className="text-lg font-semibold text-white"> Performance Dashboard </h3>
+            <p className="text-sm text-gray-400 mt-1">
               {' '}
               Real-time performance metrics and monitoring{' '}
             </p>
@@ -216,7 +216,7 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
               {' '}
               {isMonitoring ? 'Monitoring' : 'Paused'}{' '}
             </Badge>
-            <Button variant="ghost" size="sm" onClick={() => setIsMonitoring(!isMonitoring)}>
+            <Button variant="ghost" size="sm" onClick={() => setIsMonitoring(!isMonitoring)} className="text-gray-400 hover:bg-[#252532] hover:text-white">
               {' '}
               {isMonitoring ? 'Pause' : 'Resume'}{' '}
             </Button>
@@ -225,79 +225,79 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
 
         {/* Core Web Vitals */}
         <div>
-          <h4 className="text-sm font-medium text-foreground mb-3"> Core Web Vitals </h4>
+          <h4 className="text-sm font-medium text-white mb-3"> Core Web Vitals </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 bg-muted rounded-lg">
+            <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">LCP</span>
+                <span className="text-sm text-gray-400">LCP</span>
                 <Badge variant={lcpStatus}>
                   {' '}
                   {metrics.lcp > 0 ? `${Math.round(metrics.lcp)}ms` : 'N/A'}{' '}
                 </Badge>
               </div>
-              <div className="text-xs text-muted-foreground"> Largest Contentful Paint </div>
+              <div className="text-xs text-gray-500"> Largest Contentful Paint </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg">
+            <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">FID</span>
+                <span className="text-sm text-gray-400">FID</span>
                 <Badge variant={fidStatus}>
                   {' '}
                   {metrics.fid > 0 ? `${Math.round(metrics.fid)}ms` : 'N/A'}{' '}
                 </Badge>
               </div>
-              <div className="text-xs text-muted-foreground"> First Input Delay </div>
+              <div className="text-xs text-gray-500"> First Input Delay </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg">
+            <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">CLS</span>
+                <span className="text-sm text-gray-400">CLS</span>
                 <Badge variant={clsStatus}>
                   {' '}
                   {metrics.cls > 0 ? metrics.cls.toFixed(3) : 'N/A'}{' '}
                 </Badge>
               </div>
-              <div className="text-xs text-muted-foreground"> Cumulative Layout Shift </div>
+              <div className="text-xs text-gray-500"> Cumulative Layout Shift </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg">
+            <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">TTFB</span>
+                <span className="text-sm text-gray-400">TTFB</span>
                 <Badge variant={ttfbStatus}>
                   {' '}
                   {metrics.ttfb > 0 ? `${Math.round(metrics.ttfb)}ms` : 'N/A'}{' '}
                 </Badge>
               </div>
-              <div className="text-xs text-muted-foreground"> Time to First Byte </div>
+              <div className="text-xs text-gray-500"> Time to First Byte </div>
             </div>
           </div>
         </div>
 
         {/* Additional Metrics */}
         <div>
-          <h4 className="text-sm font-medium text-foreground mb-3"> Additional Metrics </h4>
+          <h4 className="text-sm font-medium text-white mb-3"> Additional Metrics </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">FCP</div>
-              <div className="text-lg font-semibold text-foreground">
+            <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+              <div className="text-sm text-gray-400 mb-1">FCP</div>
+              <div className="text-lg font-semibold text-white">
                 {' '}
                 {metrics.fcp > 0 ? `${Math.round(metrics.fcp)}ms` : 'N/A'}{' '}
               </div>
-              <div className="text-xs text-muted-foreground mt-1"> First Contentful Paint </div>
+              <div className="text-xs text-gray-500 mt-1"> First Contentful Paint </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">TTI</div>
-              <div className="text-lg font-semibold text-foreground">
+            <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+              <div className="text-sm text-gray-400 mb-1">TTI</div>
+              <div className="text-lg font-semibold text-white">
                 {' '}
                 {metrics.tti > 0 ? `${Math.round(metrics.tti)}ms` : 'N/A'}{' '}
               </div>
-              <div className="text-xs text-muted-foreground mt-1"> Time to Interactive </div>
+              <div className="text-xs text-gray-500 mt-1"> Time to Interactive </div>
             </div>
             {metrics.memory && (
-              <div className="p-4 bg-muted rounded-lg">
-                <div className="text-sm text-muted-foreground mb-1">Memory</div>
-                <div className="text-lg font-semibold text-foreground">
+              <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+                <div className="text-sm text-gray-400 mb-1">Memory</div>
+                <div className="text-lg font-semibold text-white">
                   {' '}
                   {Math.round(metrics.memory.usedJSHeapSize)} MB{' '}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-500 mt-1">
                   {' '}
                   Used / {Math.round(metrics.memory.jsHeapSizeLimit)} MB limit{' '}
                 </div>
@@ -309,25 +309,25 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
         {/* Network Information */}
         {metrics.network && (
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-3"> Network Information </h4>
+            <h4 className="text-sm font-medium text-white mb-3"> Network Information </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-muted rounded-lg">
-                <div className="text-sm text-muted-foreground mb-1">Connection Type</div>
-                <div className="text-lg font-semibold text-foreground capitalize">
+              <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+                <div className="text-sm text-gray-400 mb-1">Connection Type</div>
+                <div className="text-lg font-semibold text-white capitalize">
                   {' '}
                   {metrics.network.effectiveType}{' '}
                 </div>
               </div>
-              <div className="p-4 bg-muted rounded-lg">
-                <div className="text-sm text-muted-foreground mb-1">Downlink</div>
-                <div className="text-lg font-semibold text-foreground">
+              <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+                <div className="text-sm text-gray-400 mb-1">Downlink</div>
+                <div className="text-lg font-semibold text-white">
                   {' '}
                   {metrics.network.downlink} Mbps{' '}
                 </div>
               </div>
-              <div className="p-4 bg-muted rounded-lg">
-                <div className="text-sm text-muted-foreground mb-1">RTT</div>
-                <div className="text-lg font-semibold text-foreground">
+              <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+                <div className="text-sm text-gray-400 mb-1">RTT</div>
+                <div className="text-lg font-semibold text-white">
                   {' '}
                   {metrics.network.rtt} ms{' '}
                 </div>
@@ -339,8 +339,8 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
         {/* Performance History Chart */}
         {history.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-3"> Performance History </h4>
-            <Card className="p-4">
+            <h4 className="text-sm font-medium text-white mb-3"> Performance History </h4>
+            <Card variant="glass" className="p-4 border border-gray-800">
               <Chart type="line" data={history} title="LCP Over Time" height={200} />
             </Card>
           </div>

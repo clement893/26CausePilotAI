@@ -143,12 +143,12 @@ export default function OfflineSupport({ className, showDetails = false }: Offli
   const failedCount = syncQueue.filter((item) => item.status === 'failed').length;
 
   return (
-    <Card className={clsx('p-6', className)}>
+    <Card variant="glass" className={clsx('p-6 border border-gray-800', className)}>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-foreground">Offline Support</h3>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h3 className="text-lg font-semibold text-white">Offline Support</h3>
+            <p className="text-sm text-gray-400 mt-1">
               Service worker and offline data synchronization
             </p>
           </div>
@@ -162,28 +162,28 @@ export default function OfflineSupport({ className, showDetails = false }: Offli
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-muted rounded-lg">
-            <div className="text-sm text-muted-foreground">Service Worker</div>
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+            <div className="text-sm text-gray-400">Service Worker</div>
             <div className="mt-1 flex items-center gap-2">
               <Badge variant={swRegistered ? 'success' : 'default'}>
                 {swRegistered ? 'Registered' : 'Not Registered'}
               </Badge>
               {isServiceWorkerSupported() ? (
-                <span className="text-xs text-muted-foreground">Supported</span>
+                <span className="text-xs text-gray-500">Supported</span>
               ) : (
-                <span className="text-xs text-muted-foreground">Not Supported</span>
+                <span className="text-xs text-gray-500">Not Supported</span>
               )}
             </div>
           </div>
 
-          <div className="p-4 bg-muted rounded-lg">
-            <div className="text-sm text-muted-foreground">Pending Sync</div>
-            <div className="mt-1 text-2xl font-bold text-foreground">{pendingCount}</div>
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+            <div className="text-sm text-gray-400">Pending Sync</div>
+            <div className="mt-1 text-2xl font-bold text-white">{pendingCount}</div>
           </div>
 
-          <div className="p-4 bg-muted rounded-lg">
-            <div className="text-sm text-muted-foreground">Failed Sync</div>
-            <div className="mt-1 text-2xl font-bold text-error-600 dark:text-error-400">{failedCount}</div>
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift">
+            <div className="text-sm text-gray-400">Failed Sync</div>
+            <div className="mt-1 text-2xl font-bold text-red-400">{failedCount}</div>
           </div>
         </div>
 
@@ -193,11 +193,11 @@ export default function OfflineSupport({ className, showDetails = false }: Offli
               {isServiceWorkerSupported() && (
                 <>
                   {!swRegistered ? (
-                    <Button variant="primary" size="sm" onClick={handleRegisterSW}>
+                    <Button variant="gradient" size="sm" onClick={handleRegisterSW}>
                       Register Service Worker
                     </Button>
                   ) : (
-                    <Button variant="secondary" size="sm" onClick={handleUnregisterSW}>
+                    <Button variant="outline" size="sm" onClick={handleUnregisterSW} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
                       Unregister Service Worker
                     </Button>
                   )}
@@ -205,13 +205,13 @@ export default function OfflineSupport({ className, showDetails = false }: Offli
               )}
 
               {pendingCount > 0 && isOnline && (
-                <Button variant="primary" size="sm" onClick={syncQueueToServer} loading={isSyncing}>
+                <Button variant="gradient" size="sm" onClick={syncQueueToServer} loading={isSyncing}>
                   Sync Now
                 </Button>
               )}
 
               {syncQueue.some((item) => item.status === 'synced') && (
-                <Button variant="ghost" size="sm" onClick={clearSyncedItems}>
+                <Button variant="ghost" size="sm" onClick={clearSyncedItems} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                   Clear Synced
                 </Button>
               )}
@@ -219,23 +219,23 @@ export default function OfflineSupport({ className, showDetails = false }: Offli
 
             {syncQueue.length > 0 && (
               <div className="space-y-2">
-                <h4 className="text-sm font-medium text-foreground">Sync Queue ({syncQueue.length})</h4>
-                <div className="space-y-2 max-h-60 overflow-y-auto">
+                <h4 className="text-sm font-medium text-white">Sync Queue ({syncQueue.length})</h4>
+                <div className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
                   {syncQueue.map((item) => (
                     <div
                       key={item.id}
                       className={clsx(
-                        'p-3 rounded-lg border text-sm',
-                        'bg-background',
-                        'border-border',
+                        'p-3 rounded-lg border text-sm glass-effect',
+                        'bg-[#1C1C26]',
+                        'border-gray-800',
                         item.status === 'synced' && 'opacity-60',
-                        item.status === 'failed' && 'border-error-300 dark:border-error-700'
+                        item.status === 'failed' && 'border-red-500/50'
                       )}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="font-medium text-foreground">{item.action}</div>
-                          <div className="text-xs text-muted-foreground mt-1">
+                          <div className="font-medium text-white">{item.action}</div>
+                          <div className="text-xs text-gray-500 mt-1">
                             {new Date(item.timestamp).toLocaleString()}
                           </div>
                         </div>

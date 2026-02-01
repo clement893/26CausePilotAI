@@ -126,11 +126,11 @@ export default function OptimisticUpdates({ className }: OptimisticUpdatesProps)
   };
 
   return (
-    <Card className={clsx('p-6', className)}>
+    <Card variant="glass" className={clsx('p-6 border border-gray-800', className)}>
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Optimistic Updates</h3>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h3 className="text-lg font-semibold text-white">Optimistic Updates</h3>
+          <p className="text-sm text-gray-400 mt-1">
             Updates UI immediately, then syncs with server. Automatically rolls back on error.
           </p>
         </div>
@@ -147,11 +147,11 @@ export default function OptimisticUpdates({ className }: OptimisticUpdatesProps)
           {items.map((item) => (
             <div
               key={item.id}
-              className={clsx('p-4 rounded-lg border', 'bg-muted', 'border-border', 'flex items-center justify-between')}
+              className={clsx('p-4 rounded-lg border glass-effect bg-[#1C1C26] border-gray-800 flex items-center justify-between hover-lift')}
             >
               <div>
-                <div className="font-medium text-foreground">{item.name}</div>
-                <div className="text-sm text-muted-foreground mt-1">
+                <div className="font-medium text-white">{item.name}</div>
+                <div className="text-sm text-gray-400 mt-1">
                   Count: <span className="font-semibold">{item.count}</span>
                 </div>
               </div>
@@ -161,11 +161,12 @@ export default function OptimisticUpdates({ className }: OptimisticUpdatesProps)
                   size="sm"
                   onClick={() => handleDecrement(item.id)}
                   disabled={item.count === 0 || isUpdating}
+                  className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
                 >
                   -
                 </Button>
                 <Badge variant="default">{item.count}</Badge>
-                <Button variant="primary" size="sm" onClick={() => handleIncrement(item.id)} disabled={isUpdating}>
+                <Button variant="gradient" size="sm" onClick={() => handleIncrement(item.id)} disabled={isUpdating}>
                   +
                 </Button>
               </div>
@@ -173,8 +174,8 @@ export default function OptimisticUpdates({ className }: OptimisticUpdatesProps)
           ))}
         </div>
 
-        <div className="pt-4 border-t border-border">
-          <p className="text-xs text-muted-foreground">
+        <div className="pt-4 border-t border-gray-800">
+          <p className="text-xs text-gray-400">
             Try incrementing/decrementing items. The UI updates immediately, then syncs with the server. If the
             sync fails, changes are automatically rolled back.
           </p>
