@@ -449,20 +449,20 @@ export default function SurveyResults({
                   )}
 
                   {'npsScore' in chartData && chartData.npsScore !== undefined && (
-                    <div className="mb-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
-                      <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                    <div className="mb-4 p-4 bg-blue-500/20 rounded-lg">
+                      <p className="text-2xl font-bold text-blue-400">
                         NPS Score: {chartData.npsScore}
                       </p>
                       <div className="flex gap-4 mt-2 text-sm">
-                        <span className="text-success-600 dark:text-success-400">
+                        <span className="text-green-400">
                           {t('promoters') || 'Promoters'} (9-10): {chartData.promoters} (
                           {Math.round((chartData.promoters / filteredSubmissions.length) * 100)}%)
                         </span>
-                        <span className="text-warning-600 dark:text-warning-400">
+                        <span className="text-yellow-400">
                           {t('passives') || 'Passives'} (7-8): {chartData.passives} (
                           {Math.round((chartData.passives / filteredSubmissions.length) * 100)}%)
                         </span>
-                        <span className="text-danger-600 dark:text-danger-400">
+                        <span className="text-red-400">
                           {t('detractors') || 'Detractors'} (0-6): {chartData.detractors} (
                           {Math.round((chartData.detractors / filteredSubmissions.length) * 100)}%)
                         </span>

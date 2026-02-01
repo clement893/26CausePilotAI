@@ -208,7 +208,7 @@ export function TemplateAIChat({ className = '', defaultOpen = false }: Template
                     : 'glass-effect bg-[#1C1C26] border border-gray-800 text-gray-300'
                 }`}
               >
-                <div className="prose prose-sm dark:prose-invert max-w-none text-gray-300">
+                <div className="prose prose-sm prose-invert max-w-none text-gray-300">
                   <p className="whitespace-pre-wrap break-words m-0">{message.content}</p>
                 </div>
                 {message.provider && message.role === 'assistant' && (

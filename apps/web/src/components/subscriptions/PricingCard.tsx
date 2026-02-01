@@ -39,7 +39,7 @@ export function PricingCard({ plan, onSelect, isLoading, currentPlanId }: Pricin
     <Card
       variant={plan.is_popular ? 'gradient-border' : 'glass'}
       className={clsx(
-        'relative flex flex-col p-6 border border-gray-800 dark:border-border hover-lift',
+        'relative flex flex-col p-6 border border-gray-800 hover-lift',
         plan.is_popular && 'shadow-lg scale-105'
       )}
     >

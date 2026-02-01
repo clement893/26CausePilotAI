@@ -31,11 +31,11 @@ const statusIcons = {
   cancelled: AlertCircle,
 };
 const statusColors = {
-  pending: 'text-warning-600 dark:text-warning-400',
-  running: 'text-primary-600 dark:text-primary-400',
-  completed: 'text-success-600 dark:text-success-400',
-  failed: 'text-error-600 dark:text-error-400',
-  cancelled: 'text-muted-foreground',
+  pending: 'text-yellow-400',
+  running: 'text-blue-400',
+  completed: 'text-green-400',
+  failed: 'text-red-400',
+  cancelled: 'text-gray-400',
 };
 export function TaskManager({ className = '' }: TaskManagerProps) {
   const [tasks, setTasks] = useState<ScheduledTask[]>([]);

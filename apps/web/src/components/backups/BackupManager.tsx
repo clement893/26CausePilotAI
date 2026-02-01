@@ -43,11 +43,11 @@ const statusIcons = {
   expired: XCircle,
 };
 const statusColors = {
-  pending: 'text-warning-600 dark:text-warning-400',
-  in_progress: 'text-primary-600 dark:text-primary-400',
-  completed: 'text-success-600 dark:text-success-400',
-  failed: 'text-error-600 dark:text-error-400',
-  expired: 'text-muted-foreground',
+  pending: 'text-yellow-400',
+  in_progress: 'text-blue-400',
+  completed: 'text-green-400',
+  failed: 'text-red-400',
+  expired: 'text-gray-400',
 };
 export function BackupManager({ className = '' }: BackupManagerProps) {
   const [backups, setBackups] = useState<Backup[]>([]);

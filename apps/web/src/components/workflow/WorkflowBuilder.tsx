@@ -157,11 +157,11 @@ export default function WorkflowBuilder({
   const getNodeColor = (type: WorkflowNode['type']) => {
     switch (type) {
       case 'trigger':
-        return 'bg-primary-100 dark:bg-primary-900/30 border-primary-300 dark:border-primary-700';
+        return 'bg-blue-500/20 border-blue-500/30';
       case 'action':
-        return 'bg-success-100 dark:bg-success-900/30 border-success-300 dark:border-success-700';
+        return 'bg-green-500/20 border-green-500/30';
       case 'condition':
-        return 'bg-warning-100 dark:bg-warning-900/30 border-warning-300 dark:border-warning-700';
+        return 'bg-yellow-500/20 border-yellow-500/30';
     }
   };
 

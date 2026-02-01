@@ -43,22 +43,22 @@ import { useApi } from '@/hooks/useApi';
           <StatsCard
             title="Total Orders"
             value={stats.total_orders.toString()}
-            className="bg-primary-100 dark:bg-primary-900/40 border-primary-200 dark:border-primary-800"
+            className="bg-blue-500/20 border-blue-500/30"
           />{' '}
           <StatsCard
             title="Pending Orders"
             value={stats.pending_orders.toString()}
-            className="bg-warning-100 dark:bg-warning-900/40 border-warning-200 dark:border-warning-800"
+            className="bg-yellow-500/20 border-yellow-500/30"
           />{' '}
           <StatsCard
             title="Completed Orders"
             value={stats.completed_orders.toString()}
-            className="bg-success-100 dark:bg-success-900/40 border-success-200 dark:border-success-800"
+            className="bg-green-500/20 border-green-500/30"
           />{' '}
           <StatsCard
             title="Total Clients"
             value={stats.total_clients.toString()}
-            className="bg-primary-100 dark:bg-primary-900/40 border-primary-200 dark:border-primary-800"
+            className="bg-blue-500/20 border-blue-500/30"
           />{' '}
         </div>{' '}
         {/* Financial Overview */}{' '}

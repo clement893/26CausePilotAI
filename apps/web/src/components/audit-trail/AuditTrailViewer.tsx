@@ -36,10 +36,10 @@ const severityIcons = {
 };
 
 const severityColors = {
-  info: 'text-primary-600 dark:text-primary-400',
-  warning: 'text-warning-600 dark:text-warning-400',
-  error: 'text-error-600 dark:text-error-400',
-  critical: 'text-error-800 dark:text-error-600',
+  info: 'text-blue-400',
+  warning: 'text-yellow-400',
+  error: 'text-red-400',
+  critical: 'text-red-600',
 };
 
 const successIcons = {
@@ -49,9 +49,9 @@ const successIcons = {
 };
 
 const successColors = {
-  success: 'text-success-600 dark:text-success-400',
-  failure: 'text-error-600 dark:text-error-400',
-  unknown: 'text-muted-foreground',
+  success: 'text-green-400',
+  failure: 'text-red-400',
+  unknown: 'text-gray-400',
 };
 
 export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {

@@ -70,7 +70,7 @@ export interface BlogPostProps {
           <div className="text-xl text-gray-300 mb-6 font-medium"> {post.excerpt} </div>
         )}
         {/* Post Content */}
-        <div className="prose prose-lg dark:prose-invert max-w-none mb-8 text-gray-300">
+        <div className="prose prose-lg prose-invert max-w-none mb-8 text-gray-300">
           {post.content_html && typeof post.content_html === 'string' ? (
             <SafeHTML html={post.content_html} />
           ) : (

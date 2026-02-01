@@ -473,7 +473,7 @@ export default function SurveyBuilder({
                         {question.required && <span className="text-danger-500 text-xs ml-1">*</span>}
                         {question.showIf && (
                           <span
-                            className="text-xs text-primary-500 dark:text-primary-400"
+                            className="text-xs text-blue-400"
                             title={t('conditional') || 'Conditional'}
                           >
                             {' '}

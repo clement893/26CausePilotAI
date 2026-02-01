@@ -755,6 +755,33 @@
 
 ---
 
+### Batch 50: Organization, Page Builder, Subscriptions, Surveys, Audit Trail, Backups, Client, ERP, Scheduled Tasks, Workflow, Templates, AI, Blog, Documentation (14 composants)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** À créer
+
+#### Composants du Batch 50:
+
+- [x] `organization/DatabaseConnectionForm.tsx` - Remplacement des classes dark: pour info, warning, error avec couleurs explicites (blue-500/20, yellow-500/20, red-500/20) ✅
+- [x] `page-builder/PagePreview.tsx` - Remplacement dark:bg-primary-700, dark:prose-invert avec couleurs explicites ✅
+- [x] `subscriptions/PricingCard.tsx` - Remplacement dark:border-border avec border-gray-800 ✅
+- [x] `surveys/SurveyResults.tsx` - Remplacement dark:bg-primary-900/20, dark:text-primary-400, etc. avec couleurs explicites ✅
+- [x] `surveys/SurveyBuilder.tsx` - Remplacement dark:text-primary-400 avec text-blue-400 ✅
+- [x] `audit-trail/AuditTrailViewer.tsx` - Remplacement des classes dark: dans severityColors et successColors ✅
+- [x] `backups/BackupManager.tsx` - Remplacement des classes dark: dans statusColors ✅
+- [x] `client/ClientDashboard.tsx` - Remplacement dark:bg-primary-900/40, dark:border-primary-800 avec bg-blue-500/20, border-blue-500/30 ✅
+- [x] `erp/ERPDashboard.tsx` - Remplacement dark:bg-primary-900/40, dark:border-primary-800 avec bg-blue-500/20, border-blue-500/30 ✅
+- [x] `scheduled-tasks/TaskManager.tsx` - Remplacement des classes dark: dans statusColors ✅
+- [x] `workflow/WorkflowBuilder.tsx` - Remplacement dark:bg-primary-900/30, dark:border-primary-700 avec bg-blue-500/20, border-blue-500/30 ✅
+- [x] `templates/TemplateEditor.tsx` - Remplacement dark:prose-invert avec prose-invert ✅
+- [x] `ai/TemplateAIChat.tsx` - Remplacement dark:prose-invert avec prose-invert ✅
+- [x] `blog/BlogPost.tsx` - Remplacement dark:prose-invert avec prose-invert ✅
+- [x] `documentation/ArticleViewer.tsx` - Remplacement dark:prose-invert avec prose-invert ✅
+
+**Progression:** 14/14 (100%) ✅ COMPLÉTÉ
+
+---
+
 ### Batch 43: Activity, Admin, Advanced, Collaboration, Donors (29 composants)
 **Statut:** ✅ COMPLÉTÉ  
 **Priorité:** MOYENNE ⭐  
@@ -806,8 +833,8 @@
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 43
-- **Composants modifiés:** 276/357+ (77.3%)
+- **Batches complétés:** 50
+- **Composants modifiés:** 290/357+ (81.2%)
 - **Phase 1 (UI fondamentaux):** 82/91 composants (90%)
 - **Phase 2 (Layout):** 12/14 composants (86%) - **PHASE 2 TERMINÉE** ✅
 - **Phase 3 (Features):** 183/252+ composants (72.6%) - **EN COURS** 🔄

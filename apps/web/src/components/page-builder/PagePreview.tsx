@@ -13,7 +13,7 @@ export interface PagePreviewProps {
     switch (section.type) {
       case 'hero':
         return (
-          <div className="bg-primary-600 dark:bg-primary-700 text-background py-20 px-4 text-center">
+          <div className="bg-blue-600 text-white py-20 px-4 text-center">
             {' '}
             <h1 className="text-4xl font-bold mb-4">{section.title || 'Hero Section'}</h1>{' '}
             {section.content && <p className="text-xl opacity-90">{section.content}</p>}{' '}
@@ -27,7 +27,7 @@ export interface PagePreviewProps {
               <h2 className="text-3xl font-bold text-white mb-4"> {section.title} </h2>
             )}{' '}
             {section.content && (
-              <div className="prose prose-lg dark:prose-invert max-w-none">
+              <div className="prose prose-lg prose-invert max-w-none">
                 {' '}
                 <p className="text-gray-300 whitespace-pre-wrap"> {section.content} </p>{' '}
               </div>
@@ -72,7 +72,7 @@ export interface PagePreviewProps {
         );
       case 'cta':
         return (
-          <div className="bg-primary-600 dark:bg-primary-700 text-background py-16 px-4 text-center">
+          <div className="bg-blue-600 text-white py-16 px-4 text-center">
             {' '}
             {section.title && <h2 className="text-3xl font-bold mb-4">{section.title}</h2>}{' '}
             {section.content && <p className="text-xl opacity-90 mb-6">{section.content}</p>}{' '}

@@ -120,7 +120,7 @@ export function TemplateEditor({ entityType, onSave, templateId, className = '' 
 
         {previewMode ? (
           <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
-            <div className="prose dark:prose-invert max-w-none">
+            <div className="prose prose-invert max-w-none">
               <pre className="whitespace-pre-wrap text-sm text-gray-300">{content}</pre>
             </div>
           </div>

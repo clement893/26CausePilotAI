@@ -105,7 +105,7 @@ export function ArticleViewer({ slug, className = '' }: ArticleViewerProps) {
           </div>
         </header>
 
-        <SafeHTML html={article.content} className="prose dark:prose-invert max-w-none mb-8" />
+        <SafeHTML html={article.content} className="prose prose-invert max-w-none mb-8" />
 
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
