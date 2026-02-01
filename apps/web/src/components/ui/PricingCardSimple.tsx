@@ -37,54 +37,46 @@ export default function PricingCardSimple({
   };
   return (
     <Card
+      variant={plan.popular ? 'gradient-border' : 'glass'}
       className={clsx(
-        'relative',
-        plan.popular && 'border-2 border-primary-500 shadow-xl scale-105'
+        'relative hover-lift',
+        plan.popular && 'border-2 shadow-xl scale-105'
       )}
     >
-      {' '}
       {plan.popular && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          {' '}
-          <Badge variant="success" className="px-4 py-1">
-            {' '}
-            Le plus populaire{' '}
-          </Badge>{' '}
+          <Badge variant="gradient-success" className="px-4 py-1">
+            Le plus populaire
+          </Badge>
         </div>
-      )}{' '}
+      )}
       <div className="p-8">
-        {' '}
-        <h2 className="text-2xl font-bold text-foreground mb-2"> {plan.name} </h2>{' '}
-        <p className="text-muted-foreground mb-6">{plan.description}</p>{' '}
+        <h2 className="text-2xl font-bold text-white dark:text-foreground mb-2">{plan.name}</h2>
+        <p className="text-gray-400 dark:text-muted-foreground mb-6">{plan.description}</p>
         <div className="mb-6">
-          {' '}
-          <span className="text-4xl font-bold text-foreground"> {calculatePrice()}€ </span>{' '}
-          <span className="text-muted-foreground">/mois</span>{' '}
+          <span className="text-4xl font-bold text-white dark:text-foreground">{calculatePrice()}€</span>
+          <span className="text-gray-400 dark:text-muted-foreground">/mois</span>
           {billingPeriod === 'year' && calculateYearlyPrice() && (
-            <div className="text-sm text-muted-foreground mt-1"> {calculateYearlyPrice()}€/an </div>
-          )}{' '}
-        </div>{' '}
+            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">{calculateYearlyPrice()}€/an</div>
+          )}
+        </div>
         <Link href={`/subscriptions?plan=${plan.id}&period=${billingPeriod}`}>
-          {' '}
           <Button
-            className={clsx('w-full mb-6', plan.popular && 'bg-primary-600 hover:bg-primary-700')}
-            variant={plan.popular ? 'primary' : 'outline'}
+            className={clsx('w-full mb-6', plan.popular && 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600')}
+            variant={plan.popular ? 'gradient' : 'outline'}
           >
-            {' '}
-            {plan.buttonText}{' '}
-          </Button>{' '}
-        </Link>{' '}
+            {plan.buttonText}
+          </Button>
+        </Link>
         <ul className="space-y-3">
-          {' '}
           {plan.features.map((feature, index) => (
             <li key={index} className="flex items-start">
-              {' '}
-              <Check className="w-5 h-5 text-success-500 mr-2 mt-0.5 flex-shrink-0" />{' '}
-              <span className="text-foreground">{feature}</span>{' '}
+              <Check className="w-5 h-5 text-green-400 dark:text-success-500 mr-2 mt-0.5 flex-shrink-0" />
+              <span className="text-gray-300 dark:text-foreground">{feature}</span>
             </li>
-          ))}{' '}
-        </ul>{' '}
-      </div>{' '}
+          ))}
+        </ul>
+      </div>
     </Card>
   );
 }

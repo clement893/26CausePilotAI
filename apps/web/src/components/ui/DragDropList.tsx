@@ -80,24 +80,22 @@ export default function DragDropList({
             onDrop={(e) => !item.disabled && handleDrop(e, index)}
             onDragEnd={handleDragEnd}
             className={clsx(
-              'flex items-center gap-3 p-4 rounded-lg border transition-all',
-              'bg-background',
-              'border-border',
+              'flex items-center gap-3 p-4 rounded-lg border transition-all hover-lift',
+              'glass-effect bg-[#13131A] dark:bg-background',
+              'border-gray-800 dark:border-border',
               isDragging && 'opacity-50 cursor-grabbing',
               isDragOver &&
-                'border-primary-500 dark:border-primary-400 bg-primary-50 dark:bg-primary-900/20',
-              !item.disabled && 'cursor-grab hover:border-border dark:hover:border-border',
+                'border-blue-500 dark:border-primary-400 bg-gradient-to-r from-blue-500/20 to-purple-500/20',
+              !item.disabled && 'cursor-grab hover:border-gray-700 dark:hover:border-border',
               item.disabled && 'opacity-50 cursor-not-allowed',
               itemClassName
             )}
           >
-            {' '}
             {!item.disabled && (
-              <div className="text-muted-foreground flex-shrink-0">
-                {' '}
-                <GripVertical className="w-5 h-5" />{' '}
+              <div className="text-gray-400 dark:text-muted-foreground flex-shrink-0">
+                <GripVertical className="w-5 h-5" />
               </div>
-            )}{' '}
+            )}
             <div className="flex-1">
               {' '}
               {renderItem ? renderItem(item, index) : item.content}{' '}
