@@ -62,7 +62,7 @@ export default function HealthStatus() {
 
   if (loading) {
     return (
-      <Card>
+      <Card variant="glass" className="border border-gray-800">
         <div className="flex items-center justify-center p-8">
           <Spinner />
         </div>
@@ -72,8 +72,8 @@ export default function HealthStatus() {
 
   if (error) {
     return (
-      <Card>
-        <div className="p-4 text-danger-600 dark:text-danger-400">
+      <Card variant="glass" className="border border-gray-800">
+        <div className="p-4 text-red-400">
           Error: {error}
         </div>
       </Card>
@@ -85,21 +85,21 @@ export default function HealthStatus() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'healthy':
-        return 'bg-success-500';
+        return 'bg-green-500';
       case 'degraded':
-        return 'bg-warning-500';
+        return 'bg-yellow-500';
       case 'down':
-        return 'bg-danger-500';
+        return 'bg-red-500';
       default:
-        return 'bg-muted';
+        return 'bg-gray-600';
     }
   };
 
   return (
-    <Card>
+    <Card variant="glass" className="border border-gray-800">
       <div ref={elementRef} className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">System Health</h3>
+          <h3 className="text-lg font-semibold text-white">System Health</h3>
           <Badge
             variant={
               health.status === 'healthy'
@@ -117,23 +117,23 @@ export default function HealthStatus() {
           {health.services.map((service) => (
             <div
               key={service.name}
-              className="flex items-center justify-between p-3 bg-muted rounded-lg"
+              className="flex items-center justify-between p-3 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800 hover-lift"
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`w-3 h-3 rounded-full ${getStatusColor(service.status)}`}
                 />
                 <div>
-                  <div className="font-medium">{service.name}</div>
+                  <div className="font-medium text-white">{service.name}</div>
                   {service.message && (
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-gray-400">
                       {service.message}
                     </div>
                   )}
                 </div>
               </div>
               {service.responseTime !== undefined && (
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-400">
                   {service.responseTime}ms
                 </div>
               )}
@@ -141,7 +141,7 @@ export default function HealthStatus() {
           ))}
         </div>
 
-        <div className="mt-4 text-xs text-muted-foreground">
+        <div className="mt-4 text-xs text-gray-400">
           Last updated: {new Date(health.timestamp).toLocaleString()}
         </div>
       </div>

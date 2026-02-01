@@ -55,17 +55,17 @@ export default function AlertsPanel() {
   };
 
   return (
-    <Card>
+    <Card variant="glass" className="border border-gray-800">
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Active Alerts</h3>
+          <h3 className="text-lg font-semibold text-white">Active Alerts</h3>
           <Badge variant={alerts.length > 0 ? 'error' : 'success'}>
             {alerts.length} active
           </Badge>
         </div>
 
         {alerts.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-gray-400">
             No active alerts
           </div>
         ) : (
@@ -73,7 +73,7 @@ export default function AlertsPanel() {
             {alerts.map((alert) => (
               <div
                 key={alert.id}
-                className="p-4 bg-muted rounded-lg border-l-4"
+                className="p-4 glass-effect bg-[#1C1C26] rounded-lg border-l-4 border border-gray-800 hover-lift"
                 style={{
                   borderLeftColor:
                     alert.severity === 'critical' || alert.severity === 'error'
@@ -89,12 +89,12 @@ export default function AlertsPanel() {
                       <Badge variant={getSeverityColor(alert.severity)}>
                         {alert.severity}
                       </Badge>
-                      <span className="font-medium">{alert.title}</span>
+                      <span className="font-medium text-white">{alert.title}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">
+                    <p className="text-sm text-gray-400 mb-2">
                       {alert.message}
                     </p>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-gray-500">
                       {new Date(alert.timestamp).toLocaleString()}
                     </div>
                   </div>
@@ -104,6 +104,7 @@ export default function AlertsPanel() {
                         size="sm"
                         variant="outline"
                         onClick={() => handleAcknowledge(alert.id)}
+                        className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
                       >
                         Acknowledge
                       </Button>
@@ -112,6 +113,7 @@ export default function AlertsPanel() {
                       size="sm"
                       variant="ghost"
                       onClick={() => handleResolve(alert.id)}
+                      className="text-gray-400 hover:bg-[#252532] hover:text-white"
                     >
                       Resolve
                     </Button>

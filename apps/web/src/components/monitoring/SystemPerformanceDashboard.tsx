@@ -93,9 +93,9 @@ export default function PerformanceDashboard() {
 
   if (isLoading) {
     return (
-      <Card className="p-6">
+      <Card variant="glass" className="p-6 border border-gray-800">
         <div className="flex items-center justify-center py-8">
-          <RefreshCw className="w-6 h-6 animate-spin text-muted-foreground" />
+          <RefreshCw className="w-6 h-6 animate-spin text-gray-400" />
         </div>
       </Card>
     );
@@ -106,14 +106,14 @@ export default function PerformanceDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Performance Monitoring</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h2 className="text-2xl font-bold text-white gradient-text">Performance Monitoring</h2>
+          <p className="text-sm text-gray-400 mt-1">
             Real-time Core Web Vitals and performance metrics
           </p>
         </div>
         <button
           onClick={handleRefresh}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground bg-background border border-border rounded-lg hover:bg-muted"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#1C1C26] border border-gray-800 rounded-lg hover:bg-[#252532] transition-colors"
         >
           <RefreshCw className="w-4 h-4" />
           Refresh
@@ -122,85 +122,85 @@ export default function PerformanceDashboard() {
 
       {/* Core Web Vitals */}
       <div>
-        <h3 className="text-lg font-semibold text-foreground mb-4">Core Web Vitals</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">Core Web Vitals</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* LCP */}
-          <Card className="p-4">
+          <Card variant="glass" className="p-4 border border-gray-800 hover-lift">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Activity className="w-5 h-5 text-primary-500" />
-                <span className="text-sm font-medium text-foreground">LCP</span>
+                <Activity className="w-5 h-5 text-blue-400" />
+                <span className="text-sm font-medium text-white">LCP</span>
               </div>
               {lcpRating && <Badge variant={getRatingColor(lcpRating)}>{lcpRating}</Badge>}
             </div>
-            <p className="text-2xl font-bold text-foreground">{formatMetric(metrics.lcp)}</p>
-            <p className="text-xs text-muted-foreground mt-1">Largest Contentful Paint</p>
+            <p className="text-2xl font-bold text-white">{formatMetric(metrics.lcp)}</p>
+            <p className="text-xs text-gray-400 mt-1">Largest Contentful Paint</p>
           </Card>
 
           {/* INP */}
-          <Card className="p-4">
+          <Card variant="glass" className="p-4 border border-gray-800 hover-lift">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-warning-500" />
-                <span className="text-sm font-medium text-foreground">INP</span>
+                <Zap className="w-5 h-5 text-yellow-400" />
+                <span className="text-sm font-medium text-white">INP</span>
               </div>
               {inpRating && <Badge variant={getRatingColor(inpRating)}>{inpRating}</Badge>}
             </div>
-            <p className="text-2xl font-bold text-foreground">{formatMetric(metrics.inp)}</p>
-            <p className="text-xs text-muted-foreground mt-1">Interaction to Next Paint</p>
+            <p className="text-2xl font-bold text-white">{formatMetric(metrics.inp)}</p>
+            <p className="text-xs text-gray-400 mt-1">Interaction to Next Paint</p>
           </Card>
 
           {/* CLS */}
-          <Card className="p-4">
+          <Card variant="glass" className="p-4 border border-gray-800 hover-lift">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-primary-500" />
-                <span className="text-sm font-medium text-foreground">CLS</span>
+                <TrendingUp className="w-5 h-5 text-purple-400" />
+                <span className="text-sm font-medium text-white">CLS</span>
               </div>
               {clsRating && <Badge variant={getRatingColor(clsRating)}>{clsRating}</Badge>}
             </div>
-            <p className="text-2xl font-bold text-foreground">{formatMetric(metrics.cls, '')}</p>
-            <p className="text-xs text-muted-foreground mt-1">Cumulative Layout Shift</p>
+            <p className="text-2xl font-bold text-white">{formatMetric(metrics.cls, '')}</p>
+            <p className="text-xs text-gray-400 mt-1">Cumulative Layout Shift</p>
           </Card>
         </div>
       </div>
 
       {/* Other Metrics */}
       <div>
-        <h3 className="text-lg font-semibold text-foreground mb-4">Other Performance Metrics</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">Other Performance Metrics</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* FCP */}
-          <Card className="p-4">
+          <Card variant="glass" className="p-4 border border-gray-800 hover-lift">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-success-500" />
-                <span className="text-sm font-medium text-foreground">FCP</span>
+                <Clock className="w-5 h-5 text-green-400" />
+                <span className="text-sm font-medium text-white">FCP</span>
               </div>
               {fcpRating && <Badge variant={getRatingColor(fcpRating)}>{fcpRating}</Badge>}
             </div>
-            <p className="text-2xl font-bold text-foreground">{formatMetric(metrics.fcp)}</p>
-            <p className="text-xs text-muted-foreground mt-1">First Contentful Paint</p>
+            <p className="text-2xl font-bold text-white">{formatMetric(metrics.fcp)}</p>
+            <p className="text-xs text-gray-400 mt-1">First Contentful Paint</p>
           </Card>
 
           {/* TTFB */}
-          <Card className="p-4">
+          <Card variant="glass" className="p-4 border border-gray-800 hover-lift">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Activity className="w-5 h-5 text-orange-500" />
-                <span className="text-sm font-medium text-foreground">TTFB</span>
+                <Activity className="w-5 h-5 text-orange-400" />
+                <span className="text-sm font-medium text-white">TTFB</span>
               </div>
               {ttfbRating && <Badge variant={getRatingColor(ttfbRating)}>{ttfbRating}</Badge>}
             </div>
-            <p className="text-2xl font-bold text-foreground">{formatMetric(metrics.ttfb)}</p>
-            <p className="text-xs text-muted-foreground mt-1">Time to First Byte</p>
+            <p className="text-2xl font-bold text-white">{formatMetric(metrics.ttfb)}</p>
+            <p className="text-xs text-gray-400 mt-1">Time to First Byte</p>
           </Card>
 
           {/* FID */}
-          <Card className="p-4">
+          <Card variant="glass" className="p-4 border border-gray-800 hover-lift">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-indigo-500" />
-                <span className="text-sm font-medium text-foreground">FID</span>
+                <Zap className="w-5 h-5 text-indigo-400" />
+                <span className="text-sm font-medium text-white">FID</span>
               </div>
               {metrics.fid !== null && (
                 <Badge variant={getRatingColor(getRating(metrics.fid, { good: 100, poor: 300 }))}>
@@ -208,19 +208,19 @@ export default function PerformanceDashboard() {
                 </Badge>
               )}
             </div>
-            <p className="text-2xl font-bold text-foreground">{formatMetric(metrics.fid)}</p>
-            <p className="text-xs text-muted-foreground mt-1">First Input Delay (deprecated)</p>
+            <p className="text-2xl font-bold text-white">{formatMetric(metrics.fid)}</p>
+            <p className="text-xs text-gray-400 mt-1">First Input Delay (deprecated)</p>
           </Card>
         </div>
       </div>
 
       {/* Performance Tips */}
-      <Card className="p-4 bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800">
+      <Card variant="glass" className="p-4 bg-blue-500/10 border border-blue-500/30">
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold text-primary-900 dark:text-primary-100">
+          <h4 className="text-sm font-semibold text-white">
             Performance Targets
           </h4>
-          <ul className="text-xs text-primary-700 dark:text-primary-300 space-y-1">
+          <ul className="text-xs text-gray-300 space-y-1">
             <li>• LCP: &lt; 2.5s (good), &lt; 4.0s (needs improvement)</li>
             <li>• INP: &lt; 200ms (good), &lt; 500ms (needs improvement)</li>
             <li>• CLS: &lt; 0.1 (good), &lt; 0.25 (needs improvement)</li>

@@ -68,16 +68,16 @@ export default function MetricsChart({
   const threshold = latestMetric?.threshold;
 
   return (
-    <Card>
+    <Card variant="glass" className="border border-gray-800">
       <div ref={elementRef} className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">{title || metricName}</h3>
+          <h3 className="text-lg font-semibold text-white">{title || metricName}</h3>
           {latestMetric && (
             <div className="text-right">
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold text-white">
                 {latestMetric.value.toFixed(2)}
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-400">
                 {latestMetric.unit}
               </div>
             </div>
@@ -89,11 +89,11 @@ export default function MetricsChart({
             <Chart data={chartData} type="line" height={height} />
             {threshold && (
               <div className="mt-4 flex gap-4 text-xs">
-                <div className="text-warning-600 dark:text-warning-400">
+                <div className="text-yellow-400">
                   Warning: {threshold.warning}
                   {latestMetric.unit}
                 </div>
-                <div className="text-error-600 dark:text-error-400">
+                <div className="text-red-400">
                   Critical: {threshold.critical}
                   {latestMetric.unit}
                 </div>
@@ -101,7 +101,7 @@ export default function MetricsChart({
             )}
           </>
         ) : (
-          <div className="flex items-center justify-center h-48 text-muted-foreground">
+          <div className="flex items-center justify-center h-48 text-gray-400">
             No data available
           </div>
         )}

@@ -26,8 +26,8 @@ export default function SystemMetrics() {
 
   if (!metrics) {
     return (
-      <Card>
-        <div className="p-6 text-center text-muted-foreground">
+      <Card variant="glass" className="border border-gray-800">
+        <div className="p-6 text-center text-gray-400">
           Loading system metrics...
         </div>
       </Card>
@@ -35,59 +35,59 @@ export default function SystemMetrics() {
   }
 
   return (
-    <Card>
+    <Card variant="glass" className="border border-gray-800">
       <div className="p-6">
-        <h3 className="text-lg font-semibold mb-4">System Metrics</h3>
+        <h3 className="text-lg font-semibold mb-4 text-white">System Metrics</h3>
         <div className="space-y-4">
           <div>
             <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">CPU</span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm font-medium text-white">CPU</span>
+              <span className="text-sm text-gray-400">
                 {metrics.cpu.toFixed(1)}%
               </span>
             </div>
-            <Progress value={metrics.cpu} />
+            <Progress value={metrics.cpu} className="bg-gradient-to-r from-blue-500 to-purple-500" />
           </div>
 
           <div>
             <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">Memory</span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm font-medium text-white">Memory</span>
+              <span className="text-sm text-gray-400">
                 {metrics.memory.toFixed(1)}%
               </span>
             </div>
-            <Progress value={metrics.memory} />
+            <Progress value={metrics.memory} className="bg-gradient-to-r from-green-500 to-cyan-500" />
           </div>
 
           <div>
             <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">Disk</span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm font-medium text-white">Disk</span>
+              <span className="text-sm text-gray-400">
                 {metrics.disk.toFixed(1)}%
               </span>
             </div>
-            <Progress value={metrics.disk} />
+            <Progress value={metrics.disk} className="bg-gradient-to-r from-orange-500 to-red-500" />
           </div>
 
-          <div className="pt-2 border-t border-border">
-            <div className="text-sm font-medium mb-2">Network</div>
+          <div className="pt-2 border-t border-gray-800">
+            <div className="text-sm font-medium mb-2 text-white">Network</div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <div className="text-xs text-muted-foreground mb-1">In</div>
-                <div className="text-lg font-semibold">
+                <div className="text-xs text-gray-400 mb-1">In</div>
+                <div className="text-lg font-semibold text-white">
                   {(metrics.network.in / 1024 / 1024).toFixed(2)} MB/s
                 </div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground mb-1">Out</div>
-                <div className="text-lg font-semibold">
+                <div className="text-xs text-gray-400 mb-1">Out</div>
+                <div className="text-lg font-semibold text-white">
                   {(metrics.network.out / 1024 / 1024).toFixed(2)} MB/s
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="text-xs text-muted-foreground mt-4">
+          <div className="text-xs text-gray-400 mt-4">
             Last updated: {new Date(metrics.timestamp).toLocaleTimeString()}
           </div>
         </div>
