@@ -329,15 +329,27 @@
 
 **Progression:** 5/5 (100%) ✅ COMPLÉTÉ
 
+### Batch 25: Features Standards - Notifications Components (4 composants)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `4240eb4` - feat(ui): Batch 25 - Alignement composants Notifications
+
+- [x] `notifications/NotificationCenter.tsx` - Card glass, notifications avec glass-effect, filters dark ✅
+- [x] `notifications/NotificationBell.tsx` - Bell button dark, dropdown avec glass-effect ✅
+- [x] `notifications/NotificationCenterConnected.tsx` - Error et loading states dark ✅
+- [x] `notifications/NotificationBellConnected.tsx` - Loading state dark ✅
+
+**Progression:** 4/4 (100%) ✅ COMPLÉTÉ
+
 ---
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 24
-- **Composants modifiés:** 120/357+ (33.6%)
+- **Batches complétés:** 25
+- **Composants modifiés:** 124/357+ (34.7%)
 - **Phase 1 (UI fondamentaux):** 82/91 composants (90%)
 - **Phase 2 (Layout):** 12/14 composants (86%) - **PHASE 2 TERMINÉE** ✅
-- **Phase 3 (Features):** 27/252+ composants (10.7%) - **EN COURS** 🔄
+- **Phase 3 (Features):** 31/252+ composants (12.3%) - **EN COURS** 🔄
 - **Dernière mise à jour:** 2026-02-01
 
 ---
