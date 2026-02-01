@@ -5,7 +5,7 @@ export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Container, Button, useToast } from '@/components/ui';
+import { Container, Button, Card, useToast } from '@/components/ui';
 import { Plus, Target } from 'lucide-react';
 import { useOrganization } from '@/hooks/useOrganization';
 import { listP2PCampaigns, deleteP2PCampaign } from '@/app/actions/p2p';
@@ -61,26 +61,26 @@ export default function P2PCampagnesPage() {
     router.push(`/dashboard/p2p/campagnes/${campaignId}/edit`);
   };
 
-  const handleCampaignDelete = async (campaignId: string) => {
-    if (!activeOrganization) return;
+  // const handleCampaignDelete = async (campaignId: string) => {
+  //   if (!activeOrganization) return;
 
-    try {
-      const result = await deleteP2PCampaign({
-        campaignId,
-        organizationId: activeOrganization.id,
-      });
+  //   try {
+  //     const result = await deleteP2PCampaign({
+  //       campaignId,
+  //       organizationId: activeOrganization.id,
+  //     });
 
-      if (result.success) {
-        showSuccessToast('Campagne supprimée avec succès');
-        loadCampaigns();
-      } else {
-        showErrorToast(result.error || 'Erreur lors de la suppression');
-      }
-    } catch (error) {
-      logger.error('Error deleting P2P campaign', error);
-      showErrorToast('Erreur lors de la suppression');
-    }
-  };
+  //     if (result.success) {
+  //       showSuccessToast('Campagne supprimée avec succès');
+  //       loadCampaigns();
+  //     } else {
+  //       showErrorToast(result.error || 'Erreur lors de la suppression');
+  //     }
+  //   } catch (error) {
+  //     logger.error('Error deleting P2P campaign', error);
+  //     showErrorToast('Erreur lors de la suppression');
+  //   }
+  // };
 
   if (orgLoading || isLoading) {
     return (
