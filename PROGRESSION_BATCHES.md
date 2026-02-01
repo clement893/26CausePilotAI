@@ -798,6 +798,27 @@
 
 ---
 
+### Batch 52: Pages App - Become Superadmin, Upload, OverviewSection, Sentry Testing, AdminContent, Docs, Subscriptions Success (9 fichiers)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `fd213b3`, `beeb206`, `66367e5`, `2e3f985` - feat: Batch 52 - Alignement pages app supplémentaires (117 occurrences)
+
+#### Fichiers du Batch 52:
+
+- [x] `dashboard/become-superadmin/page.tsx` - Remplacement de 18 occurrences dark: avec couleurs explicites (bg-blue-500/20, text-blue-400, bg-yellow-500/20, text-yellow-400, bg-red-500/20, text-red-400, bg-green-500/20, text-green-400) ✅
+- [x] `[locale]/dashboard/become-superadmin/page.tsx` - Remplacement de 18 occurrences dark: avec couleurs explicites ✅
+- [x] `upload/page.tsx` - Remplacement de 18 occurrences dark: avec couleurs explicites (bg-[#1C1C26], text-gray-300, text-gray-400, border-gray-800, hover:bg-gray-700, text-green-400, text-red-400) ✅
+- [x] `[locale]/test/api-connections/components/OverviewSection.tsx` - Remplacement de 14 occurrences dark: avec couleurs explicites (bg-green-500/20, text-green-400, bg-blue-500/20, text-blue-400, bg-yellow-500/20, text-yellow-400, bg-red-500/20, text-red-400) ✅
+- [x] `[locale]/api-connections/testing/components/OverviewSection.tsx` - Remplacement de 14 occurrences dark: avec couleurs explicites ✅
+- [x] `[locale]/sentry/testing/page.tsx` - Remplacement de 12 occurrences dark: avec couleurs explicites (bg-blue-500/20, text-blue-300, text-blue-200, border-blue-500/30) ✅
+- [x] `[locale]/admin/AdminContent.tsx` - Remplacement de 8 occurrences dark: avec couleurs explicites (bg-blue-500/20, text-blue-400, bg-green-500/20, text-green-300, border-green-500/30) ✅
+- [x] `docs/page.tsx` - Remplacement de 7 occurrences dark: avec couleurs explicites (text-blue-400, bg-[#1C1C26]) ✅
+- [x] `subscriptions/success/page.tsx` - Remplacement de 7 occurrences dark: avec couleurs explicites (from-[#0A0A0F], to-[#1C1C26], bg-green-500/20, text-gray-300, text-gray-400, text-green-400) ✅
+
+**Progression:** 9/9 (100%) ✅ COMPLÉTÉ
+
+---
+
 ### Batch 43: Activity, Admin, Advanced, Collaboration, Donors (29 composants)
 **Statut:** ✅ COMPLÉTÉ  
 **Priorité:** MOYENNE ⭐  
@@ -849,9 +870,9 @@
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 51
+- **Batches complétés:** 52
 - **Composants modifiés:** 290/357+ (81.2%)
-- **Fichiers de pages traités:** 4/71 (5.6%)
+- **Fichiers de pages traités:** 13/71 (18.3%)
 - **Phase 1 (UI fondamentaux):** 82/91 composants (90%)
 - **Phase 2 (Layout):** 12/14 composants (86%) - **PHASE 2 TERMINÉE** ✅
 - **Phase 3 (Features):** 183/252+ composants (72.6%) - **EN COURS** 🔄
