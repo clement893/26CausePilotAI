@@ -79,20 +79,20 @@ function DashboardContent() {
 
       {/* About CausePilot Section */}
       <MotionDiv variant="slideUp" delay={150}>
-        <Card className="bg-gradient-to-br from-primary-50 via-primary-100/50 to-secondary-50 dark:from-primary-950/60 dark:via-primary-900/40 dark:to-secondary-950/60 border-primary-200 dark:border-primary-800">
+        <Card className="bg-gradient-to-br from-[#0A0A0F] via-[#13131A] to-[#1C1C26] border-blue-500/30">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 bg-primary-600 dark:bg-primary-500 rounded-lg">
+                <div className="p-3 bg-blue-500 rounded-lg">
                   <Brain className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <h2 className="text-2xl font-bold text-foreground">About CausePilot AI</h2>
               </div>
               <p className="text-base text-muted-foreground mb-4 leading-relaxed">
                 CausePilot AI is an intelligent fundraising platform designed for modern nonprofits. 
-                We combine <span className="font-semibold text-primary-600 dark:text-primary-400">predictive donor analytics</span>,{' '}
-                <span className="font-semibold text-secondary-600 dark:text-secondary-400">automated stewardship</span>, and{' '}
-                <span className="font-semibold text-info-600 dark:text-info-400">AI-powered insights</span> to help you maximize your impact.
+                We combine <span className="font-semibold text-blue-400">predictive donor analytics</span>,{' '}
+                <span className="font-semibold text-green-400">automated stewardship</span>, and{' '}
+                <span className="font-semibold text-blue-400">AI-powered insights</span> to help you maximize your impact.
               </p>
               <p className="text-sm text-muted-foreground">
                 Whether you're managing donor relationships, running campaigns, or analyzing your fundraising performance, 
@@ -100,8 +100,8 @@ function DashboardContent() {
               </p>
             </div>
             <div className="flex-shrink-0">
-              <div className="p-4 bg-white/50 dark:bg-gray-900/50 rounded-lg border border-primary-200 dark:border-primary-800">
-                <Heart className="w-12 h-12 text-primary-600 dark:text-primary-400" />
+              <div className="p-4 bg-[#0A0A0F]/50 rounded-lg border border-blue-500/30">
+                <Heart className="w-12 h-12 text-blue-400" />
               </div>
             </div>
           </div>
@@ -118,8 +118,8 @@ function DashboardContent() {
           <div className="stagger-fade-in opacity-0 stagger-delay-1">
             <Card className="border-l-4 border-l-primary-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex-shrink-0">
-                  <Brain className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                <div className="p-3 bg-blue-500/20 rounded-lg flex-shrink-0">
+                  <Brain className="w-6 h-6 text-blue-400" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-semibold text-foreground mb-1">AI Copilot</h4>
@@ -133,8 +133,8 @@ function DashboardContent() {
           <div className="stagger-fade-in opacity-0 stagger-delay-2">
             <Card className="border-l-4 border-l-secondary-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg flex-shrink-0">
-                <Users className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
+              <div className="p-3 bg-green-500/20 rounded-lg flex-shrink-0">
+                <Users className="w-6 h-6 text-green-400" />
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Donor Management</h4>
@@ -148,8 +148,8 @@ function DashboardContent() {
           <div className="stagger-fade-in opacity-0 stagger-delay-3">
             <Card className="border-l-4 border-l-info-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-info-100 dark:bg-info-900/30 rounded-lg flex-shrink-0">
-                <Zap className="w-6 h-6 text-info-600 dark:text-info-400" />
+              <div className="p-3 bg-blue-500/20 rounded-lg flex-shrink-0">
+                <Zap className="w-6 h-6 text-blue-400" />
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Automated Campaigns</h4>
@@ -163,8 +163,8 @@ function DashboardContent() {
           <div className="stagger-fade-in opacity-0 stagger-delay-4">
             <Card className="border-l-4 border-l-success-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg flex-shrink-0">
-                <Heart className="w-6 h-6 text-success-600 dark:text-success-400" />
+              <div className="p-3 bg-green-500/20 rounded-lg flex-shrink-0">
+                <Heart className="w-6 h-6 text-green-400" />
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Smart Donation Forms</h4>
@@ -178,8 +178,8 @@ function DashboardContent() {
           <div className="stagger-fade-in opacity-0 stagger-delay-5">
             <Card className="border-l-4 border-l-warning-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-warning-100 dark:bg-warning-900/30 rounded-lg flex-shrink-0">
-                <BarChart3 className="w-6 h-6 text-warning-600 dark:text-warning-400" />
+              <div className="p-3 bg-yellow-500/20 rounded-lg flex-shrink-0">
+                <BarChart3 className="w-6 h-6 text-yellow-400" />
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Impact Analytics</h4>
@@ -193,8 +193,8 @@ function DashboardContent() {
           <div className="stagger-fade-in opacity-0 stagger-delay-6">
             <Card className="border-l-4 border-l-error-500 hover:shadow-lg transition-all hover:scale-[1.02] h-full">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-error-100 dark:bg-error-900/30 rounded-lg flex-shrink-0">
-                <Shield className="w-6 h-6 text-error-600 dark:text-error-400" />
+              <div className="p-3 bg-red-500/20 rounded-lg flex-shrink-0">
+                <Shield className="w-6 h-6 text-red-400" />
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Secure & Compliant</h4>
@@ -213,8 +213,8 @@ function DashboardContent() {
           {/* User Profile Card */}
           <Card className="hover:shadow-xl transition-all duration-300">
             <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                <User className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+              <div className="p-3 bg-blue-500/20 rounded-lg">
+                <User className="w-6 h-6 text-blue-400" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground">Your Profile</h3>
@@ -247,7 +247,7 @@ function DashboardContent() {
               <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   {user?.is_active ? (
-                    <CheckCircle2 className="w-5 h-5 text-success-600 dark:text-success-400" />
+                    <CheckCircle2 className="w-5 h-5 text-green-400" />
                   ) : (
                     <XCircle className="w-5 h-5 text-muted-foreground" />
                   )}
@@ -264,7 +264,7 @@ function DashboardContent() {
               <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   {user?.is_verified ? (
-                    <CheckCircle2 className="w-5 h-5 text-success-600 dark:text-success-400" />
+                    <CheckCircle2 className="w-5 h-5 text-green-400" />
                   ) : (
                     <XCircle className="w-5 h-5 text-muted-foreground" />
                   )}
@@ -282,9 +282,9 @@ function DashboardContent() {
           </Card>
 
           {/* Quick Actions Card */}
-          <Card className="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-950/60 dark:to-primary-900/60 border-primary-200 dark:border-primary-800 hover:shadow-xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-[#0A0A0F] to-[#1C1C26] border-blue-500/30 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 bg-primary-600 dark:bg-primary-500 rounded-lg">
+              <div className="p-3 bg-blue-500 rounded-lg">
                 <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
@@ -354,8 +354,8 @@ function DashboardContent() {
       <MotionDiv variant="slideUp" delay={400}>
         <Card className="hover:shadow-xl transition-all duration-300">
           <div className="flex items-center gap-4 mb-6">
-            <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg">
-              <Shield className="w-6 h-6 text-success-600 dark:text-success-400" />
+            <div className="p-3 bg-green-500/20 rounded-lg">
+              <Shield className="w-6 h-6 text-green-400" />
             </div>
             <div>
               <h3 className="text-xl font-semibold text-foreground">System Status</h3>
@@ -363,34 +363,34 @@ function DashboardContent() {
             </div>
           </div>
           <Grid columns={{ mobile: 1, tablet: 3 }} gap="normal">
-            <div className="p-4 bg-success-50 dark:bg-success-900/80 border-2 border-success-200 dark:border-success-800 rounded-lg hover:border-success-400 dark:hover:border-success-600 transition-colors">
+            <div className="p-4 bg-green-500/20 border-2 border-green-500/30 rounded-lg hover:border-green-500/50 transition-colors">
               <div className="flex items-center gap-3 mb-2">
-                <CheckCircle2 className="w-5 h-5 text-success-600 dark:text-success-400" />
-                <p className="font-semibold text-success-900 dark:text-success-100">
+                <CheckCircle2 className="w-5 h-5 text-green-400" />
+                <p className="font-semibold text-green-300">
                   Backend Connected
                 </p>
               </div>
-              <p className="text-sm text-success-800 dark:text-success-200 ml-8">API is running</p>
+              <p className="text-sm text-green-200 ml-8">API is running</p>
             </div>
-            <div className="p-4 bg-success-50 dark:bg-success-900/80 border-2 border-success-200 dark:border-success-800 rounded-lg hover:border-success-400 dark:hover:border-success-600 transition-colors">
+            <div className="p-4 bg-green-500/20 border-2 border-green-500/30 rounded-lg hover:border-green-500/50 transition-colors">
               <div className="flex items-center gap-3 mb-2">
-                <Database className="w-5 h-5 text-success-600 dark:text-success-400" />
-                <p className="font-semibold text-success-900 dark:text-success-100">
+                <Database className="w-5 h-5 text-green-400" />
+                <p className="font-semibold text-green-300">
                   Database Connected
                 </p>
               </div>
-              <p className="text-sm text-success-800 dark:text-success-200 ml-8">
+              <p className="text-sm text-green-200 ml-8">
                 PostgreSQL is running
               </p>
             </div>
-            <div className="p-4 bg-success-50 dark:bg-success-900/80 border-2 border-success-200 dark:border-success-800 rounded-lg hover:border-success-400 dark:hover:border-success-600 transition-colors">
+            <div className="p-4 bg-green-500/20 border-2 border-green-500/30 rounded-lg hover:border-green-500/50 transition-colors">
               <div className="flex items-center gap-3 mb-2">
-                <Shield className="w-5 h-5 text-success-600 dark:text-success-400" />
-                <p className="font-semibold text-success-900 dark:text-success-100">
+                <Shield className="w-5 h-5 text-green-400" />
+                <p className="font-semibold text-green-300">
                   Authentication
                 </p>
               </div>
-              <p className="text-sm text-success-800 dark:text-success-200 ml-8">JWT is working</p>
+              <p className="text-sm text-green-200 ml-8">JWT is working</p>
             </div>
           </Grid>
         </Card>
