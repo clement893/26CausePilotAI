@@ -81,7 +81,7 @@ export default function LoadingSkeleton({ variant = 'card', count = 1, className
     return (
       <div className={clsx('space-y-2', className)}>
         {/* Table header */}
-        <div className="flex gap-4 pb-2 border-b">
+        <div className="flex gap-4 pb-2 border-b border-gray-800 dark:border-border">
           {Array.from({ length: 4 }).map((_, index) => (
             <Skeleton key={index} variant="rectangular" height={16} width="25%" />
           ))}
