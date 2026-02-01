@@ -38,13 +38,13 @@ export default function PageHeader({
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-4 mb-4 flex-wrap">
-            <Heading level={1} className="text-foreground font-bold">
+            <Heading level={1} className="text-white dark:text-foreground font-bold">
               {title}
             </Heading>
             {badge && <div className="flex-shrink-0">{badge}</div>}
           </div>
           {description && (
-            <Text variant="body" className="text-muted-foreground">
+            <Text variant="body" className="text-gray-400 dark:text-muted-foreground">
               {description}
             </Text>
           )}
