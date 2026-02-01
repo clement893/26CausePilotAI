@@ -49,7 +49,7 @@ function SubscriptionSuccessContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-success-50 to-success-100 dark:from-muted dark:to-muted flex items-center justify-center px-4">
+        <div className="min-h-screen bg-gradient-to-br from-success-50 to-success-100 from-[#1C1C26] to-[#1C1C26] flex items-center justify-center px-4">
       <Card className="w-full max-w-2xl">
         <div className="p-8 text-center">
           {/* Success Icon */}
