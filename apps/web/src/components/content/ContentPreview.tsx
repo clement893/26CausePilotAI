@@ -28,7 +28,7 @@ export interface ContentPreviewProps {
           {' '}
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-foreground hover:text-foreground"
+            className="px-4 py-2 text-sm font-medium text-white bg-[#1C1C26] border border-gray-800 rounded-lg hover:bg-[#252532] transition-colors"
           >
             {' '}
             Close{' '}

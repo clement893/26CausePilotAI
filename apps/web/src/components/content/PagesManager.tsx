@@ -62,8 +62,8 @@ export default function PagesManager({
       sortable: true,
       render: (_value: unknown, page: Page) => (
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-muted-foreground" />
-          <span className="font-medium text-foreground">{page.title}</span>
+          <FileText className="w-4 h-4 text-gray-400" />
+          <span className="font-medium text-white">{page.title}</span>
         </div>
       ),
     },
@@ -72,7 +72,7 @@ export default function PagesManager({
       label: 'Slug',
       sortable: true,
       render: (_value: unknown, page: Page) => (
-        <code className="text-sm text-muted-foreground">/{page.slug}</code>
+        <code className="text-sm text-gray-400">/{page.slug}</code>
       ),
     },
     {
@@ -97,7 +97,7 @@ export default function PagesManager({
       label: 'Last Updated',
       sortable: true,
       render: (_value: unknown, page: Page) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(page.updated_at).toLocaleDateString()}
         </span>
       ),
@@ -113,8 +113,8 @@ export default function PagesManager({
           <Button variant="ghost" size="sm" onClick={() => handleEdit(page)} title="Edit">
             <Edit className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => handleDelete(page.id)} title="Delete">
-            <Trash2 className="w-4 h-4 text-danger-600 dark:text-danger-400" />
+          <Button variant="ghost" size="sm" onClick={() => handleDelete(page.id)} title="Delete" className="text-gray-400 hover:bg-[#252532] hover:text-red-400">
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       ),
@@ -206,9 +206,9 @@ export default function PagesManager({
 
   return (
     <div className={className}>
-      <Card title="Pages">
+      <Card variant="glass" title="Pages" className="border border-gray-800">
         <div className="mb-4 flex justify-end">
-          <Button onClick={handleCreate} variant="primary">
+          <Button onClick={handleCreate} variant="gradient">
             <Plus className="w-4 h-4 mr-2" />
             New Page
           </Button>
@@ -243,10 +243,11 @@ export default function PagesManager({
               variant="outline"
               onClick={() => setIsCreateModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Creating...' : 'Create Page'}
             </Button>
           </div>
@@ -254,40 +255,43 @@ export default function PagesManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Title *</label>
+            <label className="block text-sm font-medium text-white mb-2">Title *</label>
             <Input
               value={formData.title}
               onChange={(e) => handleTitleChange(e.target.value)}
               placeholder="Page title"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Slug *</label>
+            <label className="block text-sm font-medium text-white mb-2">Slug *</label>
             <Input
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
               placeholder="page-slug"
               required
+              className="form-input-glow"
             />
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               URL-friendly identifier (e.g., about-us)
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Content</label>
+            <label className="block text-sm font-medium text-white mb-2">Content</label>
             <Textarea
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               placeholder="Page content..."
               rows={10}
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Status</label>
+            <label className="block text-sm font-medium text-white mb-2">Status</label>
             <select
               value={formData.status}
               onChange={(e) =>
@@ -296,7 +300,7 @@ export default function PagesManager({
                   status: e.target.value as Page['status'],
                 })
               }
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
             >
               <option value="draft">Draft</option>
               <option value="published">Published</option>
@@ -318,10 +322,11 @@ export default function PagesManager({
               variant="outline"
               onClick={() => setIsEditModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
@@ -329,37 +334,40 @@ export default function PagesManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Title *</label>
+            <label className="block text-sm font-medium text-white mb-2">Title *</label>
             <Input
               value={formData.title}
               onChange={(e) => handleTitleChange(e.target.value)}
               placeholder="Page title"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Slug *</label>
+            <label className="block text-sm font-medium text-white mb-2">Slug *</label>
             <Input
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
               placeholder="page-slug"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Content</label>
+            <label className="block text-sm font-medium text-white mb-2">Content</label>
             <Textarea
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               placeholder="Page content..."
               rows={10}
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Status</label>
+            <label className="block text-sm font-medium text-white mb-2">Status</label>
             <select
               value={formData.status}
               onChange={(e) =>
@@ -368,7 +376,7 @@ export default function PagesManager({
                   status: e.target.value as Page['status'],
                 })
               }
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
             >
               <option value="draft">Draft</option>
               <option value="published">Published</option>

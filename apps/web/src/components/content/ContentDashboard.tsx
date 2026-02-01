@@ -117,7 +117,7 @@ export interface ContentDashboardProps {
         />{' '}
       </div>{' '}
       {/* Quick Links */}{' '}
-      <Card title="Content Management">
+      <Card variant="glass" title="Content Management" className="border border-gray-800">
         {' '}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {' '}
@@ -127,7 +127,7 @@ export interface ContentDashboardProps {
               <Link
                 key={link.href}
                 href={link.href}
-                className="group p-4 border border-border rounded-lg hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-md transition-all"
+                className="group p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover:border-blue-500/50 hover-lift transition-all"
               >
                 {' '}
                 <div className="flex items-start justify-between">
@@ -136,18 +136,18 @@ export interface ContentDashboardProps {
                     {' '}
                     <div className="flex items-center gap-3 mb-2">
                       {' '}
-                      <div className={`p-2 rounded-lg ${link.iconBgClass}`}>
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20">
                         {' '}
-                        <Icon className={`w-5 h-5 ${link.iconTextClass}`} />{' '}
+                        <Icon className="w-5 h-5 text-blue-400" />{' '}
                       </div>{' '}
-                      <h3 className="font-semibold text-foreground group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors">
                         {' '}
                         {link.title}{' '}
                       </h3>{' '}
                     </div>{' '}
-                    <p className="text-sm text-muted-foreground mb-2"> {link.description} </p>{' '}
+                    <p className="text-sm text-gray-400 mb-2"> {link.description} </p>{' '}
                     {link.count !== undefined && (
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-gray-500">
                         {' '}
                         {link.count} {link.count === 1 ? 'item' : 'items'}{' '}
                       </p>
