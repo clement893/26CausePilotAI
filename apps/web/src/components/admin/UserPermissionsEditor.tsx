@@ -122,13 +122,15 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
       {/* Search and Filter */}
       <div className="flex gap-4">
         <div className="flex-1">
-          <Input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Rechercher une permission..."
-            fullWidth
-          />
+          <div className="form-input-glow">
+            <Input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Rechercher une permission..."
+              fullWidth
+            />
+          </div>
         </div>
         <div className="w-48">
           <select

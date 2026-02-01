@@ -72,42 +72,56 @@ export function CommunicationList({ donorId, className }: CommunicationListProps
   };
 
   if (isLoading && communications.length === 0) {
-    return <div className={className}>Loading communications...</div>;
+    return <div className={className}><p className="text-gray-400">Loading communications...</p></div>;
   }
+
+  const statusBadgeVariants: Record<string, 'success' | 'warning' | 'error' | 'default' | 'info'> = {
+    sent: 'info',
+    delivered: 'success',
+    opened: 'default',
+    clicked: 'default',
+    bounced: 'error',
+    failed: 'error',
+  };
 
   return (
     <div className={className}>
       <div className="space-y-3">
         {communications.map(communication => {
           const Icon = communicationIcons[communication.communication_type] || Mail;
-          const statusClass = statusColors[communication.status] || statusColors.sent;
+          const statusVariant = statusBadgeVariants[communication.status] || 'default';
 
           return (
-            <Card key={communication.id} className="p-4">
+            <Card key={communication.id} variant="glass" className="p-4 border border-gray-800 hover-lift">
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3 flex-1">
-                  <div className={`p-2 rounded-lg ${
-                    communication.communication_type === 'email' ? 'bg-blue-100 dark:bg-blue-900' :
-                    communication.communication_type === 'sms' ? 'bg-green-100 dark:bg-green-900' :
-                    communication.communication_type === 'phone' ? 'bg-purple-100 dark:bg-purple-900' :
-                    'bg-gray-100 dark:bg-gray-800'
+                  <div className={`p-2 rounded-lg glass-effect ${
+                    communication.communication_type === 'email' ? 'bg-blue-500/20 border border-blue-500/50' :
+                    communication.communication_type === 'sms' ? 'bg-green-500/20 border border-green-500/50' :
+                    communication.communication_type === 'phone' ? 'bg-purple-500/20 border border-purple-500/50' :
+                    'bg-[#1C1C26] border border-gray-800'
                   }`}>
-                    <Icon className="w-5 h-5" />
+                    <Icon className={`w-5 h-5 ${
+                      communication.communication_type === 'email' ? 'text-blue-400' :
+                      communication.communication_type === 'sms' ? 'text-green-400' :
+                      communication.communication_type === 'phone' ? 'text-purple-400' :
+                      'text-gray-400'
+                    }`} />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-medium">
+                      <h4 className="font-medium text-white">
                         {communication.subject || `${communication.communication_type} communication`}
                       </h4>
-                      <Badge className={statusClass}>
+                      <Badge variant={statusVariant}>
                         {communication.status}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    <p className="text-sm text-gray-400 mb-2">
                       {communication.content.substring(0, 150)}
                       {communication.content.length > 150 && '...'}
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <div className="flex items-center gap-4 text-xs text-gray-400">
                       {communication.sent_at && (
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
@@ -115,19 +129,19 @@ export function CommunicationList({ donorId, className }: CommunicationListProps
                         </div>
                       )}
                       {communication.delivered_at && (
-                        <div className="flex items-center gap-1 text-green-600">
+                        <div className="flex items-center gap-1 text-green-400">
                           <CheckCircle className="w-3 h-3" />
                           Delivered
                         </div>
                       )}
                       {communication.opened_at && (
-                        <div className="flex items-center gap-1 text-purple-600">
+                        <div className="flex items-center gap-1 text-purple-400">
                           <CheckCircle className="w-3 h-3" />
                           Opened
                         </div>
                       )}
                       {communication.status === 'failed' && (
-                        <div className="flex items-center gap-1 text-red-600">
+                        <div className="flex items-center gap-1 text-red-400">
                           <XCircle className="w-3 h-3" />
                           Failed
                         </div>
@@ -142,15 +156,15 @@ export function CommunicationList({ donorId, className }: CommunicationListProps
       </div>
 
       {communications.length === 0 && !isLoading && (
-        <Card className="p-8 text-center">
-          <Mail className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-          <p className="text-gray-500">No communications yet.</p>
+        <Card variant="glass" className="p-8 text-center border border-gray-800">
+          <Mail className="w-12 h-12 mx-auto text-gray-500 mb-4" />
+          <p className="text-gray-400">No communications yet.</p>
         </Card>
       )}
 
       {hasMore && (
         <div className="mt-4 text-center">
-          <Button variant="outline" onClick={() => setPage(page + 1)} disabled={isLoading}>
+          <Button variant="outline" onClick={() => setPage(page + 1)} disabled={isLoading} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
             Load More
           </Button>
         </div>

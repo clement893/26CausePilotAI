@@ -86,7 +86,7 @@ export function SegmentSelector({
   };
 
   if (isLoading) {
-    return <div className={className}>Loading segments...</div>;
+    return <div className={className}><p className="text-gray-400">Loading segments...</p></div>;
   }
 
   return (
@@ -98,29 +98,30 @@ export function SegmentSelector({
             return (
               <Badge
                 key={segment.id}
-                variant="default"
+                variant={isSelected ? 'default' : 'default'}
                 style={isSelected && segment.color ? { backgroundColor: segment.color, color: 'white' } : undefined}
                 className={`
                   flex items-center gap-2 px-3 py-1.5 text-sm font-medium shadow-sm
                   transition-all duration-200
                   ${readOnly ? 'cursor-default' : 'cursor-pointer hover:scale-105 hover:shadow-md'}
-                  ${isSelected ? 'ring-2 ring-offset-2 ring-offset-background' : ''}
+                  ${isSelected ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-[#0A0A0F]' : 'glass-effect bg-[#1C1C26] border border-gray-800'}
+                  ${!isSelected ? 'text-gray-300' : ''}
                 `}
                 onClick={() => handleToggleSegment(segment.id)}
               >
                 <Users className={`w-3.5 h-3.5 ${isSelected ? 'animate-pulse' : ''}`} />
                 <span>{segment.name}</span>
                 {segment.is_automatic && (
-                  <span className="text-xs opacity-75 bg-black/10 px-1.5 py-0.5 rounded">auto</span>
+                  <span className="text-xs opacity-75 bg-black/20 px-1.5 py-0.5 rounded">auto</span>
                 )}
               </Badge>
             );
           })}
         </div>
       ) : (
-        <div className="text-center py-8 border-2 border-dashed border-muted rounded-lg">
-          <Users className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Aucun segment disponible</p>
+        <div className="text-center py-8 border-2 border-dashed border-gray-800 rounded-lg glass-effect bg-[#1C1C26]">
+          <Users className="w-8 h-8 text-gray-500 mx-auto mb-2" />
+          <p className="text-sm text-gray-400">Aucun segment disponible</p>
         </div>
       )}
     </div>

@@ -102,31 +102,35 @@ export default function RoleForm({ role, onSubmit, onCancel, loading = false }: 
       {error && <Alert variant="error">{error}</Alert>}
 
       <div>
-        <Input
-          label="Nom du rôle *"
-          type="text"
-          value={name}
-          onChange={(e) => handleNameChange(e.target.value)}
-          placeholder="Ex: Éditeur"
-          fullWidth
-          disabled={loading || role?.is_system}
-          required
-        />
+        <div className="form-input-glow">
+          <Input
+            label="Nom du rôle *"
+            type="text"
+            value={name}
+            onChange={(e) => handleNameChange(e.target.value)}
+            placeholder="Ex: Éditeur"
+            fullWidth
+            disabled={loading || role?.is_system}
+            required
+          />
+        </div>
         {role?.is_system && <p className="text-xs text-gray-400 mt-1">Les rôles système ne peuvent pas être modifiés</p>}
       </div>
 
       <div>
-        <Input
-          label="Slug *"
-          type="text"
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-          placeholder="ex: editeur"
-          fullWidth
-          disabled={loading || !!role}
-          required
-          pattern="[a-z0-9-]+"
-        />
+        <div className="form-input-glow">
+          <Input
+            label="Slug *"
+            type="text"
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+            placeholder="ex: editeur"
+            fullWidth
+            disabled={loading || !!role}
+            required
+            pattern="[a-z0-9-]+"
+          />
+        </div>
         {role && <p className="text-xs text-gray-400 mt-1">Le slug ne peut pas être modifié après la création</p>}
         {!role && (
           <p className="text-xs text-gray-400 mt-1">Identifiant unique pour le rôle (généré automatiquement depuis le nom)</p>
@@ -134,15 +138,17 @@ export default function RoleForm({ role, onSubmit, onCancel, loading = false }: 
       </div>
 
       <div>
-        <Textarea
-          label="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={3}
-          placeholder="Description du rôle..."
-          fullWidth
-          disabled={loading}
-        />
+        <div className="form-input-glow">
+          <Textarea
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={3}
+            placeholder="Description du rôle..."
+            fullWidth
+            disabled={loading}
+          />
+        </div>
       </div>
 
       <div className="flex justify-end gap-2 pt-4">

@@ -28,19 +28,19 @@ export function ErrorAlert({ message, details, onDismiss, className }: ErrorAler
   if (isDismissed) return null;
 
   return (
-    <Card className={`mb-6 border-destructive bg-destructive/10 animate-in fade-in slide-in-from-top-2 ${className || ''}`}>
+    <Card variant="glass" className={`mb-6 glass-effect bg-red-500/10 border border-red-500/50 animate-in fade-in slide-in-from-top-2 ${className || ''}`}>
       <div className="p-4 flex items-start gap-3">
-        <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
+        <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
         <div className="flex-1">
-          <p className="text-destructive font-medium">{message}</p>
+          <p className="text-red-400 font-medium">{message}</p>
           {details && (
-            <p className="text-sm text-muted-foreground mt-1">{details}</p>
+            <p className="text-sm text-gray-400 mt-1">{details}</p>
           )}
         </div>
         {onDismiss && (
           <button
             onClick={handleDismiss}
-            className="text-destructive hover:text-destructive/80 transition-colors flex-shrink-0"
+            className="text-red-400 hover:text-red-300 transition-colors flex-shrink-0"
             aria-label="Fermer"
           >
             <X className="w-5 h-5" />
