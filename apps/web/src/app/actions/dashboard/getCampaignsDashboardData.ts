@@ -50,12 +50,13 @@ export async function getCampaignsDashboardData(
     ].filter((d) => d.value > 0);
 
     const now = new Date();
+    type CampaignRow = (typeof allCampaigns)[number];
     const chartSentByMonth: { label: string; value: number }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
       const count = allCampaigns.filter(
-        (c) => c.sentAt && c.sentAt >= d && c.sentAt <= end
+        (c: CampaignRow) => c.sentAt && c.sentAt >= d && c.sentAt <= end
       ).length;
       chartSentByMonth.push({
         label: d.toLocaleDateString('fr-CA', { month: 'short', year: '2-digit' }),

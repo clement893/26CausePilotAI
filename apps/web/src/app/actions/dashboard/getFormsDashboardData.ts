@@ -46,10 +46,12 @@ export async function getFormsDashboardData(
       }),
     ]);
 
-    const totalCollected = forms.reduce((sum, f) => sum + Number(f.totalCollected ?? 0), 0);
+    type FormRow = (typeof forms)[number];
+    type SubmissionRow = (typeof submissionsByMonth)[number];
+    const totalCollected = forms.reduce((sum: number, f: FormRow) => sum + Number(f.totalCollected ?? 0), 0);
     const avgConversionRate =
       forms.length > 0
-        ? forms.reduce((sum, f) => sum + Number(f.conversionRate ?? 0), 0) / forms.length
+        ? forms.reduce((sum: number, f: FormRow) => sum + Number(f.conversionRate ?? 0), 0) / forms.length
         : 0;
 
     const now = new Date();
@@ -58,7 +60,7 @@ export async function getFormsDashboardData(
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
       const count = submissionsByMonth.filter(
-        (s) => s.submittedAt >= d && s.submittedAt <= end
+        (s: SubmissionRow) => s.submittedAt >= d && s.submittedAt <= end
       ).length;
       chartSubmissionsByMonth.push({
         label: d.toLocaleDateString('fr-CA', { month: 'short', year: '2-digit' }),
@@ -66,7 +68,7 @@ export async function getFormsDashboardData(
       });
     }
 
-    const chartByForm = forms.slice(0, 6).map((f) => ({
+    const chartByForm = forms.slice(0, 6).map((f: FormRow) => ({
       label: f.title.length > 20 ? f.title.slice(0, 20) + '…' : f.title,
       value: f.submissionCount ?? 0,
     }));

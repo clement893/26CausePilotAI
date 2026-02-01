@@ -46,13 +46,15 @@ export async function getDonatorsDashboardData(
     ]);
 
     const totalDonationsValue = Number(agg._sum.amount ?? 0);
+    type DonatorLtvRow = (typeof donatorsForLtv)[number];
     const avgLtv =
       donatorsForLtv.length > 0
-        ? donatorsForLtv.reduce((sum, d) => sum + Number(d.totalDonations ?? 0), 0) /
+        ? donatorsForLtv.reduce((sum: number, d: DonatorLtvRow) => sum + Number(d.totalDonations ?? 0), 0) /
           donatorsForLtv.length
         : 0;
 
     const now = new Date();
+    type DonationMonthRow = (typeof donationsByMonthRaw)[number];
     const chartNewByMonth: { label: string; value: number }[] = [];
     const chartDonationsByMonth: { label: string; value: number }[] = [];
     for (let i = 5; i >= 0; i--) {
@@ -63,11 +65,11 @@ export async function getDonatorsDashboardData(
         value: 0, // will fill below with donator count by createdAt
       });
       const monthDonations = donationsByMonthRaw.filter(
-        (don) => don.donatedAt && don.donatedAt >= d && don.donatedAt <= end
+        (don: DonationMonthRow) => don.donatedAt && don.donatedAt >= d && don.donatedAt <= end
       );
       chartDonationsByMonth.push({
         label: d.toLocaleDateString('fr-CA', { month: 'short', year: '2-digit' }),
-        value: monthDonations.reduce((s, x) => s + Number(x.amount), 0),
+        value: monthDonations.reduce((s: number, x: DonationMonthRow) => s + Number(x.amount), 0),
       });
     }
 
@@ -75,13 +77,14 @@ export async function getDonatorsDashboardData(
       where: { organizationId },
       select: { createdAt: true },
     });
+    type DonatorCreatedRow = (typeof donatorsCreated)[number];
     for (let i = 0; i < chartNewByMonth.length; i++) {
       const d = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
       const end = new Date(now.getFullYear(), now.getMonth() - (5 - i) + 1, 0);
       const item = chartNewByMonth[i];
       if (item) {
         item.value = donatorsCreated.filter(
-          (c) => c.createdAt >= d && c.createdAt <= end
+          (c: DonatorCreatedRow) => c.createdAt >= d && c.createdAt <= end
         ).length;
       }
     }

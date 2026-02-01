@@ -83,7 +83,8 @@ export async function getDashboardData(
     const totalDonations = Number(donationsAgg._sum.amount ?? 0);
     const donationsThisMonth = Number(donationsThisMonthAgg._sum.amount ?? 0);
 
-    const recentActivity: DashboardActivityItem[] = recentDonations.map((d) => ({
+    type DonationWithDonator = (typeof recentDonations)[number];
+    const recentActivity: DashboardActivityItem[] = recentDonations.map((d: DonationWithDonator) => ({
       id: d.id,
       type: 'donation',
       title: `Don de ${Number(d.amount).toFixed(2)} ${d.currency}`,
