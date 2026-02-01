@@ -53,9 +53,8 @@ export default function InvoiceList({
       sortable: true,
       render: (_value, invoice) => (
         <div className="flex items-center gap-2">
-          {' '}
-          <FileText className="w-4 h-4 text-muted-foreground" />{' '}
-          <span className="font-medium text-foreground">{invoice.number}</span>{' '}
+          <FileText className="w-4 h-4 text-gray-500 dark:text-muted-foreground" />
+          <span className="font-medium text-white dark:text-foreground">{invoice.number}</span>
         </div>
       ),
     },
@@ -64,7 +63,7 @@ export default function InvoiceList({
       label: 'Date',
       sortable: true,
       render: (value) => (
-        <span className="text-foreground"> {new Date(value as string).toLocaleDateString()} </span>
+        <span className="text-white dark:text-foreground">{new Date(value as string).toLocaleDateString()}</span>
       ),
     },
     {
@@ -72,7 +71,7 @@ export default function InvoiceList({
       label: 'Due Date',
       sortable: true,
       render: (value) => (
-        <span className="text-foreground"> {new Date(value as string).toLocaleDateString()} </span>
+        <span className="text-white dark:text-foreground">{new Date(value as string).toLocaleDateString()}</span>
       ),
     },
     {
@@ -80,9 +79,8 @@ export default function InvoiceList({
       label: 'Amount',
       sortable: true,
       render: (_value, invoice) => (
-        <span className="font-semibold text-foreground">
-          {' '}
-          {invoice.currency} {invoice.amount.toFixed(2)}{' '}
+        <span className="font-semibold text-white dark:text-foreground">
+          {invoice.currency} {invoice.amount.toFixed(2)}
         </span>
       ),
     },
@@ -98,56 +96,50 @@ export default function InvoiceList({
       render: (_, invoice) => (
         <div className="flex items-center gap-2">
           {' '}
-          <Button variant="ghost" size="sm" onClick={() => onViewInvoice?.(invoice)}>
-            {' '}
+          <Button variant="ghost" size="sm" onClick={() => onViewInvoice?.(invoice)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
             <span className="flex items-center gap-2">
-              {' '}
-              <Eye className="w-4 h-4" /> View{' '}
-            </span>{' '}
-          </Button>{' '}
-          <Button variant="ghost" size="sm" onClick={() => onDownloadInvoice?.(invoice)}>
-            {' '}
+              <Eye className="w-4 h-4" /> View
+            </span>
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => onDownloadInvoice?.(invoice)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
             <span className="flex items-center gap-2">
-              {' '}
-              <Download className="w-4 h-4" /> Download{' '}
-            </span>{' '}
-          </Button>{' '}
+              <Download className="w-4 h-4" /> Download
+            </span>
+          </Button>
         </div>
       ),
     },
   ];
   return (
-    <Card className={clsx('bg-background', className)}>
-      {' '}
+    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
       <div className="mb-4 flex items-center justify-between">
-        {' '}
-        <h3 className="text-lg font-semibold text-foreground">Invoices</h3>{' '}
+        <h3 className="text-lg font-semibold text-white dark:text-foreground">Invoices</h3>
         <div className="flex items-center gap-2">
-          {' '}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className={clsx(
-              'px-3 py-2 border rounded-lg text-sm',
-              'bg-background',
-              'text-foreground',
-              'border-border',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+              'px-3 py-2 border rounded-lg text-sm form-input-glow',
+              'bg-[#1C1C26] dark:bg-background',
+              'text-white dark:text-foreground',
+              'border-gray-700 dark:border-border',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
             )}
           >
-            {' '}
-            <option value="all">All Status</option> <option value="paid">Paid</option>{' '}
-            <option value="pending">Pending</option> <option value="overdue">Overdue</option>{' '}
-            <option value="cancelled">Cancelled</option>{' '}
-          </select>{' '}
-        </div>{' '}
-      </div>{' '}
+            <option value="all">All Status</option>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="overdue">Overdue</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
       <DataTable<Invoice>
         data={filteredInvoices}
         columns={columns}
         pageSize={10}
         emptyMessage="No invoices found"
-      />{' '}
+      />
     </Card>
   );
 }

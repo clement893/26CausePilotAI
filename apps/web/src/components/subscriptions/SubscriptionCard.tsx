@@ -41,80 +41,65 @@ export default function SubscriptionCard({
     return labels[status] || status;
   };
   return (
-    <Card className="mb-8">
-      {' '}
+    <Card variant="glass" className="mb-8 border border-gray-800 dark:border-border hover-lift">
       <div className="p-6">
-        {' '}
         <div className="flex justify-between items-start mb-6">
-          {' '}
           <div>
-            {' '}
-            <h2 className="text-2xl font-bold text-foreground mb-2">
-              {' '}
-              {subscription.plan_name}{' '}
-            </h2>{' '}
+            <h2 className="text-2xl font-bold text-white dark:text-foreground mb-2">
+              {subscription.plan_name}
+            </h2>
             <Badge variant={getStatusBadge(subscription.status)}>
-              {' '}
-              {getStatusLabel(subscription.status)}{' '}
-            </Badge>{' '}
-          </div>{' '}
+              {getStatusLabel(subscription.status)}
+            </Badge>
+          </div>
           <div className="text-right">
-            {' '}
-            <div className="text-3xl font-bold text-foreground"> {subscription.amount}€ </div>{' '}
-            <div className="text-sm text-muted-foreground">
-              {' '}
-              /{subscription.billing_period === 'month' ? 'month' : 'year'}{' '}
-            </div>{' '}
-          </div>{' '}
-        </div>{' '}
+            <div className="text-3xl font-bold text-white dark:text-foreground">{subscription.amount}€</div>
+            <div className="text-sm text-gray-400 dark:text-muted-foreground">
+              /{subscription.billing_period === 'month' ? 'month' : 'year'}
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {' '}
           <div>
-            {' '}
-            <div className="text-sm text-muted-foreground">Current Period</div>{' '}
-            <div className="text-lg font-semibold text-foreground">
-              {' '}
-              {new Date(subscription.current_period_start).toLocaleDateString()} -{''}{' '}
-              {new Date(subscription.current_period_end).toLocaleDateString()}{' '}
-            </div>{' '}
-          </div>{' '}
+            <div className="text-sm text-gray-400 dark:text-muted-foreground">Current Period</div>
+            <div className="text-lg font-semibold text-white dark:text-foreground">
+              {new Date(subscription.current_period_start).toLocaleDateString()} -{' '}
+              {new Date(subscription.current_period_end).toLocaleDateString()}
+            </div>
+          </div>
           <div>
-            {' '}
-            <div className="text-sm text-muted-foreground">Next Payment</div>{' '}
-            <div className="text-lg font-semibold text-foreground">
-              {' '}
-              {new Date(subscription.current_period_end).toLocaleDateString()}{' '}
-            </div>{' '}
-          </div>{' '}
-        </div>{' '}
+            <div className="text-sm text-gray-400 dark:text-muted-foreground">Next Payment</div>
+            <div className="text-lg font-semibold text-white dark:text-foreground">
+              {new Date(subscription.current_period_end).toLocaleDateString()}
+            </div>
+          </div>
+        </div>
         {subscription.cancel_at_period_end && (
           <Alert variant="warning" className="mb-6">
-            {' '}
-            Your subscription will be canceled on{''}{' '}
-            {new Date(subscription.current_period_end).toLocaleDateString()}.{' '}
+            Your subscription will be canceled on{' '}
+            {new Date(subscription.current_period_end).toLocaleDateString()}.
           </Alert>
-        )}{' '}
+        )}
         <div className="flex gap-3">
-          {' '}
           {subscription.status === 'active' && !subscription.cancel_at_period_end && onCancel && (
             <Button
               variant="outline"
               onClick={onCancel}
-              className="border-error-500 text-error-600 hover:bg-error-50"
+              className="border-red-500 dark:border-error-500 text-red-400 dark:text-error-600 hover:bg-red-500/20 dark:hover:bg-error-50"
             >
-              {' '}
-              Cancel Subscription{' '}
+              Cancel Subscription
             </Button>
-          )}{' '}
+          )}
           {subscription.cancel_at_period_end && onResume && (
-            <Button onClick={onResume}>Resume Subscription</Button>
-          )}{' '}
+            <Button variant="gradient" onClick={onResume}>Resume Subscription</Button>
+          )}
           <Link href="/pricing">
-            {' '}
-            <Button variant="outline">Change Plan</Button>{' '}
-          </Link>{' '}
-        </div>{' '}
-      </div>{' '}
+            <Button variant="outline" className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+              Change Plan
+            </Button>
+          </Link>
+        </div>
+      </div>
     </Card>
   );
 }

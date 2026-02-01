@@ -37,51 +37,50 @@ export function PricingCard({ plan, onSelect, isLoading, currentPlanId }: Pricin
   };
   return (
     <Card
+      variant={plan.is_popular ? 'gradient-border' : 'glass'}
       className={clsx(
-        'relative flex flex-col p-6',
-        plan.is_popular && 'border-primary shadow-lg scale-105'
+        'relative flex flex-col p-6 border border-gray-800 dark:border-border hover-lift',
+        plan.is_popular && 'shadow-lg scale-105'
       )}
     >
-      {' '}
       {plan.is_popular && (
-        <Badge className="absolute -top-3 left-1/2 -translate-x-1/2"> Most Popular </Badge>
-      )}{' '}
+        <Badge variant="gradient-success" className="absolute -top-3 left-1/2 -translate-x-1/2">
+          Most Popular
+        </Badge>
+      )}
       <div className="flex-1">
-        {' '}
-        <h3 className="text-2xl font-bold mb-2 text-foreground">{plan.name}</h3>{' '}
-        <p className="text-muted-foreground mb-4">{plan.description}</p>{' '}
+        <h3 className="text-2xl font-bold mb-2 text-white dark:text-foreground">{plan.name}</h3>
+        <p className="text-gray-400 dark:text-muted-foreground mb-4">{plan.description}</p>
         <div className="mb-6">
-          {' '}
-          <span className="text-4xl font-bold text-foreground">{formatPrice()}</span>{' '}
+          <span className="text-4xl font-bold text-white dark:text-foreground">{formatPrice()}</span>
           {plan.amount > 0 && (
-            <span className="text-muted-foreground ml-2">{formatInterval()}</span>
-          )}{' '}
-        </div>{' '}
+            <span className="text-gray-400 dark:text-muted-foreground ml-2">{formatInterval()}</span>
+          )}
+        </div>
         <ul className="space-y-3 mb-6">
-          {' '}
           {featureList.map(([key, value], index) => (
             <li key={index} className="flex items-start">
-              {' '}
-              <Check className="w-5 h-5 text-success-500 mr-2 flex-shrink-0 mt-0.5" />{' '}
-              <span className="text-sm text-foreground">
-                {' '}
+              <Check className="w-5 h-5 text-green-400 dark:text-success-500 mr-2 flex-shrink-0 mt-0.5" />
+              <span className="text-sm text-gray-300 dark:text-foreground">
                 {typeof value === 'boolean'
                   ? key.replace(/_/g, '').replace(/\b\w/g, (l) => l.toUpperCase())
-                  : `${key.replace(/_/g, '').replace(/\b\w/g, (l) => l.toUpperCase())}: ${value}`}{' '}
-              </span>{' '}
+                  : `${key.replace(/_/g, '').replace(/\b\w/g, (l) => l.toUpperCase())}: ${value}`}
+              </span>
             </li>
-          ))}{' '}
-        </ul>{' '}
-      </div>{' '}
+          ))}
+        </ul>
+      </div>
       <Button
-        variant={plan.is_popular ? 'primary' : 'outline'}
+        variant={plan.is_popular ? 'gradient' : 'outline'}
         onClick={() => onSelect(plan.id)}
         disabled={isLoading || isCurrentPlan}
-        className="w-full"
+        className={clsx(
+          'w-full',
+          !plan.is_popular && 'border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20'
+        )}
       >
-        {' '}
-        {isCurrentPlan ? 'Current Plan' : isLoading ? 'Processing...' : 'Select Plan'}{' '}
-      </Button>{' '}
+        {isCurrentPlan ? 'Current Plan' : isLoading ? 'Processing...' : 'Select Plan'}
+      </Button>
     </Card>
   );
 }

@@ -124,11 +124,11 @@ export default function PaymentMethodForm({
   };
 
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex items-center gap-2 mb-4">
-          <CreditCard className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-          <h3 className="text-lg font-semibold text-foreground">Payment Method</h3>
+          <CreditCard className="w-5 h-5 text-blue-400 dark:text-primary-400" />
+          <h3 className="text-lg font-semibold text-white dark:text-foreground">Payment Method</h3>
         </div>
 
         {/* Card Number */}
@@ -177,9 +177,9 @@ export default function PaymentMethodForm({
         />
 
         {/* Security Notice */}
-        <div className="flex items-start gap-2 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg border border-primary-200 dark:border-primary-800">
-          <Lock className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-primary-800 dark:text-primary-200">
+        <div className="flex items-start gap-2 p-3 glass-effect bg-[#1C1C26] dark:bg-primary-900/20 rounded-lg border border-blue-500/30 dark:border-primary-800">
+          <Lock className="w-5 h-5 text-blue-400 dark:text-primary-400 flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-gray-300 dark:text-primary-200">
             <div className="font-medium mb-1">Secure Payment</div>
             <div>
               Your payment information is encrypted and secure. We never store your full card
@@ -190,19 +190,19 @@ export default function PaymentMethodForm({
 
         {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-error-50 dark:bg-error-900/20 rounded-lg border border-error-200 dark:border-error-800 text-sm text-error-800 dark:text-error-200">
+          <div className="p-3 bg-red-500/20 dark:bg-error-900/20 rounded-lg border border-red-500/30 dark:border-error-800 text-sm text-red-400 dark:text-error-200">
             {errors.submit}
           </div>
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800 dark:border-border">
           {onCancel && (
-            <Button variant="ghost" onClick={onCancel} disabled={loading}>
+            <Button variant="ghost" onClick={onCancel} disabled={loading} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
               Cancel
             </Button>
           )}
-          <Button type="submit" variant="primary" loading={loading}>
+          <Button type="submit" variant="gradient" loading={loading}>
             <span className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4" />
               Save Payment Method
