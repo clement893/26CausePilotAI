@@ -176,7 +176,7 @@ export function getNavigationConfig(
       items: [
         {
           name: 'Rapports',
-          href: '/dashboard/analytics/rapports',
+          href: '/dashboard/rapports',
           icon: <FileText className="w-5 h-5" />,
         },
       ],

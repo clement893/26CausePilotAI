@@ -138,6 +138,7 @@ model User {
   accounts        Account[]
   sessions        Session[]
   dashboardLayout DashboardLayout?
+  reports         Report[]
 
   // Timestamps
   createdAt     DateTime @default(now())
@@ -193,6 +194,21 @@ model DashboardLayout {
   updatedAt DateTime @updatedAt
 
   @@map("dashboard_layouts")
+}
+
+// ============= Étape 4.2.1 - Générateur de Rapports =============
+model Report {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  config      Json     // métriques, dimensions, période
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("reports")
 }
 
 // ============= 4. Modèle Donator =============
