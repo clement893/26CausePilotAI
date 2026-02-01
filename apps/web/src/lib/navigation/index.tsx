@@ -96,12 +96,40 @@ export function getNavigationConfig(
     ],
   };
 
-  // Conditionally add modules based on enabled modules
-  
-  // Base donateur
+  // Nouvelle structure du menu (par module fonctionnel)
+
+  // Collecte : Formulaires, Campagnes P2P
+  if (isModuleEnabled('formulaires') || isModuleEnabled('p2p')) {
+    const collecteItems: NavigationItem[] = [];
+    if (isModuleEnabled('formulaires')) {
+      collecteItems.push({
+        name: 'Formulaires',
+        href: '/dashboard/formulaires',
+        icon: <FileEdit className="w-5 h-5" />,
+      });
+    }
+    if (isModuleEnabled('p2p')) {
+      collecteItems.push({
+        name: 'Campagnes P2P',
+        href: '/dashboard/p2p/campagnes',
+        icon: <UsersRound className="w-5 h-5" />,
+      });
+    }
+    if (collecteItems.length > 0) {
+      config.items.push({
+        name: 'Collecte',
+        icon: <FileEdit className="w-5 h-5" />,
+        items: collecteItems,
+        collapsible: true,
+        defaultOpen: false,
+      });
+    }
+  }
+
+  // CRM : Donateurs, Segments
   if (isModuleEnabled('base-donateur')) {
     config.items.push({
-      name: 'Base donateur',
+      name: 'CRM',
       icon: <Heart className="w-5 h-5" />,
       moduleKey: 'base-donateur',
       items: [
@@ -111,149 +139,58 @@ export function getNavigationConfig(
           icon: <Users className="w-5 h-5" />,
         },
         {
-          name: 'Dons',
-          href: '/dashboard/dons',
-          icon: <DollarSign className="w-5 h-5" />,
-        },
-        {
-          name: 'Statistiques',
-          href: '/dashboard/base-donateur/statistiques',
-          icon: <BarChart3 className="w-5 h-5" />,
-        },
-        {
           name: 'Segments',
           href: '/dashboard/base-donateur/segments',
           icon: <PieChart className="w-5 h-5" />,
         },
-        {
-          name: 'Abonnements',
-          href: '/dashboard/base-donateur/abonnements',
-          icon: <Repeat className="w-5 h-5" />,
-        },
       ],
       collapsible: true,
       defaultOpen: false,
     });
   }
-  // Formulaires
-  if (isModuleEnabled('formulaires')) {
-    config.items.push({
-      name: 'Formulaires',
-      icon: <FileEdit className="w-5 h-5" />,
-      moduleKey: 'formulaires',
-      items: [
-        {
-          name: 'Formulaires',
-          href: '/dashboard/formulaires',
-          icon: <FileText className="w-5 h-5" />,
-        },
-        {
-          name: 'Intégrations',
-          href: '/dashboard/formulaires/integrations',
-          icon: <Network className="w-5 h-5" />,
-        },
-      ],
-      collapsible: true,
-      defaultOpen: false,
-    });
-  }
-  // Campagnes
+
+  // Marketing : Campagnes Email, Workflows
   if (isModuleEnabled('campagnes')) {
     config.items.push({
-      name: 'Campagnes',
-      icon: <Megaphone className="w-5 h-5" />,
+      name: 'Marketing',
+      icon: <Mail className="w-5 h-5" />,
       moduleKey: 'campagnes',
       items: [
         {
-          name: 'Campagnes',
-          href: '/dashboard/campagnes',
-          icon: <Megaphone className="w-5 h-5" />,
-        },
-        {
-          name: 'Courriels',
-          href: '/dashboard/campagnes/courriels',
-          icon: <Mail className="w-5 h-5" />,
-        },
-        {
-          name: 'Templates email',
-          href: '/dashboard/marketing/templates',
-          icon: <Mail className="w-5 h-5" />,
-        },
-        {
-          name: 'Campagnes email',
+          name: 'Campagnes Email',
           href: '/dashboard/marketing/campagnes',
           icon: <Mail className="w-5 h-5" />,
-        },
-        {
-          name: 'Segments',
-          href: '/dashboard/marketing/segments',
-          icon: <Users className="w-5 h-5" />,
         },
         {
           name: 'Workflows',
           href: '/dashboard/marketing/workflows',
           icon: <Repeat className="w-5 h-5" />,
         },
-        {
-          name: 'Médias sociaux',
-          href: '/dashboard/campagnes/medias-sociaux',
-          icon: <Share2 className="w-5 h-5" />,
-        },
       ],
       collapsible: true,
       defaultOpen: false,
     });
   }
-  // P2P
-  if (isModuleEnabled('p2p')) {
-    config.items.push({
-      name: 'P2P',
-      icon: <UsersRound className="w-5 h-5" />,
-      moduleKey: 'p2p',
-      items: [
-        {
-          name: 'Campagnes',
-          href: '/dashboard/p2p/campagnes',
-          icon: <Megaphone className="w-5 h-5" />,
-        },
-        {
-          name: 'Paramètres',
-          href: '/dashboard/p2p/parametres',
-          icon: <Settings className="w-5 h-5" />,
-        },
-      ],
-      collapsible: true,
-      defaultOpen: false,
-    });
-  }
-  // Analytics
+
+  // Analyse : Rapports
   if (isModuleEnabled('analytics')) {
     config.items.push({
-      name: 'Analytics',
+      name: 'Analyse',
       icon: <BarChart3 className="w-5 h-5" />,
       moduleKey: 'analytics',
       items: [
-        {
-          name: 'Dashboard',
-          href: '/dashboard/analytics/dashboard',
-          icon: <LayoutDashboard className="w-5 h-5" />,
-        },
         {
           name: 'Rapports',
           href: '/dashboard/analytics/rapports',
           icon: <FileText className="w-5 h-5" />,
         },
-        {
-          name: 'IA',
-          href: '/dashboard/analytics/ia',
-          icon: <Brain className="w-5 h-5" />,
-        },
       ],
       collapsible: true,
       defaultOpen: false,
     });
   }
-  // Administration
+
+  // Administration : Utilisateurs, Paramètres
   if (isModuleEnabled('administration')) {
     config.items.push({
       name: 'Administration',
@@ -261,7 +198,7 @@ export function getNavigationConfig(
       moduleKey: 'administration',
       items: [
         {
-          name: 'Users',
+          name: 'Utilisateurs',
           href: '/dashboard/administration/users',
           icon: <Users className="w-5 h-5" />,
         },
