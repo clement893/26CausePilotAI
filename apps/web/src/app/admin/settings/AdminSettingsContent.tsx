@@ -41,7 +41,7 @@ export default function AdminSettingsContent() {
   return (
     <Container className="py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Paramètres Administrateur</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Paramètres Administrateur</h1>
         <p className="text-gray-400">Gérez les paramètres de votre compte administrateur</p>
       </div>
 

@@ -186,7 +186,7 @@ export default function TeamsPage() {
       <Container>
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-foreground mb-2">Gestion des Équipes</h1>
+            <h1 className="text-4xl font-bold text-white mb-2">Gestion des Équipes</h1>
             <p className="text-gray-400">Administration des équipes</p>
           </div>
           <Button onClick={() => setShowCreateModal(true)}>Créer une équipe</Button>
@@ -210,7 +210,7 @@ export default function TeamsPage() {
             <div className="lg:col-span-1">
               <Card>
                 <div className="p-6">
-                  <h2 className="text-xl font-bold text-foreground mb-4">Équipes</h2>
+                  <h2 className="text-xl font-bold text-white mb-4">Équipes</h2>
                   <div className="space-y-2">
                     {teams.map((team) => (
                       <Button
@@ -220,7 +220,7 @@ export default function TeamsPage() {
                         className="w-full text-left justify-start h-auto p-4"
                       >
                         <div className="w-full">
-                          <div className="font-medium text-foreground">{team.name}</div>
+                          <div className="font-medium text-white">{team.name}</div>
                           {team.description && (
                             <div className="text-sm text-gray-400 mt-1">
                               {team.description}
@@ -244,7 +244,7 @@ export default function TeamsPage() {
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-6">
                       <div>
-                        <h2 className="text-2xl font-bold text-foreground">{selectedTeam.name}</h2>
+                        <h2 className="text-2xl font-bold text-white">{selectedTeam.name}</h2>
                         {selectedTeam.description && (
                           <p className="text-gray-400 mt-2">{selectedTeam.description}</p>
                         )}
@@ -265,7 +265,7 @@ export default function TeamsPage() {
 
                     <div className="mb-6">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold text-foreground">Membres</h3>
+                        <h3 className="text-lg font-semibold text-white">Membres</h3>
                         <Button size="sm">Ajouter un membre</Button>
                       </div>
                       <div className="space-y-2">
@@ -275,7 +275,7 @@ export default function TeamsPage() {
                             className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg"
                           >
                             <div>
-                              <div className="font-medium text-foreground">{member.user_name}</div>
+                              <div className="font-medium text-white">{member.user_name}</div>
                               <div className="text-sm text-gray-400">
                                 {member.user_email}
                               </div>

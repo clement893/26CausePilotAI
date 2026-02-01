@@ -15,7 +15,7 @@ export default function ConfirmationPage() {
   const bookingReference = searchParams.get('bookingReference');
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0A0A0F]">
       <Container className="py-20 md:py-32">
         <div className="max-w-2xl mx-auto text-center">
           <div className="inline-flex items-center justify-center w-24 h-24 bg-success-100 rounded-full mb-6">

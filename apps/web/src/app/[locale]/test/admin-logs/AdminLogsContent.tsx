@@ -151,13 +151,13 @@ export default function AdminLogsContent() {
       key: 'event_type',
       label: 'Type',
       render: (_value, log) => (
-        <span className="text-sm font-medium text-foreground">{log.event_type}</span>
+        <span className="text-sm font-medium text-white">{log.event_type}</span>
       ),
     },
     {
       key: 'message',
       label: 'Message',
-      render: (_value, log) => <span className="text-sm text-foreground">{log.message}</span>,
+      render: (_value, log) => <span className="text-sm text-white">{log.message}</span>,
     },
     {
       key: 'user_id',

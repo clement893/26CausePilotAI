@@ -62,7 +62,7 @@ export function ThemeExportImport({ config, onImport, onExport }: ThemeExportImp
       {/* Export Section */}
       <Card>
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Export Theme</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">Export Theme</h3>
           <p className="text-sm text-gray-400 mb-4">
             Export your theme configuration as JSON to share or backup
           </p>
@@ -100,7 +100,7 @@ export function ThemeExportImport({ config, onImport, onExport }: ThemeExportImp
       {/* Import Section */}
       <Card>
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Import Theme</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">Import Theme</h3>
           <p className="text-sm text-gray-400 mb-4">
             Import a theme configuration from JSON file or paste JSON below
           </p>

@@ -98,7 +98,7 @@ export default function PricingPage() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-16 text-center">
-            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-foreground">Tarifs</h1>
+            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-white">Tarifs</h1>
             <hr className="my-8 border-gray-800 mx-auto max-w-md" />
             <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto">
               Choisissez l'option qui vous convient pour participer à la masterclass ACT.
@@ -119,20 +119,20 @@ export default function PricingPage() {
                     </span>
                   </div>
                 )}
-                <h2 className="text-3xl font-black text-foreground mb-2">{option.name}</h2>
+                <h2 className="text-3xl font-black text-white mb-2">{option.name}</h2>
                 <p className="text-gray-400 mb-6 text-sm">{option.description}</p>
                 <div className="mb-6">
-                  <span className="text-5xl font-black text-foreground">{option.price}</span>
+                  <span className="text-5xl font-black text-white">{option.price}</span>
                   <span className="text-xl text-gray-400 ml-2">{option.currency}</span>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {option.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2">
                       <CheckCircle
-                        className="w-5 h-5 text-foreground mt-0.5 flex-shrink-0"
+                        className="w-5 h-5 text-white mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-foreground text-sm">{feature}</span>
+                      <span className="text-white text-sm">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -150,14 +150,14 @@ export default function PricingPage() {
 
           {/* FAQ Section */}
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-12 text-center">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-12 text-center">
               Questions Fréquentes
             </h2>
             <div className="space-y-6">
               {faqItems.map((item, index) => (
                 <div key={index} className="border-b border-gray-800 pb-6">
-                  <h3 className="text-xl font-bold text-foreground mb-3">{item.question}</h3>
-                  <p className="text-foreground leading-relaxed">{item.answer}</p>
+                  <h3 className="text-xl font-bold text-white mb-3">{item.question}</h3>
+                  <p className="text-white leading-relaxed">{item.answer}</p>
                 </div>
               ))}
             </div>

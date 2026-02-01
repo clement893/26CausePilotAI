@@ -568,7 +568,7 @@ export default function AdminStatisticsContent() {
                     <Badge variant={stat.variant}>{stat.value.toLocaleString('fr-FR')}</Badge>
                   </div>
                   <div className="mt-2">
-                    <p className="text-3xl font-bold text-foreground">
+                    <p className="text-3xl font-bold text-white">
                       {stat.value.toLocaleString('fr-FR')}
                     </p>
                     <p className="text-sm text-gray-400 mt-1">{stat.description}</p>

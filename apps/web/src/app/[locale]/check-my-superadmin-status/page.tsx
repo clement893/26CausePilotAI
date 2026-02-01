@@ -74,17 +74,17 @@ function CheckMySuperAdminStatusContent() {
             <Card>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-foreground font-medium">Email:</span>
-                  <span className="text-foreground">{user.email}</span>
+                  <span className="text-white font-medium">Email:</span>
+                  <span className="text-white">{user.email}</span>
                 </div>
                 {user.id && (
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground font-medium">ID Utilisateur:</span>
-                    <span className="text-foreground">{user.id}</span>
+                    <span className="text-white font-medium">ID Utilisateur:</span>
+                    <span className="text-white">{user.id}</span>
                   </div>
                 )}
                 <div className="flex items-center justify-between">
-                  <span className="text-foreground font-medium">Admin:</span>
+                  <span className="text-white font-medium">Admin:</span>
                   <Badge variant={user.is_admin ? 'success' : 'default'}>
                     {user.is_admin ? (
                       <>
@@ -117,7 +117,7 @@ function CheckMySuperAdminStatusContent() {
             ) : status ? (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-foreground font-medium">Statut Superadmin:</span>
+                  <span className="text-white font-medium">Statut Superadmin:</span>
                   <Badge
                     variant={status.is_superadmin ? 'success' : 'default'}
                     className="text-lg px-4 py-2"
@@ -137,19 +137,19 @@ function CheckMySuperAdminStatusContent() {
                 </div>
                 {status.email && (
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground font-medium">Email vérifié:</span>
-                    <span className="text-foreground">{status.email}</span>
+                    <span className="text-white font-medium">Email vérifié:</span>
+                    <span className="text-white">{status.email}</span>
                   </div>
                 )}
                 {status.user_id && (
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground font-medium">ID Utilisateur:</span>
-                    <span className="text-foreground">{status.user_id}</span>
+                    <span className="text-white font-medium">ID Utilisateur:</span>
+                    <span className="text-white">{status.user_id}</span>
                   </div>
                 )}
                 {status.is_active !== undefined && (
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground font-medium">Compte actif:</span>
+                    <span className="text-white font-medium">Compte actif:</span>
                     <Badge variant={status.is_active ? 'success' : 'default'}>
                       {status.is_active ? (
                         <>
@@ -197,7 +197,7 @@ function CheckMySuperAdminStatusContent() {
         {/* Information */}
         <Section title="Informations">
           <Card>
-            <div className="space-y-4 text-foreground">
+            <div className="space-y-4 text-white">
               <div>
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
                   <Shield className="w-5 h-5" />À propos des Superadmins:

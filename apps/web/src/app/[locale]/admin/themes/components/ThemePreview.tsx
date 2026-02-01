@@ -37,7 +37,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Prévisualisation du thème</h3>
+          <h3 className="text-lg font-semibold text-white">Prévisualisation du thème</h3>
           <p className="text-sm text-gray-400 mt-1">
             Aperçu en temps réel des composants avec ce thème
           </p>
@@ -47,7 +47,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       {/* Colors Preview */}
       <Card>
         <div className="p-6">
-          <h4 className="text-md font-semibold text-foreground mb-4">Couleurs</h4>
+          <h4 className="text-md font-semibold text-white mb-4">Couleurs</h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <div
@@ -55,7 +55,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 style={{ backgroundColor: config.primary_color }}
               />
               <p className="text-xs text-gray-400">Primaire</p>
-              <p className="text-xs font-mono text-foreground">{config.primary_color}</p>
+              <p className="text-xs font-mono text-white">{config.primary_color}</p>
             </div>
             <div>
               <div
@@ -63,7 +63,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 style={{ backgroundColor: config.secondary_color }}
               />
               <p className="text-xs text-gray-400">Secondaire</p>
-              <p className="text-xs font-mono text-foreground">{config.secondary_color}</p>
+              <p className="text-xs font-mono text-white">{config.secondary_color}</p>
             </div>
             <div>
               <div
@@ -71,7 +71,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 style={{ backgroundColor: config.danger_color }}
               />
               <p className="text-xs text-gray-400">Danger</p>
-              <p className="text-xs font-mono text-foreground">{config.danger_color}</p>
+              <p className="text-xs font-mono text-white">{config.danger_color}</p>
             </div>
             <div>
               <div
@@ -79,7 +79,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 style={{ backgroundColor: config.warning_color }}
               />
               <p className="text-xs text-gray-400">Avertissement</p>
-              <p className="text-xs font-mono text-foreground">{config.warning_color}</p>
+              <p className="text-xs font-mono text-white">{config.warning_color}</p>
             </div>
             <div>
               <div
@@ -87,7 +87,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 style={{ backgroundColor: config.info_color }}
               />
               <p className="text-xs text-gray-400">Info</p>
-              <p className="text-xs font-mono text-foreground">{config.info_color}</p>
+              <p className="text-xs font-mono text-white">{config.info_color}</p>
             </div>
             <div>
               <div
@@ -95,7 +95,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 style={{ backgroundColor: config.success_color }}
               />
               <p className="text-xs text-gray-400">Succès</p>
-              <p className="text-xs font-mono text-foreground">{config.success_color}</p>
+              <p className="text-xs font-mono text-white">{config.success_color}</p>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       {/* Buttons Preview */}
       <Card>
         <div className="p-6">
-          <h4 className="text-md font-semibold text-foreground mb-4">Boutons</h4>
+          <h4 className="text-md font-semibold text-white mb-4">Boutons</h4>
           <div className="flex flex-wrap gap-3">
             <Button variant="primary">Bouton Primaire</Button>
             <Button variant="secondary">Bouton Secondaire</Button>
@@ -118,7 +118,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       {/* Alerts Preview */}
       <Card>
         <div className="p-6 space-y-4">
-          <h4 className="text-md font-semibold text-foreground mb-4">Alertes</h4>
+          <h4 className="text-md font-semibold text-white mb-4">Alertes</h4>
           <Alert variant="success" title="Succès">
             Cette alerte indique une opération réussie.
           </Alert>
@@ -137,7 +137,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       {/* Badges Preview */}
       <Card>
         <div className="p-6">
-          <h4 className="text-md font-semibold text-foreground mb-4">Badges</h4>
+          <h4 className="text-md font-semibold text-white mb-4">Badges</h4>
           <div className="flex flex-wrap gap-3">
             <Badge variant="default">Par défaut</Badge>
             <Badge variant="success">Succès</Badge>
@@ -151,22 +151,22 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       {/* Typography Preview */}
       <Card>
         <div className="p-6">
-          <h4 className="text-md font-semibold text-foreground mb-4">Typographie</h4>
+          <h4 className="text-md font-semibold text-white mb-4">Typographie</h4>
           <div className="space-y-3">
             <div>
-              <h1 className="text-4xl font-bold text-foreground">Titre H1</h1>
+              <h1 className="text-4xl font-bold text-white">Titre H1</h1>
               <p className="text-sm text-gray-400">Titre principal</p>
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-foreground">Titre H2</h2>
+              <h2 className="text-3xl font-bold text-white">Titre H2</h2>
               <p className="text-sm text-gray-400">Sous-titre</p>
             </div>
             <div>
-              <h3 className="text-2xl font-semibold text-foreground">Titre H3</h3>
+              <h3 className="text-2xl font-semibold text-white">Titre H3</h3>
               <p className="text-sm text-gray-400">Section</p>
             </div>
             <div>
-              <p className="text-base text-foreground">
+              <p className="text-base text-white">
                 Paragraphe de texte normal avec une police{' '}
                 <span className="font-mono">{config.font_family || 'par défaut'}</span>.
               </p>
@@ -181,38 +181,38 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       {/* Form Elements Preview */}
       <Card>
         <div className="p-6">
-          <h4 className="text-md font-semibold text-foreground mb-4">Éléments de formulaire</h4>
+          <h4 className="text-md font-semibold text-white mb-4">Éléments de formulaire</h4>
           <div className="space-y-4 max-w-md">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Champ de texte
               </label>
               <input
                 type="text"
                 placeholder="Saisissez du texte..."
-                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-[#13131A] text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderRadius: config.border_radius || '8px',
                 }}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Zone de texte
               </label>
               <textarea
                 placeholder="Saisissez plusieurs lignes..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-[#13131A] text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderRadius: config.border_radius || '8px',
                 }}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Sélection</label>
+              <label className="block text-sm font-medium text-white mb-2">Sélection</label>
               <select
-                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-[#13131A] text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderRadius: config.border_radius || '8px',
                 }}
@@ -230,7 +230,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       {config.border_radius && (
         <Card>
           <div className="p-6">
-            <h4 className="text-md font-semibold text-foreground mb-4">Rayon des bordures</h4>
+            <h4 className="text-md font-semibold text-white mb-4">Rayon des bordures</h4>
             <div className="flex gap-4 items-center">
               <div
                 className="w-20 h-20 bg-primary flex items-center justify-center text-primary-foreground font-semibold"
@@ -242,7 +242,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
               </div>
               <div>
                 <p className="text-sm text-gray-400">Valeur appliquée:</p>
-                <p className="text-sm font-mono text-foreground">{config.border_radius}</p>
+                <p className="text-sm font-mono text-white">{config.border_radius}</p>
               </div>
             </div>
           </div>

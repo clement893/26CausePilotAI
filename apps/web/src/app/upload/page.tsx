@@ -178,7 +178,7 @@ function UploadContent() {
   return (
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Test S3 Upload</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Test S3 Upload</h1>
         <p className="text-gray-400">Testez l'upload de fichiers vers AWS S3</p>
       </div>
 
@@ -222,7 +222,7 @@ function UploadContent() {
                       <div className="flex items-center gap-3">
                         {getFileIcon(file.type)}
                         <div>
-                          <p className="text-sm font-medium text-foreground">{file.name}</p>
+                          <p className="text-sm font-medium text-white">{file.name}</p>
                           <p className="text-xs text-gray-600 text-gray-400">
                             {formatFileSize(file.size)}
                           </p>

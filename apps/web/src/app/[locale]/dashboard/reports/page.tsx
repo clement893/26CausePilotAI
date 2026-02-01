@@ -313,7 +313,7 @@ export default function DashboardReportsPage() {
                       {savedReports.map((report) => (
                         <div
                           key={report.id}
-                          className="p-4 border border-border rounded-lg cursor-pointer hover:bg-muted transition-colors"
+                          className="p-4 border border-border rounded-lg cursor-pointer hover:bg-[#1C1C26] transition-colors"
                           onClick={() => setSelectedReport(report)}
                         >
                           <h3 className="font-semibold text-foreground">{report.name}</h3>

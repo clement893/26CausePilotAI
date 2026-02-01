@@ -85,7 +85,7 @@ export default function TestimonialsPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-16 text-center">
-            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-foreground">Témoignages</h1>
+            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-white">Témoignages</h1>
             <hr className="my-8 border-gray-800 mx-auto max-w-md" />
             <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto">
               Découvrez ce que disent les participants de la masterclass ACT.
@@ -101,14 +101,14 @@ export default function TestimonialsPage() {
                   {Array.from({ length: currentTestimonial.rating }).map((_, i) => (
                     <Star
                       key={i}
-                      className="w-5 h-5 fill-foreground text-foreground"
+                      className="w-5 h-5 fill-foreground text-white"
                       aria-hidden="true"
                     />
                   ))}
                 </div>
 
                 {/* Testimonial Text */}
-                <blockquote className="text-xl md:text-2xl text-foreground mb-8 leading-relaxed">
+                <blockquote className="text-xl md:text-2xl text-white mb-8 leading-relaxed">
                   "{currentTestimonial.text}"
                 </blockquote>
 
@@ -120,7 +120,7 @@ export default function TestimonialsPage() {
                     </span>
                   </div>
                   <div>
-                    <div className="font-bold text-foreground text-lg">{currentTestimonial.name}</div>
+                    <div className="font-bold text-white text-lg">{currentTestimonial.name}</div>
                     <div className="text-gray-400 text-sm">
                       {currentTestimonial.role} • {currentTestimonial.location}
                     </div>
@@ -133,14 +133,14 @@ export default function TestimonialsPage() {
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-gray-800 hover:border-foreground transition-colors"
                   aria-label="Témoignage précédent"
                 >
-                  <ChevronLeft className="w-6 h-6 text-foreground" aria-hidden="true" />
+                  <ChevronLeft className="w-6 h-6 text-white" aria-hidden="true" />
                 </button>
                 <button
                   onClick={nextTestimonial}
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-gray-800 hover:border-foreground transition-colors"
                   aria-label="Témoignage suivant"
                 >
-                  <ChevronRight className="w-6 h-6 text-foreground" aria-hidden="true" />
+                  <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" />
                 </button>
               </div>
             )}
@@ -164,7 +164,7 @@ export default function TestimonialsPage() {
           <hr className="my-16 border-gray-800" />
 
           <div>
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-12 text-center">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-12 text-center">
               Tous les Témoignages
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -177,12 +177,12 @@ export default function TestimonialsPage() {
                     {Array.from({ length: testimonial.rating }).map((_, i) => (
                       <Star
                         key={i}
-                        className="w-4 h-4 fill-foreground text-foreground"
+                        className="w-4 h-4 fill-foreground text-white"
                         aria-hidden="true"
                       />
                     ))}
                   </div>
-                  <p className="text-foreground mb-4 leading-relaxed">"{testimonial.text}"</p>
+                  <p className="text-white mb-4 leading-relaxed">"{testimonial.text}"</p>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-[#1C1C26] rounded-full flex items-center justify-center">
                       <span className="text-gray-400 font-bold">
@@ -190,7 +190,7 @@ export default function TestimonialsPage() {
                       </span>
                     </div>
                     <div>
-                      <div className="font-bold text-foreground">{testimonial.name}</div>
+                      <div className="font-bold text-white">{testimonial.name}</div>
                       <div className="text-gray-400 text-sm">
                         {testimonial.role} • {testimonial.location}
                       </div>
@@ -203,7 +203,7 @@ export default function TestimonialsPage() {
 
           {/* CTA Section */}
           <div className="text-center mt-16">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6">Rejoignez-les</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">Rejoignez-les</h2>
             <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
               Découvrez pourquoi tant de professionnels recommandent cette masterclass.
             </p>

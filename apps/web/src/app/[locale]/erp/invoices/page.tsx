@@ -78,7 +78,7 @@ function ERPInvoicesContent() {
               ? 'bg-success-100 text-success-800 bg-green-500/20 text-green-300'
               : value === 'open'
                 ? 'bg-warning-100 text-warning-800 bg-yellow-500/20 text-yellow-300'
-                : 'bg-muted text-foreground'
+                : 'bg-[#1C1C26] text-foreground'
           }`}
         >
           {value as string}
@@ -120,7 +120,7 @@ function ERPInvoicesContent() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border border-border rounded-lg bg-background"
+            className="px-3 py-2 border border-gray-800 rounded-lg bg-background"
           >
             <option value="">All Status</option>
             <option value="paid">Paid</option>

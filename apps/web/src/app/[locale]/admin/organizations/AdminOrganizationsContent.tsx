@@ -414,7 +414,7 @@ export default function AdminOrganizationsContent() {
 
           return (
             <div>
-              <div className="font-medium text-foreground">{team.name}</div>
+              <div className="font-medium text-white">{team.name}</div>
               {team.description && (
                 <div className="text-sm text-gray-400 mt-1">{team.description}</div>
               )}

@@ -98,7 +98,7 @@ export function ReportGeneratorCard({
                     <p className="font-medium">Report generated successfully!</p>
                     <p className="text-sm mt-1">
                       Report path:{' '}
-                      <code className="text-xs bg-muted px-1 py-0.5 rounded">
+                      <code className="text-xs bg-[#1C1C26] px-1 py-0.5 rounded">
                         {report.reportPath}
                       </code>
                     </p>
@@ -115,7 +115,7 @@ export function ReportGeneratorCard({
                 <div className="mt-4">
                   <h3 className="font-medium mb-2">Report Preview</h3>
                   <pre
-                    className="bg-muted p-4 rounded-lg text-xs overflow-auto max-h-96 border border-border"
+                    className="bg-[#1C1C26] p-4 rounded-lg text-xs overflow-auto max-h-96 border border-gray-800"
                     role="log"
                     aria-label="Report preview"
                   >

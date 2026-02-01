@@ -27,7 +27,7 @@ function ERPDashboardContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">ERP Dashboard</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">ERP Dashboard</h1>
         <p className="text-gray-400">Overview of all ERP operations and statistics.</p>
       </div>
 
@@ -39,28 +39,28 @@ function ERPDashboardContent() {
             href="/erp/orders"
             className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
-            <h3 className="font-semibold text-foreground mb-1">Manage Orders</h3>
+            <h3 className="font-semibold text-white mb-1">Manage Orders</h3>
             <p className="text-sm text-gray-400">View and manage all orders</p>
           </a>
           <a
             href="/erp/invoices"
             className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
-            <h3 className="font-semibold text-foreground mb-1">Manage Invoices</h3>
+            <h3 className="font-semibold text-white mb-1">Manage Invoices</h3>
             <p className="text-sm text-gray-400">View and manage all invoices</p>
           </a>
           <a
             href="/erp/clients"
             className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
-            <h3 className="font-semibold text-foreground mb-1">Manage Clients</h3>
+            <h3 className="font-semibold text-white mb-1">Manage Clients</h3>
             <p className="text-sm text-gray-400">View and manage all clients</p>
           </a>
           <a
             href="/erp/inventory"
             className="p-4 border border-border rounded-lg hover:bg-[#1C1C26] transition-colors"
           >
-            <h3 className="font-semibold text-foreground mb-1">Manage Inventory</h3>
+            <h3 className="font-semibold text-white mb-1">Manage Inventory</h3>
             <p className="text-sm text-gray-400">View and manage inventory</p>
           </a>
         </div>

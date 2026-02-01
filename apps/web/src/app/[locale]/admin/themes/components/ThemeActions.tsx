@@ -151,7 +151,7 @@ export function ConfirmActivateModal({
           </Alert>
         ) : (
           <>
-            <p className="text-foreground">
+            <p className="text-white">
               Êtes-vous sûr de vouloir activer le thème <strong>"{theme.display_name}"</strong> ?
             </p>
             <p className="text-sm text-gray-400">

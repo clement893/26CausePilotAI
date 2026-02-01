@@ -16,7 +16,7 @@ export default function ERPPortalLayout({ children }: { children: React.ReactNod
     <ErrorBoundary>
       <div className="flex min-h-screen bg-[#1C1C26]">
         {/* Sidebar Navigation */}
-        <aside className="w-64 bg-background border-r border-border p-6 overflow-y-auto">
+        <aside className="w-64 bg-background border-r border-gray-800 p-6 overflow-y-auto">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-foreground">ERP Portal</h2>
             <p className="text-sm text-gray-400">

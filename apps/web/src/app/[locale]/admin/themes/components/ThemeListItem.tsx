@@ -37,10 +37,10 @@ export function ThemeListItem({
   onDuplicate,
 }: ThemeListItemProps) {
   return (
-    <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-background hover:bg-muted/50 transition-colors">
+    <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#13131A] hover:bg-[#1C1C26]/50 transition-colors">
       <div className="flex-1">
         <div className="flex items-center gap-3">
-          <h3 className="text-lg font-semibold text-foreground">{theme.display_name}</h3>
+          <h3 className="text-lg font-semibold text-white">{theme.display_name}</h3>
           {theme.isActive && (
             <Badge variant="success" className="flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" />

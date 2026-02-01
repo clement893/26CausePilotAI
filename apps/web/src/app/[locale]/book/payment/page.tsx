@@ -25,7 +25,7 @@ export default function PaymentPage() {
   }, [bookingReference, router]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center">
       <Container>
         <div className="text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-muted rounded-full mb-4">

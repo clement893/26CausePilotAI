@@ -233,7 +233,7 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Code className="w-5 h-5 text-gray-400" />
-          <h3 className="text-lg font-semibold text-foreground">Éditeur JSON</h3>
+          <h3 className="text-lg font-semibold text-white">Éditeur JSON</h3>
         </div>
         <div className="flex gap-2">
           <Button onClick={handleFormat} variant="outline" size="sm" disabled={!isValid}>

@@ -82,7 +82,7 @@ export default function AdminSettingsContent() {
           <Card className="p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-foreground">Mode maintenance</label>
+                <label className="text-sm font-medium text-white">Mode maintenance</label>
                 <p className="text-sm text-gray-400 mt-1">
                   Active le mode maintenance pour restreindre l'accès au système
                 </p>
@@ -95,7 +95,7 @@ export default function AdminSettingsContent() {
 
             <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-foreground">Inscriptions activées</label>
+                <label className="text-sm font-medium text-white">Inscriptions activées</label>
                 <p className="text-sm text-gray-400 mt-1">
                   Permet aux nouveaux utilisateurs de s'inscrire
                 </p>
@@ -110,7 +110,7 @@ export default function AdminSettingsContent() {
 
             <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-foreground">
+                <label className="text-sm font-medium text-white">
                   Vérification email requise
                 </label>
                 <p className="text-sm text-gray-400 mt-1">

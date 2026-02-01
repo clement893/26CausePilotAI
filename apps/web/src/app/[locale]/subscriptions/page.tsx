@@ -201,7 +201,7 @@ function SubscriptionsContent() {
     <div className="py-12">
       <Container>
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">My Subscriptions</h1>
+          <h1 className="text-4xl font-bold text-white mb-2">My Subscriptions</h1>
           <p className="text-gray-400">Manage your subscription and payments</p>
         </div>
 

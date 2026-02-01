@@ -90,7 +90,7 @@ export default function BlogPostPage() {
     return (
       <PageContainer>
         <div className="text-center py-12">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Post Not Found</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">Post Not Found</h1>
           <p className="text-gray-400">The blog post you're looking for doesn't exist.</p>
         </div>
       </PageContainer>

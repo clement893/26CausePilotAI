@@ -135,7 +135,7 @@ export default function FAQPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-16 text-center">
-            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-foreground">
+            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-white">
               Questions Fréquentes
             </h1>
             <hr className="my-8 border-gray-800 mx-auto max-w-md" />
@@ -168,7 +168,7 @@ export default function FAQPage() {
                   className={`px-4 py-2 border font-bold transition-colors ${
                     selectedCategory === category
                       ? 'bg-foreground text-background border-foreground'
-                      : 'bg-background text-foreground border-foreground hover:bg-[#1C1C26]'
+                      : 'bg-background text-white border-foreground hover:bg-[#1C1C26]'
                   }`}
                 >
                   {category}
@@ -197,10 +197,10 @@ export default function FAQPage() {
                       <div className="text-xs font-bold text-gray-400 mb-2">
                         {item.category}
                       </div>
-                      <h3 className="text-lg font-bold text-foreground">{item.question}</h3>
+                      <h3 className="text-lg font-bold text-white">{item.question}</h3>
                     </div>
                     <ChevronDown
-                      className={`w-5 h-5 text-foreground transition-transform flex-shrink-0 ${
+                      className={`w-5 h-5 text-white transition-transform flex-shrink-0 ${
                         openItems.has(item.id) ? 'rotate-180' : ''
                       }`}
                       aria-hidden="true"
@@ -209,7 +209,7 @@ export default function FAQPage() {
                   {openItems.has(item.id) && (
                     <div className="px-6 pb-6">
                       <div className="pt-4 border-t border-gray-800">
-                        <p className="text-foreground leading-relaxed">{item.answer}</p>
+                        <p className="text-white leading-relaxed">{item.answer}</p>
                       </div>
                     </div>
                   )}
