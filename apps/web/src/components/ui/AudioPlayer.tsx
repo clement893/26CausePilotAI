@@ -111,13 +111,13 @@ export default function AudioPlayer({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
   return (
-    <div className={clsx('glass-effect bg-[#13131A] dark:bg-background rounded-lg border border-gray-800 dark:border-border p-4', className)}>
+    <div className={clsx('glass-effect bg-[#13131A] bg-[#13131A] rounded-lg border border-gray-800 border-gray-800 p-4', className)}>
       <audio ref={audioRef} src={src} loop={loop} muted={isMuted} autoPlay={autoplay} />
       {/* Title and Artist */}
       {(title || artist) && (
         <div className="mb-4">
-          {title && <h3 className="text-lg font-semibold text-white dark:text-foreground">{title}</h3>}
-          {artist && <p className="text-sm text-gray-400 dark:text-muted-foreground">{artist}</p>}
+          {title && <h3 className="text-lg font-semibold text-white text-white">{title}</h3>}
+          {artist && <p className="text-sm text-gray-400 text-gray-400">{artist}</p>}
         </div>
       )}
       {/* Progress bar */}
@@ -128,12 +128,12 @@ export default function AudioPlayer({
           max={duration || 0}
           value={currentTime}
           onChange={handleSeek}
-          className="w-full h-2 bg-[#1C1C26] dark:bg-muted rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-[#1C1C26] bg-[#1C1C26] rounded-lg appearance-none cursor-pointer"
           style={{
             background: `linear-gradient(to right, rgb(59, 130, 246) 0%, rgb(139, 92, 246) ${duration ? (currentTime / duration) * 100 : 0}%, rgb(28, 28, 38) ${duration ? (currentTime / duration) * 100 : 0}%, rgb(28, 28, 38) 100%)`
           }}
         />
-        <div className="flex justify-between text-xs text-gray-400 dark:text-muted-foreground mt-1">
+        <div className="flex justify-between text-xs text-gray-400 text-gray-400 mt-1">
           <span>{formatTime(currentTime)}</span> <span>{formatTime(duration)}</span>
         </div>
       </div>
@@ -145,15 +145,15 @@ export default function AudioPlayer({
           <Button variant="gradient" size="sm" onClick={togglePlay} className="rounded-full p-2">
             {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => skip(-10)} className="rounded-full p-2 text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+          <Button variant="ghost" size="sm" onClick={() => skip(-10)} className="rounded-full p-2 text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]">
             <SkipBack className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => skip(10)} className="rounded-full p-2 text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+          <Button variant="ghost" size="sm" onClick={() => skip(10)} className="rounded-full p-2 text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]">
             <SkipForward className="w-4 h-4" />
           </Button>
         </div>
         <div className="flex items-center gap-2 flex-1 justify-end">
-          <Button variant="ghost" size="sm" onClick={toggleMute} className="rounded-full p-2 text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+          <Button variant="ghost" size="sm" onClick={toggleMute} className="rounded-full p-2 text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]">
             {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
           </Button>
           <input
@@ -163,7 +163,7 @@ export default function AudioPlayer({
             step="0.01"
             value={volume}
             onChange={handleVolumeChange}
-            className="w-24 h-1 bg-[#1C1C26] dark:bg-muted rounded-lg appearance-none cursor-pointer"
+            className="w-24 h-1 bg-[#1C1C26] bg-[#1C1C26] rounded-lg appearance-none cursor-pointer"
             style={{
               background: `linear-gradient(to right, rgb(59, 130, 246) 0%, rgb(139, 92, 246) ${volume * 100}%, rgb(28, 28, 38) ${volume * 100}%, rgb(28, 28, 38) 100%)`
             }}

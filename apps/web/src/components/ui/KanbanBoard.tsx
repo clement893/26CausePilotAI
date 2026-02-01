@@ -63,7 +63,7 @@ export default function KanbanBoard({
       case 'low':
         return 'bg-gradient-to-r from-gray-500/20 to-gray-600/20 text-gray-300 border border-gray-500/30';
       default:
-        return 'bg-[#1C1C26] dark:bg-muted text-gray-300 dark:text-foreground';
+        return 'bg-[#1C1C26] bg-[#1C1C26] text-gray-300 text-white';
     }
   };
   return (
@@ -75,7 +75,7 @@ export default function KanbanBoard({
           <div
             key={column.id}
             className={clsx(
-              'flex-shrink-0 w-80 glass-effect bg-[#13131A] dark:bg-muted rounded-lg p-4 border border-gray-800 dark:border-border',
+              'flex-shrink-0 w-80 glass-effect bg-[#13131A] bg-[#1C1C26] rounded-lg p-4 border border-gray-800 border-gray-800',
               dragOverColumn === column.id && 'ring-2 ring-blue-500'
             )}
             onDragOver={(e) => handleDragOver(e, column.id)}
@@ -92,8 +92,8 @@ export default function KanbanBoard({
                   className={clsx('w-3 h-3 rounded-full', column.color || 'bg-primary-500')}
                   style={column.color ? { backgroundColor: column.color } : undefined}
                 />{' '}
-                <h3 className="font-semibold text-white dark:text-foreground">{column.title}</h3>
-                <span className="text-sm text-gray-400 dark:text-muted-foreground bg-[#1C1C26] dark:bg-background px-2 py-1 rounded-full">
+                <h3 className="font-semibold text-white text-white">{column.title}</h3>
+                <span className="text-sm text-gray-400 text-gray-400 bg-[#1C1C26] bg-[#13131A] px-2 py-1 rounded-full">
                   {columnCards.length}
                 </span>
               </div>{' '}
@@ -114,15 +114,15 @@ export default function KanbanBoard({
                   onDragStart={() => handleDragStart(card.id)}
                   onClick={() => onCardClick?.(card)}
                   className={clsx(
-                    'glass-effect bg-[#1C1C26] dark:bg-background rounded-lg p-4 shadow-sm cursor-move hover:shadow-md hover-lift transition-all border border-gray-800 dark:border-border',
+                    'glass-effect bg-[#1C1C26] bg-[#13131A] rounded-lg p-4 shadow-sm cursor-move hover:shadow-md hover-lift transition-all border border-gray-800 border-gray-800',
                     draggedCard === card.id && 'opacity-50'
                   )}
                 >
-                  <h4 className="font-medium text-white dark:text-foreground mb-2">
+                  <h4 className="font-medium text-white text-white mb-2">
                     {card.title}
                   </h4>
                   {card.description && (
-                    <p className="text-sm text-gray-400 dark:text-muted-foreground mb-3 line-clamp-2">
+                    <p className="text-sm text-gray-400 text-gray-400 mb-3 line-clamp-2">
                       {card.description}
                     </p>
                   )}
@@ -145,7 +145,7 @@ export default function KanbanBoard({
                         {card.tags.map((tag, index) => (
                           <span
                             key={index}
-                            className="text-xs px-2 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-gray-300 dark:text-muted-foreground rounded border border-gray-700 dark:border-border"
+                            className="text-xs px-2 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-gray-300 text-gray-400 rounded border border-gray-700 border-gray-800"
                           >
                             {tag}
                           </span>
@@ -154,7 +154,7 @@ export default function KanbanBoard({
                     )}
                   </div>
                   {card.dueDate && (
-                    <div className="mt-2 text-xs text-gray-400 dark:text-muted-foreground">
+                    <div className="mt-2 text-xs text-gray-400 text-gray-400">
                       {new Date(card.dueDate).toLocaleDateString()}
                     </div>
                   )}
