@@ -56,7 +56,7 @@ export interface APISettingsProps {
     <form onSubmit={handleSubmit} className={className}>
       <div className="space-y-6">
         {/* API Credentials */}
-        <Card variant="glass" title="API Credentials" className="border border-gray-800border-border">
+        <Card variant="glass" title="API Credentials" className="border border-gray-800">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-whitetext-foreground mb-2">
@@ -133,7 +133,7 @@ export interface APISettingsProps {
           </div>
         </Card>
         {/* API Configuration */}
-        <Card variant="glass" title="API Configuration" className="border border-gray-800border-border">
+        <Card variant="glass" title="API Configuration" className="border border-gray-800">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-whitetext-foreground mb-2">

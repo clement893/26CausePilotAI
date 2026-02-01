@@ -252,7 +252,7 @@ export default function PrivacySettings({
             </div>
           </div>
           <div className="flex items-center justify-end gap-3">
-            <Button variant="ghost" onClick={() => setShowDeleteModal(false)} className="text-gray-300text-foreground hover:bg-[#1C1C26]hover:bg-muted">
+            <Button variant="ghost" onClick={() => setShowDeleteModal(false)} className="text-gray-300 hover:bg-[#252532] hover:text-white">
               Cancel
             </Button>
             <Button variant="danger" onClick={handleDeleteAccount}>
