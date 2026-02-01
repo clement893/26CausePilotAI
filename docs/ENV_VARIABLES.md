@@ -89,6 +89,16 @@ Documentation complète de toutes les variables d'environnement utilisées dans 
 | Variable                             | Description         | Requis | Défaut | Exemple                        |
 | ------------------------------------ | ------------------- | ------ | ------ | ------------------------------ |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Clé publique Stripe | Non    | -      | `pk_test_xxx` ou `pk_live_xxx` |
+| `STRIPE_PUBLIC_KEY`                  | Alias clé publique (lib payment) | Non | -      | `pk_test_xxx`                  |
+| `STRIPE_SECRET_KEY`                  | Clé secrète Stripe (server-side, lib/payment) | Non | - | `sk_test_xxx` ou `sk_live_xxx` |
+
+### PayPal (Étape 2.2.1 - Passerelles de paiement)
+
+| Variable               | Description                    | Requis | Défaut  | Exemple        |
+| ---------------------- | ------------------------------ | ------ | ------- | -------------- |
+| `PAYPAL_CLIENT_ID`     | Client ID PayPal               | Non    | -       | `xxx`          |
+| `PAYPAL_CLIENT_SECRET` | Client Secret PayPal           | Non    | -       | `xxx`          |
+| `PAYPAL_ENVIRONMENT`   | Environnement : `sandbox` ou `live` | Non | `sandbox` | `live`     |
 
 ### GitHub (Optionnel)
 
