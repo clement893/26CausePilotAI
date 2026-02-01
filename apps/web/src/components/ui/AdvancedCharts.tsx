@@ -136,7 +136,7 @@ export default function AdvancedCharts({
           const x = centerX + (radius + 5) * Math.cos(angle);
           const y = centerY + (radius + 5) * Math.sin(angle);
           return (
-            <text key={index} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-xs fill-gray-700 dark:fill-gray-300">
+            <text key={index} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="text-xs fill-gray-300 dark:fill-gray-300">
               {point.label}
             </text>
           );
@@ -175,7 +175,7 @@ export default function AdvancedCharts({
           );
         })}
         {/* Center text */}
-        <text x="50" y="50" textAnchor="middle" dominantBaseline="middle" className="text-sm font-semibold fill-gray-900 dark:fill-gray-100">
+        <text x="50" y="50" textAnchor="middle" dominantBaseline="middle" className="text-sm font-semibold fill-white dark:fill-gray-100">
           {total}
         </text>
       </svg>
@@ -209,14 +209,14 @@ export default function AdvancedCharts({
           strokeLinecap="round"
         />
         {/* Value text */}
-        <text x={centerX} y={centerY + 10} textAnchor="middle" dominantBaseline="middle" className="text-2xl font-bold fill-gray-900 dark:fill-gray-100">
+        <text x={centerX} y={centerY + 10} textAnchor="middle" dominantBaseline="middle" className="text-2xl font-bold fill-white dark:fill-gray-100">
           {value}
         </text>
         {/* Min/Max labels */}
-        <text x={centerX - radius - 5} y={centerY + 5} textAnchor="end" className="text-xs fill-gray-600 dark:fill-gray-400">
+        <text x={centerX - radius - 5} y={centerY + 5} textAnchor="end" className="text-xs fill-gray-400 dark:fill-gray-400">
           {min}
         </text>
-        <text x={centerX + radius + 5} y={centerY + 5} textAnchor="start" className="text-xs fill-gray-600 dark:fill-gray-400">
+        <text x={centerX + radius + 5} y={centerY + 5} textAnchor="start" className="text-xs fill-gray-400 dark:fill-gray-400">
           {max}
         </text>
       </svg>
@@ -239,8 +239,8 @@ export default function AdvancedCharts({
   };
 
   return (
-    <div className={clsx('bg-background rounded-lg border border-border p-6', className)}>
-      {title && <h3 className="text-lg font-semibold text-foreground mb-4">{title}</h3>}
+    <div className={clsx('glass-effect bg-[#13131A] dark:bg-background rounded-lg border border-gray-800 dark:border-border p-6', className)}>
+      {title && <h3 className="text-lg font-semibold text-white dark:text-foreground mb-4">{title}</h3>}
       <div style={{ height: `${height}px` }} className="relative">
         {renderChart()}
       </div>
@@ -254,7 +254,7 @@ export default function AdvancedCharts({
                   backgroundColor: point.color || (type === 'scatter' ? chartColors.default() : `hsl(${(index * 360) / data.length}, 70%, 50%)`),
                 }}
               />
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-gray-400 dark:text-muted-foreground">
                 {point.label || `Point ${index + 1}`}
                 {point.value !== undefined && `: ${point.value}`}
               </span>

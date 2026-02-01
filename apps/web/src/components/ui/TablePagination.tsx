@@ -23,16 +23,14 @@ export default function TablePagination({
   const endIndex = Math.min(currentPage * pageSize, totalItems);
   return (
     <div className={`flex items-center justify-between ${className}`}>
-      {' '}
-      <div className="text-sm text-muted-foreground">
-        {' '}
-        Affichage de {startIndex} à {endIndex} sur {totalItems}{' '}
-      </div>{' '}
+      <div className="text-sm text-gray-400 dark:text-muted-foreground">
+        Affichage de {startIndex} à {endIndex} sur {totalItems}
+      </div>
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={onPageChange}
-      />{' '}
+      />
     </div>
   );
 }

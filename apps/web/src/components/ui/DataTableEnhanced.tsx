@@ -118,7 +118,7 @@ export default function DataTableEnhanced<T extends Record<string, unknown>>({
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
             {selectable && selectedRows.size > 0 && (
-              <span className="text-sm text-muted-foreground">{selectedRows.size} selected</span>
+              <span className="text-sm text-gray-400 dark:text-muted-foreground">{selectedRows.size} selected</span>
             )}
             {bulkActions.length > 0 && selectedRows.size > 0 && (
               <div className="flex gap-2">
@@ -189,7 +189,7 @@ export default function DataTableEnhanced<T extends Record<string, unknown>>({
       {/* Enhanced DataTable */}
       <div className="relative">
         {selectable && (
-          <div className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center border-r border-border bg-muted/50 z-10">
+          <div className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center border-r border-gray-800 dark:border-border bg-[#1C1C26]/50 dark:bg-muted/50 z-10">
             <Checkbox checked={allSelected} indeterminate={someSelected} onChange={handleSelectAll} />
           </div>
         )}

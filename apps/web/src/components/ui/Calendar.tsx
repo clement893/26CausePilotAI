@@ -96,15 +96,15 @@ export default function Calendar({ events = [], onDateClick, onEventClick, class
         <div
           key={day}
           className={clsx(
-            'aspect-square border border-border p-2 cursor-pointer hover:bg-muted dark:hover:bg-muted transition-colors',
-            isCurrentDay && 'bg-primary-50 dark:bg-primary-900/40 border-primary-500 dark:border-primary-400'
+            'aspect-square border border-gray-800 dark:border-border p-2 cursor-pointer hover:bg-[#1C1C26] dark:hover:bg-muted transition-colors',
+            isCurrentDay && 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500 dark:border-primary-400'
           )}
           onClick={() => onDateClick?.(date)}
         >
           <div
             className={clsx(
               'text-sm font-medium mb-1',
-              isCurrentDay ? 'text-primary-600 dark:text-primary-400' : 'text-foreground'
+              isCurrentDay ? 'text-white dark:text-primary-400' : 'text-gray-300 dark:text-foreground'
             )}
           >
             {day}
@@ -115,7 +115,9 @@ export default function Calendar({ events = [], onDateClick, onEventClick, class
                 key={event.id}
                 className={clsx(
                   'text-xs px-1 py-0.5 rounded truncate cursor-pointer',
-                  event.color || 'bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300'
+                  event.color 
+                    ? 'text-white' 
+                    : 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-white dark:text-primary-300 border border-blue-500/30'
                 )}
                 style={event.color ? { backgroundColor: event.color } : undefined}
                 onClick={(e) => {
@@ -127,7 +129,7 @@ export default function Calendar({ events = [], onDateClick, onEventClick, class
                 {event.title}
               </div>
             ))}
-            {dayEvents.length > 3 && <div className="text-xs text-muted-foreground">+{dayEvents.length - 3} autres</div>}
+            {dayEvents.length > 3 && <div className="text-xs text-gray-400 dark:text-muted-foreground">+{dayEvents.length - 3} autres</div>}
           </div>
         </div>
       );
@@ -137,10 +139,10 @@ export default function Calendar({ events = [], onDateClick, onEventClick, class
   };
 
   return (
-    <div className={clsx('bg-background rounded-lg border border-border p-6', className)}>
+    <div className={clsx('glass-effect bg-[#13131A] dark:bg-background rounded-lg border border-gray-800 dark:border-border p-6', className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">
+        <h2 className="text-2xl font-bold text-white dark:text-foreground">
           {monthNames[month]} {year}
         </h2>
         <div className="flex gap-2">
@@ -159,7 +161,7 @@ export default function Calendar({ events = [], onDateClick, onEventClick, class
       {/* Day names */}
       <div className="grid grid-cols-7 gap-1 mb-2">
         {dayNames.map((day) => (
-          <div key={day} className="text-center text-sm font-medium text-muted-foreground py-2">
+          <div key={day} className="text-center text-sm font-medium text-gray-400 dark:text-muted-foreground py-2">
             {day}
           </div>
         ))}
