@@ -51,7 +51,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Brain className="w-6 h-6" />,
     description: 'IA avancée pour optimiser vos campagnes de collecte',
     badgeVariant: 'info',
-    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#1a4d2e] dark:text-emerald-400',
+    iconColor: 'bg-emerald-50 bg-emerald-500/20 text-[#1a4d2e] text-emerald-400',
     features: [
       { title: 'Prédictions de dons', description: 'Anticipez les comportements des donateurs avec l\'IA' },
       { title: 'Segmentation intelligente', description: 'Segmentez automatiquement vos donateurs' },
@@ -66,7 +66,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Users className="w-6 h-6" />,
     description: 'Base de données complète et CRM intégré',
     badgeVariant: 'success',
-    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#cc5500] dark:text-orange-400',
+    iconColor: 'bg-orange-50 bg-orange-500/20 text-[#cc5500] text-orange-400',
     features: [
       { title: 'Profils détaillés', description: 'Historique complet de chaque donateur' },
       { title: 'Segmentation avancée', description: 'Créez des segments personnalisés' },
@@ -111,7 +111,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Mail className="w-6 h-6" />,
     description: 'Outils de communication multi-canaux',
     badgeVariant: 'default',
-    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#1a4d2e] dark:text-emerald-400',
+    iconColor: 'bg-emerald-50 bg-emerald-500/20 text-[#1a4d2e] text-emerald-400',
     features: [
       { title: 'Campagnes email', description: 'Envoyez des emails personnalisés en masse' },
       { title: 'Templates professionnels', description: 'Bibliothèque de modèles d\'emails' },
@@ -126,7 +126,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <CreditCard className="w-6 h-6" />,
     description: 'Système de paiement sécurisé et flexible',
     badgeVariant: 'success',
-    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#cc5500] dark:text-orange-400',
+    iconColor: 'bg-orange-50 bg-orange-500/20 text-[#cc5500] text-orange-400',
     features: [
       { title: 'Paiements en ligne', description: 'Acceptez les dons par carte et virements' },
       { title: 'Multi-devises', description: 'Support de toutes les devises principales' },
@@ -172,7 +172,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Modern Hero Section - Dark Green & Burnt Orange Branding */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#1a4d2e] dark:bg-[#0f2e1a]">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#1a4d2e] bg-[#0f2e1a]">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
@@ -301,7 +301,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-emerald-50 dark:bg-muted">
+      <section className="py-24 bg-emerald-50 bg-[#1C1C26]">
         <Container>
           <div className="text-center mb-16">
             <Badge variant="success" className="mb-4">
@@ -367,7 +367,7 @@ export default function HomePage() {
 
           <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Brain className="w-8 h-8 text-[#1a4d2e]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">IA Avancée</h3>
@@ -377,7 +377,7 @@ export default function HomePage() {
             </Card>
 
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <TrendingUp className="w-8 h-8 text-[#cc5500]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">+35% de dons</h3>
@@ -387,7 +387,7 @@ export default function HomePage() {
             </Card>
 
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Zap className="w-8 h-8 text-[#2d5016]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Installation rapide</h3>
@@ -397,7 +397,7 @@ export default function HomePage() {
             </Card>
 
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <MessageSquare className="w-8 h-8 text-[#b45309]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Support 24/7</h3>
@@ -407,7 +407,7 @@ export default function HomePage() {
             </Card>
 
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Globe className="w-8 h-8 text-[#1a4d2e]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Multi-pays</h3>
@@ -417,7 +417,7 @@ export default function HomePage() {
             </Card>
 
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <DollarSign className="w-8 h-8 text-[#cc5500]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Frais réduits</h3>
@@ -427,7 +427,7 @@ export default function HomePage() {
             </Card>
 
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-emerald-100 bg-emerald-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Calendar className="w-8 h-8 text-[#2d5016]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Planification</h3>
@@ -437,7 +437,7 @@ export default function HomePage() {
             </Card>
 
             <Card hover className="text-center p-8 group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 bg-orange-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Shield className="w-8 h-8 text-[#b45309]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">100% Sécurisé</h3>

@@ -206,16 +206,16 @@ export default function DemoDashboardPage() {
   const maxAmount = Math.max(...monthlyData.map((d) => d.amount));
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 bg-[#0A0A0F]">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-white bg-[#1C1C26] border-b border-gray-200 border-gray-800">
         <Container className="py-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-4xl font-bold text-gray-900 text-white mb-2">
                 Dashboard
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
+              <p className="text-lg text-gray-600 text-gray-300">
                 Welcome back! Here's what's happening with your fundraising.
               </p>
             </div>
@@ -223,7 +223,7 @@ export default function DemoDashboardPage() {
               <select
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="px-4 py-2 border border-gray-300 border-gray-700 rounded-lg bg-white bg-[#1C1C26] text-gray-900 text-white"
               >
                 <option value="7d">Last 7 days</option>
                 <option value="30d">Last 30 days</option>
@@ -266,13 +266,13 @@ export default function DemoDashboardPage() {
                     {stat.change}
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-gray-600 text-gray-400 mb-1">
                   {stat.label}
                 </p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                <p className="text-3xl font-bold text-gray-900 text-white mb-1">
                   {stat.value}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-gray-500 text-gray-400">
                   {stat.description}
                 </p>
               </Card>
@@ -285,10 +285,10 @@ export default function DemoDashboardPage() {
           <Card className="lg:col-span-2 p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-xl font-bold text-gray-900 text-white mb-1">
                   Revenue Trend
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600 text-gray-400">
                   Monthly donation revenue over time
                 </p>
               </div>
@@ -301,10 +301,10 @@ export default function DemoDashboardPage() {
             <div className="space-y-4">
               {monthlyData.map((data, index) => (
                 <div key={index} className="flex items-center gap-4">
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400 w-12">
+                  <span className="text-sm font-medium text-gray-600 text-gray-400 w-12">
                     {data.month}
                   </span>
-                  <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-8 relative overflow-hidden">
+                  <div className="flex-1 bg-gray-200 bg-gray-700 rounded-full h-8 relative overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500 flex items-center justify-end pr-3"
                       style={{ width: `${(data.amount / maxAmount) * 100}%` }}
@@ -323,10 +323,10 @@ export default function DemoDashboardPage() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-xl font-bold text-gray-900 text-white mb-1">
                   AI Insights
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600 text-gray-400">
                   Smart recommendations
                 </p>
               </div>
@@ -346,10 +346,10 @@ export default function DemoDashboardPage() {
                     <div className="flex items-start gap-3">
                       <Icon className={`w-5 h-5 ${insight.color} flex-shrink-0 mt-0.5`} />
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                        <h4 className="text-sm font-semibold text-gray-900 text-gray-300 mb-1">
                           {insight.title}
                         </h4>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                        <p className="text-xs text-gray-600 text-gray-400 mb-2">
                           {insight.description}
                         </p>
                         <button className={`text-xs font-semibold ${insight.color} hover:underline`}>
@@ -369,10 +369,10 @@ export default function DemoDashboardPage() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-xl font-bold text-gray-900 text-white mb-1">
                   Campaign Performance
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600 text-gray-400">
                   Active fundraising campaigns
                 </p>
               </div>
@@ -386,30 +386,30 @@ export default function DemoDashboardPage() {
                 <div key={index}>
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
+                      <h4 className="font-semibold text-gray-900 text-white text-sm">
                         {campaign.name}
                       </h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-gray-500 text-gray-400">
                         {campaign.donors} donors
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-gray-900 dark:text-white text-sm">
+                      <p className="font-bold text-gray-900 text-white text-sm">
                         ${campaign.raised.toLocaleString()}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-gray-500 text-gray-400">
                         of ${campaign.goal.toLocaleString()}
                       </p>
                     </div>
                   </div>
                   <div className="relative">
-                    <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                    <div className="bg-gray-200 bg-gray-700 rounded-full h-3 overflow-hidden">
                       <div
                         className="bg-gradient-to-r from-green-500 to-emerald-500 h-full rounded-full transition-all duration-500"
                         style={{ width: `${campaign.progress}%` }}
                       />
                     </div>
-                    <span className="absolute right-0 -top-5 text-xs font-semibold text-gray-600 dark:text-gray-400">
+                    <span className="absolute right-0 -top-5 text-xs font-semibold text-gray-600 text-gray-400">
                       {campaign.progress.toFixed(1)}%
                     </span>
                   </div>
@@ -422,10 +422,10 @@ export default function DemoDashboardPage() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-xl font-bold text-gray-900 text-white mb-1">
                   Recent Donations
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600 text-gray-400">
                   Latest contributions
                 </p>
               </div>
@@ -438,26 +438,26 @@ export default function DemoDashboardPage() {
               {recentDonations.map((donation) => (
                 <div
                   key={donation.id}
-                  className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="flex items-center justify-between p-4 rounded-lg bg-gray-50 bg-[#1C1C26] hover:bg-gray-100 hover:bg-gray-700 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
                       {donation.donor.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white text-sm">
+                      <p className="font-semibold text-gray-900 text-white text-sm">
                         {donation.donor}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-gray-500 text-gray-400">
                         {donation.campaign}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-green-600 dark:text-green-400 text-sm">
+                    <p className="font-bold text-green-600 text-green-400 text-sm">
                       +${donation.amount}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-gray-500 text-gray-400">
                       {donation.date.split(' ')[1]} {donation.date.split(' ')[2]}
                     </p>
                   </div>
