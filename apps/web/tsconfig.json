@@ -20,6 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@modele/core": ["../../packages/core/src"],
+      "@modele/core/*": ["../../packages/core/src/*"],
       "@modele/types": ["../../packages/types/src"],
       "@modele/types/theme": ["../../packages/types/dist/theme"],
       "@modele/types/portal": ["../../packages/types/dist/portal"]

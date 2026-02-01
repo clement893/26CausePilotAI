@@ -1,5 +1,7 @@
 /**
- * @modele/core
- * Module core - à alimenter avec utils, erreurs, constants, logger, etc.
+ * @modele/core - Core utilities, errors, and constants
  */
-export const CORE_MODULE = '@modele/core' as const;
+
+export * from './utils';
+export * from './errors';
+export * from './constants';

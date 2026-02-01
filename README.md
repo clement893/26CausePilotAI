@@ -2,6 +2,8 @@
 
 A **production-ready, comprehensive full-stack template** for building modern SaaS applications and websites with **Next.js 16**, **React 19**, **TypeScript**, and **FastAPI**.
 
+**Projet actuel : 26CausePilotAI** — Cette base est utilisée pour le produit 26CausePilotAI. La documentation détaillée (guides, checklists, structure du code, packages, scripts, routes) a été regroupée dans le dossier **[docs/](docs/)** : voir notamment [PACKAGES.md](docs/PACKAGES.md), [SCRIPTS.md](docs/SCRIPTS.md), [ROUTES_APP.md](docs/ROUTES_APP.md), [AUDIT_TURBOREPO_ET_ORGANISATION.md](docs/AUDIT_TURBOREPO_ET_ORGANISATION.md), [CODE_STRUCTURE.md](docs/CODE_STRUCTURE.md), [GETTING_STARTED.md](docs/GETTING_STARTED.md).
+
 > **📦 This is a template** - Clone it, customize it, and build your next SaaS application in minutes!  
 > **Perfect for:** SaaS applications, admin dashboards, e-commerce platforms, content management systems, and any full-stack web application.
 

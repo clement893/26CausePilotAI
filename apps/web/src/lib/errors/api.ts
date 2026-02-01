@@ -18,13 +18,11 @@ import {
   NotFoundError,
   UnauthorizedError,
   ValidationError,
-} from './AppError';
-import {
   ErrorCode,
   type ApiErrorResponse,
   type FastAPIValidationError,
   type ValidationErrorDetail,
-} from './types';
+} from '@modele/core/errors';
 import { captureException } from '@/lib/sentry/client';
 import { logger } from '@/lib/logger';
 

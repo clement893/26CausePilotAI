@@ -8,9 +8,23 @@
 
 Réorganisation de la structure du Turborepo pour refléter les modules fonctionnels et améliorer la maintenabilité.
 
+**Décision (Option B, fév. 2026)** : les packages stubs (analytics, auth, campaigns, core, donators, forms, marketing, ui) ont été **supprimés**. Seuls **@modele/types** et **@modele/database** sont conservés. Tout le code métier reste dans `apps/web`. Ce document est conservé comme **référence** si une migration vers des packages est décidée plus tard.
+
 ---
 
-## Nouvelle structure des packages
+## Structure actuelle des packages
+
+```
+/packages
+  /database    → @modele/database   (Prisma, schéma)
+  /types       → @modele/types      (types partagés)
+```
+
+---
+
+## Structure « cible » (référence pour une future migration)
+
+Si on recrée des packages plus tard :
 
 ```
 /packages
@@ -18,7 +32,7 @@ Réorganisation de la structure du Turborepo pour refléter les modules fonction
   /auth        → @modele/auth       (authentification, session)
   /campaigns   → @modele/campaigns   (campagnes multi-canal)
   /core        → @modele/core       (utils, erreurs, logger, constants)
-  /database    → @modele/database    (Prisma, schéma) — existant
+  /database    → @modele/database   (Prisma, schéma) — existant
   /donators    → @modele/donators   (base donateur, dons)
   /forms       → @modele/forms      (formulaires, hooks forms)
   /marketing   → @modele/marketing   (templates, campagnes email, segments, workflows)
@@ -28,12 +42,11 @@ Réorganisation de la structure du Turborepo pour refléter les modules fonction
 
 ---
 
-## État actuel
+## État actuel (après Option B)
 
-- **Créés :** Tous les nouveaux packages sont créés avec un point d’entrée `src/index.ts` (export minimal).
-- **Code existant :** Reste pour l’instant dans `apps/web`. La migration vers les packages peut se faire progressivement.
-- **tsconfig.base.json :** Paths ajoutés pour `@modele/analytics`, `@modele/auth`, etc., afin de permettre les imports une fois les dépendances déclarées.
-- **turbo.json :** Aucun changement nécessaire ; la tâche `build` avec `dependsOn: ["^build"]` prend en compte les nouveaux packages.
+- **Packages :** Seuls `types` et `database` existent. Pas de stubs.
+- **Code métier :** Tout reste dans `apps/web` (lib, components, app/actions, etc.).
+- **tsconfig.base.json :** Paths uniquement pour `@modele/types` et `@modele/database`.
 
 ---
 
@@ -73,12 +86,10 @@ Pour déplacer le code existant vers un package :
 
 ---
 
-## Checklist de vérification
+## Checklist (référence pour une future migration)
 
-- [x] Tous les nouveaux packages sont créés.
-- [ ] Le code existant a été déplacé (migration progressive).
-- [x] Les `package.json` des packages sont à jour.
-- [ ] Les imports dans l’application sont mis à jour (au fil de la migration).
+- [x] Option B appliquée : stubs supprimés, seuls types et database restent.
+- [ ] Si migration future : créer les packages au besoin, déplacer le code, mettre à jour les imports.
 - [ ] L’application se build et se lance correctement après chaque migration.
 
-Pour builder tous les packages : `pnpm -r build` (à la racine).
+Pour builder tous les packages : `pnpm run build:all` ou `pnpm -r build` (à la racine).

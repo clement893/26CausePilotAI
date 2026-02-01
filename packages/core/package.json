@@ -1,19 +1,34 @@
 {
   "name": "@modele/core",
   "version": "1.0.0",
-  "description": "Core utilities and shared logic for MODELE",
+  "description": "Core utilities, errors, and constants for MODELE",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
+    },
+    "./errors": {
+      "types": "./dist/errors/index.d.ts",
+      "default": "./dist/errors/index.js"
+    },
+    "./constants": {
+      "types": "./dist/constants/index.d.ts",
+      "default": "./dist/constants/index.js"
     }
   },
   "scripts": {
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "axios": "^1.6.2"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
