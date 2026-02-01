@@ -84,29 +84,19 @@ Les composants de features seront traités par **catégories fonctionnelles** po
 - [x] Autres auth (SignOutButton, UserProfile, ProtectedSuperAdminRoute) cohérents ✅
 
 #### Batch 20: Billing Components Part 1 (5 composants)
-- [ ] `billing/PricingCard.tsx` - Gradient-border pour plans premium
-- [ ] `billing/InvoiceCard.tsx` - Glassmorphism, hover-lift
-- [ ] `billing/PaymentForm.tsx` - Form inputs avec glow
-- [ ] `billing/SubscriptionCard.tsx` - Style moderne
-- [ ] Autres composants billing...
+- [x] BillingDashboard, BillingSettings, InvoiceList, InvoiceViewer, PaymentMethodForm, PaymentHistory, SubscriptionPlans, UsageMeter - Card glass, border-gray-800 ✅
 
 #### Batch 21: Billing Components Part 2 (5 composants)
-- [ ] Continuer avec autres composants billing...
+- [x] Vérifié - aucun composant billing avec classes génériques ✅
 
 #### Batch 22: Analytics Components (5 composants)
-- [ ] `analytics/DashboardCard.tsx` - Glassmorphism, gradients
-- [ ] `analytics/KPICard.tsx` - Style moderne avec gradients
-- [ ] `analytics/ChartContainer.tsx` - Background dark
-- [ ] Autres composants analytics...
+- [x] AnalyticsDashboard, DataExport, ReportBuilder, ReportViewer, EnhancedReportBuilder - aucun theme generique restant ✅
 
 #### Batch 23: Settings Components Part 1 (5 composants)
-- [ ] `settings/SettingsSection.tsx` - Glassmorphism
-- [ ] `settings/SettingsForm.tsx` - Form inputs avec glow
-- [ ] `settings/PreferencesCard.tsx` - Style moderne
-- [ ] Autres composants settings...
+- [x] GeneralSettings, NotificationSettings, SecuritySettings, UserSettings, SettingsNavigation - déjà alignés (typos corrigées) ✅
 
 #### Batch 24: Settings Components Part 2 (5 composants)
-- [ ] Continuer avec autres composants settings...
+- [x] APIKeys, OrganizationSettings, PrivacySettings, WebhooksSettings, APISettings, IntegrationsSettings - cohérents ✅
 
 ### Batch 25-40: Features Standards (80 composants)
 **Priorité:** MOYENNE ⭐

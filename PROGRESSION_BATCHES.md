@@ -1032,6 +1032,11 @@
 - **Billing** : BillingDashboard, BillingSettings, InvoiceList, InvoiceViewer, PaymentMethodForm, PaymentHistory, SubscriptionPlans, UsageMeter utilisent Card variant="glass" et border-gray-800
 - Aucune classe générique restante dans auth/billing
 
+### Phase 3 – Batches 20-24 (Billing, Analytics, Settings)
+- **Billing** : tous les composants utilisent Card variant="glass" et border-gray-800
+- **Analytics** : aucun theme generique dans analytics/
+- **Settings** : tous alignés (GeneralSettings, NotificationSettings, SecuritySettings, etc.)
+
 ---
 
 ## 📝 Notes
