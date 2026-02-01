@@ -6,7 +6,6 @@
  */
 
 import { prisma } from '@/lib/db';
-import type { SubscriptionStatus } from '@prisma/client';
 
 export interface DonationSubscriptionRow {
   id: string;
@@ -32,16 +31,17 @@ export async function listSubscriptionsAction(
   options?: { donatorId?: string; status?: string }
 ): Promise<{ subscriptions: DonationSubscriptionRow[]; error?: string }> {
   try {
+    type StatusFilter = 'ACTIVE' | 'PAUSED' | 'CANCELLED' | 'EXPIRED';
     const where: {
       organizationId: string;
       donatorId?: string;
-      status?: SubscriptionStatus;
+      status?: StatusFilter;
     } = {
       organizationId,
     };
     if (options?.donatorId) where.donatorId = options.donatorId;
-    if (options?.status && ['ACTIVE', 'PAUSED', 'CANCELLED', 'EXPIRED'].includes(options.status)) {
-      where.status = options.status as SubscriptionStatus;
+    if (options?.status && (['ACTIVE', 'PAUSED', 'CANCELLED', 'EXPIRED'] as const).includes(options.status as StatusFilter)) {
+      where.status = options.status as StatusFilter;
     }
 
     const rows = await prisma.subscription.findMany({
@@ -54,7 +54,25 @@ export async function listSubscriptionsAction(
       orderBy: { nextPaymentDate: 'asc' },
     });
 
-    const subscriptions: DonationSubscriptionRow[] = rows.map((s) => ({
+    /** Shape of each row when include is used (avoids depending on generated Prisma types in Docker) */
+    type SubWithRelations = {
+      id: string;
+      donatorId: string;
+      donator: { email: string; firstName: string | null; lastName: string | null };
+      form: { title: string };
+      formId: string;
+      amount: unknown;
+      currency: string;
+      frequency: string;
+      gateway: string;
+      status: string;
+      startDate: Date;
+      nextPaymentDate: Date;
+      endDate: Date | null;
+      cancelledAt: Date | null;
+      _count: { donations: number };
+    };
+    const subscriptions: DonationSubscriptionRow[] = rows.map((s: SubWithRelations) => ({
       id: s.id,
       donatorId: s.donatorId,
       donatorEmail: s.donator.email,

@@ -10,10 +10,10 @@ import type { PrismaClient } from '@prisma/client';
 import { getStripeClient } from '@/lib/payment/stripe';
 import { prisma } from '@/lib/db';
 
-/** Match Prisma PaymentStatus enum (schema in packages/database/prisma) */
+/** Match Prisma enums (schema in packages/database/prisma) */
 const PAYMENT_SUCCEEDED = 'SUCCEEDED' as const;
 const PAYMENT_FAILED = 'FAILED' as const;
-import { SubscriptionStatus } from '@prisma/client';
+const SUBSCRIPTION_ACTIVE = 'ACTIVE' as const;
 import { issueReceiptAction } from '@/app/actions/receipts/issue-receipt';
 
 export const dynamic = 'force-dynamic';
@@ -153,7 +153,7 @@ async function handlePaymentIntentSucceeded(obj: Record<string, unknown> | undef
             frequency,
             gateway: 'stripe',
             subscriptionId: pi.externalId,
-            status: SubscriptionStatus.ACTIVE,
+            status: SUBSCRIPTION_ACTIVE,
             nextPaymentDate: nextPayment,
             organizationId: sub.organizationId,
           },

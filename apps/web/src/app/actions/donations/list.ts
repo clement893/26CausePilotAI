@@ -49,7 +49,8 @@ export async function listDonationsAction(
       prisma.donation.count({ where }),
     ]);
 
-    const rows: DonationRow[] = donations.map((d) => {
+    type DonationWithRelations = (typeof donations)[number];
+    const rows: DonationRow[] = donations.map((d: DonationWithRelations) => {
       const pi = d.submission?.paymentIntent;
       const canRefund =
         d.status === 'completed' &&

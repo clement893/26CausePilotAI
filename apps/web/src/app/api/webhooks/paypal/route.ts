@@ -6,12 +6,12 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import type { PrismaClient } from '@prisma/client';
-import { SubscriptionStatus } from '@prisma/client';
 import { prisma } from '@/lib/db';
 
-/** Match Prisma PaymentStatus enum (schema in packages/database/prisma) */
+/** Match Prisma enums (schema in packages/database/prisma) */
 const PAYMENT_SUCCEEDED = 'SUCCEEDED' as const;
 const PAYMENT_FAILED = 'FAILED' as const;
+const SUBSCRIPTION_ACTIVE = 'ACTIVE' as const;
 import { issueReceiptAction } from '@/app/actions/receipts/issue-receipt';
 
 export const dynamic = 'force-dynamic';
@@ -218,7 +218,7 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
             frequency,
             gateway: 'paypal',
             subscriptionId: orderId,
-            status: SubscriptionStatus.ACTIVE,
+            status: SUBSCRIPTION_ACTIVE,
             nextPaymentDate: nextPayment,
             organizationId: sub.organizationId,
           },

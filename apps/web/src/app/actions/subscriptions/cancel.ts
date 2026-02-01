@@ -6,7 +6,9 @@
  */
 
 import { prisma } from '@/lib/db';
-import { SubscriptionStatus } from '@prisma/client';
+
+/** Match Prisma SubscriptionStatus enum (schema in packages/database/prisma) */
+const SUBSCRIPTION_CANCELLED = 'CANCELLED' as const;
 
 export async function cancelSubscriptionAction(
   subscriptionId: string,
@@ -17,14 +19,14 @@ export async function cancelSubscriptionAction(
       where: { id: subscriptionId },
     });
     if (!sub) return { error: 'Abonnement introuvable' };
-    if (sub.status === SubscriptionStatus.CANCELLED) {
+    if (sub.status === SUBSCRIPTION_CANCELLED) {
       return { error: 'Abonnement déjà annulé' };
     }
 
     await prisma.subscription.update({
       where: { id: subscriptionId },
       data: {
-        status: SubscriptionStatus.CANCELLED,
+        status: SUBSCRIPTION_CANCELLED,
         cancelledAt: new Date(),
         cancellationReason: reason ?? null,
       },

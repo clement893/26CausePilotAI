@@ -6,7 +6,10 @@
  */
 
 import { prisma } from '@/lib/db';
-import { SubscriptionStatus } from '@prisma/client';
+
+/** Match Prisma SubscriptionStatus enum (schema in packages/database/prisma) */
+const SUBSCRIPTION_PAUSED = 'PAUSED' as const;
+const SUBSCRIPTION_ACTIVE = 'ACTIVE' as const;
 
 export async function resumeSubscriptionAction(
   subscriptionId: string
@@ -16,13 +19,13 @@ export async function resumeSubscriptionAction(
       where: { id: subscriptionId },
     });
     if (!sub) return { error: 'Abonnement introuvable' };
-    if (sub.status !== SubscriptionStatus.PAUSED) {
+    if (sub.status !== SUBSCRIPTION_PAUSED) {
       return { error: 'Seul un abonnement en pause peut être repris' };
     }
 
     await prisma.subscription.update({
       where: { id: subscriptionId },
-      data: { status: SubscriptionStatus.ACTIVE },
+      data: { status: SUBSCRIPTION_ACTIVE },
     });
     return { success: true };
   } catch (e) {
