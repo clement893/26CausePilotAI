@@ -5,8 +5,7 @@
  * Étape 7.2.3 - Gestion des objectifs (Goals)
  */
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export interface UpdateGoalParams {
@@ -27,7 +26,7 @@ export interface UpdateGoalResult {
 }
 
 export async function updateGoalAction(params: UpdateGoalParams): Promise<UpdateGoalResult> {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   if (!session?.user) {
     throw new Error('Unauthorized');
   }

@@ -5,7 +5,7 @@
  * Étape 7.1.2 - Gestion des organisations (Super Admin)
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, Input, Card, useToast } from '@/components/ui';
 import { updateSubscriptionAction } from '@/app/actions/superadmin/organizations';
 import type { UpdateSubscriptionParams } from '@/app/actions/superadmin/organizations';

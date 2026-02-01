@@ -5,8 +5,7 @@
  * Étape 7.2.1 - Planification stratégique
  */
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export interface KeyResultInput {
@@ -40,7 +39,7 @@ export interface CreateObjectiveResult {
 export async function createObjectiveAction(
   params: CreateObjectiveParams
 ): Promise<CreateObjectiveResult> {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   if (!session?.user) {
     throw new Error('Unauthorized');
   }

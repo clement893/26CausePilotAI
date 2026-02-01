@@ -5,8 +5,7 @@
  * Étape 7.2.3 - Gestion des objectifs (Goals)
  */
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export interface CreateGoalParams {
@@ -33,7 +32,7 @@ export interface CreateGoalResult {
 }
 
 export async function createGoalAction(params: CreateGoalParams): Promise<CreateGoalResult> {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   if (!session?.user) {
     throw new Error('Unauthorized');
   }
@@ -76,16 +75,16 @@ export async function createGoalAction(params: CreateGoalParams): Promise<Create
 
   if (type === 'CAMPAIGN' && campaignId) {
     // Get total donations for campaign
-    const donations = await prisma.donation.aggregate({
-      where: {
-        organizationId: user.organizationId,
-        // Note: campaignId might be in a different table structure
-        // This is a placeholder - adjust based on your schema
-      },
-      _sum: {
-        amount: true,
-      },
-    });
+    // Note: campaignId might be in a different table structure
+    // This is a placeholder - adjust based on your schema
+    // const donations = await prisma.donation.aggregate({
+    //   where: {
+    //     organizationId: user.organizationId,
+    //   },
+    //   _sum: {
+    //     amount: true,
+    //   },
+    // });
     // currentValue = donations._sum.amount || 0; // Uncomment when campaign relation is available
   }
 

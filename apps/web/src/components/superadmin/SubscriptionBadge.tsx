@@ -5,7 +5,6 @@
  * Étape 7.1.2 - Gestion des organisations (Super Admin)
  */
 
-import { Badge } from '@/components/ui';
 
 interface SubscriptionBadgeProps {
   plan: 'FREE' | 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE';
@@ -42,8 +41,8 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export function SubscriptionBadge({ plan, status, className }: SubscriptionBadgeProps) {
-  const planColor = PLAN_COLORS[plan] || PLAN_COLORS.FREE;
-  const statusColor = STATUS_COLORS[status] || STATUS_COLORS.ACTIVE;
+  const planColor = PLAN_COLORS[plan] ?? PLAN_COLORS.FREE;
+  const statusColor = STATUS_COLORS[status] ?? STATUS_COLORS.ACTIVE;
 
   return (
     <div className={`flex items-center gap-2 ${className || ''}`}>

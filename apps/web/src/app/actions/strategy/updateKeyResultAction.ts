@@ -5,8 +5,7 @@
  * Étape 7.2.1 - Planification stratégique
  */
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export interface UpdateKeyResultParams {
@@ -31,7 +30,7 @@ export interface UpdateKeyResultResult {
 export async function updateKeyResultAction(
   params: UpdateKeyResultParams
 ): Promise<UpdateKeyResultResult> {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   if (!session?.user) {
     throw new Error('Unauthorized');
   }
@@ -47,7 +46,7 @@ export async function updateKeyResultAction(
 
   const organizationId = user.organizationId;
 
-  const { id, currentValue, comment } = params;
+  const { id, currentValue } = params;
 
   // Get key result with objective
   const keyResult = await prisma.keyResult.findUnique({

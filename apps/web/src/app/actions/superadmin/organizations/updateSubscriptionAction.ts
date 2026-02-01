@@ -5,8 +5,7 @@
  * Étape 7.1.2 - Gestion des organisations (Super Admin)
  */
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { redirect } from 'next/navigation';
 import { logSystemEvent } from '@/lib/logging/systemLogger';
@@ -43,7 +42,7 @@ export interface UpdateSubscriptionResult {
 export async function updateSubscriptionAction(
   params: UpdateSubscriptionParams
 ): Promise<UpdateSubscriptionResult> {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
 
   if (!session || session.user.role !== 'SUPER_ADMIN') {
     redirect('/dashboard');

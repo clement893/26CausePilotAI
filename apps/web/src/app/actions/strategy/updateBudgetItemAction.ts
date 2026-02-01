@@ -5,8 +5,7 @@
  * Étape 7.2.2 - Gestion des budgets
  */
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export interface UpdateBudgetItemParams {
@@ -33,7 +32,7 @@ export interface UpdateBudgetItemResult {
 export async function updateBudgetItemAction(
   params: UpdateBudgetItemParams
 ): Promise<UpdateBudgetItemResult> {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   if (!session?.user) {
     throw new Error('Unauthorized');
   }

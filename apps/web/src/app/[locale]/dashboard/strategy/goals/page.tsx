@@ -63,7 +63,6 @@ export default function GoalsPage() {
     }
     const now = new Date();
     const totalDays = (goal.endDate.getTime() - goal.startDate.getTime()) / (1000 * 60 * 60 * 24);
-    const daysElapsed = (now.getTime() - goal.startDate.getTime()) / (1000 * 60 * 60 * 24);
     const timeRemaining = (goal.endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
     const timeRemainingPercent = totalDays > 0 ? (timeRemaining / totalDays) * 100 : 0;
 

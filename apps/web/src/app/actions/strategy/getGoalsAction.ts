@@ -5,8 +5,7 @@
  * Étape 7.2.3 - Gestion des objectifs (Goals)
  */
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export interface GetGoalsParams {
@@ -53,7 +52,7 @@ export interface GetGoalsResult {
 }
 
 export async function getGoalsAction(params: GetGoalsParams = {}): Promise<GetGoalsResult> {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   if (!session?.user) {
     throw new Error('Unauthorized');
   }
@@ -117,7 +116,6 @@ export async function getGoalsAction(params: GetGoalsParams = {}): Promise<GetGo
   const atRisk = goals.filter((g) => {
     if (g.isCompleted) return false;
     const totalDays = (g.endDate.getTime() - g.startDate.getTime()) / (1000 * 60 * 60 * 24);
-    const daysElapsed = (now.getTime() - g.startDate.getTime()) / (1000 * 60 * 60 * 24);
     const timeRemaining = (g.endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
     const timeRemainingPercent = totalDays > 0 ? (timeRemaining / totalDays) * 100 : 0;
     return g.progress < 50 && timeRemainingPercent < 25;
