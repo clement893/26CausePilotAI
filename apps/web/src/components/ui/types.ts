@@ -144,9 +144,9 @@ export const colorVariantMap: Record<
   }
 > = {
   default: {
-    bg: 'bg-muted',
-    text: 'text-foreground',
-    border: 'border-border',
+    bg: 'bg-[#1C1C26]',
+    text: 'text-white',
+    border: 'border-gray-800',
     darkBg: 'bg-[#1C1C26]',
     darkText: 'text-white',
     darkBorder: 'border-gray-800',

@@ -205,25 +205,25 @@ export const themePatterns = {
     danger: 'bg-danger-500 hover:bg-danger-600 text-white focus:ring-danger-500',
     outline:
       'border-2 border-primary-500 text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
-    ghost: 'text-foreground hover:bg-muted focus:ring-primary-500',
+    ghost: 'text-white hover:bg-[#1C1C26] focus:ring-primary-500',
   },
   // Link patterns
   link: {
     default: 'text-primary-600 hover:text-primary-700',
-    muted: 'text-muted-foreground hover:text-foreground',
+    muted: 'text-gray-400 hover:text-white',
     accent: 'text-primary-500 hover:text-primary-600 underline',
   },
   // Card patterns
   card: {
-    default: 'bg-background border-border rounded-lg shadow-sm',
-    elevated: 'bg-background border-border rounded-lg shadow-md',
+    default: 'bg-[#13131A] border-gray-800 rounded-lg shadow-sm',
+    elevated: 'bg-[#13131A] border-gray-800 rounded-lg shadow-md',
     interactive:
-      'bg-background border-border rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer',
+      'bg-[#13131A] border-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer',
   },
   // Input patterns
   input: {
-    default: 'bg-background border-border text-foreground focus:ring-primary-500',
-    error: 'bg-background border-danger-500 text-foreground focus:ring-danger-500',
+    default: 'bg-[#13131A] border-gray-800 text-white focus:ring-primary-500',
+    error: 'bg-[#13131A] border-danger-500 text-white focus:ring-danger-500',
   },
   // Badge patterns
   badge: {

@@ -1022,6 +1022,11 @@
 - **InternalLayout** : doublons retirés (bg, border, text-white, hover:bg)
 - **Batch 17-18** : PageHeader, PageContainer, PageNavigation, Section, DashboardFooter, LoadingState, ErrorState, ExampleCard déjà alignés (thème explicite)
 
+### Thème – helpers et types
+- **lib/theme/component-helpers.ts** : `themePatterns` (button ghost, link muted, card, input) → valeurs explicites dark (`text-white`, `bg-[#13131A]`, `border-gray-800`, `text-gray-400`)
+- **components/ui/types.ts** : `colorVariantMap.default` → `bg-[#1C1C26]`, `text-white`, `border-gray-800` pour alignement dark
+- **Résultat** : 0 occurrence restante des classes génériques dans `apps/web/src`
+
 ---
 
 ## 📝 Notes

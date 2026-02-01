@@ -1,8 +1,8 @@
 # Plan pour la Suite - Alignement UI Design System Dark
 
 **Date de création:** 2026-02-01  
-**Statut actuel:** Batch 15 complété (82 composants UI fondamentaux alignés)  
-**Prochaine étape:** Phase 2 - Composants de Layout
+**Statut actuel:** Phase 2 Layout complétée (Batch 16-18), thème helpers/types alignés  
+**Prochaine étape:** Phase 3 - Composants de Features (Batch 19+)
 
 ---
 
@@ -19,16 +19,16 @@
 
 ## 🎯 Phase 2: Composants de Layout (14 composants)
 **Priorité:** HAUTE ⭐⭐  
-**Estimation:** 3-4 batches
+**Statut:** ✅ Complétée (typos/doublons corrigés Batch 16-18)
 
 ### Batch 16: Layout Principaux (5 composants)
 **Priorité:** CRITIQUE ⭐⭐⭐
 
-- [ ] `layout/Header.tsx` - Background dark, menu avec glassmorphism
-- [ ] `layout/Footer.tsx` - Style dark avec gradients pour liens
-- [ ] `layout/Sidebar.tsx` - Déjà partiellement aligné (Batch 3), vérifier complétude
-- [ ] `layout/DashboardLayout.tsx` - Background dark, glassmorphism pour overlay mobile
-- [ ] `layout/InternalLayout.tsx` - Background dark, header avec glassmorphism
+- [x] `layout/Header.tsx` - Background dark, menu avec glassmorphism ✅
+- [x] `layout/Footer.tsx` - Style dark avec gradients pour liens ✅
+- [x] `layout/Sidebar.tsx` - Déjà partiellement aligné (Batch 3), vérifier complétude ✅
+- [x] `layout/DashboardLayout.tsx` - Background dark, glassmorphism pour overlay mobile ✅
+- [x] `layout/InternalLayout.tsx` - Background dark, header avec glassmorphism ✅
 
 **Modifications requises:**
 - Headers: `bg-[#13131A]` avec `border-b border-gray-800`
