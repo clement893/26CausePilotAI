@@ -160,6 +160,7 @@ export default function IntegrationList({
           </select>
         </div>
       </div>
+      </div>
 
       {/* Integrations Grid */}
       {filteredIntegrations.length === 0 ? (
