@@ -45,17 +45,17 @@ function DashboardContent() {
             <StatsCard
               title="Resources"
               value="0"
-              className="bg-primary-100 dark:bg-primary-900/40 border-primary-200 dark:border-primary-800"
+              className="bg-blue-500/20 border-blue-500/30"
             />
             <StatsCard
               title="Files"
               value="0"
-              className="bg-secondary-100 dark:bg-secondary-900/40 border-secondary-200 dark:border-secondary-800"
+              className="bg-green-500/20 border-green-500/30"
             />
             <StatsCard
               title="Activities"
               value="0"
-              className="bg-info-100 dark:bg-info-900/40 border-info-200 dark:border-info-800"
+              className="bg-blue-500/20 border-blue-500/30"
             />
           </div>
         </Card>

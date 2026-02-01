@@ -48,7 +48,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
             formData.name === 'TemplateTheme' ||
             formData.name === 'template-theme2' ||
             formData.name === 'TemplateTheme2') && (
-            <span className="block mt-1 text-warning-600 dark:text-warning-400">
+            <span className="block mt-1 text-warning-600 text-yellow-400">
               ⚠ Le TemplateTheme ne peut pas avoir son nom modifié
             </span>
           )}
@@ -78,7 +78,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
             formData.name === 'TemplateTheme' ||
             formData.name === 'template-theme2' ||
             formData.name === 'TemplateTheme2') && (
-            <span className="block mt-1 text-warning-600 dark:text-warning-400">
+            <span className="block mt-1 text-warning-600 text-yellow-400">
               ⚠ Le TemplateTheme ne peut pas avoir son nom modifié
             </span>
           )}
@@ -108,7 +108,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
             formData.name === 'TemplateTheme' ||
             formData.name === 'template-theme2' ||
             formData.name === 'TemplateTheme2') && (
-            <span className="block mt-1 text-warning-600 dark:text-warning-400">
+            <span className="block mt-1 text-warning-600 text-yellow-400">
               ⚠ Le TemplateTheme ne peut pas avoir sa description modifiée
             </span>
           )}

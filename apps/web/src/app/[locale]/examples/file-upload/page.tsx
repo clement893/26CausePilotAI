@@ -190,7 +190,7 @@ export default function ExampleFileUploadPage() {
                             </div>
                           )}
                           {uploadedFile.status === 'success' && (
-                            <p className="text-xs text-success-600 dark:text-success-400 mt-1">
+                            <p className="text-xs text-success-600 text-green-400 mt-1">
                               ✓ Uploadé
                             </p>
                           )}
@@ -239,7 +239,7 @@ export default function ExampleFileUploadPage() {
                   .map((uploadedFile) => (
                     <div key={uploadedFile.id} className="border border-border rounded-lg p-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded flex items-center justify-center">
+                        <div className="w-10 h-10 bg-blue-500/20 rounded flex items-center justify-center">
                           {getFileIcon(uploadedFile.file)}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -263,7 +263,7 @@ export default function ExampleFileUploadPage() {
                             </div>
                           )}
                           {uploadedFile.status === 'success' && (
-                            <p className="text-xs text-success-600 dark:text-success-400 mt-1">
+                            <p className="text-xs text-success-600 text-green-400 mt-1">
                               ✓ Uploadé
                             </p>
                           )}

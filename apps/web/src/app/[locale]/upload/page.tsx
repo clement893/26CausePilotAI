@@ -304,9 +304,9 @@ function UploadContent() {
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     {file.status === 'success' ? (
-                      <CheckCircle className="w-5 h-5 text-success-600 dark:text-success-400 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-success-600 text-green-400 flex-shrink-0" />
                     ) : (
-                      <XCircle className="w-5 h-5 text-error-600 dark:text-error-400 flex-shrink-0" />
+                      <XCircle className="w-5 h-5 text-error-600 text-red-400 flex-shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
@@ -336,7 +336,7 @@ function UploadContent() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDelete(file.id)}
-                      className="text-error-600 hover:text-error-700 dark:text-error-400 dark:hover:text-error-500"
+                      className="text-error-600 hover:text-error-700 text-red-400 hover:text-red-500"
                     >
                       Supprimer
                     </Button>

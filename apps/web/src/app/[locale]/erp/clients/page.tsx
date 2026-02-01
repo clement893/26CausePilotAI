@@ -77,7 +77,7 @@ function ERPClientsContent() {
         <span
           className={`px-2 py-1 rounded text-xs ${
             value
-              ? 'bg-success-100 text-success-800 dark:bg-success-900/40 dark:text-success-300'
+              ? 'bg-success-100 text-success-800 bg-green-500/20 text-green-300'
               : 'bg-muted text-foreground'
           }`}
         >
@@ -95,8 +95,8 @@ function ERPClientsContent() {
 
   if (error) {
     return (
-      <div className="p-4 bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded-lg">
-        <p className="text-error-600 dark:text-error-400">
+      <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+        <p className="text-error-600 text-red-400">
           Failed to load clients. Please try again later.
         </p>
       </div>
