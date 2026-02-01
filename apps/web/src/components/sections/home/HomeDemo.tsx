@@ -54,7 +54,7 @@ export function HomeDemo() {
   const selectedMsg = demoMessages.find((m) => m.id === selectedMessage);
 
   return (
-    <section className="py-32 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20from-[#0A0A0F] via-[#13131A] to-[#1C1C26] relative overflow-hidden">
+    <section className="py-32 bg-gradient-to-br from-[#0A0A0F] via-[#13131A] to-[#1C1C26] relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-full blur-3xl" />
