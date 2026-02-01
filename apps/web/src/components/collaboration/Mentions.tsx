@@ -160,28 +160,31 @@ export default function Mentions({
 
   return (
     <div className={clsx('relative', className)}>
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        rows={4}
-        className={clsx(
-          'w-full px-4 py-3 border rounded-lg text-sm',
-          'bg-background',
-          'text-foreground',
-          'border-border',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-          'resize-none'
-        )}
-      />
+      <div className="form-input-glow">
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          rows={4}
+          className={clsx(
+            'w-full px-4 py-3 border rounded-lg text-sm',
+            'bg-[#1C1C26]',
+            'text-white',
+            'border-gray-700',
+            'focus:outline-none focus:ring-2 focus:ring-blue-500',
+            'resize-none',
+            'placeholder-gray-500'
+          )}
+        />
+      </div>
 
       {/* Suggestions Dropdown */}
       {showSuggestions && suggestions.length > 0 && (
         <div
           ref={suggestionsRef}
-          className="absolute z-50 mt-1 w-full bg-background border border-border rounded-lg shadow-lg max-h-64 overflow-y-auto"
+          className="absolute z-50 mt-1 w-full glass-effect bg-[#13131A] border border-gray-800 rounded-lg shadow-lg max-h-64 overflow-y-auto custom-scrollbar"
         >
           {suggestions.map((user, index) => (
             <button
@@ -190,14 +193,14 @@ export default function Mentions({
               className={clsx(
                 'w-full px-4 py-3 flex items-center gap-3 text-left transition-colors',
                 index === selectedIndex
-                  ? 'bg-primary-50 dark:bg-primary-900/20'
-                  : 'hover:bg-muted'
+                  ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-l-2 border-l-blue-500'
+                  : 'hover:bg-[#1C1C26]'
               )}
             >
               <Avatar src={user.avatar} name={user.name} size="sm" />
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-foreground">{user.name}</div>
-                <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+                <div className="font-medium text-white">{user.name}</div>
+                <div className="text-xs text-gray-400 truncate">{user.email}</div>
               </div>
               {user.role && <Badge variant="default">{user.role}</Badge>}
             </button>
@@ -208,7 +211,7 @@ export default function Mentions({
       {/* Mentioned Users Display */}
       {value.includes('@') && (
         <div className="mt-2 flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-muted-foreground">Mentioned:</span>
+          <span className="text-xs text-gray-400">Mentioned:</span>
           {users
             .filter((user) => value.includes(`@${user.name}`))
             .map((user) => (

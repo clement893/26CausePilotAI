@@ -312,7 +312,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
 
   if (loading) {
     return (
-      <Card className={className}>
+      <Card variant="glass" className={`border border-gray-800 ${className || ''}`}>
         <div className="p-6 flex items-center justify-center min-h-[400px]">
           <Loading />
         </div>
@@ -332,34 +332,34 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           {success}
         </Alert>
       )}
-      <Card>
+      <Card variant="glass" className="border border-gray-800">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-semibold mb-2">Gestion des équipes</h2>
-              <p className="text-muted-foreground">Gérez vos équipes et leurs membres</p>
+              <h2 className="text-xl font-semibold mb-2 text-white">Gestion des équipes</h2>
+              <p className="text-gray-400">Gérez vos équipes et leurs membres</p>
             </div>
-            <Button onClick={handleCreateTeam} variant="primary">
+            <Button onClick={handleCreateTeam} variant="gradient">
               <Plus className="w-4 h-4 mr-2" />
               Créer une équipe
             </Button>
           </div>
           {teams.length === 0 ? (
             <div className="text-center py-12">
-              <Users className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground mb-4">Aucune équipe pour le moment</p>
-              <Button onClick={handleCreateTeam} variant="primary">
+              <Users className="w-16 h-16 mx-auto text-gray-500 mb-4" />
+              <p className="text-gray-400 mb-4">Aucune équipe pour le moment</p>
+              <Button onClick={handleCreateTeam} variant="gradient">
                 Créer votre première équipe
               </Button>
             </div>
           ) : (
             <div className="space-y-4">
               {teams.map((team) => (
-                <Card key={team.id} className="p-4">
+                <Card key={team.id} variant="glass" className="p-4 border border-gray-800 hover-lift">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold">{team.name}</h3>
+                        <h3 className="text-lg font-semibold text-white">{team.name}</h3>
                         {team.is_active ? (
                           <Badge variant="success">Active</Badge>
                         ) : (
@@ -367,20 +367,20 @@ export default function TeamManagement({ className }: TeamManagementProps) {
                         )}
                       </div>
                       {team.description && (
-                        <p className="text-muted-foreground mb-2">{team.description}</p>
+                        <p className="text-gray-400 mb-2">{team.description}</p>
                       )}
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4 text-sm text-gray-400">
                         <span>Slug: {team.slug}</span>
                         <span>Membres: {team.members?.length || 0}</span>
                         {team.owner && <span>Propriétaire: {getUserName(team.owner_id)}</span>}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Button size="sm" variant="ghost" onClick={() => handleViewMembers(team)}>
+                      <Button size="sm" variant="outline" onClick={() => handleViewMembers(team)} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
                         <Users className="w-4 h-4 mr-1" />
                         Membres
                       </Button>
-                      <Button size="sm" variant="ghost" onClick={() => handleEditTeam(team)}>
+                      <Button size="sm" variant="outline" onClick={() => handleEditTeam(team)} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
                         <Edit className="w-4 h-4 mr-1" />
                         Modifier
                       </Button>
@@ -414,7 +414,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
             <Button variant="ghost" onClick={() => setTeamModalOpen(false)}>
               Annuler
             </Button>
-            <Button variant="primary" onClick={handleSaveTeam}>
+            <Button variant="gradient" onClick={handleSaveTeam}>
               <Save className="w-4 h-4 mr-2" />
               {editingTeam ? 'Enregistrer' : 'Créer'}
             </Button>
@@ -437,14 +437,16 @@ export default function TeamManagement({ className }: TeamManagementProps) {
             helperText="Identifiant unique pour l'équipe (généré automatiquement à partir du nom si vide)"
           />
           <div>
-            <label className="block text-sm font-medium mb-2">Description</label>
-            <textarea
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
-              rows={3}
-              value={teamForm.description}
-              onChange={(e) => setTeamForm({ ...teamForm, description: e.target.value })}
-              placeholder="Description de l'équipe..."
-            />
+            <label className="block text-sm font-medium mb-2 text-white">Description</label>
+            <div className="form-input-glow">
+              <textarea
+                className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows={3}
+                value={teamForm.description}
+                onChange={(e) => setTeamForm({ ...teamForm, description: e.target.value })}
+                placeholder="Description de l'équipe..."
+              />
+            </div>
           </div>
         </div>
       </Modal>
@@ -456,7 +458,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
         title={`Membres de l'équipe: ${selectedTeam?.name || ''}`}
         size="lg"
         footer={
-          <Button variant="primary" onClick={handleAddMember}>
+          <Button variant="gradient" onClick={handleAddMember}>
             <Plus className="w-4 h-4 mr-2" />
             Ajouter un membre
           </Button>
@@ -468,9 +470,9 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           </div>
         ) : teamMembers.length === 0 ? (
           <div className="text-center py-8">
-            <Users className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-            <p className="text-muted-foreground mb-4">Aucun membre dans cette équipe</p>
-            <Button onClick={handleAddMember} variant="primary">
+            <Users className="w-12 h-12 mx-auto text-gray-500 mb-4" />
+            <p className="text-gray-400 mb-4">Aucun membre dans cette équipe</p>
+            <Button onClick={handleAddMember} variant="gradient">
               Ajouter le premier membre
             </Button>
           </div>
@@ -479,13 +481,13 @@ export default function TeamManagement({ className }: TeamManagementProps) {
             {teamMembers.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center justify-between p-3 border border-border rounded-lg"
+                className="flex items-center justify-between p-3 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover-lift"
               >
                 <div className="flex-1">
-                  <div className="font-medium">
+                  <div className="font-medium text-white">
                     {member.user ? getUserName(member.user_id) : `User #${member.user_id}`}
                   </div>
-                  <div className="text-sm text-muted-foreground">{member.user?.email}</div>
+                  <div className="text-sm text-gray-400">{member.user?.email}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Select
@@ -525,7 +527,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
             <Button variant="ghost" onClick={() => setAddMemberModalOpen(false)}>
               Annuler
             </Button>
-            <Button variant="primary" onClick={handleSaveMember}>
+            <Button variant="gradient" onClick={handleSaveMember}>
               <Save className="w-4 h-4 mr-2" />
               Ajouter
             </Button>
@@ -591,7 +593,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           </>
         }
       >
-        <p className="text-muted-foreground">
+        <p className="text-gray-300">
           Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action est irréversible.
         </p>
       </Modal>
@@ -623,7 +625,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           </>
         }
       >
-        <p className="text-muted-foreground">
+        <p className="text-gray-300">
           Êtes-vous sûr de vouloir retirer ce membre de l'équipe ?
         </p>
       </Modal>

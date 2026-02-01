@@ -156,18 +156,20 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
 
       return (
         <>
-          <Input placeholder={t('searchPlaceholder')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} disabled={isSaving} />
+          <div className="form-input-glow">
+            <Input placeholder={t('searchPlaceholder')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} disabled={isSaving} />
+          </div>
 
-          <div className="max-h-96 overflow-y-auto border rounded-md p-4 space-y-3 bg-muted/20">
+          <div className="max-h-96 overflow-y-auto border border-gray-800 rounded-md p-4 space-y-3 glass-effect bg-[#1C1C26] custom-scrollbar">
             {filtered.length === 0 ? (
-              <p className="text-muted-foreground text-center py-4">{t('noPermissionsFound')}</p>
+              <p className="text-gray-400 text-center py-4">{t('noPermissionsFound')}</p>
             ) : (
               filtered.map((perm) => {
                 const isChecked = selectedRolePermissionIds.has(perm.id);
                 const isAdminWildcard = perm.name === 'admin:*';
 
                 return (
-                  <div key={perm.id} className="flex items-start space-x-3">
+                  <div key={perm.id} className={`flex items-start space-x-3 p-2 rounded-lg ${isChecked ? 'glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20' : ''}`}>
                     <Checkbox
                       id={`perm-${perm.id}`}
                       checked={isChecked}
@@ -204,8 +206,8 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="text-foreground">{perm.name}</span>
-                          {perm.description && <p className="text-muted-foreground text-xs mt-1">{perm.description}</p>}
+                          <span className="text-white">{perm.name}</span>
+                          {perm.description && <p className="text-gray-400 text-xs mt-1">{perm.description}</p>}
                         </div>
                         {isAdminWildcard && (
                           <Badge variant="info" className="ml-2 text-xs">
@@ -226,6 +228,7 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
           <div className="flex justify-end">
             <Button
               onClick={handleSave}
+              variant="gradient"
               loading={isSaving}
               disabled={!hasChanges || (selectedRole?.is_system && selectedRole?.slug === 'superadmin')}
             >
@@ -246,21 +249,21 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
     <div className="space-y-6">
       {error && <Alert variant="error">{error}</Alert>}
 
-      <Card>
+      <Card variant="glass" className="border border-gray-800">
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-foreground mb-4">{t('title')}</h3>
-          <p className="text-sm text-muted-foreground mb-6">{t('description')}</p>
+          <h3 className="text-lg font-semibold text-white mb-4">{t('title')}</h3>
+          <p className="text-sm text-gray-400 mb-6">{t('description')}</p>
 
           {/* Role Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-foreground mb-2">{t('selectRole')}</label>
+            <label className="block text-sm font-medium text-white mb-2">{t('selectRole')}</label>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
               {roles.map((role) => (
                 <Button
                   key={role.id}
-                  variant={selectedRoleId === role.id ? 'primary' : 'outline'}
+                  variant={selectedRoleId === role.id ? 'gradient' : 'outline'}
                   onClick={() => setSelectedRoleId(role.id)}
-                  className="justify-start"
+                  className={`justify-start ${selectedRoleId === role.id ? '' : 'border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white'}`}
                   disabled={isSaving}
                 >
                   <div className="text-left">

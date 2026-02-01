@@ -73,9 +73,9 @@ export default function FileManager({
   };
   const getFileIcon = (file: FileItem) => {
     if (file.type === 'folder') {
-      return <Folder className="w-5 h-5 text-primary-600 dark:text-primary-400" />;
+      return <Folder className="w-5 h-5 text-blue-400" />;
     }
-    return <File className="w-5 h-5 text-muted-foreground" />;
+    return <File className="w-5 h-5 text-gray-400" />;
   };
   const getFileActions = (file: FileItem): DropdownItem[] => {
     const items: DropdownItem[] = [];
@@ -111,7 +111,7 @@ export default function FileManager({
     return items;
   };
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       {' '}
       <div className="space-y-4">
         {' '}
@@ -120,37 +120,40 @@ export default function FileManager({
           {' '}
           <div className="flex items-center gap-3 flex-1">
             {' '}
-            <h3 className="text-lg font-semibold text-foreground"> File Manager </h3>{' '}
+            <h3 className="text-lg font-semibold text-white"> File Manager </h3>{' '}
             <Badge variant="default"> {files.length} items </Badge>{' '}
           </div>{' '}
           <div className="flex items-center gap-2">
             {' '}
-            <div className="relative">
-              {' '}
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />{' '}
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search files..."
-                className={clsx(
-                  'pl-10 pr-4 py-2 border rounded-lg text-sm',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
-                )}
-              />{' '}
+            <div className="form-input-glow">
+              <div className="relative">
+                {' '}
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />{' '}
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search files..."
+                  className={clsx(
+                    'pl-10 pr-4 py-2 border rounded-lg text-sm',
+                    'bg-[#1C1C26]',
+                    'text-white',
+                    'border-gray-700',
+                    'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    'placeholder-gray-500'
+                  )}
+                />{' '}
+              </div>
             </div>{' '}
-            <div className="flex items-center gap-1 border border-border rounded-lg">
+            <div className="flex items-center gap-1 border border-gray-800 rounded-lg glass-effect bg-[#1C1C26]">
               {' '}
               <button
                 onClick={() => setViewMode('grid')}
                 className={clsx(
-                  'p-2',
+                  'p-2 transition-colors',
                   viewMode === 'grid'
-                    ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400'
+                    : 'text-gray-400 hover:bg-[#252532] hover:text-white'
                 )}
               >
                 {' '}
@@ -159,10 +162,10 @@ export default function FileManager({
               <button
                 onClick={() => setViewMode('list')}
                 className={clsx(
-                  'p-2',
+                  'p-2 transition-colors',
                   viewMode === 'list'
-                    ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400'
+                    : 'text-gray-400 hover:bg-[#252532] hover:text-white'
                 )}
               >
                 {' '}
@@ -173,7 +176,7 @@ export default function FileManager({
               <label>
                 {' '}
                 <input type="file" multiple onChange={handleUpload} className="hidden" />{' '}
-                <Button variant="primary">
+                <Button variant="gradient">
                   {' '}
                   <span className="flex items-center gap-2">
                     {' '}
@@ -185,7 +188,7 @@ export default function FileManager({
           </div>{' '}
         </div>{' '}
         {/* Breadcrumb */}{' '}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm text-gray-400">
           {' '}
           {currentPath.split('/').map((segment, index, array) => {
             if (!segment) return null;
@@ -196,7 +199,7 @@ export default function FileManager({
                 {index > 0 && <span className="mx-2">/</span>}{' '}
                 <button
                   onClick={() => onNavigate?.(path)}
-                  className="hover:text-primary-600 dark:hover:text-primary-400"
+                  className="hover:text-blue-400 transition-colors"
                 >
                   {' '}
                   {segment}{' '}
@@ -209,8 +212,8 @@ export default function FileManager({
         {filteredFiles.length === 0 ? (
           <div className="text-center py-12">
             {' '}
-            <Folder className="w-12 h-12 text-muted-foreground mx-auto mb-4" />{' '}
-            <p className="text-muted-foreground">No files found</p>{' '}
+            <Folder className="w-12 h-12 text-gray-500 mx-auto mb-4" />{' '}
+            <p className="text-gray-400">No files found</p>{' '}
           </div>
         ) : (
           <div className={clsx(viewMode === 'grid' ? 'grid grid-cols-4 gap-4' : 'space-y-2')}>
@@ -220,9 +223,9 @@ export default function FileManager({
               <div
                 key={folder.id}
                 className={clsx(
-                  'p-3 border rounded-lg cursor-pointer transition-all hover:bg-muted dark:hover:bg-background',
-                  'border-border',
-                  selectedFiles.has(folder.id) && 'ring-2 ring-primary-500 dark:ring-primary-400'
+                  'p-3 border rounded-lg cursor-pointer transition-all hover-lift',
+                  'glass-effect bg-[#1C1C26] border-gray-800',
+                  selectedFiles.has(folder.id) && 'ring-2 ring-blue-500'
                 )}
                 onClick={() => handleFileClick(folder)}
               >
@@ -232,13 +235,13 @@ export default function FileManager({
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     {' '}
                     {getFileIcon(folder)}{' '}
-                    <span className="text-sm font-medium text-foreground truncate">
+                    <span className="text-sm font-medium text-white truncate">
                       {' '}
                       {folder.name}{' '}
                     </span>{' '}
                   </div>{' '}
                   <Dropdown
-                    trigger={<MoreVertical className="w-4 h-4" />}
+                    trigger={<MoreVertical className="w-4 h-4 text-gray-400" />}
                     items={getFileActions(folder)}
                   />{' '}
                 </div>{' '}
@@ -249,9 +252,9 @@ export default function FileManager({
               <div
                 key={file.id}
                 className={clsx(
-                  'p-3 border rounded-lg transition-all hover:bg-muted dark:hover:bg-background',
-                  'border-border',
-                  selectedFiles.has(file.id) && 'ring-2 ring-primary-500 dark:ring-primary-400'
+                  'p-3 border rounded-lg transition-all hover-lift',
+                  'glass-effect bg-[#1C1C26] border-gray-800',
+                  selectedFiles.has(file.id) && 'ring-2 ring-blue-500'
                 )}
               >
                 {' '}
@@ -262,11 +265,11 @@ export default function FileManager({
                     {getFileIcon(file)}{' '}
                     <div className="flex-1 min-w-0">
                       {' '}
-                      <div className="text-sm font-medium text-foreground truncate">
+                      <div className="text-sm font-medium text-white truncate">
                         {' '}
                         {file.name}{' '}
                       </div>{' '}
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs text-gray-400">
                         {' '}
                         {formatFileSize(file.size)} •{' '}
                         {new Date(file.modified).toLocaleDateString()}{' '}
@@ -274,7 +277,7 @@ export default function FileManager({
                     </div>{' '}
                   </div>{' '}
                   <Dropdown
-                    trigger={<MoreVertical className="w-4 h-4" />}
+                    trigger={<MoreVertical className="w-4 h-4 text-gray-400" />}
                     items={getFileActions(file)}
                   />{' '}
                 </div>{' '}

@@ -5,12 +5,12 @@ export interface RoleManagementProps {
 }
 export default function RoleManagement({ className }: RoleManagementProps) {
   return (
-    <Card className={className}>
+    <Card variant="glass" className={`border border-gray-800 ${className || ''}`}>
       {' '}
       <div className="p-6">
         {' '}
-        <h2 className="text-xl font-semibold mb-4">Role Management</h2>{' '}
-        <p className="text-muted-foreground">Role management functionality coming soon.</p>{' '}
+        <h2 className="text-xl font-semibold mb-4 text-white">Role Management</h2>{' '}
+        <p className="text-gray-400">Role management functionality coming soon.</p>{' '}
       </div>{' '}
     </Card>
   );

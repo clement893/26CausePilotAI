@@ -145,43 +145,43 @@ export function ActivityTimeline({
       <div className={className}>
         {dateKeys.map((dateKey) => (
           <div key={dateKey} className="mb-8">
-            <div className="sticky top-0 bg-background py-2 z-10 border-b border-border mb-4">
-              <h3 className="text-sm font-semibold text-foreground">{dateKey}</h3>
+            <div className="sticky top-0 glass-effect bg-[#13131A] py-2 z-10 border-b border-gray-800 mb-4">
+              <h3 className="text-sm font-semibold text-white">{dateKey}</h3>
             </div>
             <div className="relative pl-8">
               {/* Timeline line */}
-              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-muted" />
+              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-800" />
               {groupedActivities[dateKey]?.map((activity) => (
                 <div key={activity.id} className="relative mb-6 last:mb-0">
                   {/* Timeline dot */}
-                  <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-background border-2 border-primary-500 flex items-center justify-center z-10">
+                  <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full glass-effect bg-[#13131A] border-2 border-blue-500 flex items-center justify-center z-10">
                     {getActivityIcon(activity.action)}
                   </div>
                   {/* Activity content */}
                   <div className="ml-8">
-                    <div className="bg-background border border-border rounded-lg p-4 shadow-sm">
+                    <div className="glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg p-4 hover-lift">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-foreground">
+                          <p className="text-sm font-medium text-white">
                             {formatActivityMessage(activity)}
                           </p>
                           {showUserInfo && activity.user_name && (
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-xs text-gray-400 mt-1">
                               {activity.user_email}
                             </p>
                           )}
                           {activity.metadata && Object.keys(activity.metadata).length > 0 && (
-                            <div className="mt-2 text-xs text-muted-foreground">
+                            <div className="mt-2 text-xs text-gray-400">
                               <details className="cursor-pointer">
-                                <summary>View details</summary>
-                                <pre className="mt-2 p-2 bg-muted rounded text-xs overflow-auto">
+                                <summary className="hover:text-gray-300">View details</summary>
+                                <pre className="mt-2 p-2 glass-effect bg-[#13131A] border border-gray-800 rounded text-xs overflow-auto text-gray-300">
                                   {JSON.stringify(activity.metadata, null, 2)}
                                 </pre>
                               </details>
                             </div>
                           )}
                         </div>
-                        <div className="ml-4 text-xs text-muted-foreground whitespace-nowrap">
+                        <div className="ml-4 text-xs text-gray-400 whitespace-nowrap">
                           {formatDistanceToNow(new Date(activity.timestamp))}
                         </div>
                       </div>
@@ -201,38 +201,38 @@ export function ActivityTimeline({
     <div className={className}>
       <div className="relative pl-8">
         {/* Timeline line */}
-        <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-muted" />
+        <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-800" />
         {flatActivities.map((activity) => (
           <div key={activity.id} className="relative mb-6 last:mb-0">
             {/* Timeline dot */}
-            <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-background border-2 border-primary-500 flex items-center justify-center z-10">
+            <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full glass-effect bg-[#13131A] border-2 border-blue-500 flex items-center justify-center z-10">
               {getActivityIcon(activity.action)}
             </div>
             {/* Activity content */}
             <div className="ml-8">
-              <div className="bg-background border border-border rounded-lg p-4 shadow-sm">
+              <div className="glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg p-4 hover-lift">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">
+                    <p className="text-sm font-medium text-white">
                       {formatActivityMessage(activity)}
                     </p>
                     {showUserInfo && activity.user_name && (
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-gray-400 mt-1">
                         {activity.user_email}
                       </p>
                     )}
                     {activity.metadata && Object.keys(activity.metadata).length > 0 && (
-                      <div className="mt-2 text-xs text-muted-foreground">
+                      <div className="mt-2 text-xs text-gray-400">
                         <details className="cursor-pointer">
-                          <summary>View details</summary>
-                          <pre className="mt-2 p-2 bg-muted rounded text-xs overflow-auto">
+                          <summary className="hover:text-gray-300">View details</summary>
+                          <pre className="mt-2 p-2 glass-effect bg-[#13131A] border border-gray-800 rounded text-xs overflow-auto text-gray-300">
                             {JSON.stringify(activity.metadata, null, 2)}
                           </pre>
                         </details>
                       </div>
                     )}
                   </div>
-                  <div className="ml-4 text-xs text-muted-foreground whitespace-nowrap">
+                  <div className="ml-4 text-xs text-gray-400 whitespace-nowrap">
                     {formatDistanceToNow(new Date(activity.timestamp))}
                   </div>
                 </div>

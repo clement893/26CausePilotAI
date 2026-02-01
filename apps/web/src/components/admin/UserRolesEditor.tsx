@@ -88,10 +88,10 @@ export default function UserRolesEditor({ userId, onUpdate }: UserRolesEditorPro
           return (
             <label
               key={role.id}
-              className={`p-3 rounded-lg border-2 cursor-pointer transition-colors flex items-center justify-between ${
+              className={`p-3 rounded-lg border-2 cursor-pointer transition-colors flex items-center justify-between hover-lift ${
                 isSelected
-                  ? 'bg-primary/10 border-primary'
-                  : 'bg-muted border-border hover:border-primary/50'
+                  ? 'glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500'
+                  : 'glass-effect bg-[#1C1C26] border-gray-800 hover:border-blue-500/50'
               }`}
             >
               <div className="flex items-center gap-3 flex-1">
@@ -99,11 +99,11 @@ export default function UserRolesEditor({ userId, onUpdate }: UserRolesEditorPro
                   type="checkbox"
                   checked={isSelected}
                   onChange={() => handleRoleToggle(role.id)}
-                  className="mt-1"
+                  className="mt-1 w-4 h-4 rounded border-gray-700 bg-[#1C1C26] text-blue-500 focus:ring-2 focus:ring-blue-500"
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <div className="font-medium text-foreground">{role.name}</div>
+                    <div className="font-medium text-white">{role.name}</div>
                     {role.is_system && (
                       <Badge variant="info" className="text-xs">
                         Système
@@ -116,9 +116,9 @@ export default function UserRolesEditor({ userId, onUpdate }: UserRolesEditorPro
                     )}
                   </div>
                   {role.description && (
-                    <div className="text-sm text-muted-foreground mt-1">{role.description}</div>
+                    <div className="text-sm text-gray-400 mt-1">{role.description}</div>
                   )}
-                  <div className="text-xs text-muted-foreground mt-1">
+                  <div className="text-xs text-gray-400 mt-1">
                     {role.permissions?.length || 0} permission
                     {role.permissions?.length !== 1 ? 's' : ''}
                   </div>
@@ -134,10 +134,10 @@ export default function UserRolesEditor({ userId, onUpdate }: UserRolesEditorPro
         })}
       </div>
       {allRoles.length === 0 && (
-        <div className="text-center py-8 text-muted-foreground">Aucun rôle disponible</div>
+        <div className="text-center py-8 text-gray-400">Aucun rôle disponible</div>
       )}
-      <div className="flex justify-end pt-4 border-t">
-        <Button onClick={handleSave} disabled={saving || !hasChanges()}>
+      <div className="flex justify-end pt-4 border-t border-gray-800">
+        <Button onClick={handleSave} variant="gradient" disabled={saving || !hasChanges()}>
           {saving ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </Button>
       </div>

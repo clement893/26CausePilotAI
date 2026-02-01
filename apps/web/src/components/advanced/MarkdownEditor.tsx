@@ -107,23 +107,23 @@ export default function MarkdownEditor({
   };
 
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="space-y-4">
         {/* Toolbar */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-            <h3 className="text-lg font-semibold text-foreground">Markdown Editor</h3>
+            <FileText className="w-5 h-5 text-blue-400" />
+            <h3 className="text-lg font-semibold text-white">Markdown Editor</h3>
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 border border-border rounded-lg">
+            <div className="flex items-center gap-1 border border-gray-800 rounded-lg glass-effect bg-[#1C1C26]">
               <button
                 onClick={() => setPreviewMode('edit')}
                 className={clsx(
-                  'px-3 py-1 text-sm',
+                  'px-3 py-1 text-sm transition-colors',
                   previewMode === 'edit'
-                    ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400'
+                    : 'text-gray-400 hover:bg-[#252532] hover:text-white'
                 )}
               >
                 Edit
@@ -131,10 +131,10 @@ export default function MarkdownEditor({
               <button
                 onClick={() => setPreviewMode('split')}
                 className={clsx(
-                  'px-3 py-1 text-sm',
+                  'px-3 py-1 text-sm transition-colors',
                   previewMode === 'split'
-                    ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400'
+                    : 'text-gray-400 hover:bg-[#252532] hover:text-white'
                 )}
               >
                 Split
@@ -142,23 +142,23 @@ export default function MarkdownEditor({
               <button
                 onClick={() => setPreviewMode('preview')}
                 className={clsx(
-                  'px-3 py-1 text-sm',
+                  'px-3 py-1 text-sm transition-colors',
                   previewMode === 'preview'
-                    ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400'
+                    : 'text-gray-400 hover:bg-[#252532] hover:text-white'
                 )}
               >
                 Preview
               </button>
             </div>
-            <Button variant="outline" size="sm" onClick={handleDownload}>
+            <Button variant="outline" size="sm" onClick={handleDownload} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
               <span className="flex items-center gap-2">
                 <Download className="w-4 h-4" />
                 Download
               </span>
             </Button>
             {onSave && (
-              <Button variant="primary" size="sm" onClick={handleSave}>
+              <Button variant="gradient" size="sm" onClick={handleSave}>
                 <span className="flex items-center gap-2">
                   <Save className="w-4 h-4" />
                   Save
@@ -175,31 +175,33 @@ export default function MarkdownEditor({
         >
           {(previewMode === 'edit' || previewMode === 'split') && (
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Markdown</label>
-              <textarea
-                value={markdown}
-                onChange={handleChange}
-                placeholder="Write your markdown here..."
-                className={clsx(
-                  'w-full h-96 p-4 font-mono text-sm border rounded-lg',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-                  'resize-none'
-                )}
-              />
+              <label className="block text-sm font-medium text-white mb-2">Markdown</label>
+              <div className="form-input-glow">
+                <textarea
+                  value={markdown}
+                  onChange={handleChange}
+                  placeholder="Write your markdown here..."
+                  className={clsx(
+                    'w-full h-96 p-4 font-mono text-sm border rounded-lg',
+                    'bg-[#1C1C26]',
+                    'text-gray-300',
+                    'border-gray-700',
+                    'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    'resize-none',
+                    'placeholder-gray-500'
+                  )}
+                />
+              </div>
             </div>
           )}
           {(previewMode === 'preview' || previewMode === 'split') && (
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Preview</label>
+              <label className="block text-sm font-medium text-white mb-2">Preview</label>
               <div
                 className={clsx(
-                  'w-full h-96 p-4 border rounded-lg overflow-y-auto',
-                  'bg-background',
-                  'border-border',
-                  'prose prose-sm dark:prose-invert max-w-none'
+                  'w-full h-96 p-4 border rounded-lg overflow-y-auto custom-scrollbar',
+                  'glass-effect bg-[#1C1C26] border-gray-800',
+                  'prose prose-sm dark:prose-invert max-w-none text-gray-300'
                 )}
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(markdown) }}
               />
@@ -208,7 +210,7 @@ export default function MarkdownEditor({
         </div>
 
         {/* Info */}
-        <div className="text-xs text-muted-foreground text-center">
+        <div className="text-xs text-gray-400 text-center">
           {markdown.length} characters • {markdown.split('\n').length} lines
         </div>
       </div>

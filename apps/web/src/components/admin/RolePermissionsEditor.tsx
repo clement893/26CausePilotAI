@@ -167,7 +167,7 @@ export default function RolePermissionsEditor({ role, onUpdate }: RolePermission
           <select
             value={resourceFilter}
             onChange={(e) => setResourceFilter(e.target.value)}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+            className="w-full px-3 py-2 border border-gray-700 rounded-md bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Toutes les ressources</option>
             {resources.map((resource) => (
@@ -182,7 +182,7 @@ export default function RolePermissionsEditor({ role, onUpdate }: RolePermission
       <div className="space-y-6">
         {Object.entries(permissionsByResource).map(([resource, perms]) => (
           <div key={resource}>
-            <h4 className="text-sm font-semibold text-foreground mb-3 capitalize">{resource}</h4>
+            <h4 className="text-sm font-semibold text-white mb-3 capitalize">{resource}</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {perms.map((perm) => {
                 const isSelected = selectedPermissionIds.has(perm.id);
@@ -191,8 +191,8 @@ export default function RolePermissionsEditor({ role, onUpdate }: RolePermission
                     key={perm.id}
                     className={`p-3 rounded-lg border-2 cursor-pointer transition-colors ${
                       isSelected
-                        ? 'bg-primary/10 border-primary'
-                        : 'bg-muted border-border hover:border-primary/50'
+                        ? 'glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500'
+                        : 'glass-effect bg-[#1C1C26] border-gray-800 hover:border-blue-500/50 hover-lift'
                     } ${role.is_system ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     <div className="flex items-start justify-between">
@@ -203,12 +203,12 @@ export default function RolePermissionsEditor({ role, onUpdate }: RolePermission
                             checked={isSelected}
                             onChange={() => handlePermissionToggle(perm.id)}
                             disabled={role.is_system}
-                            className="mt-1"
+                            className="mt-1 w-4 h-4 rounded border-gray-700 bg-[#1C1C26] text-blue-500 focus:ring-2 focus:ring-blue-500"
                           />
                           <div>
-                            <div className="font-medium text-foreground">{perm.name}</div>
+                            <div className="font-medium text-white">{perm.name}</div>
                             {perm.description && (
-                              <div className="text-xs text-muted-foreground mt-1">
+                              <div className="text-xs text-gray-400 mt-1">
                                 {perm.description}
                               </div>
                             )}
@@ -229,12 +229,12 @@ export default function RolePermissionsEditor({ role, onUpdate }: RolePermission
         ))}
       </div>
       {Object.keys(permissionsByResource).length === 0 && (
-        <div className="text-center py-8 text-muted-foreground">Aucune permission trouvée</div>
+        <div className="text-center py-8 text-gray-400">Aucune permission trouvée</div>
       )}
       {/* Save Button */}
       {!role.is_system && (
-        <div className="flex justify-end pt-4 border-t">
-          <Button onClick={handleSave} disabled={saving || !hasChanges}>
+        <div className="flex justify-end pt-4 border-t border-gray-800">
+          <Button onClick={handleSave} variant="gradient" disabled={saving || !hasChanges}>
             {saving ? 'Enregistrement...' : 'Enregistrer les modifications'}
           </Button>
         </div>

@@ -72,7 +72,7 @@ export default function CodeEditor({
     URL.revokeObjectURL(url);
   };
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       {' '}
       <div className="space-y-4">
         {' '}
@@ -81,8 +81,8 @@ export default function CodeEditor({
           {' '}
           <div className="flex items-center gap-2">
             {' '}
-            <Code className="w-5 h-5 text-primary-600 dark:text-primary-400" />{' '}
-            <h3 className="text-lg font-semibold text-foreground"> Code Editor </h3>{' '}
+            <Code className="w-5 h-5 text-blue-400" />{' '}
+            <h3 className="text-lg font-semibold text-white"> Code Editor </h3>{' '}
           </div>{' '}
           <div className="flex items-center gap-2">
             {' '}
@@ -94,7 +94,7 @@ export default function CodeEditor({
                 className="w-40"
               />
             )}{' '}
-            <Button variant="outline" size="sm" onClick={handleCopy}>
+            <Button variant="outline" size="sm" onClick={handleCopy} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
               {' '}
               <span className="flex items-center gap-2">
                 {' '}
@@ -102,7 +102,7 @@ export default function CodeEditor({
                 {copied ? 'Copied!' : 'Copy'}{' '}
               </span>{' '}
             </Button>{' '}
-            <Button variant="outline" size="sm" onClick={handleDownload}>
+            <Button variant="outline" size="sm" onClick={handleDownload} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
               {' '}
               <span className="flex items-center gap-2">
                 {' '}
@@ -110,7 +110,7 @@ export default function CodeEditor({
               </span>{' '}
             </Button>{' '}
             {onSave && !readOnly && (
-              <Button variant="primary" size="sm" onClick={handleSave}>
+              <Button variant="gradient" size="sm" onClick={handleSave}>
                 {' '}
                 <span className="flex items-center gap-2">
                   {' '}
@@ -123,28 +123,31 @@ export default function CodeEditor({
         {/* Editor */}{' '}
         <div className="relative">
           {' '}
-          <textarea
-            value={code}
-            onChange={handleChange}
-            readOnly={readOnly}
-            placeholder="Enter your code here..."
-            className={clsx(
-              'w-full h-96 p-4 font-mono text-sm border rounded-lg',
-              'bg-muted',
-              'text-muted-foreground',
-              'border-border',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-              'resize-none',
-              readOnly && 'cursor-not-allowed opacity-75'
-            )}
-            style={{
-              fontFamily: 'Monaco, Menlo,"Ubuntu Mono", Consolas,"source-code-pro", monospace',
-            }}
-          />{' '}
+          <div className="form-input-glow">
+            <textarea
+              value={code}
+              onChange={handleChange}
+              readOnly={readOnly}
+              placeholder="Enter your code here..."
+              className={clsx(
+                'w-full h-96 p-4 font-mono text-sm border rounded-lg',
+                'bg-[#1C1C26]',
+                'text-gray-300',
+                'border-gray-700',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                'resize-none',
+                'placeholder-gray-500',
+                readOnly && 'cursor-not-allowed opacity-75'
+              )}
+              style={{
+                fontFamily: 'Monaco, Menlo,"Ubuntu Mono", Consolas,"source-code-pro", monospace',
+              }}
+            />
+          </div>{' '}
           {readOnly && (
             <div className="absolute top-2 right-2">
               {' '}
-              <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+              <span className="text-xs text-gray-400 glass-effect bg-[#13131A] border border-gray-800 px-2 py-1 rounded">
                 {' '}
                 Read Only{' '}
               </span>{' '}
@@ -152,11 +155,11 @@ export default function CodeEditor({
           )}{' '}
         </div>{' '}
         {/* Info */}{' '}
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <div className="flex items-center justify-between text-xs text-gray-400">
           {' '}
           <div>
             {' '}
-            Language: <span className="font-medium">{selectedLanguage}</span>{' '}
+            Language: <span className="font-medium text-white">{selectedLanguage}</span>{' '}
           </div>{' '}
           <div>
             {' '}

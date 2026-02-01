@@ -85,13 +85,13 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
       label: 'Time',
       sortable: true,
       render: (value) => (
-        <div className="text-foreground">
+        <div className="text-white">
           {' '}
           <div className="font-medium text-sm">
             {' '}
             {new Date(value as string).toLocaleDateString()}{' '}
           </div>{' '}
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-gray-400">
             {' '}
             {new Date(value as string).toLocaleTimeString()}{' '}
           </div>{' '}
@@ -107,8 +107,8 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
           <Avatar src={entry.user.avatar} name={entry.user.name} size="sm" />{' '}
           <div>
             {' '}
-            <div className="text-sm font-medium text-foreground"> {entry.user.name} </div>{' '}
-            <div className="text-xs text-muted-foreground"> {entry.user.email} </div>{' '}
+            <div className="text-sm font-medium text-white"> {entry.user.name} </div>{' '}
+            <div className="text-xs text-gray-400"> {entry.user.email} </div>{' '}
           </div>{' '}
         </div>
       ),
@@ -129,11 +129,11 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
       render: (value, entry) => (
         <div>
           {' '}
-          <div className="text-sm font-medium text-foreground"> {value as string} </div>{' '}
+          <div className="text-sm font-medium text-white"> {value as string} </div>{' '}
           {entry.resourceName && (
-            <div className="text-xs text-muted-foreground"> {entry.resourceName} </div>
+            <div className="text-xs text-gray-400"> {entry.resourceName} </div>
           )}{' '}
-          <div className="text-xs text-muted-foreground font-mono">
+          <div className="text-xs text-gray-400 font-mono">
             {' '}
             ID: {entry.resourceId}{' '}
           </div>{' '}
@@ -160,7 +160,7 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
       render: (_, entry) => (
         <button
           onClick={() => setSelectedEntry(entry)}
-          className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
+          className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
         >
           {' '}
           View Details{' '}
@@ -171,17 +171,17 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
   return (
     <>
       {' '}
-      <Card className={clsx('bg-background', className)}>
+      <Card variant="glass" className={clsx('border border-gray-800', className)}>
         {' '}
         <div className="mb-6">
           {' '}
           <div className="flex items-center justify-between mb-4">
             {' '}
-            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               {' '}
-              <Shield className="w-5 h-5" /> Audit Trail{' '}
+              <Shield className="w-5 h-5 text-blue-400" /> Audit Trail{' '}
             </h3>{' '}
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-400">
               {' '}
               {filteredEntries.length} of {entries.length} entries{' '}
             </div>{' '}
@@ -191,7 +191,7 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
             {' '}
             <div className="flex items-center gap-2">
               {' '}
-              <Filter className="w-4 h-4 text-muted-foreground" />{' '}
+              <Filter className="w-4 h-4 text-gray-500" />{' '}
               <select
                 value={filters.action || ''}
                 onChange={(e) => {
@@ -204,10 +204,10 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
                 }}
                 className={clsx(
                   'px-3 py-2 border rounded-lg text-sm',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                  'bg-[#1C1C26]',
+                  'text-white',
+                  'border-gray-700',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500'
                 )}
               >
                 {' '}
@@ -228,10 +228,10 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
                 }}
                 className={clsx(
                   'px-3 py-2 border rounded-lg text-sm',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                  'bg-[#1C1C26]',
+                  'text-white',
+                  'border-gray-700',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500'
                 )}
               >
                 {' '}
@@ -255,10 +255,10 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
                 }}
                 className={clsx(
                   'px-3 py-2 border rounded-lg text-sm',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                  'bg-[#1C1C26]',
+                  'text-white',
+                  'border-gray-700',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500'
                 )}
               >
                 {' '}
@@ -291,26 +291,26 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
               {' '}
               <div>
                 {' '}
-                <div className="text-muted-foreground">Timestamp</div>{' '}
-                <div className="font-medium text-foreground">
+                <div className="text-gray-400">Timestamp</div>{' '}
+                <div className="font-medium text-white">
                   {' '}
                   {new Date(selectedEntry.timestamp).toLocaleString()}{' '}
                 </div>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <div className="text-muted-foreground">User</div>{' '}
-                <div className="font-medium text-foreground"> {selectedEntry.user.name} </div>{' '}
+                <div className="text-gray-400">User</div>{' '}
+                <div className="font-medium text-white"> {selectedEntry.user.name} </div>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <div className="text-muted-foreground">Action</div>{' '}
-                <div className="font-medium text-foreground"> {selectedEntry.action} </div>{' '}
+                <div className="text-gray-400">Action</div>{' '}
+                <div className="font-medium text-white"> {selectedEntry.action} </div>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <div className="text-muted-foreground">Resource</div>{' '}
-                <div className="font-medium text-foreground">
+                <div className="text-gray-400">Resource</div>{' '}
+                <div className="font-medium text-white">
                   {' '}
                   {selectedEntry.resourceType} ({selectedEntry.resourceId}){' '}
                 </div>{' '}
@@ -318,8 +318,8 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
               {selectedEntry.ipAddress && (
                 <div>
                   {' '}
-                  <div className="text-muted-foreground">IP Address</div>{' '}
-                  <div className="font-medium text-foreground font-mono">
+                  <div className="text-gray-400">IP Address</div>{' '}
+                  <div className="font-medium text-white font-mono">
                     {' '}
                     {selectedEntry.ipAddress}{' '}
                   </div>{' '}
@@ -328,8 +328,8 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
               {selectedEntry.userAgent && (
                 <div>
                   {' '}
-                  <div className="text-muted-foreground">User Agent</div>{' '}
-                  <div className="font-medium text-foreground text-xs">
+                  <div className="text-gray-400">User Agent</div>{' '}
+                  <div className="font-medium text-white text-xs">
                     {' '}
                     {selectedEntry.userAgent}{' '}
                   </div>{' '}
@@ -339,13 +339,13 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
             {selectedEntry.changes && selectedEntry.changes.length > 0 && (
               <div>
                 {' '}
-                <div className="text-sm font-medium text-foreground mb-2"> Changes </div>{' '}
+                <div className="text-sm font-medium text-white mb-2"> Changes </div>{' '}
                 <div className="space-y-2">
                   {' '}
                   {selectedEntry.changes.map((change, index) => (
-                    <div key={index} className="p-3 bg-muted rounded-lg border border-border">
+                    <div key={index} className="p-3 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg">
                       {' '}
-                      <div className="font-medium text-sm text-foreground mb-1">
+                      <div className="font-medium text-sm text-white mb-1">
                         {' '}
                         {change.field}{' '}
                       </div>{' '}
@@ -353,16 +353,16 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
                         {' '}
                         <div>
                           {' '}
-                          <div className="text-muted-foreground">Old Value</div>{' '}
-                          <div className="text-foreground font-mono">
+                          <div className="text-gray-400">Old Value</div>{' '}
+                          <div className="text-gray-300 font-mono">
                             {' '}
                             {JSON.stringify(change.oldValue)}{' '}
                           </div>{' '}
                         </div>{' '}
                         <div>
                           {' '}
-                          <div className="text-muted-foreground">New Value</div>{' '}
-                          <div className="text-foreground font-mono">
+                          <div className="text-gray-400">New Value</div>{' '}
+                          <div className="text-gray-300 font-mono">
                             {' '}
                             {JSON.stringify(change.newValue)}{' '}
                           </div>{' '}
@@ -376,8 +376,8 @@ export default function AuditTrail({ entries, onFilterChange, className }: Audit
             {selectedEntry.reason && (
               <div>
                 {' '}
-                <div className="text-sm font-medium text-foreground mb-2"> Reason </div>{' '}
-                <div className="text-sm text-foreground"> {selectedEntry.reason} </div>{' '}
+                <div className="text-sm font-medium text-white mb-2"> Reason </div>{' '}
+                <div className="text-sm text-gray-300"> {selectedEntry.reason} </div>{' '}
               </div>
             )}{' '}
           </div>{' '}

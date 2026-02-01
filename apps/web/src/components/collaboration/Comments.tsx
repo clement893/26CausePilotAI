@@ -120,7 +120,7 @@ export default function Comments({
     return (
       <div
         key={comment.id}
-        className={clsx('space-y-3', depth > 0 && 'ml-8 pl-4 border-l-2 border-border')}
+        className={clsx('space-y-3', depth > 0 && 'ml-8 pl-4 border-l-2 border-gray-800')}
       >
         {' '}
         <div className="flex items-start gap-3">
@@ -130,8 +130,8 @@ export default function Comments({
             {' '}
             <div className="flex items-center gap-2 mb-1">
               {' '}
-              <span className="font-medium text-foreground"> {comment.author.name} </span>{' '}
-              <span className="text-xs text-muted-foreground">
+              <span className="font-medium text-white"> {comment.author.name} </span>{' '}
+              <span className="text-xs text-gray-400">
                 {' '}
                 {formatTimestamp(comment.timestamp)}{' '}
               </span>{' '}
@@ -140,22 +140,24 @@ export default function Comments({
             {isEditing ? (
               <div className="space-y-2">
                 {' '}
-                <textarea
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                  rows={3}
-                  className={clsx(
-                    'w-full px-3 py-2 border rounded-lg text-sm',
-                    'bg-background',
-                    'text-foreground',
-                    'border-border',
-                    'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
-                  )}
-                />{' '}
+                <div className="form-input-glow">
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    rows={3}
+                    className={clsx(
+                      'w-full px-3 py-2 border rounded-lg text-sm',
+                      'bg-[#1C1C26]',
+                      'text-white',
+                      'border-gray-700',
+                      'focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    )}
+                  />
+                </div>{' '}
                 <div className="flex items-center gap-2">
                   {' '}
                   <Button
-                    variant="primary"
+                    variant="gradient"
                     size="sm"
                     onClick={() => handleEdit(comment.id)}
                     loading={loading}
@@ -170,6 +172,7 @@ export default function Comments({
                       setEditingId(null);
                       setEditContent('');
                     }}
+                    className="text-gray-400 hover:bg-[#252532] hover:text-white"
                   >
                     {' '}
                     Cancel{' '}
@@ -179,7 +182,7 @@ export default function Comments({
             ) : (
               <>
                 {' '}
-                <p className="text-sm text-foreground mb-2 whitespace-pre-wrap">
+                <p className="text-sm text-gray-300 mb-2 whitespace-pre-wrap">
                   {' '}
                   {comment.content}{' '}
                 </p>{' '}
@@ -190,14 +193,14 @@ export default function Comments({
                       {' '}
                       <button
                         onClick={() => onReact(comment.id, 'like')}
-                        className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400"
+                        className="flex items-center gap-1 text-xs text-gray-400 hover:text-blue-400 transition-colors"
                       >
                         {' '}
                         <ThumbsUp className="w-3 h-3" /> {comment.reactions?.like || 0}{' '}
                       </button>{' '}
                       <button
                         onClick={() => onReact(comment.id, 'heart')}
-                        className="flex items-center gap-1 text-xs text-muted-foreground hover:text-danger-600 dark:hover:text-danger-400"
+                        className="flex items-center gap-1 text-xs text-gray-400 hover:text-pink-400 transition-colors"
                       >
                         {' '}
                         <Heart className="w-3 h-3" /> {comment.reactions?.heart || 0}{' '}
@@ -207,14 +210,14 @@ export default function Comments({
                   {onSubmit && (
                     <button
                       onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400"
+                      className="flex items-center gap-1 text-xs text-gray-400 hover:text-blue-400 transition-colors"
                     >
                       {' '}
                       <Reply className="w-3 h-3" /> Reply{' '}
                     </button>
                   )}{' '}
                   <Dropdown
-                    trigger={<MoreVertical className="w-4 h-4" />}
+                    trigger={<MoreVertical className="w-4 h-4 text-gray-400" />}
                     items={dropdownItems}
                   />{' '}
                 </div>{' '}
@@ -226,23 +229,25 @@ export default function Comments({
         {isReplying && (
           <div className="ml-11 space-y-2">
             {' '}
-            <textarea
-              value={replyContent}
-              onChange={(e) => setReplyContent(e.target.value)}
-              placeholder="Write a reply..."
-              rows={2}
-              className={clsx(
-                'w-full px-3 py-2 border rounded-lg text-sm',
-                'bg-background',
-                'text-foreground',
-                'border-border',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
-              )}
-            />{' '}
+            <div className="form-input-glow">
+              <textarea
+                value={replyContent}
+                onChange={(e) => setReplyContent(e.target.value)}
+                placeholder="Write a reply..."
+                rows={2}
+                className={clsx(
+                  'w-full px-3 py-2 border rounded-lg text-sm',
+                  'bg-[#1C1C26]',
+                  'text-white',
+                  'border-gray-700',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500'
+                )}
+              />
+            </div>{' '}
             <div className="flex items-center gap-2">
               {' '}
               <Button
-                variant="primary"
+                variant="gradient"
                 size="sm"
                 onClick={() => handleReply(comment.id)}
                 loading={loading}
@@ -260,6 +265,7 @@ export default function Comments({
                   setReplyingTo(null);
                   setReplyContent('');
                 }}
+                className="text-gray-400 hover:bg-[#252532] hover:text-white"
               >
                 {' '}
                 Cancel{' '}
@@ -278,11 +284,11 @@ export default function Comments({
     );
   };
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       {' '}
       <div className="space-y-6">
         {' '}
-        <h3 className="text-lg font-semibold text-foreground">
+        <h3 className="text-lg font-semibold text-white">
           {' '}
           Comments ({comments.length}){' '}
         </h3>{' '}
@@ -295,24 +301,26 @@ export default function Comments({
               <Avatar src={currentUser.avatar} name={currentUser.name} size="sm" />{' '}
               <div className="flex-1">
                 {' '}
-                <textarea
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Write a comment..."
-                  rows={3}
-                  className={clsx(
-                    'w-full px-4 py-2 border rounded-lg text-sm',
-                    'bg-background',
-                    'text-foreground',
-                    'border-border',
-                    'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
-                  )}
-                />{' '}
+                <div className="form-input-glow">
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Write a comment..."
+                    rows={3}
+                    className={clsx(
+                      'w-full px-4 py-2 border rounded-lg text-sm',
+                      'bg-[#1C1C26]',
+                      'text-white',
+                      'border-gray-700',
+                      'focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    )}
+                  />
+                </div>{' '}
                 <div className="flex items-center justify-end mt-2">
                   {' '}
                   <Button
                     type="submit"
-                    variant="primary"
+                    variant="gradient"
                     size="sm"
                     loading={loading}
                     disabled={!newComment.trim()}
@@ -332,7 +340,7 @@ export default function Comments({
         {comments.length === 0 ? (
           <div className="text-center py-8">
             {' '}
-            <p className="text-muted-foreground">No comments yet</p>{' '}
+            <p className="text-gray-400">No comments yet</p>{' '}
           </div>
         ) : (
           <div className="space-y-6"> {comments.map((comment) => renderComment(comment))} </div>

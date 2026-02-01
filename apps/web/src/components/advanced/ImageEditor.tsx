@@ -39,7 +39,7 @@ export default function ImageEditor({ imageUrl, onSave, className }: ImageEditor
     }
   };
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       {' '}
       <div className="space-y-4">
         {' '}
@@ -48,7 +48,7 @@ export default function ImageEditor({ imageUrl, onSave, className }: ImageEditor
           {' '}
           <div className="flex items-center gap-2">
             {' '}
-            <h3 className="text-lg font-semibold text-foreground"> Image Editor </h3>{' '}
+            <h3 className="text-lg font-semibold text-white"> Image Editor </h3>{' '}
           </div>{' '}
           <div className="flex items-center gap-2">
             {' '}
@@ -59,31 +59,31 @@ export default function ImageEditor({ imageUrl, onSave, className }: ImageEditor
               onChange={handleFileUpload}
               className="hidden"
             />{' '}
-            <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
+            <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
               {' '}
               <span className="flex items-center gap-2">
                 {' '}
                 <Upload className="w-4 h-4" /> Upload{' '}
               </span>{' '}
             </Button>{' '}
-            <Button variant="outline" size="sm" onClick={handleZoomOut} disabled={zoom <= 50}>
+            <Button variant="outline" size="sm" onClick={handleZoomOut} disabled={zoom <= 50} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white disabled:opacity-50">
               {' '}
               <ZoomOut className="w-4 h-4" />{' '}
             </Button>{' '}
-            <span className="text-sm text-muted-foreground min-w-[50px] text-center">
+            <span className="text-sm text-gray-400 min-w-[50px] text-center">
               {' '}
               {zoom}%{' '}
             </span>{' '}
-            <Button variant="outline" size="sm" onClick={handleZoomIn} disabled={zoom >= 200}>
+            <Button variant="outline" size="sm" onClick={handleZoomIn} disabled={zoom >= 200} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white disabled:opacity-50">
               {' '}
               <ZoomIn className="w-4 h-4" />{' '}
             </Button>{' '}
-            <Button variant="outline" size="sm" onClick={handleRotate}>
+            <Button variant="outline" size="sm" onClick={handleRotate} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
               {' '}
               <RotateCw className="w-4 h-4" />{' '}
             </Button>{' '}
             {image && (
-              <Button variant="primary" size="sm" onClick={handleSave}>
+              <Button variant="gradient" size="sm" onClick={handleSave}>
                 {' '}
                 <span className="flex items-center gap-2">
                   {' '}
@@ -95,7 +95,7 @@ export default function ImageEditor({ imageUrl, onSave, className }: ImageEditor
         </div>{' '}
         {/* Image Canvas */}{' '}
         {image ? (
-          <div className="border border-border rounded-lg p-4 bg-muted overflow-auto">
+          <div className="border border-gray-800 rounded-lg p-4 glass-effect bg-[#1C1C26] overflow-auto">
             {' '}
             <div className="flex items-center justify-center min-h-[400px]">
               {' '}
@@ -112,11 +112,11 @@ export default function ImageEditor({ imageUrl, onSave, className }: ImageEditor
             </div>{' '}
           </div>
         ) : (
-          <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
+          <div className="border-2 border-dashed border-gray-800 rounded-lg p-12 text-center glass-effect bg-[#1C1C26]">
             {' '}
-            <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />{' '}
-            <p className="text-muted-foreground mb-4"> Upload an image to start editing </p>{' '}
-            <Button variant="primary" onClick={() => fileInputRef.current?.click()}>
+            <Upload className="w-12 h-12 text-gray-500 mx-auto mb-4" />{' '}
+            <p className="text-gray-400 mb-4"> Upload an image to start editing </p>{' '}
+            <Button variant="gradient" onClick={() => fileInputRef.current?.click()}>
               {' '}
               <span className="flex items-center gap-2">
                 {' '}
@@ -127,7 +127,7 @@ export default function ImageEditor({ imageUrl, onSave, className }: ImageEditor
         )}{' '}
         {/* Info */}{' '}
         {image && (
-          <div className="text-xs text-muted-foreground text-center">
+          <div className="text-xs text-gray-400 text-center">
             {' '}
             Use the toolbar to zoom, rotate, and edit your image{' '}
           </div>

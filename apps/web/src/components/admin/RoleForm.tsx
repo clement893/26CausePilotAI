@@ -112,7 +112,7 @@ export default function RoleForm({ role, onSubmit, onCancel, loading = false }: 
           disabled={loading || role?.is_system}
           required
         />
-        {role?.is_system && <p className="text-xs text-muted-foreground mt-1">Les rôles système ne peuvent pas être modifiés</p>}
+        {role?.is_system && <p className="text-xs text-gray-400 mt-1">Les rôles système ne peuvent pas être modifiés</p>}
       </div>
 
       <div>
@@ -127,9 +127,9 @@ export default function RoleForm({ role, onSubmit, onCancel, loading = false }: 
           required
           pattern="[a-z0-9-]+"
         />
-        {role && <p className="text-xs text-muted-foreground mt-1">Le slug ne peut pas être modifié après la création</p>}
+        {role && <p className="text-xs text-gray-400 mt-1">Le slug ne peut pas être modifié après la création</p>}
         {!role && (
-          <p className="text-xs text-muted-foreground mt-1">Identifiant unique pour le rôle (généré automatiquement depuis le nom)</p>
+          <p className="text-xs text-gray-400 mt-1">Identifiant unique pour le rôle (généré automatiquement depuis le nom)</p>
         )}
       </div>
 
@@ -147,11 +147,11 @@ export default function RoleForm({ role, onSubmit, onCancel, loading = false }: 
 
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
+          <Button type="button" variant="outline" onClick={onCancel} disabled={loading} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
             Annuler
           </Button>
         )}
-        <Button type="submit" disabled={loading || !name.trim() || !slug.trim()}>
+        <Button type="submit" variant="gradient" disabled={loading || !name.trim() || !slug.trim()}>
           {loading ? 'Enregistrement...' : role ? 'Modifier' : 'Créer'}
         </Button>
       </div>

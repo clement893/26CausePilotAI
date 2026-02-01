@@ -134,7 +134,7 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
           <select
             value={resourceFilter}
             onChange={(e) => setResourceFilter(e.target.value)}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+            className="w-full px-3 py-2 border border-gray-700 rounded-md bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Toutes les ressources</option>
             {resources.map((resource) => (
@@ -148,7 +148,7 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
       {/* Custom Permissions */}
       {customPermissions.length > 0 && (
         <div>
-          <h4 className="text-sm font-semibold text-foreground mb-3">
+          <h4 className="text-sm font-semibold text-white mb-3">
             Permissions Custom Actuelles
           </h4>
           <div className="space-y-2">
@@ -158,12 +158,12 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
               return (
                 <div
                   key={userPerm.id}
-                  className="p-3 rounded-lg border-2 bg-primary/10 border-primary flex items-center justify-between"
+                  className="p-3 rounded-lg border-2 glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500 flex items-center justify-between hover-lift"
                 >
                   <div>
-                    <div className="font-medium text-foreground">{perm.name}</div>
+                    <div className="font-medium text-white">{perm.name}</div>
                     {perm.description && (
-                      <div className="text-sm text-muted-foreground mt-1">{perm.description}</div>
+                      <div className="text-sm text-gray-400 mt-1">{perm.description}</div>
                     )}
                   </div>
                   <Button
@@ -171,6 +171,7 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
                     size="sm"
                     onClick={() => handleRemovePermission(perm.id)}
                     disabled={adding}
+                    className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
                   >
                     Retirer
                   </Button>
@@ -182,11 +183,11 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
       )}
       {/* Available Permissions */}
       <div>
-        <h4 className="text-sm font-semibold text-foreground mb-3">
+        <h4 className="text-sm font-semibold text-white mb-3">
           Ajouter une Permission Custom
         </h4>
         {filteredPermissions.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-gray-400">
             Aucune permission disponible à ajouter
           </div>
         ) : (
@@ -196,16 +197,16 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
               return (
                 <div
                   key={perm.id}
-                  className={`p-3 rounded-lg border-2 flex items-center justify-between ${
-                    isCustom ? 'bg-primary/10 border-primary' : 'bg-muted border-border'
+                  className={`p-3 rounded-lg border-2 flex items-center justify-between hover-lift ${
+                    isCustom ? 'glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500' : 'glass-effect bg-[#1C1C26] border-gray-800 hover:border-blue-500/50'
                   }`}
                 >
                   <div>
-                    <div className="font-medium text-foreground">{perm.name}</div>
+                    <div className="font-medium text-white">{perm.name}</div>
                     {perm.description && (
-                      <div className="text-sm text-muted-foreground mt-1">{perm.description}</div>
+                      <div className="text-sm text-gray-400 mt-1">{perm.description}</div>
                     )}
-                    <div className="text-xs text-muted-foreground mt-1 capitalize">
+                    <div className="text-xs text-gray-400 mt-1 capitalize">
                       {perm.resource} • {perm.action}
                     </div>
                   </div>
@@ -217,6 +218,7 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
                       size="sm"
                       onClick={() => handleAddPermission(perm.id)}
                       disabled={adding}
+                      className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
                     >
                       Ajouter
                     </Button>

@@ -84,13 +84,13 @@ export default function EventHistory({ events, onFilterChange, className }: Even
       label: 'Time',
       sortable: true,
       render: (value) => (
-        <div className="text-foreground">
+        <div className="text-white">
           {' '}
           <div className="font-medium text-sm">
             {' '}
             {new Date(value as string).toLocaleDateString()}{' '}
           </div>{' '}
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-gray-400">
             {' '}
             {new Date(value as string).toLocaleTimeString()}{' '}
           </div>{' '}
@@ -104,15 +104,15 @@ export default function EventHistory({ events, onFilterChange, className }: Even
       render: (value, event) => (
         <div>
           {' '}
-          <div className="text-sm font-medium text-foreground"> {value as string} </div>{' '}
-          <div className="text-xs text-muted-foreground"> {event.eventType} </div>{' '}
+          <div className="text-sm font-medium text-white"> {value as string} </div>{' '}
+          <div className="text-xs text-gray-400"> {event.eventType} </div>{' '}
         </div>
       ),
     },
     {
       key: 'description',
       label: 'Description',
-      render: (value) => <span className="text-sm text-foreground"> {value as string} </span>,
+      render: (value) => <span className="text-sm text-gray-300"> {value as string} </span>,
     },
     {
       key: 'severity',
@@ -127,29 +127,29 @@ export default function EventHistory({ events, onFilterChange, className }: Even
       key: 'source',
       label: 'Source',
       render: (value) => (
-        <span className="text-sm text-foreground font-mono"> {value as string} </span>
+        <span className="text-sm text-gray-300 font-mono"> {value as string} </span>
       ),
     },
     {
       key: 'userName',
       label: 'User',
       render: (value) => (
-        <span className="text-sm text-foreground"> {(value as string) || '-'} </span>
+        <span className="text-sm text-gray-300"> {(value as string) || '-'} </span>
       ),
     },
   ];
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       {' '}
       <div className="mb-6">
         {' '}
         <div className="flex items-center justify-between mb-4">
           {' '}
-          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             {' '}
-            <History className="w-5 h-5" /> Event History{' '}
+            <History className="w-5 h-5 text-blue-400" /> Event History{' '}
           </h3>{' '}
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-gray-400">
             {' '}
             {filteredEvents.length} of {events.length} events{' '}
           </div>{' '}
@@ -159,27 +159,30 @@ export default function EventHistory({ events, onFilterChange, className }: Even
           {' '}
           <div className="flex-1 min-w-[200px]">
             {' '}
-            <div className="relative">
-              {' '}
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />{' '}
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search events..."
-                className={clsx(
-                  'w-full pl-10 pr-4 py-2 border rounded-lg text-sm',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
-                )}
-              />{' '}
+            <div className="form-input-glow">
+              <div className="relative">
+                {' '}
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />{' '}
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search events..."
+                  className={clsx(
+                    'w-full pl-10 pr-4 py-2 border rounded-lg text-sm',
+                    'bg-[#1C1C26]',
+                    'text-white',
+                    'border-gray-700',
+                    'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    'placeholder-gray-500'
+                  )}
+                />{' '}
+              </div>
             </div>{' '}
           </div>{' '}
           <div className="flex items-center gap-2">
             {' '}
-            <Filter className="w-4 h-4 text-muted-foreground" />{' '}
+            <Filter className="w-4 h-4 text-gray-500" />{' '}
             <select
               value={filters.eventType || ''}
               onChange={(e) => {
@@ -189,10 +192,10 @@ export default function EventHistory({ events, onFilterChange, className }: Even
               }}
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
-                'bg-background',
-                'text-foreground',
-                'border-border',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                'bg-[#1C1C26]',
+                'text-white',
+                'border-gray-700',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500'
               )}
             >
               {' '}
@@ -216,10 +219,10 @@ export default function EventHistory({ events, onFilterChange, className }: Even
               }}
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
-                'bg-background',
-                'text-foreground',
-                'border-border',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                'bg-[#1C1C26]',
+                'text-white',
+                'border-gray-700',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500'
               )}
             >
               {' '}
@@ -236,10 +239,10 @@ export default function EventHistory({ events, onFilterChange, className }: Even
               }}
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
-                'bg-background',
-                'text-foreground',
-                'border-border',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                'bg-[#1C1C26]',
+                'text-white',
+                'border-gray-700',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500'
               )}
             >
               {' '}
