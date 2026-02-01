@@ -25,6 +25,8 @@ export interface AmountSelectorProps {
   onRecurringChange: (isRecurring: boolean, frequency: FrequencyKey | null) => void;
   primaryColor: string;
   buttonStyle: string;
+  personalizedAmounts?: number[]; // Montants personnalisés basés sur l'historique du donateur
+  isPersonalized?: boolean; // Indique si les montants sont personnalisés
 }
 
 export default function AmountSelector({
@@ -37,6 +39,8 @@ export default function AmountSelector({
   onRecurringChange,
   primaryColor,
   buttonStyle,
+  personalizedAmounts,
+  isPersonalized,
 }: AmountSelectorProps) {
   const [showCustom, setShowCustom] = useState(false);
 
@@ -54,6 +58,11 @@ export default function AmountSelector({
   const customNum = customAmount ? parseFloat(customAmount.replace(/,/, '.')) : null;
   const displayAmount = amount ?? customNum;
   const currency = form.currency;
+  
+  // Utiliser les montants personnalisés s'ils sont disponibles, sinon les montants par défaut du formulaire
+  const suggestedAmounts = personalizedAmounts && personalizedAmounts.length > 0
+    ? personalizedAmounts
+    : form.suggestedAmounts;
 
   const btnClass =
     buttonStyle === 'outline'
@@ -64,9 +73,16 @@ export default function AmountSelector({
 
   return (
     <div className="space-y-4">
-      <p className="text-sm font-medium text-white/90">Choisissez un montant</p>
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-medium text-white/90">Choisissez un montant</p>
+        {isPersonalized && (
+          <span className="text-xs text-white/60" title="Montants suggérés basés sur votre historique de dons">
+            ✨ Personnalisé
+          </span>
+        )}
+      </div>
       <div className="flex flex-wrap gap-2">
-        {form.suggestedAmounts.map((val) => (
+        {suggestedAmounts.map((val) => (
           <button
             key={val}
             type="button"

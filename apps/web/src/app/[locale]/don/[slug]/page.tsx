@@ -10,6 +10,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { getFormBySlugAction } from '@/app/actions/donation-forms/get-by-slug';
 import { trackFormViewAction } from '@/app/actions/donation-forms/track-view';
 import { submitDonationFormAction } from '@/app/actions/donation-forms/submit';
+import { getDonationAmountSuggestions } from '@/app/actions/donations/getDonationAmountSuggestions';
 import type { DonationFormDraft } from '@/lib/types/donation-form';
 import type { FrequencyKey } from '@/lib/types/donation-form';
 import {
@@ -43,6 +44,8 @@ export default function PublicDonationFormPage() {
   const [consentMail, setConsentMail] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [personalizedAmounts, setPersonalizedAmounts] = useState<number[] | null>(null);
+  const [isPersonalized, setIsPersonalized] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
@@ -59,6 +62,9 @@ export default function PublicDonationFormPage() {
         setForm(res.form);
         if (res.form.id) {
           trackFormViewAction(res.form.id);
+          
+          // Charger les montants personnalisés si un email est disponible dans formData
+          // (sera mis à jour quand l'utilisateur saisit son email)
         }
       }
       setLoading(false);
@@ -70,10 +76,53 @@ export default function PublicDonationFormPage() {
   const primaryColor = form?.primaryColor ?? '#3B82F6';
   const buttonStyle = form?.buttonStyle ?? 'gradient';
 
+  // Charger les montants personnalisés quand l'email est disponible
+  useEffect(() => {
+    const donorEmail = formData.email;
+    const formId = form?.id;
+    const organizationId = form?.organizationId;
+    
+    if (!formId || !donorEmail || !organizationId) return;
+    
+    // Vérifier que l'email est valide
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(donorEmail)) return;
+    
+    // Délai pour éviter trop de requêtes pendant la saisie
+    const timeoutId = setTimeout(async () => {
+      try {
+        const suggestions = await getDonationAmountSuggestions({
+          formId,
+          organizationId,
+          donorEmail,
+        });
+        
+        if (suggestions.success && suggestions.isPersonalized) {
+          setPersonalizedAmounts(suggestions.suggestedAmounts);
+          setIsPersonalized(true);
+        } else {
+          setPersonalizedAmounts(null);
+          setIsPersonalized(false);
+        }
+      } catch (error) {
+        // En cas d'erreur, utiliser les montants par défaut
+        setPersonalizedAmounts(null);
+        setIsPersonalized(false);
+      }
+    }, 1000); // Attendre 1 seconde après la dernière frappe
+    
+    return () => clearTimeout(timeoutId);
+  }, [formData.email, form?.id, form?.organizationId]);
+
   const handleSubmit = useCallback(async () => {
     if (!form?.id || displayAmount == null || displayAmount <= 0) return;
     setSubmitError(null);
     setSubmitLoading(true);
+    if (!form.organizationId) {
+      setSubmitError('Organisation non trouvée');
+      return;
+    }
+    
     const res = await submitDonationFormAction({
       formId: form.id,
       amount: displayAmount,
@@ -172,6 +221,8 @@ export default function PublicDonationFormPage() {
             onRecurringChange={(r, f) => { setIsRecurring(r); setFrequency(f); }}
             primaryColor={primaryColor}
             buttonStyle={buttonStyle}
+            personalizedAmounts={personalizedAmounts ?? undefined}
+            isPersonalized={isPersonalized}
           />
         </section>
 
