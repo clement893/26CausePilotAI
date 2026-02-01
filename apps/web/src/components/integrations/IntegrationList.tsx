@@ -105,14 +105,14 @@ export default function IntegrationList({
   };
 
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <Settings className="w-5 h-5" />
+          <h3 className="text-lg font-semibold text-white dark:text-foreground flex items-center gap-2">
+            <Settings className="w-5 h-5 text-blue-400" />
             Integrations
           </h3>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-gray-400 dark:text-muted-foreground">
             {filteredIntegrations.length} of {integrations.length} integrations
           </div>
         </div>
@@ -121,18 +121,18 @@ export default function IntegrationList({
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex-1 min-w-[200px]">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-muted-foreground" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search integrations..."
                 className={clsx(
-                  'w-full pl-10 pr-4 py-2 border rounded-lg text-sm',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                  'w-full pl-10 pr-4 py-2 border rounded-lg text-sm form-input-glow',
+                  'bg-[#1C1C26] dark:bg-background',
+                  'text-white dark:text-foreground',
+                  'border-gray-700 dark:border-border',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
                 )}
               />
             </div>
@@ -141,11 +141,11 @@ export default function IntegrationList({
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
             className={clsx(
-              'px-3 py-2 border rounded-lg text-sm',
-              'bg-background',
-              'text-foreground',
-              'border-border',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+              'px-3 py-2 border rounded-lg text-sm form-input-glow',
+              'bg-[#1C1C26] dark:bg-background',
+              'text-white dark:text-foreground',
+              'border-gray-700 dark:border-border',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
             )}
           >
             <option value="all">All Categories</option>
@@ -161,8 +161,8 @@ export default function IntegrationList({
       {/* Integrations Grid */}
       {filteredIntegrations.length === 0 ? (
         <div className="text-center py-12">
-          <Settings className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground">No integrations found</p>
+          <Settings className="w-12 h-12 text-gray-500 dark:text-muted-foreground mx-auto mb-4" />
+          <p className="text-gray-400 dark:text-muted-foreground">No integrations found</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -170,11 +170,10 @@ export default function IntegrationList({
             <div
               key={integration.id}
               className={clsx(
-                'p-4 border rounded-lg transition-all',
-                'bg-background',
-                'border-border',
-                'hover:border-primary-300 dark:hover:border-primary-600',
-                'hover:shadow-md'
+                'p-4 border rounded-lg transition-all hover-lift glass-effect',
+                'bg-[#1C1C26] dark:bg-background',
+                'border-gray-800 dark:border-border',
+                'hover:border-gray-700 dark:hover:border-primary-600'
               )}
             >
               <div className="flex items-start justify-between mb-3">
@@ -182,12 +181,12 @@ export default function IntegrationList({
                   {integration.icon ? (
                     <Avatar src={integration.icon} name={integration.name} size="md" />
                   ) : (
-                    <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
-                      <Settings className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/30 flex items-center justify-center">
+                      <Settings className="w-5 h-5 text-blue-400 dark:text-primary-400" />
                     </div>
                   )}
                   <div>
-                    <h4 className="font-semibold text-foreground">{integration.name}</h4>
+                    <h4 className="font-semibold text-white dark:text-foreground">{integration.name}</h4>
                     <Badge variant={categoryColors[integration.category]} className="mt-1">
                       {integration.category}
                     </Badge>
@@ -196,10 +195,10 @@ export default function IntegrationList({
                 {getStatusBadge(integration.status)}
               </div>
 
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{integration.description}</p>
+              <p className="text-sm text-gray-400 dark:text-muted-foreground mb-4 line-clamp-2">{integration.description}</p>
 
               {integration.connectedAt && (
-                <div className="text-xs text-muted-foreground mb-4">
+                <div className="text-xs text-gray-400 dark:text-muted-foreground mb-4">
                   Connected {new Date(integration.connectedAt).toLocaleDateString()}
                 </div>
               )}
@@ -208,7 +207,7 @@ export default function IntegrationList({
                 {integration.status === 'connected' ? (
                   <>
                     {onConfigure && (
-                      <Button variant="outline" size="sm" onClick={() => onConfigure(integration)} fullWidth>
+                      <Button variant="outline" size="sm" onClick={() => onConfigure(integration)} fullWidth className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#252532] dark:hover:bg-primary-900/20">
                         <span className="flex items-center gap-2">
                           <Settings className="w-4 h-4" />
                           Configure
@@ -223,7 +222,7 @@ export default function IntegrationList({
                   </>
                 ) : integration.status === 'available' ? (
                   onConnect && (
-                    <Button variant="primary" size="sm" onClick={() => onConnect(integration)} fullWidth>
+                    <Button variant="gradient" size="sm" onClick={() => onConnect(integration)} fullWidth>
                       <span className="flex items-center gap-2">
                         <Plus className="w-4 h-4" />
                         Connect
@@ -237,6 +236,7 @@ export default function IntegrationList({
                     variant="ghost"
                     size="sm"
                     onClick={() => window.open(integration.websiteUrl, '_blank')}
+                    className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted"
                   >
                     <span className="flex items-center gap-2">
                       <ExternalLink className="w-4 h-4" />

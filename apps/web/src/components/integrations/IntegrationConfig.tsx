@@ -78,49 +78,38 @@ export default function IntegrationConfig({
     }
   };
   return (
-    <Card className={clsx('bg-background', className)}>
-      {' '}
+    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
       <div className="space-y-6">
-        {' '}
-        {/* Header */}{' '}
+        {/* Header */}
         <div className="flex items-start justify-between">
-          {' '}
           <div className="flex items-center gap-3">
-            {' '}
             {integration.icon ? (
               <Avatar src={integration.icon} name={integration.name} size="lg" />
             ) : (
-              <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
-                {' '}
-                <Key className="w-6 h-6 text-primary-600 dark:text-primary-400" />{' '}
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/30 flex items-center justify-center">
+                <Key className="w-6 h-6 text-blue-400 dark:text-primary-400" />
               </div>
-            )}{' '}
+            )}
             <div>
-              {' '}
-              <h3 className="text-lg font-semibold text-foreground">
-                {' '}
-                Configure {integration.name}{' '}
-              </h3>{' '}
-              <p className="text-sm text-muted-foreground"> {integration.description} </p>{' '}
-            </div>{' '}
-          </div>{' '}
+              <h3 className="text-lg font-semibold text-white dark:text-foreground">
+                Configure {integration.name}
+              </h3>
+              <p className="text-sm text-gray-400 dark:text-muted-foreground">{integration.description}</p>
+            </div>
+          </div>
           {onCancel && (
-            <Button variant="ghost" size="sm" onClick={onCancel}>
-              {' '}
+            <Button variant="ghost" size="sm" onClick={onCancel} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
               <span className="flex items-center gap-2">
-                {' '}
-                <X className="w-4 h-4" /> Cancel{' '}
-              </span>{' '}
+                <X className="w-4 h-4" /> Cancel
+              </span>
             </Button>
-          )}{' '}
-        </div>{' '}
-        {/* Configuration Fields */}{' '}
+          )}
+        </div>
+        {/* Configuration Fields */}
         {fields.length > 0 ? (
           <div className="space-y-4">
-            {' '}
             {fields.map((field) => (
               <div key={field.id}>
-                {' '}
                 <Input
                   label={field.label}
                   type={field.type === 'password' ? 'password' : field.type}
@@ -130,88 +119,71 @@ export default function IntegrationConfig({
                   helperText={field.helperText}
                   error={errors[field.id]}
                   required={field.required}
-                />{' '}
+                />
               </div>
-            ))}{' '}
+            ))}
           </div>
         ) : (
-          <div className="p-4 bg-info-50 dark:bg-info-900/20 rounded-lg border border-info-200 dark:border-info-800">
-            {' '}
+          <div className="p-4 bg-blue-500/20 dark:bg-info-900/20 rounded-lg border border-blue-500/30 dark:border-info-800">
             <div className="flex items-start gap-2">
-              {' '}
-              <AlertCircle className="w-5 h-5 text-info-600 dark:text-info-400 flex-shrink-0 mt-0.5" />{' '}
-              <div className="text-sm text-info-900 dark:text-info-200">
-                {' '}
-                <div className="font-medium mb-1">No Configuration Required</div>{' '}
-                <div>This integration doesn't require any additional configuration.</div>{' '}
-              </div>{' '}
-            </div>{' '}
+              <AlertCircle className="w-5 h-5 text-blue-400 dark:text-info-400 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-blue-200 dark:text-info-200">
+                <div className="font-medium mb-1">No Configuration Required</div>
+                <div>This integration doesn't require any additional configuration.</div>
+              </div>
+            </div>
           </div>
-        )}{' '}
-        {/* Test Connection */}{' '}
+        )}
+        {/* Test Connection */}
         {onTest && fields.length > 0 && (
-          <div className="flex items-center justify-between p-4 bg-muted rounded-lg border border-border">
-            {' '}
+          <div className="flex items-center justify-between p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
             <div>
-              {' '}
-              <div className="text-sm font-medium text-foreground mb-1"> Test Connection </div>{' '}
-              <div className="text-xs text-muted-foreground">
-                {' '}
-                Verify your configuration before saving{' '}
-              </div>{' '}
-            </div>{' '}
+              <div className="text-sm font-medium text-white dark:text-foreground mb-1">Test Connection</div>
+              <div className="text-xs text-gray-400 dark:text-muted-foreground">
+                Verify your configuration before saving
+              </div>
+            </div>
             <div className="flex items-center gap-3">
-              {' '}
               {testResult === 'success' && (
                 <Badge variant="success">
-                  {' '}
                   <span className="flex items-center gap-1">
-                    {' '}
-                    <CheckCircle className="w-3 h-3" /> Connection Successful{' '}
-                  </span>{' '}
+                    <CheckCircle className="w-3 h-3" /> Connection Successful
+                  </span>
                 </Badge>
-              )}{' '}
+              )}
               {testResult === 'error' && (
                 <Badge variant="error">
-                  {' '}
                   <span className="flex items-center gap-1">
-                    {' '}
-                    <AlertCircle className="w-3 h-3" /> Connection Failed{' '}
-                  </span>{' '}
+                    <AlertCircle className="w-3 h-3" /> Connection Failed
+                  </span>
                 </Badge>
-              )}{' '}
-              <Button variant="outline" size="sm" onClick={handleTest}>
-                {' '}
-                Test{' '}
-              </Button>{' '}
-            </div>{' '}
+              )}
+              <Button variant="outline" size="sm" onClick={handleTest} className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#252532] dark:hover:bg-primary-900/20">
+                Test
+              </Button>
+            </div>
           </div>
-        )}{' '}
-        {/* Error Message */}{' '}
+        )}
+        {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-danger-50 dark:bg-danger-900/20 rounded-lg border border-danger-200 dark:border-danger-800 text-sm text-danger-800 dark:text-danger-200">
-            {' '}
-            {errors.submit}{' '}
+          <div className="p-3 bg-red-500/20 dark:bg-danger-900/20 rounded-lg border border-red-500/30 dark:border-danger-800 text-sm text-red-400 dark:text-danger-200">
+            {errors.submit}
           </div>
-        )}{' '}
-        {/* Actions */}{' '}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
-          {' '}
+        )}
+        {/* Actions */}
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800 dark:border-border">
           {onCancel && (
-            <Button variant="ghost" onClick={onCancel} disabled={loading}>
-              {' '}
-              Cancel{' '}
+            <Button variant="ghost" onClick={onCancel} disabled={loading} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+              Cancel
             </Button>
-          )}{' '}
-          <Button variant="primary" onClick={handleSave} loading={loading}>
-            {' '}
+          )}
+          <Button variant="gradient" onClick={handleSave} loading={loading}>
             <span className="flex items-center gap-2">
-              {' '}
-              <Save className="w-4 h-4" /> Save Configuration{' '}
-            </span>{' '}
-          </Button>{' '}
-        </div>{' '}
-      </div>{' '}
+              <Save className="w-4 h-4" /> Save Configuration
+            </span>
+          </Button>
+        </div>
+      </div>
     </Card>
   );
 }
