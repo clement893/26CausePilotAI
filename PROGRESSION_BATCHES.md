@@ -782,6 +782,22 @@
 
 ---
 
+### Batch 51: Pages App - Dashboard, Demo Dashboard, Demo Donors, Page Home (4 fichiers)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `3a56178`, `7ef3d89`, `0c0517a` - feat: Batch 51 - Alignement pages app (116 occurrences)
+
+#### Fichiers du Batch 51:
+
+- [x] `[locale]/dashboard/page.tsx` - Remplacement de 39 occurrences dark: avec couleurs explicites (bg-[#0A0A0F], bg-[#1C1C26], text-white, text-gray-300, bg-blue-500/20, text-blue-400, etc.) ✅
+- [x] `[locale]/demodashboard/page.tsx` - Remplacement de 31 occurrences dark: avec couleurs explicites (bg-[#0A0A0F], bg-[#1C1C26], text-white, text-gray-300, bg-gray-700, hover:bg-[#252532], etc.) ✅
+- [x] `[locale]/demodonors/page.tsx` - Remplacement de 28 occurrences dark: avec couleurs explicites (bg-[#0A0A0F], bg-[#1C1C26], text-white, text-gray-300, border-gray-800, hover:bg-[#252532], etc.) ✅
+- [x] `[locale]/page.tsx` - Remplacement de 18 occurrences dark: avec couleurs explicites (bg-emerald-500/20, text-emerald-400, bg-orange-500/20, text-orange-400, bg-[#0f2e1a], bg-[#1C1C26], etc.) ✅
+
+**Progression:** 4/4 (100%) ✅ COMPLÉTÉ
+
+---
+
 ### Batch 43: Activity, Admin, Advanced, Collaboration, Donors (29 composants)
 **Statut:** ✅ COMPLÉTÉ  
 **Priorité:** MOYENNE ⭐  
@@ -833,8 +849,9 @@
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 50
+- **Batches complétés:** 51
 - **Composants modifiés:** 290/357+ (81.2%)
+- **Fichiers de pages traités:** 4/71 (5.6%)
 - **Phase 1 (UI fondamentaux):** 82/91 composants (90%)
 - **Phase 2 (Layout):** 12/14 composants (86%) - **PHASE 2 TERMINÉE** ✅
 - **Phase 3 (Features):** 183/252+ composants (72.6%) - **EN COURS** 🔄
