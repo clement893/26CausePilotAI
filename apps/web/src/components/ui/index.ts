@@ -79,7 +79,7 @@ export type { FormProps } from './Form';
 // Feedback Components
 export { default as Alert } from './Alert';
 export type { AlertProps } from './Alert';
-export type { AlertVariant, ColorVariant, ButtonVariant, Size } from './types';
+export type { AlertVariant, ColorVariant, BadgeVariant, ButtonVariant, Size } from './types';
 export { default as ToastContainer } from './ToastContainer';
 export { useToast } from '@/lib/toast';
 export { default as Toast } from './Toast';

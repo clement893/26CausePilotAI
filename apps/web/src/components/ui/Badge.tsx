@@ -1,12 +1,12 @@
 import { ReactNode, memo } from 'react';
 import { clsx } from 'clsx';
-import { ColorVariant, BaseComponentProps, ColorVariantProps } from './types';
+import { BadgeVariant, BaseComponentProps } from './types';
 import { useComponentConfig } from '@/lib/theme/use-component-config';
 import { mergeVariantConfig, applyVariantConfigAsStyles } from '@/lib/theme/variant-helpers';
 
-interface BadgeProps extends BaseComponentProps, ColorVariantProps {
+interface BadgeProps extends BaseComponentProps {
   children: ReactNode;
-  variant?: ColorVariant;
+  variant?: BadgeVariant;
 }
 
 function Badge({ children, variant = 'default', className }: BadgeProps) {

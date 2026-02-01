@@ -18,6 +18,11 @@ export type ColorVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 
 /**
+ * Variants pour les Badges (inclut les variants de couleur de base + les variants gradient)
+ */
+export type BadgeVariant = ColorVariant | 'gradient-primary' | 'gradient-success' | 'gradient-warning' | 'gradient-info';
+
+/**
  * Variants de style pour les boutons
  */
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'error' | 'gradient';
