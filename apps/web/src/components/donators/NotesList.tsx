@@ -6,6 +6,8 @@
  */
 
 import { StickyNote } from 'lucide-react';
+import { SentimentBadge } from './SentimentBadge';
+import type { Sentiment } from './SentimentBadge';
 
 export interface DonatorNote {
   id: string;
@@ -14,6 +16,7 @@ export interface DonatorNote {
   author_avatar?: string;
   created_at: string;
   is_pinned?: boolean;
+  sentiment?: Sentiment; // Étape 5.2.2 - Analyse de sentiments
 }
 
 export interface NotesListProps {
@@ -82,9 +85,14 @@ export function NotesList({
                     {note.author_name?.[0] ?? '?'}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-[var(--text-primary,#FFF)]">
-                      {note.author_name ?? 'Auteur'}
-                    </p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-sm font-medium text-[var(--text-primary,#FFF)]">
+                        {note.author_name ?? 'Auteur'}
+                      </p>
+                      {note.sentiment && (
+                        <SentimentBadge sentiment={note.sentiment} />
+                      )}
+                    </div>
                     <p className="text-xs text-[var(--text-tertiary,#6B6B7B)]">
                       {formatRelative(note.created_at)}
                     </p>

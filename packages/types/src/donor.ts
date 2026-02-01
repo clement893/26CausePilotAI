@@ -189,6 +189,20 @@ export interface DonorNoteCreate {
   is_private?: boolean;
 }
 
+// ============= Étape 5.2.2 - Analyse de Sentiments =============
+export interface Comment {
+  id: string;
+  content: string;
+  sentiment?: 'positive' | 'negative' | 'neutral';
+  donatorId: string;
+  createdAt: string;
+}
+
+export interface CommentCreate {
+  content: string;
+  donatorId: string;
+}
+
 export interface DonorActivity {
   id: string;
   donor_id: string;

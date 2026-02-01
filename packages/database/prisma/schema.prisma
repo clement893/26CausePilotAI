@@ -302,6 +302,9 @@ model Donator {
   emailCampaigns EmailCampaign[]
   audiences      Audience[]
 
+  // Relations commentaires (Étape 5.2.2)
+  comments       Comment[]
+
   // Timestamps
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -761,4 +764,19 @@ model SegmentSuggestion {
   @@index([isAccepted])
   @@index([clusterId])
   @@map("segment_suggestions")
+}
+
+// ============= Étape 5.2.2 - Analyse de Sentiments =============
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  sentiment String?  // "positive", "negative", "neutral"
+  donatorId String
+  donator   Donator  @relation(fields: [donatorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([donatorId])
+  @@index([sentiment])
+  @@index([createdAt])
+  @@map("comments")
 }

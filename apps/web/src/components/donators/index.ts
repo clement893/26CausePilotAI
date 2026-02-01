@@ -19,3 +19,5 @@ export { DonationHistoryTable } from './DonationHistoryTable';
 export { NotesList } from './NotesList';
 export type { DonatorNote } from './NotesList';
 export { ActivityTimeline } from './ActivityTimeline';
+export { SentimentBadge } from './SentimentBadge';
+export type { Sentiment } from './SentimentBadge';
