@@ -40,9 +40,9 @@ export interface ContentPreviewProps {
       <div className={className}>
         {' '}
         {contentHtml ? (
-          <SafeHTML html={contentHtml} className="prose prose-lg dark:prose-invert max-w-none" />
+          <SafeHTML html={contentHtml} className="prose prose-lg prose-invert max-w-none" />
         ) : (
-          <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap">
+          <div className="prose prose-lg prose-invert max-w-none whitespace-pre-wrap">
             {' '}
             {content}{' '}
           </div>

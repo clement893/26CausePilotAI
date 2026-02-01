@@ -22,7 +22,7 @@ const defaultCategories: HelpCategory[] = [
     icon: <HelpCircle className="w-6 h-6" />,
     link: '/help/faq',
     color:
-      'bg-[var(--color-primary-50)] dark:bg-[var(--color-primary-950)] border-[var(--color-primary-200)] dark:border-[var(--color-primary-800)]',
+      'bg-blue-500/20 border-blue-500/30',
   },
   {
     id: 'guides',
@@ -31,7 +31,7 @@ const defaultCategories: HelpCategory[] = [
     icon: <BookOpen className="w-6 h-6" />,
     link: '/help/guides',
     color:
-      'bg-[var(--color-secondary-50)] dark:bg-[var(--color-secondary-950)] border-[var(--color-secondary-200)] dark:border-[var(--color-secondary-800)]',
+      'bg-purple-500/20 border-purple-500/30',
   },
   {
     id: 'videos',
@@ -40,7 +40,7 @@ const defaultCategories: HelpCategory[] = [
     icon: <Video className="w-6 h-6" />,
     link: '/help/videos',
     color:
-      'bg-[var(--color-info-50)] dark:bg-[var(--color-info-950)] border-[var(--color-info-200)] dark:border-[var(--color-info-800)]',
+      'bg-cyan-500/20 border-cyan-500/30',
   },
   {
     id: 'contact',
@@ -49,7 +49,7 @@ const defaultCategories: HelpCategory[] = [
     icon: <MessageSquare className="w-6 h-6" />,
     link: '/help/contact',
     color:
-      'bg-[var(--color-success-50)] dark:bg-[var(--color-success-950)] border-[var(--color-success-200)] dark:border-[var(--color-success-800)]',
+      'bg-green-500/20 border-green-500/30',
   },
   {
     id: 'tickets',
@@ -58,7 +58,7 @@ const defaultCategories: HelpCategory[] = [
     icon: <FileText className="w-6 h-6" />,
     link: '/help/tickets',
     color:
-      'bg-[var(--color-warning-50)] dark:bg-[var(--color-warning-950)] border-[var(--color-warning-200)] dark:border-[var(--color-warning-800)]',
+      'bg-yellow-500/20 border-yellow-500/30',
   },
 ];
 /** * Help Center Component * * Displays help categories and quick links. */ export default function HelpCenter({

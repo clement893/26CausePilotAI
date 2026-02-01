@@ -90,8 +90,8 @@ export function ThemeManager() {
               className={clsx(
                 'px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all',
                 selectedPreset === name
-                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                  : 'border-border bg-background text-foreground hover:border-border dark:hover:border-border'
+                  ? 'border-blue-500 bg-blue-500/20 text-white'
+                  : 'border-gray-800 bg-[#1C1C26] text-white hover:border-gray-700'
               )}
             >
               {name.charAt(0).toUpperCase() + name.slice(1)}
