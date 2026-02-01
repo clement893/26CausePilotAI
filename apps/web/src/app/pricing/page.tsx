@@ -80,7 +80,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100 dark:from-muted dark:to-muted">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100 from-[#1C1C26] to-[#1C1C26]">
       <Container className="py-16">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-foreground mb-4">Tarifs</h1>

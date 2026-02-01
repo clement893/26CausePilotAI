@@ -169,7 +169,7 @@ export default function AdminArticlesContent() {
             }}
             aria-label="Supprimer l'article"
             title="Supprimer l'article"
-            className="text-error-600 hover:text-error-700 dark:text-error-400 dark:hover:text-error-300"
+            className="text-error-600 hover:text-error-700 text-red-400 hover:text-red-300"
           >
             <Trash2 className="w-4 h-4" />
           </Button>

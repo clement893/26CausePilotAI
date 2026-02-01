@@ -27,7 +27,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-muted dark:to-muted">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 from-[#1C1C26] to-[#1C1C26]">
       {/* Mobile Header */}
       <header className="lg:hidden bg-background shadow border-b border-border">
         <div className="px-4 py-3 flex items-center justify-between">

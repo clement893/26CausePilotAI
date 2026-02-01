@@ -183,7 +183,7 @@ export default function AdminMediaContent() {
             }}
             aria-label="Supprimer le fichier"
             title="Supprimer le fichier"
-            className="text-error-600 hover:text-error-700 dark:text-error-400 dark:hover:text-error-300"
+            className="text-error-600 hover:text-error-700 text-red-400 hover:text-red-300"
           >
             <Trash2 className="w-4 h-4" />
           </Button>

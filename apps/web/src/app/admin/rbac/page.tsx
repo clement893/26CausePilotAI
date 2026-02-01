@@ -286,7 +286,7 @@ export default function RBACPage() {
                                   key={perm.id}
                                   className={`p-3 rounded-lg border-2 ${
                                     hasPermission
-                                      ? 'bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-700'
+                                      ? 'bg-green-500/20 border-green-500/30'
                                       : 'bg-muted border-border'
                                   }`}
                                 >

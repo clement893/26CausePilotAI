@@ -16,7 +16,7 @@ import {
 
 export default function DemoHomePage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white bg-[#0A0A0F]">
       <HomeHero />
       <HomeFeatures />
       <HomeDemo />
