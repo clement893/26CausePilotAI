@@ -98,10 +98,10 @@ export default function TreeView({
         <div
           className={clsx(
             'flex items-center py-1 px-2 rounded-md cursor-pointer transition-colors',
-            'hover:bg-[#1C1C26] dark:hover:bg-muted',
+            'hover:bg-[#1C1C26] hover:bg-[#1C1C26]',
             selected &&
               (selectedClassName ||
-                'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 border-l-4 border-l-blue-500'),
+                'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white text-blue-300 border-l-4 border-l-blue-500'),
             node.disabled && 'opacity-50 cursor-not-allowed',
             nodeClassName
           )}
@@ -111,7 +111,7 @@ export default function TreeView({
           {/* Expand/Collapse Icon */}
           {hasChildren && (
             <button
-              className="mr-1 p-0.5 hover:bg-[#252532] dark:hover:bg-muted rounded transition-colors text-gray-400 dark:text-foreground"
+              className="mr-1 p-0.5 hover:bg-[#252532] hover:bg-[#1C1C26] rounded transition-colors text-gray-400 text-white"
               onClick={(e) => {
                 e.stopPropagation();
                 toggleExpanded(node);
@@ -146,9 +146,9 @@ export default function TreeView({
             />
           )}
           {/* Node Icon */}
-          {showIcons && node.icon && <span className="mr-2 flex-shrink-0 text-gray-400 dark:text-foreground">{node.icon}</span>}
+          {showIcons && node.icon && <span className="mr-2 flex-shrink-0 text-gray-400 text-white">{node.icon}</span>}
           {/* Node Label */}
-          <span className="flex-1 text-sm text-gray-300 dark:text-foreground">{node.label}</span>
+          <span className="flex-1 text-sm text-gray-300 text-white">{node.label}</span>
         </div>
         {/* Children */}{' '}
         {hasChildren && expanded && (
@@ -164,8 +164,8 @@ export default function TreeView({
     <div
       className={clsx(
         'tree-view',
-        'glass-effect bg-[#13131A] dark:bg-background',
-        'border border-gray-800 dark:border-border rounded-lg',
+        'glass-effect bg-[#13131A] bg-[#13131A]',
+        'border border-gray-800 border-gray-800 rounded-lg',
         'p-2',
         className
       )}

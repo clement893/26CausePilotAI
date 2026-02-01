@@ -27,7 +27,7 @@ export default function SearchBar({
   };
   return (
     <div className={clsx('relative form-input-glow', fullWidth && 'w-full')}>
-      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-muted-foreground">
+      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-gray-400">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
@@ -43,10 +43,10 @@ export default function SearchBar({
         onChange={handleChange}
         placeholder={placeholder}
         className={clsx(
-          'w-full pl-10 pr-10 py-2 border border-gray-700 dark:border-border rounded-lg',
-          'bg-[#1C1C26] dark:bg-background text-white dark:text-foreground',
-          'placeholder:text-gray-500 dark:placeholder:text-muted-foreground',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
+          'w-full pl-10 pr-10 py-2 border border-gray-700 border-gray-800 rounded-lg',
+          'bg-[#1C1C26] bg-[#1C1C26] text-white text-white',
+          'placeholder:text-gray-500 placeholder-gray-400',
+          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:border-transparent',
           className
         )}
         {...props}
@@ -54,7 +54,7 @@ export default function SearchBar({
       {showClearButton && value && (
         <button
           onClick={handleClear}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground transition-colors"
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-gray-400 hover:text-white hover:text-white transition-colors"
           aria-label="Clear search"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

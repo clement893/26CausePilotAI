@@ -34,14 +34,14 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] dark:bg-background">
+    <div className="min-h-screen bg-[#0A0A0F] bg-[#0A0A0F]">
       {/* Mobile/Tablet Header with Menu Button */}
-      <header className="lg:hidden glass-effect bg-[#13131A] dark:bg-background shadow border-b border-gray-800 dark:border-border sticky top-0 z-30">
+      <header className="lg:hidden glass-effect bg-[#13131A] bg-[#0A0A0F] shadow border-b border-gray-800 border-gray-800 sticky top-0 z-30">
         <div className="px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-white dark:text-foreground">Dashboard</h1>
+          <h1 className="text-xl font-bold text-white text-white">Dashboard</h1>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-md hover:bg-[#1C1C26] dark:hover:bg-muted transition-colors text-white dark:text-foreground"
+            className="p-2 rounded-md hover:bg-[#1C1C26] hover:bg-[#1C1C26] transition-colors text-white text-white"
             aria-label="Toggle menu"
           >
             <svg
@@ -66,7 +66,7 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
       {/* Mobile/Tablet Sidebar Overlay */}
       {mobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 dark:bg-foreground/50 backdrop-blur-sm z-40 transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="lg:hidden fixed inset-0 bg-black/50 bg-white/10 backdrop-blur-sm z-40 transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
           onClick={handleMobileMenuClose}
         />
       )}
@@ -80,11 +80,11 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
         <div className="hidden md:block w-64 flex-shrink-0" />
 
         {/* Main Content - Only this part changes during navigation */}
-        <div className="flex-1 flex flex-col min-w-0 w-full bg-[#0A0A0F] dark:bg-muted/20">
+        <div className="flex-1 flex flex-col min-w-0 w-full bg-[#0A0A0F] bg-[#1C1C26]/20">
           {/* Page Content - This is the only part that updates on navigation */}
           <main
             key={pathname}
-            className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8 bg-[#0A0A0F] dark:bg-muted/20"
+            className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8 bg-[#0A0A0F] bg-[#1C1C26]/20"
             style={{
               animation: 'fadeInSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
             }}

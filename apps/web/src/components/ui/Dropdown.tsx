@@ -163,14 +163,14 @@ export default function Dropdown({ trigger, items, position = 'bottom', classNam
           className={clsx(
             'absolute z-50 rounded-lg shadow-lg border py-1 min-w-[200px]',
             // Use glassmorphism background if enabled, otherwise use default dark
-            hasEffect('glassmorphism') ? '' : 'glass-effect bg-[#13131A] dark:bg-background border-gray-800 dark:border-border',
+            hasEffect('glassmorphism') ? '' : 'glass-effect bg-[#13131A] bg-[#1C1C26] border-gray-800 border-gray-800',
             positions[position]
           )}
           style={hasEffect('glassmorphism') ? glassmorphismStyles : {}}
         >
           {items.map((item, index) => {
             if ('divider' in item && item.divider) {
-              return <div key={index} className="border-t border-gray-800 dark:border-border my-1" role="separator" />;
+              return <div key={index} className="border-t border-gray-800 border-gray-800 my-1" role="separator" />;
             }
 
             const dropdownItem = item as Exclude<DropdownItem, { divider: true }>;
@@ -197,8 +197,8 @@ export default function Dropdown({ trigger, items, position = 'bottom', classNam
                   'w-full px-4 py-2 text-left text-sm flex items-center space-x-2',
                   'transition-colors focus:outline-none',
                   dropdownItem.variant === 'danger'
-                    ? 'text-red-500 dark:text-error-400 hover:bg-red-500/10 dark:hover:bg-error-900/20 hover:text-red-400 dark:hover:text-error-300 focus:bg-red-500/10 dark:focus:bg-error-900/20 focus:ring-2 focus:ring-error-500 dark:focus:ring-error-400'
-                    : 'text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted focus:bg-[#1C1C26] dark:focus:bg-muted focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+                    ? 'text-red-500 text-red-400 hover:bg-red-500/10 hover:bg-red-500/20 hover:text-red-400 hover:text-red-300 focus:bg-red-500/10 focus:bg-red-500/20 focus:ring-2 focus:ring-error-500 focus:ring-red-400'
+                    : 'text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26] focus:bg-[#1C1C26] focus:bg-[#1C1C26] focus:ring-2 focus:ring-primary-500 focus:ring-blue-400',
                   dropdownItem.disabled && 'opacity-50 cursor-not-allowed',
                   className
                 )}

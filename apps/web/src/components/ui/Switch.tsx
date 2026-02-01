@@ -29,8 +29,8 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           <input ref={ref} type="checkbox" id={switchId} className="sr-only peer" {...props} />
           <div
             className={clsx(
-              "bg-[#1C1C26] dark:bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-background after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-background after:border-gray-700 dark:after:border-border after:border after:rounded-full after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-500 peer-checked:to-purple-500 dark:peer-checked:bg-primary-500",
-              error && 'ring-2 ring-error-500 dark:ring-error-400',
+              "bg-[#1C1C26] bg-[#1C1C26] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 peer-focus:ring-blue-500/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-background after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:bg-[#13131A] after:border-gray-700 after:border-gray-800 after:border after:rounded-full after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-500 peer-checked:to-purple-500 peer-checked:bg-blue-500",
+              error && 'ring-2 ring-error-500 ring-red-400',
               className
             )}
             style={{
@@ -42,8 +42,8 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           {label && (
             <span
               className={clsx(
-                'ml-3 text-sm font-medium text-gray-300 dark:text-foreground',
-                error && 'text-error-600 dark:text-error-400',
+                'ml-3 text-sm font-medium text-gray-300 text-white',
+                error && 'text-error-600 text-red-400',
                 props.disabled && 'opacity-50 cursor-not-allowed'
               )}
             >
@@ -52,7 +52,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           )}
         </label>
         {error && (
-          <p className="ml-2 text-sm text-error-600 dark:text-error-400" role="alert">
+          <p className="ml-2 text-sm text-error-600 text-red-400" role="alert">
             {error}
           </p>
         )}

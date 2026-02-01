@@ -15,10 +15,10 @@ function Badge({ children, variant = 'default', className }: BadgeProps) {
 
   const defaultVariants = {
     default: 'bg-muted text-foreground',
-    success: 'bg-success-50 dark:bg-success-900 text-success-900 dark:text-success-300',
-    warning: 'bg-warning-50 dark:bg-warning-900 text-warning-900 dark:text-warning-300',
-    error: 'bg-error-50 dark:bg-error-900 text-error-900 dark:text-error-300',
-    info: 'bg-info-50 dark:bg-info-900 text-info-900 dark:text-info-300',
+    success: 'bg-success-50 bg-green-500/20 text-success-900 text-green-300',
+    warning: 'bg-warning-50 bg-yellow-500/20 text-warning-900 text-yellow-300',
+    error: 'bg-error-50 bg-red-500/20 text-error-900 text-red-300',
+    info: 'bg-info-50 bg-blue-500/20 text-info-900 text-blue-300',
     // Gradient variants for modern dark UI
     'gradient-primary': 'bg-gradient-to-r from-blue-500 to-purple-500 text-white',
     'gradient-success': 'bg-gradient-to-r from-green-500 to-cyan-500 text-white',
