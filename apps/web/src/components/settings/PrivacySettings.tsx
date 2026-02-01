@@ -93,8 +93,8 @@ export default function PrivacySettings({
                   'w-full px-4 py-2 border rounded-lg form-input-glow',
                   'bg-[#1C1C26]',
                   'text-white',
-                  'border-gray-700border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-blue-500focus:ring-primary-400'
+                  'border-gray-700',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500'
                 )}
               >
                 <option value="public">Public - Everyone</option>
