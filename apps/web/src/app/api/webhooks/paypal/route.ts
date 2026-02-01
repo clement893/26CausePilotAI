@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import type { PrismaClient } from '@prisma/client';
+import { SubscriptionStatus } from '@prisma/client';
 import { prisma } from '@/lib/db';
 
 /** Match Prisma PaymentStatus enum (schema in packages/database/prisma) */
@@ -14,6 +15,15 @@ const PAYMENT_FAILED = 'FAILED' as const;
 import { issueReceiptAction } from '@/app/actions/receipts/issue-receipt';
 
 export const dynamic = 'force-dynamic';
+
+function nextPaymentFromFrequency(now: Date, frequency: string | null): Date {
+  const d = new Date(now);
+  const f = (frequency ?? 'monthly').toLowerCase();
+  if (f === 'quarterly') d.setMonth(d.getMonth() + 3);
+  else if (f === 'yearly') d.setFullYear(d.getFullYear() + 1);
+  else d.setMonth(d.getMonth() + 1);
+  return d;
+}
 export const runtime = 'nodejs';
 
 const PAYPAL_VERIFY_URL_SANDBOX = 'https://api-m.sandbox.paypal.com/v1/notifications/verify-webhook-signature';
@@ -188,6 +198,35 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
     });
     if (existingDonation) return;
 
+    let subscriptionIdForDonation: string | null = null;
+    const isRecurring = Boolean((sub as { isRecurring?: boolean }).isRecurring);
+    const frequency = ((sub as { frequency?: string }).frequency ?? 'monthly') as string;
+
+    if (isRecurring) {
+      let subscription = await tx.subscription.findUnique({
+        where: { submissionId: sub.id },
+      });
+      if (!subscription) {
+        const nextPayment = nextPaymentFromFrequency(new Date(), frequency);
+        subscription = await tx.subscription.create({
+          data: {
+            donatorId,
+            formId: sub.formId,
+            submissionId: sub.id,
+            amount: sub.amount,
+            currency: sub.currency,
+            frequency,
+            gateway: 'paypal',
+            subscriptionId: orderId,
+            status: SubscriptionStatus.ACTIVE,
+            nextPaymentDate: nextPayment,
+            organizationId: sub.organizationId,
+          },
+        });
+      }
+      subscriptionIdForDonation = subscription.id;
+    }
+
     const donation = await tx.donation.create({
       data: {
         donatorId,
@@ -197,6 +236,7 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
         formId: sub.formId,
         submissionId: sub.id,
         organizationId: sub.organizationId,
+        subscriptionId: subscriptionIdForDonation ?? undefined,
       },
     });
     createdDonationId = donation.id;

@@ -13,9 +13,19 @@ import { prisma } from '@/lib/db';
 /** Match Prisma PaymentStatus enum (schema in packages/database/prisma) */
 const PAYMENT_SUCCEEDED = 'SUCCEEDED' as const;
 const PAYMENT_FAILED = 'FAILED' as const;
+import { SubscriptionStatus } from '@prisma/client';
 import { issueReceiptAction } from '@/app/actions/receipts/issue-receipt';
 
 export const dynamic = 'force-dynamic';
+
+function nextPaymentFromFrequency(now: Date, frequency: string | null): Date {
+  const d = new Date(now);
+  const f = (frequency ?? 'monthly').toLowerCase();
+  if (f === 'quarterly') d.setMonth(d.getMonth() + 3);
+  else if (f === 'yearly') d.setFullYear(d.getFullYear() + 1);
+  else d.setMonth(d.getMonth() + 1);
+  return d;
+}
 export const runtime = 'nodejs';
 
 async function getRawBody(request: NextRequest): Promise<Buffer> {
@@ -123,6 +133,35 @@ async function handlePaymentIntentSucceeded(obj: Record<string, unknown> | undef
     });
     if (existingDonation) return;
 
+    let subscriptionIdForDonation: string | null = null;
+    const isRecurring = Boolean((sub as { isRecurring?: boolean }).isRecurring);
+    const frequency = ((sub as { frequency?: string }).frequency ?? 'monthly') as string;
+
+    if (isRecurring) {
+      let subscription = await tx.subscription.findUnique({
+        where: { submissionId: sub.id },
+      });
+      if (!subscription) {
+        const nextPayment = nextPaymentFromFrequency(new Date(), frequency);
+        subscription = await tx.subscription.create({
+          data: {
+            donatorId,
+            formId: sub.formId,
+            submissionId: sub.id,
+            amount: sub.amount,
+            currency: sub.currency,
+            frequency,
+            gateway: 'stripe',
+            subscriptionId: pi.externalId,
+            status: SubscriptionStatus.ACTIVE,
+            nextPaymentDate: nextPayment,
+            organizationId: sub.organizationId,
+          },
+        });
+      }
+      subscriptionIdForDonation = subscription.id;
+    }
+
     const donation = await tx.donation.create({
       data: {
         donatorId,
@@ -132,6 +171,7 @@ async function handlePaymentIntentSucceeded(obj: Record<string, unknown> | undef
         formId: sub.formId,
         submissionId: sub.id,
         organizationId: sub.organizationId,
+        subscriptionId: subscriptionIdForDonation ?? undefined,
       },
     });
     createdDonationId = donation.id;

@@ -31,6 +31,9 @@ import {
   NotesList,
   ActivityTimeline,
 } from '@/components/donators';
+import { SubscriptionCard } from '@/components/donation-subscriptions';
+import { listSubscriptionsAction } from '@/app/actions/subscriptions/list';
+import type { DonationSubscription } from '@/components/donation-subscriptions';
 import { CommunicationList } from '@/components/donors';
 import { ArrowLeft, DollarSign, Gift, TrendingUp } from 'lucide-react';
 import type { DonatorNote } from '@/components/donators';
@@ -62,6 +65,7 @@ export default function DonorProfileContent() {
   const [history, setHistory] = useState<DonorHistory | null>(null);
   const [stats, setStats] = useState<DonorStats | null>(null);
   const [notes, setNotes] = useState<DonatorNote[]>([]);
+  const [subscriptions, setSubscriptions] = useState<DonationSubscription[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,7 +74,7 @@ export default function DonorProfileContent() {
     setIsLoading(true);
     setError(null);
     try {
-      const [donorData, donationsRes, historyData, statsData] = await Promise.all([
+      const [donorData, donationsRes, historyData, statsData, subsResult] = await Promise.all([
         getDonor(activeOrganization.id, donorId),
         listDonorDonations({
           organizationId: activeOrganization.id,
@@ -80,12 +84,14 @@ export default function DonorProfileContent() {
         }),
         getDonorHistory(activeOrganization.id, donorId),
         getDonorStats(activeOrganization.id, donorId),
+        listSubscriptionsAction(activeOrganization.id, { donatorId: donorId }),
       ]);
       setDonor(donorData);
       setDonations(donationsRes.items ?? []);
       setHistory(historyData);
       setStats(statsData);
       setNotes([]);
+      setSubscriptions(subsResult.subscriptions ?? []);
     } catch (err) {
       const msg = errorLogger.getUserFriendlyMessage(err);
       setError(msg);
@@ -200,6 +206,7 @@ export default function DonorProfileContent() {
         <TabList>
           <Tab value="overview">Vue d&apos;ensemble</Tab>
           <Tab value="donations">Historique des dons ({donations.length})</Tab>
+          <Tab value="subscriptions">Abonnements ({subscriptions.length})</Tab>
           <Tab value="interactions">Interactions</Tab>
           <Tab value="notes">Notes</Tab>
           <Tab value="activity">Activité</Tab>
@@ -266,6 +273,27 @@ export default function DonorProfileContent() {
                 onDownloadReceipt={() => info('Téléchargement du reçu en préparation…')}
                 emptyMessage="Ce donateur n'a pas encore effectué de don. Invitez-le à contribuer !"
               />
+            </div>
+          </TabPanel>
+
+          <TabPanel value="subscriptions">
+            <div className="mt-6 space-y-4">
+              {subscriptions.length === 0 ? (
+                <Card className="p-8 text-center text-[var(--text-secondary,#A0A0B0)]">
+                  Aucun abonnement (don récurrent) pour ce donateur.
+                </Card>
+              ) : (
+                subscriptions.map((sub) => (
+                  <SubscriptionCard
+                    key={sub.id}
+                    subscription={sub}
+                    onPaused={loadData}
+                    onResumed={loadData}
+                    onCancelled={loadData}
+                    onError={(msg) => showErrorToast(msg)}
+                  />
+                ))
+              )}
             </div>
           </TabPanel>
 
