@@ -81,7 +81,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Target className="w-6 h-6" />,
     description: 'Créez et gérez vos campagnes de collecte',
     badgeVariant: 'warning',
-    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#2d5016] dark:text-emerald-400',
+    iconColor: 'bg-emerald-50 bg-emerald-500/20 text-[#2d5016] text-emerald-400',
     features: [
       { title: 'Campagnes multi-canaux', description: 'Email, SMS, réseaux sociaux, web' },
       { title: 'Pages de collecte', description: 'Landing pages optimisées pour la conversion' },
@@ -96,7 +96,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <BarChart3 className="w-6 h-6" />,
     description: 'Tableaux de bord et insights en temps réel',
     badgeVariant: 'info',
-    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#b45309] dark:text-orange-400',
+    iconColor: 'bg-orange-50 bg-orange-500/20 text-[#b45309] text-orange-400',
     features: [
       { title: 'Dashboard en temps réel', description: 'Suivi instantané de vos KPIs' },
       { title: 'Rapports personnalisables', description: 'Créez vos propres rapports' },
@@ -141,7 +141,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Sparkles className="w-6 h-6" />,
     description: 'Formulaires intelligents et intégrations tierces',
     badgeVariant: 'warning',
-    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-[#2d5016] dark:text-emerald-400',
+    iconColor: 'bg-emerald-50 bg-emerald-500/20 text-[#2d5016] text-emerald-400',
     features: [
       { title: 'Formulaires de dons', description: 'Créez des formulaires optimisés' },
       { title: 'Widgets embarquables', description: 'Intégrez des formulaires sur votre site' },
@@ -156,7 +156,7 @@ const featureCategories: FeatureCategory[] = [
     icon: <Shield className="w-6 h-6" />,
     description: 'Protection des données et conformité RGPD',
     badgeVariant: 'error',
-    iconColor: 'bg-orange-50 dark:bg-orange-900/20 text-[#b45309] dark:text-orange-400',
+    iconColor: 'bg-orange-50 bg-orange-500/20 text-[#b45309] text-orange-400',
     features: [
       { title: 'Conformité RGPD', description: 'Respect total du RGPD et CCPA' },
       { title: 'Chiffrement des données', description: 'Toutes les données sont chiffrées' },
