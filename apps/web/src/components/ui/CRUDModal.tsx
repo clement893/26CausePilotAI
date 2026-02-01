@@ -49,9 +49,9 @@ export default function CRUDModal({
         {' '}
         {mode === 'delete' ? (
           <div className="text-center py-4">
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-500/20 bg-red-500/20 mb-4 border-2 border-red-500/30">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-500/20 mb-4 border-2 border-red-500/30">
               <svg
-                className="h-6 w-6 text-red-400 text-red-400"
+                className="h-6 w-6 text-red-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -64,15 +64,15 @@ export default function CRUDModal({
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-white text-white mb-2">Êtes-vous sûr ?</h3>
-            <p className="text-sm text-gray-400 text-gray-400">
+            <h3 className="text-lg font-medium text-white mb-2">Êtes-vous sûr ?</h3>
+            <p className="text-sm text-gray-400">
               Cette action est irréversible. Cette donnée sera définitivement supprimée.
             </p>
           </div>
         ) : (
           <div>{children}</div>
         )}
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-800 border-gray-800">
+        <div className="flex justify-end gap-3 pt-4 border-t border-gray-800">
           {' '}
           <Button variant="ghost" onClick={onClose} disabled={loading}>
             {' '}
