@@ -11,7 +11,7 @@ import { Sparkles, ArrowRight, Play } from 'lucide-react';
 
 export function HomeHero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/50 to-purple-50/30from-[#0A0A0F] via-[#13131A] to-[#1C1C26]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0A0A0F] via-[#13131A] to-[#1C1C26]">
       {/* Animated Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
       
@@ -36,7 +36,7 @@ export function HomeHero() {
                 className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm hover:scale-105 transition-transform duration-300 shadow-lg shadow-blue-500/10"
               >
                 <Sparkles className="w-4 h-4 text-blue-400 animate-pulse" />
-                <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600from-blue-400to-purple-400 bg-clip-text text-transparent">
+                <span className="font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   New: AI Copilot for Fundraising
                 </span>
               </Badge>
@@ -50,7 +50,7 @@ export function HomeHero() {
               <span className="block text-white mb-2">
                 Software for
               </span>
-              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600from-blue-400via-purple-400to-pink-400 bg-clip-text text-transparent animate-gradient">
+              <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
                 Modern Nonprofits
               </span>
             </h1>
@@ -107,7 +107,7 @@ export function HomeHero() {
             <div className="animate-fade-in-up animation-delay-500">
               <Badge 
                 variant="default" 
-                className="bg-gradient-to-r from-gray-100 to-gray-200from-gray-800to-gray-700 text-gray-300 border-0 px-6 py-2 shadow-lg"
+                className="bg-gradient-to-r from-gray-800 to-gray-700 text-gray-300 border-0 px-6 py-2 shadow-lg"
               >
                 <span className="font-bold">COMING SOON</span>
                 <span className="mx-2">•</span>
@@ -124,7 +124,7 @@ export function HomeHero() {
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
               
               {/* Main card */}
-              <div className="relative bg-[#1C1C26]/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20border-gray-700/50 overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
+              <div className="relative bg-[#1C1C26]/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-gray-700/50 overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
                 
@@ -152,7 +152,7 @@ export function HomeHero() {
                     ].map((stat, i) => (
                       <div 
                         key={i} 
-                        className="bg-gradient-to-br from-gray-50 to-gray-100from-gray-800to-gray-900 rounded-2xl p-4 hover:scale-105 transition-transform duration-300"
+                        className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-4 hover:scale-105 transition-transform duration-300"
                       >
                         <p className="text-xs text-gray-400 mb-1">{stat.label}</p>
                         <p className="text-2xl font-bold text-white mb-1">{stat.value}</p>
@@ -170,7 +170,7 @@ export function HomeHero() {
                         <div className="w-12 text-xs text-gray-400">
                           Week {i + 1}
                         </div>
-                        <div className="flex-1 bg-gray-200bg-gray-700 rounded-full h-3 overflow-hidden">
+                        <div className="flex-1 bg-gray-700 rounded-full h-3 overflow-hidden">
                           <div 
                             className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-expand-width"
                             style={{ width: `${width}%`, animationDelay: `${i * 100}ms` }}

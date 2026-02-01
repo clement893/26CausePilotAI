@@ -154,7 +154,7 @@ export default function Card({
       return clsx(
         'glass-effect transition-all duration-300',
         elevated ? 'rounded-2xl' : 'rounded-xl',
-        hover && 'hover-lift',
+        hover && 'hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-500/10',
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2',
         className
       );
@@ -164,20 +164,19 @@ export default function Card({
       return clsx(
         'relative transition-all duration-300',
         elevated ? 'rounded-2xl' : 'rounded-xl',
-        hover && 'hover-lift',
+        hover && 'hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-500/20',
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2',
         className
       );
     }
 
-    // Default variant
+    // Default variant with modern dark UI styling
     return clsx(
       'border transition-all duration-300',
       elevated ? 'rounded-2xl shadow-lg' : 'rounded-xl shadow-md',
-      'bg-[#13131A] bg-[#13131A]',
-      'border-gray-800 border-gray-800',
-      hover && 'hover-lift',
-      hover && (elevated ? 'hover:shadow-xl' : 'hover:shadow-lg'),
+      'bg-[#13131A]',
+      'border-gray-800',
+      hover && 'hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-500/10 hover:border-gray-700',
       onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2',
       className
     );

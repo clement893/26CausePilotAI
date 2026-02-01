@@ -25,7 +25,7 @@ export type BadgeVariant = ColorVariant | 'gradient-primary' | 'gradient-success
 /**
  * Variants de style pour les boutons
  */
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'error' | 'gradient';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'error' | 'gradient' | 'gradient-success' | 'gradient-warning';
 
 /**
  * Tailles communes pour les composants

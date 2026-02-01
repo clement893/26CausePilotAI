@@ -55,7 +55,7 @@ export function HomeNewsletter() {
                     variant="info" 
                     className="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm"
                   >
-                    <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600from-blue-400to-purple-400 bg-clip-text text-transparent">
+                    <span className="font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                       Stay Ahead of the Curve
                     </span>
                   </Badge>
@@ -157,7 +157,7 @@ export function HomeNewsletter() {
                         {[1, 2, 3, 4, 5].map((i) => (
                           <div
                             key={i}
-                            className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-whiteborder-gray-900 flex items-center justify-center text-white font-semibold text-sm"
+                            className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-gray-900 flex items-center justify-center text-white font-semibold text-sm"
                           >
                             {String.fromCharCode(64 + i)}
                           </div>

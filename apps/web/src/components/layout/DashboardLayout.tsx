@@ -66,7 +66,7 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
       {/* Mobile/Tablet Sidebar Overlay */}
       {mobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 bg-white/10 backdrop-blur-sm z-40 transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
           onClick={handleMobileMenuClose}
         />
       )}

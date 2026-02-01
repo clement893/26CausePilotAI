@@ -91,10 +91,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
 
-        <div className="relative form-input-glow">
+        <div className="relative group">
           {leftIcon && (
             <div
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-blue-400 transition-colors duration-200"
               aria-hidden="true"
             >
               {leftIcon}
@@ -107,13 +107,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={clsx(
               'w-full border rounded-lg transition-all duration-200',
               paddingClasses,
-              'bg-[#1C1C26] bg-[#1C1C26] text-white text-white',
-              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
+              'bg-[#1C1C26] text-white',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50',
+              'hover:border-gray-600',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'placeholder:text-gray-500 placeholder-gray-400',
+              'placeholder:text-gray-500',
               error
-                ? 'border-error-500 border-red-500/30 focus:ring-error-500/20'
-                : 'border-gray-700 border-gray-800 focus:ring-primary/20',
+                ? 'border-red-500/50 focus:ring-red-500/30 focus:border-red-500/50'
+                : 'border-gray-700',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className
@@ -127,12 +128,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
           {rightIcon && (
             <div
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-blue-400 transition-colors duration-200"
               aria-hidden="true"
             >
               {rightIcon}
             </div>
           )}
+          
+          {/* Glow effect on focus */}
+          <div className="absolute inset-0 rounded-lg opacity-0 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none bg-gradient-to-r from-blue-500/5 to-purple-500/5" />
         </div>
 
         {error && (

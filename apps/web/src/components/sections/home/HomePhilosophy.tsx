@@ -49,7 +49,7 @@ export function HomePhilosophy() {
                 variant="info" 
                 className="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm"
               >
-                <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600from-blue-400to-purple-400 bg-clip-text text-transparent">
+                <span className="font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   Meet Your New Assistant
                 </span>
               </Badge>
@@ -83,7 +83,7 @@ export function HomePhilosophy() {
                       <Icon className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1 pt-2">
-                      <p className="text-lg text-gray-300 group-hover:text-gray-900group-hover:text-white transition-colors duration-300">
+                      <p className="text-lg text-gray-300 group-hover:text-white transition-colors duration-300">
                         {point.text}
                       </p>
                     </div>
@@ -135,7 +135,7 @@ export function HomePhilosophy() {
                     <h3 className="text-2xl font-bold text-white">
                       AI Analysis
                     </h3>
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-100bg-green-900/30 border border-green-500/30">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-900/30 border border-green-500/30">
                       <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -149,7 +149,7 @@ export function HomePhilosophy() {
                     {aiFeatures.map((feature, i) => (
                       <div 
                         key={i}
-                        className="group/item p-5 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100from-gray-800to-gray-900 border border-gray-800 hover:scale-[1.02] hover:shadow-lg transition-all duration-300"
+                        className="group/item p-5 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-800 hover:scale-[1.02] hover:shadow-lg transition-all duration-300"
                       >
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export function HomePhilosophy() {
                           <p className="text-sm text-gray-300">
                             {feature.label}
                           </p>
-                          <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600from-blue-400to-purple-400 bg-clip-text text-transparent">
+                          <p className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                             {feature.value}
                           </p>
                         </div>
@@ -178,7 +178,7 @@ export function HomePhilosophy() {
                       <span className="text-gray-400">Campaign Optimization</span>
                       <span className="font-semibold text-white">94%</span>
                     </div>
-                    <div className="h-3 bg-gray-200bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-expand-width" style={{ width: '94%' }} />
                     </div>
 
@@ -186,7 +186,7 @@ export function HomePhilosophy() {
                       <span className="text-gray-400">Donor Insights</span>
                       <span className="font-semibold text-white">87%</span>
                     </div>
-                    <div className="h-3 bg-gray-200bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-expand-width animation-delay-200" style={{ width: '87%' }} />
                     </div>
                   </div>

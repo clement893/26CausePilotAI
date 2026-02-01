@@ -67,24 +67,27 @@ const createVariantStyles = (base: string[], hover: string[], focus: string[], c
 const variants = {
   primary: createVariantStyles(
     ['bg-primary-600', 'bg-blue-500', 'text-background'],
-    ['hover:bg-primary-700', 'hover:bg-blue-600'],
+    ['hover:bg-primary-700', 'hover:bg-blue-600', 'hover:-translate-y-0.5', 'hover:shadow-lg', 'hover:shadow-blue-500/30'],
     ['focus:ring-primary-500', 'focus:ring-blue-400'],
     'color-primary-500'
   ),
   secondary: createVariantStyles(
     ['bg-secondary-600', 'bg-green-500', 'text-background'],
-    ['hover:bg-secondary-700', 'hover:bg-green-600'],
+    ['hover:bg-secondary-700', 'hover:bg-green-600', 'hover:-translate-y-0.5', 'hover:shadow-lg', 'hover:shadow-green-500/30'],
     ['focus:ring-secondary-500', 'focus:ring-green-400'],
     'color-secondary-500'
   ),
   outline: [
     'border-2',
     'border-primary-600',
-    'border-blue-500',
+    'border-gray-700',
     'text-primary-600',
-    'text-blue-400',
-    'hover:bg-primary-50',
-    'hover:bg-blue-500/20',
+    'text-white',
+    'hover:border-blue-500',
+    'hover:bg-blue-500/10',
+    'hover:-translate-y-0.5',
+    'hover:shadow-lg',
+    'hover:shadow-blue-500/20',
     'focus:ring-primary-500',
     'focus:ring-blue-400',
     '[border-color:var(--color-primary-500)]',
@@ -93,22 +96,23 @@ const variants = {
   ghost: [
     'text-white',
     'hover:bg-[#1C1C26]',
+    'hover:-translate-y-0.5',
     'focus:ring-primary-500',
     'focus:ring-blue-400',
   ].join(' '),
   danger: createVariantStyles(
     ['bg-error-600', 'bg-red-500', 'text-background'],
-    ['hover:bg-error-700', 'hover:bg-red-600'],
+    ['hover:bg-error-700', 'hover:bg-red-600', 'hover:-translate-y-0.5', 'hover:shadow-lg', 'hover:shadow-red-500/30'],
     ['focus:ring-error-500', 'focus:ring-red-400'],
     'color-error-500'
   ),
   error: createVariantStyles(
     ['bg-error-600', 'bg-red-500', 'text-background'],
-    ['hover:bg-error-700', 'hover:bg-red-600'],
+    ['hover:bg-error-700', 'hover:bg-red-600', 'hover:-translate-y-0.5', 'hover:shadow-lg', 'hover:shadow-red-500/30'],
     ['focus:ring-error-500', 'focus:ring-red-400'],
     'color-error-500'
   ),
-  // Gradient variant for modern dark UI
+  // Gradient variant for modern dark UI with glow effect
   gradient: [
     'bg-gradient-to-r',
     'from-blue-500',
@@ -116,8 +120,37 @@ const variants = {
     'text-white',
     'hover:from-blue-600',
     'hover:to-purple-600',
+    'hover:-translate-y-1',
+    'hover:shadow-xl',
+    'hover:shadow-blue-500/40',
     'focus:ring-primary-500',
     'focus:ring-blue-400',
+  ].join(' '),
+  // Gradient success variant
+  'gradient-success': [
+    'bg-gradient-to-r',
+    'from-green-500',
+    'to-cyan-500',
+    'text-white',
+    'hover:from-green-600',
+    'hover:to-cyan-600',
+    'hover:-translate-y-1',
+    'hover:shadow-xl',
+    'hover:shadow-green-500/40',
+    'focus:ring-green-500',
+  ].join(' '),
+  // Gradient warning variant
+  'gradient-warning': [
+    'bg-gradient-to-r',
+    'from-orange-500',
+    'to-red-500',
+    'text-white',
+    'hover:from-orange-600',
+    'hover:to-red-600',
+    'hover:-translate-y-1',
+    'hover:shadow-xl',
+    'hover:shadow-orange-500/40',
+    'focus:ring-orange-500',
   ].join(' '),
 };
 
