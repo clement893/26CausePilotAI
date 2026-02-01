@@ -80,7 +80,7 @@ export function SubscriptionTable({
                 <div>
                   {showDonatorLink ? (
                     <Link
-                      href={`/dashboard/base-donateur/donateurs/${sub.donatorId}`}
+                      href={`/dashboard/donateurs/${sub.donatorId}`}
                       className="font-medium text-[var(--text-primary,#fff)] hover:underline"
                     >
                       {sub.donatorName}

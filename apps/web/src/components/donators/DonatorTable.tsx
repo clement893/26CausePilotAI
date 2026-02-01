@@ -115,7 +115,7 @@ export function DonatorTable({
   onSelect,
   selectedIds,
   isLoading = false,
-  basePath = '/dashboard/base-donateur/donateurs',
+  basePath = '/dashboard/donateurs',
 }: DonatorTableProps) {
   const [actionMenuId, setActionMenuId] = useState<string | null>(null);
 

@@ -105,7 +105,7 @@ export function DonationTable({
                 <div>
                   {showDonatorLink ? (
                     <Link
-                      href={`/dashboard/base-donateur/donateurs/${d.donatorId}`}
+                      href={`/dashboard/donateurs/${d.donatorId}`}
                       className="font-medium text-[var(--text-primary,#fff)] hover:underline"
                     >
                       {d.donatorName}

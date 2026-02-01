@@ -293,7 +293,7 @@ function DashboardContent() {
               </div>
             </div>
             <Stack gap="normal">
-              <Link href="/dashboard/base-donateur/donateurs">
+              <Link href="/dashboard/donateurs">
                 <Button
                   variant="primary"
                   className="w-full justify-start gap-3 h-auto py-3 hover:scale-[1.02] transition-transform"
@@ -306,7 +306,7 @@ function DashboardContent() {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/dashboard/campagnes/campagnes">
+              <Link href="/dashboard/campagnes">
                 <Button
                   variant="secondary"
                   className="w-full justify-start gap-3 h-auto py-3 hover:scale-[1.02] transition-transform"

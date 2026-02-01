@@ -215,7 +215,7 @@ export default function DonateursContent() {
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm" className="gap-2" asChild>
-              <Link href="/dashboard/base-donateur/donateurs/new">
+              <Link href="/dashboard/donateurs/new">
                 <Upload className="h-4 w-4" />
                 Importer CSV
               </Link>
@@ -230,7 +230,7 @@ export default function DonateursContent() {
               className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
               asChild
             >
-              <Link href="/dashboard/base-donateur/donateurs/new">
+              <Link href="/dashboard/donateurs/new">
                 <Plus className="h-4 w-4" />
                 Ajouter un donateur
               </Link>
@@ -280,7 +280,7 @@ export default function DonateursContent() {
           onSelect={setSelectedIds}
           selectedIds={selectedIds}
           isLoading={loading}
-          basePath="/dashboard/base-donateur/donateurs"
+          basePath="/dashboard/donateurs"
         />
       </div>
 

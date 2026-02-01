@@ -107,7 +107,7 @@ export function getNavigationConfig(
       items: [
         {
           name: 'Donateurs',
-          href: '/dashboard/base-donateur/donateurs',
+          href: '/dashboard/donateurs',
           icon: <Users className="w-5 h-5" />,
         },
         {
@@ -144,7 +144,7 @@ export function getNavigationConfig(
       items: [
         {
           name: 'Formulaires',
-          href: '/dashboard/formulaires/formulaires',
+          href: '/dashboard/formulaires',
           icon: <FileText className="w-5 h-5" />,
         },
         {
@@ -166,7 +166,7 @@ export function getNavigationConfig(
       items: [
         {
           name: 'Campagnes',
-          href: '/dashboard/campagnes/campagnes',
+          href: '/dashboard/campagnes',
           icon: <Megaphone className="w-5 h-5" />,
         },
         {
