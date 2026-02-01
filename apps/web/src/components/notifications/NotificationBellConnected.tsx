@@ -68,7 +68,7 @@ export default function NotificationBellConnected({
   if (notificationsLoading) {
     return (
       <div className={className}>
-        <div className="w-9 h-9 rounded-lg bg-muted animate-pulse" />
+        <div className="w-9 h-9 rounded-lg bg-[#1C1C26] dark:bg-muted animate-pulse" />
       </div>
     );
   }

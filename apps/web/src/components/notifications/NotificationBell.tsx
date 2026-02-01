@@ -85,9 +85,9 @@ export default function NotificationBell({
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
           'relative p-2 rounded-lg transition-colors',
-          'text-foreground',
-          'hover:bg-muted dark:hover:bg-muted',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+          'text-white dark:text-foreground',
+          'hover:bg-[#1C1C26] dark:hover:bg-muted',
+          'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
         )}
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}
       >
@@ -103,20 +103,20 @@ export default function NotificationBell({
 
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 w-96 z-50">
-          <div className="bg-background rounded-lg shadow-xl border border-border max-h-[600px] flex flex-col">
+          <div className="glass-effect bg-[#13131A] dark:bg-background rounded-lg shadow-xl border border-gray-800 dark:border-border max-h-[600px] flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <h3 className="text-lg font-semibold text-foreground">
+            <div className="flex items-center justify-between p-4 border-b border-gray-800 dark:border-border">
+              <h3 className="text-lg font-semibold text-white dark:text-foreground">
                 Notifications
               </h3>
               <Dropdown
-                trigger={<button className="p-1">⋯</button>}
+                trigger={<button className="p-1 text-gray-300 dark:text-foreground hover:text-white dark:hover:text-foreground">⋯</button>}
                 items={dropdownItems}
               />
             </div>
 
             {/* Notifications */}
-            <div className="overflow-y-auto flex-1">
+            <div className="overflow-y-auto flex-1 custom-scrollbar">
               <NotificationCenter
                 notifications={recentNotifications}
                 onMarkAsRead={onMarkAsRead}
@@ -131,13 +131,13 @@ export default function NotificationBell({
 
             {/* Footer */}
             {notifications.length > 5 && (
-              <div className="p-4 border-t border-border">
+              <div className="p-4 border-t border-gray-800 dark:border-border">
                 <button
                   onClick={() => {
                     setIsOpen(false);
                     onViewAll?.();
                   }}
-                  className="w-full text-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+                  className="w-full text-center text-sm font-medium text-blue-400 dark:text-primary-400 hover:text-blue-300 dark:hover:text-primary-300"
                 >
                   View All Notifications ({notifications.length})
                 </button>
