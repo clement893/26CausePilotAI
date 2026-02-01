@@ -13,6 +13,7 @@ import { listEmailTemplatesAction } from '@/app/actions/email-templates/list';
 import { listAudiencesAction } from '@/app/actions/audiences/list';
 import { createEmailCampaignAction } from '@/app/actions/email-campaigns/create';
 import { ChevronRight, ChevronLeft, Loader2, Mail, Users, Calendar, FileText } from 'lucide-react';
+import { AIGenerateButton } from '@/components/ai/AIGenerateButton';
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -162,7 +163,18 @@ export default function NewCampaignPage() {
             <div className="space-y-4">
               <h2 className="font-medium text-white">Configuration</h2>
               <div>
-                <label className="block text-sm text-[var(--text-secondary,#A0A0B0)] mb-1">Nom de la campagne</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm text-[var(--text-secondary,#A0A0B0)]">Nom de la campagne</label>
+                  <AIGenerateButton
+                    contentType="campaign_description"
+                    onGenerated={(content) => {
+                      const firstLine = content.trim().split('\n')[0];
+                      if (firstLine) update({ name: firstLine });
+                    }}
+                    context={`Campagne: ${data.name || 'nouvelle campagne'}`}
+                    size="sm"
+                  />
+                </div>
                 <input
                   type="text"
                   value={data.name}
@@ -172,7 +184,21 @@ export default function NewCampaignPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-[var(--text-secondary,#A0A0B0)] mb-1">Sujet de l&apos;email</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm text-[var(--text-secondary,#A0A0B0)]">Sujet de l&apos;email</label>
+                  <AIGenerateButton
+                    contentType="email"
+                    onGenerated={(content) => {
+                      // Extraire le sujet depuis le contenu généré (première ligne ou titre)
+                      const lines = content.trim().split('\n');
+                      const firstLine = lines[0];
+                      const subject = firstLine ? firstLine.replace(/^#+\s*/, '').trim() : content.trim().substring(0, 50);
+                      if (subject) update({ subject });
+                    }}
+                    context={`Campagne: ${data.name || 'nouvelle campagne'}`}
+                    size="sm"
+                  />
+                </div>
                 <input
                   type="text"
                   value={data.subject}
