@@ -187,14 +187,14 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
         className={clsx(
           'flex items-center gap-3 px-lg py-md rounded-lg text-sm font-medium transition-all duration-200 border-l-2',
           active
-            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary/20 text-white dark:text-primary font-semibold border-l-blue-500 dark:border-l-primary'
-            : 'border-l-transparent text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 bg-blue-500/20 text-white text-blue-300 font-semibold border-l-blue-500 border-l-blue-500'
+            : 'border-l-transparent text-gray-300 text-white hover:bg-[#1C1C26]'
         )}
       >
         {item.icon}
         <span>{item.name}</span>
         {item.badge && (
-          <span className="ml-auto px-2 py-0.5 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-primary-900 text-white dark:text-primary">
+          <span className="ml-auto px-2 py-0.5 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-500 bg-blue-500/20 text-white text-blue-300">
             {item.badge}
           </span>
         )}
@@ -220,8 +220,8 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
             className={clsx(
               'w-full flex items-center justify-between gap-3 px-lg py-md rounded-lg text-sm font-medium transition-all duration-200 border-l-2',
               hasActiveItem
-                ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary/20 text-white dark:text-primary font-semibold border-l-blue-500 dark:border-l-primary'
-                : 'border-l-transparent text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+                ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 bg-blue-500/20 text-white text-blue-300 font-semibold border-l-blue-500 border-l-blue-500'
+                : 'border-l-transparent text-gray-300 text-white hover:bg-[#1C1C26]'
             )}
             aria-expanded={isOpen}
             aria-label={`Toggle ${group.name} group`}
@@ -233,7 +233,7 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
             {isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
           </button>
         ) : (
-          <div className="flex items-center gap-3 px-lg py-md text-sm font-semibold text-gray-400 dark:text-muted-foreground">
+          <div className="flex items-center gap-3 px-lg py-md text-sm font-semibold text-gray-400">
             {group.icon}
             <span>{group.name}</span>
           </div>
@@ -248,14 +248,14 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
                 className={clsx(
                   'flex items-center gap-3 px-lg py-md rounded-lg text-sm font-medium transition-all duration-200 border-l-2',
                   isActive(item.href)
-                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary/20 text-white dark:text-primary font-semibold border-l-blue-500 dark:border-l-primary'
-                    : 'border-l-transparent text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 bg-blue-500/20 text-white text-blue-300 font-semibold border-l-blue-500 border-l-blue-500'
+                    : 'border-l-transparent text-gray-300 text-white hover:bg-[#1C1C26]'
                 )}
               >
                 {item.icon}
                 <span>{item.name}</span>
                 {item.badge && (
-                  <span className="ml-auto px-2 py-0.5 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-primary-900 text-white dark:text-primary">
+                  <span className="ml-auto px-2 py-0.5 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-500 bg-blue-500/20 text-white text-blue-300">
                     {item.badge}
                   </span>
                 )}
@@ -272,7 +272,7 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/50 dark:bg-foreground/70 backdrop-blur-sm md:hidden animate-fade-in"
+          className="fixed inset-0 z-30 bg-black/50 bg-white/10 backdrop-blur-sm md:hidden animate-fade-in"
           onClick={handleClose}
           aria-hidden="true"
         />
@@ -281,23 +281,23 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
       {/* Sidebar */}
       <aside
         className={clsx(
-          'fixed left-0 top-0 z-40 h-screen w-64 glass-effect bg-[#13131A] dark:bg-background border-r border-gray-800 dark:border-border flex flex-col',
-          'shadow-[4px_0_16px_-2px_rgba(0,0,0,0.08)] dark:shadow-[4px_0_16px_-2px_rgba(0,0,0,0.25)]',
+          'fixed left-0 top-0 z-40 h-screen w-64 glass-effect bg-[#13131A] border-r border-gray-800 flex flex-col',
+          'shadow-[4px_0_16px_-2px_rgba(0,0,0,0.25)]',
           'transition-transform duration-normal ease-smooth', // Smooth transition (UX/UI improvements - Batch 17)
           // Mobile: slide in/out from left
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         )}
       >
         {/* Header with Hamburger Menu */}
-        <div className="flex items-center justify-between h-16 px-lg border-b border-gray-800 dark:border-border flex-shrink-0">
+        <div className="flex items-center justify-between h-16 px-lg border-b border-gray-800 flex-shrink-0">
           <Link href="/dashboard" className="flex items-center">
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent dark:text-primary">MODELE</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent text-blue-300">MODELE</span>
           </Link>
 
           {/* Hamburger Menu Button (Mobile only) */}
           <button
             onClick={handleClose}
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-white dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted transition-colors min-h-[44px] min-w-[44px]"
+            className="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-white hover:bg-[#1C1C26] transition-colors min-h-[44px] min-w-[44px]"
             aria-label="Fermer le menu"
             aria-expanded={isOpen}
           >
@@ -309,21 +309,21 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
         {isSuperAdmin && <OrganizationSelector />}
 
         {/* Search Bar */}
-        <div className="px-lg py-md border-b border-gray-800 dark:border-border flex-shrink-0">
+        <div className="px-lg py-md border-b border-gray-800 flex-shrink-0">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
               type="text"
               placeholder="Rechercher..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10 h-10 bg-[#1C1C26] dark:bg-background border-gray-700 dark:border-border text-white dark:text-foreground placeholder-gray-500 dark:placeholder-muted-foreground"
+              className="pl-10 pr-10 h-10 bg-[#1C1C26] border-gray-800 text-white placeholder-gray-400"
               aria-label="Rechercher dans la navigation"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-muted-foreground hover:text-white dark:hover:text-foreground"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                 aria-label="Effacer la recherche"
               >
                 <X className="w-4 h-4" />
@@ -335,7 +335,7 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
         {/* Navigation */}
         <nav className="flex-1 px-lg py-md space-y-1 overflow-y-auto custom-scrollbar">
           {filteredNavigation.length === 0 ? (
-            <div className="px-lg py-md text-sm text-gray-400 dark:text-muted-foreground text-center">
+            <div className="px-lg py-md text-sm text-gray-400 text-center">
               Aucun résultat trouvé
             </div>
           ) : (
@@ -344,16 +344,16 @@ export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarPr
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-gray-800 dark:border-border p-lg flex-shrink-0">
+        <div className="border-t border-gray-800 p-lg flex-shrink-0">
           <div className="flex items-center gap-3 mb-md">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
-              <span className="text-white dark:text-primary font-semibold">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <span className="text-white text-blue-300 font-semibold">
                 {user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U'}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white dark:text-foreground truncate">{user?.name || 'Utilisateur'}</p>
-              <p className="text-xs text-gray-400 dark:text-muted-foreground truncate">{user?.email || ''}</p>
+              <p className="text-sm font-medium text-white truncate">{user?.name || 'Utilisateur'}</p>
+              <p className="text-xs text-gray-400 truncate">{user?.email || ''}</p>
             </div>
           </div>
           <div className="flex items-center justify-between gap-2">
