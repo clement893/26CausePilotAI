@@ -103,7 +103,7 @@ export default function Sidebar({
           className={clsx(
             'flex items-center justify-between px-lg py-md rounded-lg transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px]',
             // Improved spacing and touch target (UX/UI improvements - Batch 8, 17)
-            isActive ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 bg-blue-500/20 text-white text-blue-300 font-medium border-l-4 border-l-blue-500' : 'text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]',
+            isActive ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 font-medium border-l-4 border-l-blue-500' : 'text-gray-300 text-white hover:bg-[#1C1C26]',
             level > 0 && 'ml-lg' // Increased indentation for nested items
           )}
         >
@@ -127,7 +127,7 @@ export default function Sidebar({
           {!collapsed && (
             <div className="flex items-center space-x-2 flex-shrink-0">
               {item.badge && (
-                <span className="px-2 py-0.5 text-xs font-medium bg-primary-100 bg-blue-500/20 text-primary-800 text-blue-200 rounded-full">
+                <span className="px-2 py-0.5 text-xs font-medium bg-blue-500/20 text-blue-200 rounded-full">
                   {item.badge}
                 </span>
               )}
@@ -174,7 +174,7 @@ export default function Sidebar({
       {user && (
         <div className="p-lg border-b border-gray-800 border-gray-800 flex-shrink-0">
           <div className={clsx('flex items-center gap-3', collapsed && 'justify-center')}>
-            <div className="w-10 h-10 rounded-full bg-primary-100 bg-blue-500/20 flex items-center justify-center flex-shrink-0 min-w-[44px] min-h-[44px]">
+            <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 min-w-[44px] min-h-[44px]">
               <span className="text-sm font-medium text-primary-700 text-blue-300">
                 {user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
               </span>
@@ -234,7 +234,7 @@ export default function Sidebar({
             {onToggleCollapse && (
               <button
                 onClick={onToggleCollapse}
-                className="p-2 rounded-lg hover:bg-[#1C1C26] hover:bg-[#1C1C26] text-gray-300 text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-[#1C1C26] text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
@@ -249,7 +249,7 @@ export default function Sidebar({
             {onClose && (
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-[#1C1C26] hover:bg-[#1C1C26] text-gray-300 text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-[#1C1C26] text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Fermer le menu"
                 title="Fermer le menu"
               >
@@ -259,7 +259,7 @@ export default function Sidebar({
             {onHomeClick && (
               <button
                 onClick={onHomeClick}
-                className="p-2 rounded-lg hover:bg-[#1C1C26] hover:bg-[#1C1C26] text-gray-300 text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 rounded-lg hover:bg-[#1C1C26] text-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Retour à l'accueil"
                 title="Retour à l'accueil"
               >
