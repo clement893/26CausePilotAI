@@ -131,8 +131,8 @@
 - [ ] **DragDropList** - Style dark
 - [ ] **FAQItem** - Style moderne
 - [ ] **PricingCardSimple** - Style premium avec gradients
-- [ ] **ServiceTestCard** - Style moderne
-- [ ] **ExportButton** - Style gradient pour actions importantes
+- [x] **ServiceTestCard** - Style moderne ✅
+- [x] **ExportButton** - Style gradient pour actions importantes ✅
 - [ ] **BillingPeriodToggle** - Style moderne avec gradients
 - [ ] **ButtonLink** - Aligner avec Button
 
