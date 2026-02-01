@@ -51,13 +51,13 @@ export default function PricingCardSimple({
         </div>
       )}
       <div className="p-8">
-        <h2 className="text-2xl font-bold text-white dark:text-foreground mb-2">{plan.name}</h2>
-        <p className="text-gray-400 dark:text-muted-foreground mb-6">{plan.description}</p>
+        <h2 className="text-2xl font-bold text-white text-white mb-2">{plan.name}</h2>
+        <p className="text-gray-400 text-gray-400 mb-6">{plan.description}</p>
         <div className="mb-6">
-          <span className="text-4xl font-bold text-white dark:text-foreground">{calculatePrice()}€</span>
-          <span className="text-gray-400 dark:text-muted-foreground">/mois</span>
+          <span className="text-4xl font-bold text-white text-white">{calculatePrice()}€</span>
+          <span className="text-gray-400 text-gray-400">/mois</span>
           {billingPeriod === 'year' && calculateYearlyPrice() && (
-            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">{calculateYearlyPrice()}€/an</div>
+            <div className="text-sm text-gray-400 text-gray-400 mt-1">{calculateYearlyPrice()}€/an</div>
           )}
         </div>
         <Link href={`/subscriptions?plan=${plan.id}&period=${billingPeriod}`}>
@@ -71,8 +71,8 @@ export default function PricingCardSimple({
         <ul className="space-y-3">
           {plan.features.map((feature, index) => (
             <li key={index} className="flex items-start">
-              <Check className="w-5 h-5 text-green-400 dark:text-success-500 mr-2 mt-0.5 flex-shrink-0" />
-              <span className="text-gray-300 dark:text-foreground">{feature}</span>
+              <Check className="w-5 h-5 text-green-400 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
+              <span className="text-gray-300 text-white">{feature}</span>
             </li>
           ))}
         </ul>

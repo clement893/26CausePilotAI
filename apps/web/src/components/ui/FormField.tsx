@@ -36,10 +36,10 @@ export interface FormFieldProps {
     <div className={clsx('flex flex-col', fullWidth && 'w-full', className)}>
       {' '}
       {label && (
-        <label htmlFor={fieldId} className="block text-sm font-medium text-gray-300 dark:text-foreground mb-2">
+        <label htmlFor={fieldId} className="block text-sm font-medium text-gray-300 text-white mb-2">
           {label}
           {required && (
-            <span className="text-red-400 dark:text-error-400 ml-1" aria-label="required">
+            <span className="text-red-400 text-red-400 ml-1" aria-label="required">
               *
             </span>
           )}
@@ -48,7 +48,7 @@ export interface FormFieldProps {
       <div className="relative form-input-glow">
         {leftIcon && (
           <div
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-muted-foreground pointer-events-none z-10"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-gray-400 pointer-events-none z-10"
             aria-hidden="true"
           >
             {leftIcon}
@@ -66,7 +66,7 @@ export interface FormFieldProps {
           : children}{' '}
         {rightIcon && (
           <div
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-muted-foreground pointer-events-none z-10"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-gray-400 pointer-events-none z-10"
             aria-hidden="true"
           >
             {rightIcon}
@@ -77,14 +77,14 @@ export interface FormFieldProps {
         <Text
           id={errorId}
           variant="small"
-          className="mt-2 text-red-400 dark:text-error-400"
+          className="mt-2 text-red-400 text-red-400"
           role="alert"
         >
           {error}
         </Text>
       )}
       {helperText && !error && (
-        <Text id={helperId} variant="small" className="mt-2 text-gray-400 dark:text-muted-foreground">
+        <Text id={helperId} variant="small" className="mt-2 text-gray-400 text-gray-400">
           {helperText}
         </Text>
       )}

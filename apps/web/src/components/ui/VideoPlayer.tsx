@@ -144,7 +144,7 @@ export default function VideoPlayer({
   };
   return (
     <div
-      className={clsx('relative bg-[#0A0A0F] dark:bg-foreground rounded-lg overflow-hidden group border border-gray-800 dark:border-border', className)}
+      className={clsx('relative bg-[#0A0A0F] bg-[#0A0A0F] rounded-lg overflow-hidden group border border-gray-800 border-gray-800', className)}
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
@@ -159,7 +159,7 @@ export default function VideoPlayer({
       />
       {title && (
         <div className="absolute top-4 left-4 right-4">
-          <h3 className="text-white dark:text-background text-lg font-semibold drop-shadow-lg">{title}</h3>
+          <h3 className="text-white text-white text-lg font-semibold drop-shadow-lg">{title}</h3>
         </div>
       )}
       {controls && (
@@ -184,7 +184,7 @@ export default function VideoPlayer({
               aria-valuemax={duration || 0}
               aria-valuenow={currentTime}
               aria-valuetext={`${formatTime(currentTime)} of ${formatTime(duration)}`}
-              className="w-full h-1 bg-[#1C1C26] dark:bg-muted rounded-lg appearance-none cursor-pointer"
+              className="w-full h-1 bg-[#1C1C26] bg-[#1C1C26] rounded-lg appearance-none cursor-pointer"
               style={{
                 background: `linear-gradient(to right, rgb(59, 130, 246) 0%, rgb(139, 92, 246) ${duration ? (currentTime / duration) * 100 : 0}%, rgb(28, 28, 38) ${duration ? (currentTime / duration) * 100 : 0}%, rgb(28, 28, 38) 100%)`
               }}
@@ -229,7 +229,7 @@ export default function VideoPlayer({
                 {' '}
                 <SkipForward className="w-4 h-4" aria-hidden="true" />{' '}
               </Button>{' '}
-              <div className="text-white dark:text-background text-sm">
+              <div className="text-white text-white text-sm">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </div>
             </div>{' '}
@@ -263,7 +263,7 @@ export default function VideoPlayer({
                   aria-valuemax={1}
                   aria-valuenow={volume}
                   aria-valuetext={`${Math.round(volume * 100)}%`}
-                  className="w-20 h-1 bg-[#1C1C26] dark:bg-muted rounded-lg appearance-none cursor-pointer"
+                  className="w-20 h-1 bg-[#1C1C26] bg-[#1C1C26] rounded-lg appearance-none cursor-pointer"
                   style={{
                     background: `linear-gradient(to right, rgb(59, 130, 246) 0%, rgb(139, 92, 246) ${volume * 100}%, rgb(28, 28, 38) ${volume * 100}%, rgb(28, 28, 38) 100%)`
                   }}

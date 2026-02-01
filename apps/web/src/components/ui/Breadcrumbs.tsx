@@ -12,7 +12,7 @@ interface BreadcrumbsProps {
 export default function Breadcrumbs({ items, separator, className }: BreadcrumbsProps) {
   const defaultSeparator = (
     <svg
-      className="w-4 h-4 text-gray-500 dark:text-muted-foreground"
+      className="w-4 h-4 text-gray-500 text-gray-400"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -27,21 +27,21 @@ export default function Breadcrumbs({ items, separator, className }: Breadcrumbs
         return (
           <div key={index} className="flex items-center">
             {index > 0 && (
-              <span className="mx-2 text-gray-500 dark:text-muted-foreground">
+              <span className="mx-2 text-gray-500 text-gray-400">
                 {separator || defaultSeparator}
               </span>
             )}
             {isLast ? (
-              <span className="text-gray-400 dark:text-muted-foreground font-medium">{item.label}</span>
+              <span className="text-gray-400 text-gray-400 font-medium">{item.label}</span>
             ) : item.href ? (
               <Link
                 href={item.href}
-                className="text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground transition-colors"
+                className="text-gray-400 text-gray-400 hover:text-white hover:text-white transition-colors"
               >
                 {item.label}
               </Link>
             ) : (
-              <span className="text-gray-400 dark:text-muted-foreground">{item.label}</span>
+              <span className="text-gray-400 text-gray-400">{item.label}</span>
             )}
           </div>
         );
