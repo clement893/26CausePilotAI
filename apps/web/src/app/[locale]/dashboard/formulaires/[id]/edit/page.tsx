@@ -74,7 +74,7 @@ export default function EditDonationFormPage() {
       <div className="min-h-screen bg-[var(--background-primary,#0A0A0F)] px-4 py-8">
         <div className="mx-auto max-w-6xl rounded-xl border border-white/10 bg-[var(--background-secondary,#13131A)] p-12 text-center">
           <p className="text-red-400">{error ?? 'Formulaire introuvable'}</p>
-          <Link href="/dashboard/formulaires/formulaires" className="mt-4 inline-block text-[var(--color-primary,#3B82F6)] hover:underline">
+          <Link href="/dashboard/formulaires" className="mt-4 inline-block text-[var(--color-primary,#3B82F6)] hover:underline">
             Retour à la liste
           </Link>
         </div>
@@ -90,7 +90,7 @@ export default function EditDonationFormPage() {
         <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--text-secondary,#A0A0B0)]">
           <Link href="/dashboard" className="hover:text-white">Dashboard</Link>
           <ChevronRight className="h-4 w-4" />
-          <Link href="/dashboard/formulaires/formulaires" className="hover:text-white">Formulaires</Link>
+          <Link href="/dashboard/formulaires" className="hover:text-white">Formulaires</Link>
           <ChevronRight className="h-4 w-4" />
           <span className="text-white">{initialData.title || 'Éditer le formulaire'}</span>
         </nav>
@@ -103,7 +103,7 @@ export default function EditDonationFormPage() {
         <FormBuilderWizard
           initialData={initialData}
           formId={formId}
-          onSuccess={() => router.push('/dashboard/formulaires/formulaires')}
+          onSuccess={() => router.push('/dashboard/formulaires')}
         />
       </div>
     </div>

@@ -131,7 +131,7 @@ export default function DonorProfileContent() {
               {error ? 'Erreur de chargement' : 'Donateur non trouvé'}
             </h3>
             <p className="text-destructive mb-6">{error ?? "Le donateur demandé n'existe pas ou a été supprimé."}</p>
-            <Link href="/dashboard/base-donateur/donateurs">
+            <Link href="/dashboard/donateurs">
               <Button variant="outline">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour à la liste
@@ -171,7 +171,7 @@ export default function DonorProfileContent() {
 
   return (
     <Container className="py-8 lg:py-12">
-      <Link href="/dashboard/base-donateur/donateurs" className="inline-block mb-4">
+      <Link href="/dashboard/donateurs" className="inline-block mb-4">
         <Button variant="ghost">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Retour à la liste
@@ -180,7 +180,7 @@ export default function DonorProfileContent() {
 
       <DonatorHeader
         donor={donor}
-        basePath="/dashboard/base-donateur/donateurs"
+        basePath="/dashboard/donateurs"
         onSendEmail={() => info('Envoi d’email en préparation…')}
         onAddNote={() => info('Ajout de note en préparation…')}
         onMarkVip={() => info('Marquer comme VIP en préparation…')}

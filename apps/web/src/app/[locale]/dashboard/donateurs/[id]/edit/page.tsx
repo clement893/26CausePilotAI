@@ -75,7 +75,7 @@ export default function DonorEditPage() {
     try {
       await updateDonor(activeOrganization.id, donorId, form);
       success('Profil enregistré');
-      router.push(`/dashboard/base-donateur/donateurs/${donorId}`);
+      router.push(`/dashboard/donateurs/${donorId}`);
       router.refresh();
     } catch (err) {
       setError(getErrorMessage(err, 'Erreur lors de l’enregistrement'));
@@ -93,7 +93,7 @@ export default function DonorEditPage() {
     try {
       await deleteDonor(activeOrganization.id, donorId);
       success('Donateur supprimé');
-      router.push('/dashboard/base-donateur/donateurs');
+      router.push('/dashboard/donateurs');
       router.refresh();
     } catch (err) {
       setError(getErrorMessage(err, 'Erreur lors de la suppression'));
@@ -117,7 +117,7 @@ export default function DonorEditPage() {
       <Container className="py-8 lg:py-12">
         <Card className="border-destructive p-6">
           <p className="text-destructive mb-4">{error ?? 'Donateur introuvable'}</p>
-          <Link href="/dashboard/base-donateur/donateurs">
+          <Link href="/dashboard/donateurs">
             <Button variant="outline">Retour à la liste</Button>
           </Link>
         </Card>
@@ -127,7 +127,7 @@ export default function DonorEditPage() {
 
   return (
     <Container className="py-8 lg:py-12">
-      <Link href={`/dashboard/base-donateur/donateurs/${donorId}`}>
+      <Link href={`/dashboard/donateurs/${donorId}`}>
         <Button variant="ghost" className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Retour au profil
@@ -236,7 +236,7 @@ export default function DonorEditPage() {
 
         <div className="flex flex-wrap gap-4">
           <Button type="button" variant="outline" asChild>
-            <Link href={`/dashboard/base-donateur/donateurs/${donorId}`}>Annuler</Link>
+            <Link href={`/dashboard/donateurs/${donorId}`}>Annuler</Link>
           </Button>
           <Button type="submit" variant="primary" loading={saving} className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
             Enregistrer

@@ -78,7 +78,8 @@ export async function getCampaignStatsAction(
     }
 
     const donatorList = campaign.donators.length > 0 ? campaign.donators : campaign.audience.donators ?? [];
-    const recipients = donatorList.slice(0, 100).map((d) => ({
+    type DonatorItem = { id: string; email: string; firstName: string | null; lastName: string | null };
+    const recipients = donatorList.slice(0, 100).map((d: DonatorItem) => ({
       id: d.id,
       email: d.email,
       firstName: d.firstName,

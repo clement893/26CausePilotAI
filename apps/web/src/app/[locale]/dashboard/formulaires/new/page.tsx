@@ -50,7 +50,7 @@ export default function NewDonationFormPage() {
         <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--text-secondary,#A0A0B0)]">
           <Link href="/dashboard" className="hover:text-white">Dashboard</Link>
           <ChevronRight className="h-4 w-4" />
-          <Link href="/dashboard/formulaires/formulaires" className="hover:text-white">Formulaires</Link>
+          <Link href="/dashboard/formulaires" className="hover:text-white">Formulaires</Link>
           <ChevronRight className="h-4 w-4" />
           <span className="text-white">Nouveau formulaire</span>
         </nav>

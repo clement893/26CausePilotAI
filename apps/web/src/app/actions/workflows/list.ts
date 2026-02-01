@@ -22,7 +22,8 @@ export async function listWorkflowsAction(
       where: { organizationId },
       orderBy: { updatedAt: 'desc' },
     });
-    const workflows: WorkflowRow[] = rows.map((r) => ({
+    type WorkflowRowInput = (typeof rows)[number];
+    const workflows: WorkflowRow[] = rows.map((r: WorkflowRowInput) => ({
       id: r.id,
       name: r.name,
       status: r.status,

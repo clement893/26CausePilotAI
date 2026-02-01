@@ -49,36 +49,30 @@ export default function NewDonorPage() {
 
       await createDonor(activeOrganization.id, formData);
 
-      // Show success toast
       success('Donateur créé avec succès !', { duration: 3000 });
-      
-      // Small delay before redirect to show toast
+
       setTimeout(() => {
-        window.location.href = `/${locale}/dashboard/base-donateur/donateurs`;
+        window.location.href = `/${locale}/dashboard/donateurs`;
       }, 500);
     } catch (err) {
       const errorMessage = errorLogger.getUserFriendlyMessage(err);
       setError(errorMessage);
-      
-      // Log error
+
       errorLogger.error('Failed to create donor', err instanceof Error ? err : new Error(String(err)), {
         organizationId: activeOrganization?.id,
-        formData: { ...formData, email: formData.email }, // Don't log full form data for privacy
+        formData: { ...formData, email: formData.email },
       });
-      
-      // Check if error is related to missing database tables
+
       const errorLower = String(err).toLowerCase();
-      const isDatabaseError = 
-        errorLower.includes('database') || 
+      const isDatabaseError =
+        errorLower.includes('database') ||
         errorLower.includes('table') ||
         errorLower.includes('does not exist') ||
         errorLower.includes('relation') ||
         errorLower.includes('migration') ||
         errorLower.includes('schema');
-      
+
       setShowMigrationButton(isDatabaseError);
-      
-      // Show error toast
       showErrorToast(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -103,9 +97,9 @@ export default function NewDonorPage() {
       const result = await migrateOrganizationDatabase(activeOrganization.id);
 
       if (result.success) {
-        const successMessage = 
-          result.message + 
-          (result.tables_created && result.tables_created.length > 0 
+        const successMessage =
+          result.message +
+          (result.tables_created && result.tables_created.length > 0
             ? ` Tables créées: ${result.tables_created.join(', ')}`
             : '');
         setMigrationSuccess(successMessage);
@@ -122,13 +116,11 @@ export default function NewDonorPage() {
       const errorMessage = errorLogger.getUserFriendlyMessage(err);
       setError(errorMessage);
       setShowMigrationButton(true);
-      
-      // Log error
+
       errorLogger.error('Failed to migrate database', err instanceof Error ? err : new Error(String(err)), {
         organizationId: activeOrganization?.id,
       });
-      
-      // Show error toast
+
       showErrorToast(errorMessage);
     } finally {
       setIsMigrating(false);
@@ -160,7 +152,7 @@ export default function NewDonorPage() {
   return (
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
-        <Link href="/dashboard/base-donateur/donateurs">
+        <Link href="/dashboard/donateurs">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Retour à la liste
@@ -170,7 +162,6 @@ export default function NewDonorPage() {
         <p className="text-gray-400">Ajouter un nouveau donateur à votre base de données</p>
       </div>
 
-      {/* Database Migration Alert */}
       {error && showMigrationButton && (
         <Card className="mb-6 border-warning bg-warning/10 animate-in fade-in slide-in-from-top-2">
           <div className="flex items-start justify-between gap-4">
@@ -234,7 +225,6 @@ export default function NewDonorPage() {
             </div>
           )}
 
-          {/* Basic Information */}
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -242,7 +232,7 @@ export default function NewDonorPage() {
               </div>
               <h2 className="text-2xl font-bold">Informations de base</h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
@@ -310,7 +300,6 @@ export default function NewDonorPage() {
             </div>
           </div>
 
-          {/* Preferences */}
           <div className="space-y-6 pt-6 border-t">
             <div className="flex items-center gap-3 pb-4">
               <div className="p-2 bg-success/10 rounded-lg">
@@ -318,7 +307,7 @@ export default function NewDonorPage() {
               </div>
               <h2 className="text-2xl font-bold">Préférences</h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="preferred_language" className="block text-sm font-semibold text-white">
@@ -399,20 +388,19 @@ export default function NewDonorPage() {
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex justify-end gap-4 pt-6 border-t">
-            <Link href="/dashboard/base-donateur/donateurs">
-              <Button 
-                type="button" 
-                variant="outline" 
+            <Link href="/dashboard/donateurs">
+              <Button
+                type="button"
+                variant="outline"
                 disabled={isSubmitting}
                 className="min-w-[120px] hover:scale-105 transition-transform"
               >
                 Annuler
               </Button>
             </Link>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isSubmitting}
               className="min-w-[180px] shadow-lg hover:shadow-xl transition-all hover:scale-105"
             >

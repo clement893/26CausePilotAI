@@ -135,8 +135,11 @@ model User {
   lastLoginAt   DateTime?
 
   // Relations existantes (à conserver)
-  accounts      Account[]
-  sessions      Session[]
+  accounts        Account[]
+  sessions        Session[]
+  dashboardLayout DashboardLayout?
+  reports         Report[]
+  reportSchedules ReportSchedule[]
 
   // Timestamps
   createdAt     DateTime @default(now())
@@ -180,6 +183,52 @@ model Session {
 
   @@index([userId])
   @@map("sessions")
+}
+
+// ============= Étape 4.1.1 - Dashboard Principal =============
+model DashboardLayout {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  layout    Json     // Position et taille des widgets (react-grid-layout)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("dashboard_layouts")
+}
+
+// ============= Étape 4.2.1 - Générateur de Rapports =============
+model Report {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  config      Json     // métriques, dimensions, période
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("reports")
+}
+
+// ============= Étape 4.2.3 - Planification des rapports =============
+model ReportSchedule {
+  id                  String   @id @default(cuid())
+  name                String   // Libellé de la planification
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reportId            String?  // Rapport personnalisé (optionnel)
+  predefinedReportType String?  // Type de rapport prédéfini (optionnel)
+  frequency           String   // daily | weekly | monthly
+  recipients          Json     // ["email1@example.com", "email2@example.com"]
+  nextRunAt           DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([userId])
+  @@index([nextRunAt])
+  @@map("report_schedules")
 }
 
 // ============= 4. Modèle Donator =============

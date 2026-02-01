@@ -15,7 +15,7 @@ export async function evaluateSegmentAction(
 ): Promise<{ error?: string; count?: number }> {
   try {
     const where = ruleGroupToWhere(rules.group, organizationId);
-    const count = await prisma.donator.count({ where });
+    const count = await prisma.donator.count({ where: where as Record<string, unknown> });
     return { count };
   } catch (e) {
     console.error('[evaluateSegmentAction]', e);

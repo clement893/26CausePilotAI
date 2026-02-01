@@ -44,7 +44,7 @@ export interface DonatorHeaderProps {
 
 export function DonatorHeader({
   donor,
-  basePath = '/dashboard/base-donateur/donateurs',
+  basePath = '/dashboard/donateurs',
   onSendEmail,
   onAddNote,
   onMarkVip,
