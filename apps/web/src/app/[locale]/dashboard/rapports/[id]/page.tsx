@@ -13,6 +13,7 @@ import { getReportAction } from '@/app/actions/reports/getReport';
 import { getReportData } from '@/app/actions/reports/getReportData';
 import { ReportView, ExportButtons, ScheduleReportModal } from '@/components/reports';
 import { REPORT_METRICS } from '@/app/actions/reports/types';
+import type { ReportConfig } from '@/app/actions/reports/types';
 import { Button } from '@/components/ui';
 import { ChevronRight, Loader2, CalendarClock } from 'lucide-react';
 
@@ -31,7 +32,7 @@ export default function ReportViewPage() {
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string | null>(null);
-  const [config, setConfig] = useState<{ metric: string; dimension: string; dateFrom: string; dateTo: string } | null>(null);
+  const [config, setConfig] = useState<ReportConfig | null>(null);
   const [rows, setRows] = useState<{ label: string; value: number }[]>([]);
   const [summary, setSummary] = useState<number | undefined>();
   const [metricLabel, setMetricLabel] = useState<string>('');
