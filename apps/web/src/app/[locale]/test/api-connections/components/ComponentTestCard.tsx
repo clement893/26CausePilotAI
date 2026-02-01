@@ -55,9 +55,9 @@ export function ComponentTestCard({
                 key={index}
                 className={`p-4 rounded-lg border ${
                   test.status === 'success'
-                    ? 'bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-800'
+                    ? 'bg-green-500/20 border-green-500/30'
                     : test.status === 'error'
-                      ? 'bg-error-50 dark:bg-error-900/20 border-error-200 dark:border-error-800'
+                      ? 'bg-red-500/20 border-red-500/30'
                       : 'bg-muted border-border'
                 }`}
                 role="listitem"

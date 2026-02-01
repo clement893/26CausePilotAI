@@ -173,7 +173,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 dark:from-muted dark:to-muted">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 from-[#1C1C26] to-[#1C1C26]">
       <Container className="w-full max-w-md">
         <Card>
           <h1 className="text-3xl font-bold text-center text-foreground mb-8">Register</h1>
@@ -248,7 +248,7 @@ export default function RegisterPage() {
             Already have an account?{' '}
             <Link
               href="/auth/login"
-              className="text-primary-600 dark:text-primary-400 hover:underline"
+              className="text-primary-600 text-blue-400 hover:underline"
             >
               Login
             </Link>

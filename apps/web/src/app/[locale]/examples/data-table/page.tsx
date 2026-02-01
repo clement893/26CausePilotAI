@@ -100,7 +100,7 @@ export default function ExampleDataTablePage() {
       sortable: true,
       filterable: true,
       render: (value: unknown) => (
-        <span className="px-2 py-1 text-xs rounded bg-info-100 text-info-800 dark:bg-info-900 dark:text-info-200">
+        <span className="px-2 py-1 text-xs rounded bg-info-100 text-info-800 bg-blue-500/20 text-blue-200">
           {value as string}
         </span>
       ),
@@ -114,7 +114,7 @@ export default function ExampleDataTablePage() {
         <span
           className={`px-2 py-1 text-xs rounded ${
             value === 'active'
-              ? 'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200'
+              ? 'bg-success-100 text-success-800 bg-green-500/20 text-green-200'
               : 'bg-muted text-foreground'
           }`}
         >

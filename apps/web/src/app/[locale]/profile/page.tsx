@@ -348,11 +348,11 @@ export default function ProfilePage() {
                   </p>
                   <p className="font-medium">
                     {user.is_active ? (
-                      <span className="text-success-600 dark:text-success-400">
+                      <span className="text-success-600 text-green-400">
                         {t('databaseInfo.active') || 'Active'}
                       </span>
                     ) : (
-                      <span className="text-error-600 dark:text-error-400">
+                      <span className="text-error-600 text-red-400">
                         {t('databaseInfo.inactive') || 'Inactive'}
                       </span>
                     )}
