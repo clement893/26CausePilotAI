@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* UI Revamp Custom Styles */
+@import '../styles/ui-revamp.css';
+
 /* Swiss International Style Theme - Additional CSS */
 /* Swiss Style Typography - Inter Bold 900 for headings */
 .swiss-display {
