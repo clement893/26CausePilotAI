@@ -576,7 +576,7 @@
 ### Batch 42: Features Standards - Client, CMS, ERP, Errors, Onboarding, Subscriptions (23 composants)
 **Statut:** ✅ COMPLÉTÉ  
 **Priorité:** MOYENNE ⭐  
-**Commit:** `[PENDING]` - feat(ui): Batch 42 - Alignement composants Client, CMS, ERP, Errors, Onboarding, Subscriptions
+**Commit:** `4dd293e` - feat(ui): Batch 42 - Alignement composants Client, CMS, ERP, Errors, Onboarding, Subscriptions
 
 - [x] `client/ClientDashboard.tsx` - Cards glass, StatsCard, textes dark ✅
 - [x] `client/ClientNavigation.tsx` - Navigation dark, gradients pour active, badges gradient ✅
