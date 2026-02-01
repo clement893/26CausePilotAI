@@ -81,10 +81,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium text-gray-300 dark:text-foreground mb-2">
+          <label htmlFor={inputId} className="block text-sm font-medium text-gray-300 text-white mb-2">
             {label}
             {props.required && (
-              <span className="text-error-500 dark:text-error-400 ml-1" aria-label="required">
+              <span className="text-error-500 text-red-400 ml-1" aria-label="required">
                 *
               </span>
             )}
@@ -107,13 +107,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={clsx(
               'w-full border rounded-lg transition-all duration-200',
               paddingClasses,
-              'bg-[#1C1C26] dark:bg-[var(--color-input)] text-white dark:text-foreground',
+              'bg-[#1C1C26] bg-[#1C1C26] text-white text-white',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'placeholder:text-gray-500 dark:placeholder:text-muted-foreground',
+              'placeholder:text-gray-500 placeholder-gray-400',
               error
-                ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
-                : 'border-gray-700 dark:border-border focus:ring-primary/20',
+                ? 'border-error-500 border-red-500/30 focus:ring-error-500/20'
+                : 'border-gray-700 border-gray-800 focus:ring-primary/20',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className
@@ -139,7 +139,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <Text
             id={errorId}
             variant="small"
-            className="mt-2 text-error-600 dark:text-error-400"
+            className="mt-2 text-error-600 text-red-400"
             role="alert"
             aria-live="polite"
           >

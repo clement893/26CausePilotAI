@@ -215,7 +215,7 @@ function Modal({
       className={clsx(
         'fixed inset-0 z-50 flex items-center justify-center',
         'p-0 md:p-4',
-        'bg-black/50 dark:bg-foreground/70 backdrop-blur-sm',
+        'bg-black/50 bg-white/10 backdrop-blur-sm',
         'animate-fade-in', // Overlay fade-in animation
         overlayClassName
       )}
@@ -225,13 +225,13 @@ function Modal({
         ref={modalRef}
         className={clsx(
           // Use glassmorphism background if enabled, otherwise use default dark
-          hasEffect('glassmorphism') ? '' : 'glass-effect bg-[#13131A] dark:bg-background',
+          hasEffect('glassmorphism') ? '' : 'glass-effect bg-[#13131A] bg-[#1C1C26]',
           'shadow-2xl',
           'w-full h-full',
           'md:w-auto md:h-auto md:rounded-xl',
           sizeClasses[size],
           'md:max-h-[90vh] flex flex-col',
-          'border border-gray-800 dark:border-border',
+          'border border-gray-800 border-gray-800',
           'animate-scale-in', // Modal scale-in animation (UX/UI improvements - Batch 16)
           className
         )}
@@ -245,12 +245,12 @@ function Modal({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-xl border-b border-gray-800 dark:border-border flex-shrink-0">
-            {title && <h2 className="text-lg md:text-xl font-semibold text-white dark:text-foreground pr-2">{title}</h2>}
+          <div className="flex items-center justify-between p-xl border-b border-gray-800 border-gray-800 flex-shrink-0">
+            {title && <h2 className="text-lg md:text-xl font-semibold text-white text-white pr-2">{title}</h2>}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="ml-auto text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center p-2 -mr-2"
+                className="ml-auto text-gray-400 text-gray-400 hover:text-white hover:text-white transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center p-2 -mr-2"
                 aria-label="Close"
               >
                 <svg className="w-6 h-6 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -266,7 +266,7 @@ function Modal({
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 p-xl border-t border-gray-800 dark:border-border flex-shrink-0">{footer}</div>
+          <div className="flex items-center justify-end gap-3 p-xl border-t border-gray-800 border-gray-800 flex-shrink-0">{footer}</div>
         )}
       </div>
     </div>
@@ -319,7 +319,7 @@ export function ConfirmModal({
         </>
       }
     >
-      <p className="text-gray-300 dark:text-muted-foreground">{message}</p>
+      <p className="text-gray-300 text-gray-400">{message}</p>
     </Modal>
   );
 }

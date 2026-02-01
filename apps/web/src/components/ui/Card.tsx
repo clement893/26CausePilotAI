@@ -155,7 +155,7 @@ export default function Card({
         'glass-effect transition-all duration-300',
         elevated ? 'rounded-2xl' : 'rounded-xl',
         hover && 'hover-lift',
-        onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
+        onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2',
         className
       );
     }
@@ -165,7 +165,7 @@ export default function Card({
         'relative transition-all duration-300',
         elevated ? 'rounded-2xl' : 'rounded-xl',
         hover && 'hover-lift',
-        onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
+        onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2',
         className
       );
     }
@@ -174,11 +174,11 @@ export default function Card({
     return clsx(
       'border transition-all duration-300',
       elevated ? 'rounded-2xl shadow-lg' : 'rounded-xl shadow-md',
-      'bg-[#13131A] dark:bg-[var(--color-background)]',
-      'border-gray-800 dark:border-[var(--color-border)]',
+      'bg-[#13131A] bg-[#13131A]',
+      'border-gray-800 border-gray-800',
       hover && 'hover-lift',
       hover && (elevated ? 'hover:shadow-xl' : 'hover:shadow-lg'),
-      onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
+      onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-blue-400 focus:ring-offset-2',
       className
     );
   };
@@ -348,8 +348,8 @@ export default function Card({
         >
           {header || (
             <>
-              {title && <h3 className="text-lg font-semibold text-white dark:text-[var(--color-foreground)]">{title}</h3>}
-              {subtitle && <p className="mt-1 text-sm text-gray-400 dark:text-[var(--color-muted-foreground)]">{subtitle}</p>}
+              {title && <h3 className="text-lg font-semibold text-white text-white">{title}</h3>}
+              {subtitle && <p className="mt-1 text-sm text-gray-400 text-gray-400">{subtitle}</p>}
             </>
           )}
         </div>
@@ -370,7 +370,7 @@ export default function Card({
 
       {cardFooter && (
         <div
-          className={clsx('border-t border-gray-800 dark:border-[var(--color-border)] bg-[#1C1C26] dark:bg-[var(--color-muted)]', !useThemePadding && 'px-lg py-md')}
+          className={clsx('border-t border-gray-800 border-gray-800 bg-[#1C1C26] bg-[#1C1C26]', !useThemePadding && 'px-lg py-md')}
           style={
             useThemePadding
               ? {

@@ -27,10 +27,10 @@ const sizeClasses = {
 };
 
 const statusClasses = {
-  online: 'bg-success-500 dark:bg-success-600',
-  away: 'bg-warning-500 dark:bg-warning-600',
-  busy: 'bg-error-500 dark:bg-error-600',
-  offline: 'bg-muted-foreground/50 dark:bg-muted-foreground/60',
+  online: 'bg-success-500 bg-green-500',
+  away: 'bg-warning-500 bg-yellow-500',
+  busy: 'bg-error-500 bg-red-500',
+  offline: 'bg-muted-foreground/50 bg-gray-500/60',
 };
 
 const statusSizeClasses = {
@@ -73,10 +73,10 @@ export default function Avatar({
     <div
       className={clsx(
         'relative inline-flex items-center justify-center',
-        'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-muted',
-        'text-white dark:text-muted-foreground',
+        'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 bg-[#1C1C26]',
+        'text-white text-gray-400',
         'overflow-hidden',
-        'border-2 border-gray-800 dark:border-transparent',
+        'border-2 border-gray-800 border-transparent',
         sizeClasses[size],
         onClick && 'cursor-pointer hover:opacity-80 transition-opacity hover:scale-105',
         className
@@ -91,7 +91,7 @@ export default function Avatar({
       {status && (
         <span
           className={clsx(
-            'absolute bottom-0 right-0 rounded-full border-2 border-[#13131A] dark:border-background',
+            'absolute bottom-0 right-0 rounded-full border-2 border-[#13131A] border-[#13131A]',
             statusClasses[status],
             statusSizeClasses[size]
           )}
