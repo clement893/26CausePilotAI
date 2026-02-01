@@ -1027,6 +1027,11 @@
 - **components/ui/types.ts** : `colorVariantMap.default` → `bg-[#1C1C26]`, `text-white`, `border-gray-800` pour alignement dark
 - **Résultat** : 0 occurrence restante des classes génériques dans `apps/web/src`
 
+### Phase 3 – Features (vérification Batch 19)
+- **Auth** : MFA (Card glass, border-gray-800), ProtectedRoute (bg-[#0A0A0F], text-gray-400), SocialAuth déjà alignés
+- **Billing** : BillingDashboard, BillingSettings, InvoiceList, InvoiceViewer, PaymentMethodForm, PaymentHistory, SubscriptionPlans, UsageMeter utilisent Card variant="glass" et border-gray-800
+- Aucune classe générique restante dans auth/billing
+
 ---
 
 ## 📝 Notes

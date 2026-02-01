@@ -77,11 +77,11 @@ Les composants de features seront traités par **catégories fonctionnelles** po
 **Priorité:** HAUTE ⭐⭐
 
 #### Batch 19: Auth Components (5 composants)
-- [ ] `auth/LoginForm.tsx` - Form inputs avec glow, gradients pour boutons
-- [ ] `auth/RegisterForm.tsx` - Style moderne avec glassmorphism
-- [ ] `auth/OAuthButtons.tsx` - Boutons avec gradients
-- [ ] `auth/MFAComponents.tsx` - Style dark moderne
-- [ ] Autres composants auth...
+- [x] `auth/MFA.tsx` - Card glass, border-gray-800 ✅
+- [x] `auth/ProtectedRoute.tsx` - bg-[#0A0A0F], text-gray-400 ✅
+- [x] `auth/SocialAuth.tsx` - text-white (déjà aligné) ✅
+- [x] Pas de LoginForm/RegisterForm/OAuthButtons séparés (pages auth utilisent formulaires inline) ✅
+- [x] Autres auth (SignOutButton, UserProfile, ProtectedSuperAdminRoute) cohérents ✅
 
 #### Batch 20: Billing Components Part 1 (5 composants)
 - [ ] `billing/PricingCard.tsx` - Gradient-border pour plans premium
