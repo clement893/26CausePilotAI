@@ -6,6 +6,12 @@
 **Total de composants:** 357+  
 **Stratégie:** Traitement par batches avec commits réguliers
 
+### ✅ Alignement design system dark – terminé (2026-02-01)
+- **Phase 1** : Composants UI fondamentaux (Batches 1-15)
+- **Phase 2** : Layout (Batches 16-18), thème helpers/types (component-helpers, types.ts)
+- **Phase 3** : Features (Batches 19-60) – Auth, Billing, Analytics, Settings, Notifications, Monitoring, etc.
+- **Vérification** : 0 occurrence de `text-muted-foreground`, `bg-muted`, `border-border`, `bg-background`, `text-foreground` dans `apps/web/src`
+
 ---
 
 ## 🎯 Batch 1: Composants UI Fondamentaux Critiques (5 composants)

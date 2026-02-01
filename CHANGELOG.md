@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added / Changed
+
+- **Alignement design system dark (2026-02-01)** : Remplacement des classes Tailwind génériques (`text-foreground`, `bg-background`, `border-border`, `bg-muted`, `text-muted-foreground`) par des valeurs explicites (`text-white`, `bg-[#13131A]`, `border-gray-800`, `bg-[#1C1C26]`, `text-gray-400`) dans tout `apps/web/src`. Phases 1-3 (composants UI, layout, features) complétées. Détails dans `PROGRESSION_BATCHES.md` et `PLAN_SUITE.md`.
+
 ### Template Features
 
 This is a production-ready full-stack template with the following features:
