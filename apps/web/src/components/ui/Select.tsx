@@ -29,31 +29,30 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const fontSize = sizeConfig?.fontSize || '0.875rem';
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
-        {' '}
         {label && (
-          <label htmlFor={selectId} className="block text-sm font-medium text-foreground mb-2">
-            {' '}
-            {label}{' '}
+          <label htmlFor={selectId} className="block text-sm font-medium text-gray-300 dark:text-foreground mb-2">
+            {label}
             {props.required && (
               <span className="text-error-500 dark:text-error-400 ml-1" aria-label="required">
                 *
               </span>
-            )}{' '}
+            )}
           </label>
-        )}{' '}
-        <select
-          ref={ref}
-          id={selectId}
-          className={clsx(
-            'block w-full border rounded-lg transition-all duration-200',
-            'bg-[var(--color-input)] text-foreground',
-            'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
-            'disabled:opacity-50 disabled:cursor-not-allowed',
-            error
-              ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
-              : 'border-border focus:ring-primary/20',
-            className
-          )}
+        )}
+        <div className="relative form-input-glow">
+          <select
+            ref={ref}
+            id={selectId}
+            className={clsx(
+              'block w-full border rounded-lg transition-all duration-200',
+              'bg-[#1C1C26] dark:bg-[var(--color-input)] text-white dark:text-foreground',
+              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
+              'disabled:opacity-50 disabled:cursor-not-allowed',
+              error
+                ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
+                : 'border-gray-700 dark:border-border focus:ring-primary/20',
+              className
+            )}
           style={{
             paddingLeft: paddingX,
             paddingRight: paddingX,
@@ -61,22 +60,20 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             paddingBottom: paddingY,
             fontSize,
           }}
-          {...props}
-        >
-          {' '}
-          {placeholder && (
-            <option value="" disabled>
-              {' '}
-              {placeholder}{' '}
-            </option>
-          )}{' '}
-          {options.map((option) => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>
-              {' '}
-              {option.label}{' '}
-            </option>
-          ))}{' '}
-        </select>{' '}
+            {...props}
+          >
+            {placeholder && (
+              <option value="" disabled className="bg-[#1C1C26] text-white">
+                {placeholder}
+              </option>
+            )}
+            {options.map((option) => (
+              <option key={option.value} value={option.value} disabled={option.disabled} className="bg-[#1C1C26] text-white">
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
         {error && (
           <Text variant="small" className="mt-2 text-error-600 dark:text-error-400" role="alert">
             {' '}

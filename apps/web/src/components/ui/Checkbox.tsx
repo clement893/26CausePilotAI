@@ -58,10 +58,11 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             checked={checked}
             className={clsx(
-              'text-primary-600 dark:text-primary-400 border-border rounded',
-              'bg-background transition-all duration-200',
+              'text-blue-500 dark:text-primary-400 border-gray-700 dark:border-border rounded',
+              'bg-[#1C1C26] dark:bg-background transition-all duration-200',
               'focus:ring-2 focus:ring-offset-0 focus:outline-none',
               'disabled:opacity-50 disabled:cursor-not-allowed',
+              'checked:bg-gradient-to-r checked:from-blue-500 checked:to-purple-500',
               error
                 ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
                 : 'focus:ring-primary/20',
@@ -77,7 +78,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             <span
               className={clsx(
                 'ml-2 text-sm font-medium',
-                error ? 'text-error-600 dark:text-error-400' : 'text-foreground',
+                error ? 'text-error-600 dark:text-error-400' : 'text-gray-300 dark:text-foreground',
                 props.disabled && 'opacity-50'
               )}
             >
