@@ -29,26 +29,26 @@ export default function Toast({
   }, [id, duration, onClose]);
   const variants = {
     success: {
-      bg: 'glass-effect bg-[#13131A] bg-green-500/20',
-      border: 'border-l-4 border-l-green-500 border-green-500/30 border-gray-800 border-green-500/30',
+      bg: 'glass-effect bg-green-500/20',
+      border: 'border-l-4 border-l-green-500 border-green-500/30',
       text: 'text-gray-300 text-green-200',
       icon: 'text-green-500 text-green-400',
     },
     error: {
-      bg: 'glass-effect bg-[#13131A] bg-red-500/20',
-      border: 'border-l-4 border-l-red-500 border-red-500/30 border-gray-800 border-red-500/30',
+      bg: 'glass-effect bg-red-500/20',
+      border: 'border-l-4 border-l-red-500 border-red-500/30',
       text: 'text-gray-300 text-red-200',
       icon: 'text-red-500 text-red-400',
     },
     warning: {
-      bg: 'glass-effect bg-[#13131A] bg-yellow-500/20',
-      border: 'border-l-4 border-l-yellow-500 border-yellow-500/30 border-gray-800 border-yellow-500/30',
+      bg: 'glass-effect bg-yellow-500/20',
+      border: 'border-l-4 border-l-yellow-500 border-yellow-500/30',
       text: 'text-gray-300 text-yellow-200',
       icon: 'text-yellow-500 text-yellow-400',
     },
     info: {
-      bg: 'glass-effect bg-[#13131A] bg-blue-500/20',
-      border: 'border-l-4 border-l-blue-500 border-blue-500/30 border-gray-800 border-blue-500/30',
+      bg: 'glass-effect bg-blue-500/20',
+      border: 'border-l-4 border-l-blue-500 border-blue-500/30',
       text: 'text-gray-300 text-blue-200',
       icon: 'text-blue-500 text-blue-400',
     },
