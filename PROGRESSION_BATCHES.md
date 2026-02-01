@@ -367,15 +367,25 @@
 
 **Progression:** 6/6 (100%) ✅ COMPLÉTÉ
 
+### Batch 28: Features Standards - Monitoring Components Part 2 (2 composants)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `12d7980` - feat(ui): Batch 28 - Alignement composants Monitoring Part 2
+
+- [x] `monitoring/LogsViewer.tsx` - Card glass, form-input-glow pour search, log entries avec glass-effect ✅
+- [x] `monitoring/PerformanceProfiler.tsx` - Card glass, gradient button pour start profiling, profile items dark ✅
+
+**Progression:** 2/2 (100%) ✅ COMPLÉTÉ
+
 ---
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 27
-- **Composants modifiés:** 134/357+ (37.5%)
+- **Batches complétés:** 28
+- **Composants modifiés:** 136/357+ (38.1%)
 - **Phase 1 (UI fondamentaux):** 82/91 composants (90%)
 - **Phase 2 (Layout):** 12/14 composants (86%) - **PHASE 2 TERMINÉE** ✅
-- **Phase 3 (Features):** 41/252+ composants (16.3%) - **EN COURS** 🔄
+- **Phase 3 (Features):** 43/252+ composants (17.1%) - **EN COURS** 🔄
 - **Dernière mise à jour:** 2026-02-01
 
 ---
