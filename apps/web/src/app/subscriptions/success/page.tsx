@@ -49,11 +49,11 @@ function SubscriptionSuccessContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 from-[#0A0A0F] to-[#1C1C26] flex items-center justify-center px-4">
       <Card className="w-full max-w-2xl">
         <div className="p-8 text-center">
           {/* Success Icon */}
-          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-success-100 dark:bg-success-900 mb-6">
+          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-success-100 bg-green-500/20 mb-6">
             <svg
               className="h-8 w-8 text-success-600"
               fill="none"
@@ -86,14 +86,14 @@ function SubscriptionSuccessContent() {
                 <span className="font-medium text-foreground">{planName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Période:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="text-gray-600 text-gray-400">Période:</span>
+                <span className="font-medium text-gray-900 text-gray-300">
                   {billingPeriod === 'month' ? 'Mensuel' : 'Annuel'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Statut:</span>
-                <span className="font-medium text-success-600 dark:text-success-400">Actif</span>
+                <span className="text-gray-600 text-gray-400">Statut:</span>
+                <span className="font-medium text-success-600 text-green-400">Actif</span>
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function SubscriptionSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-br from-success-50 to-success-100 dark:from-muted dark:to-muted flex items-center justify-center px-4">
+        <div className="min-h-screen bg-gradient-to-br from-success-50 to-success-100 from-[#1C1C26] to-[#1C1C26] flex items-center justify-center px-4">
           <Card className="w-full max-w-2xl">
             <div className="p-8 text-center">
               <Loading />

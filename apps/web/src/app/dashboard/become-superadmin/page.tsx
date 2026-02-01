@@ -169,17 +169,17 @@ function BecomeSuperAdminContent() {
         <Section title="Méthode Bootstrap (Premier Superadmin)">
           <Card>
             <div className="space-y-4">
-              <div className="p-4 bg-info-50 dark:bg-info-900/20 rounded-lg border border-info-200 dark:border-info-800">
+              <div className="p-4 bg-blue-500/20 rounded-lg border border-blue-500/30">
                 <div className="flex items-start gap-3">
-                  <Key className="w-5 h-5 text-info-600 dark:text-info-400 flex-shrink-0 mt-0.5" />
+                  <Key className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-info-900 dark:text-info-100 mb-1">
+                    <h4 className="font-semibold text-blue-300 mb-1">
                       Créer le premier Superadmin
                     </h4>
-                    <p className="text-sm text-info-800 dark:text-info-200">
+                    <p className="text-sm text-blue-200">
                       Utilisez cette méthode si aucun superadmin n'existe encore dans le système.
                       Vous devez définir la variable d'environnement{' '}
-                      <code className="bg-info-100 dark:bg-info-900/40 px-1 rounded">
+                      <code className="bg-blue-500/20 px-1 rounded">
                         BOOTSTRAP_SUPERADMIN_KEY
                       </code>{' '}
                       dans votre backend.
@@ -236,14 +236,14 @@ function BecomeSuperAdminContent() {
         <Section title="Méthode Standard (Nécessite un Superadmin existant)">
           <Card>
             <div className="space-y-4">
-              <div className="p-4 bg-warning-50 dark:bg-warning-900/20 rounded-lg border border-warning-200 dark:border-warning-800">
+              <div className="p-4 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
                 <div className="flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-warning-600 dark:text-warning-400 flex-shrink-0 mt-0.5" />
+                  <Shield className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-warning-900 dark:text-warning-100 mb-1">
+                    <h4 className="font-semibold text-yellow-300 mb-1">
                       Créer un Superadmin
                     </h4>
-                    <p className="text-sm text-warning-800 dark:text-warning-200">
+                    <p className="text-sm text-yellow-200">
                       Cette méthode nécessite que vous soyez déjà connecté en tant que superadmin.
                       Si vous n'êtes pas encore superadmin, utilisez la méthode Bootstrap ci-dessus.
                     </p>
@@ -283,7 +283,7 @@ function BecomeSuperAdminContent() {
           <Card>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 text-gray-300 mb-2">
                   <Mail className="w-4 h-4 inline mr-1" />
                   Email de l'utilisateur à vérifier
                 </label>
@@ -310,26 +310,26 @@ function BecomeSuperAdminContent() {
 
         {/* Messages */}
         {error && (
-          <Card className="border-error-200 dark:border-error-800 bg-error-50 dark:bg-error-900/20">
+          <Card className="border-red-500/30 bg-red-500/20">
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-error-600 dark:text-error-400" />
+              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-red-400" />
               <div>
-                <h4 className="font-semibold mb-1 text-error-900 dark:text-error-100">Erreur</h4>
-                <p className="text-sm text-error-800 dark:text-error-200">{error}</p>
+                <h4 className="font-semibold mb-1 text-red-300">Erreur</h4>
+                <p className="text-sm text-red-200">{error}</p>
               </div>
             </div>
           </Card>
         )}
 
         {success && (
-          <Card className="border-success-200 dark:border-success-800 bg-success-50 dark:bg-success-900/20">
+          <Card className="border-green-500/30 bg-green-500/20">
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-success-600 dark:text-success-400" />
+              <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-green-400" />
               <div>
-                <h4 className="font-semibold mb-1 text-success-900 dark:text-success-100">
+                <h4 className="font-semibold mb-1 text-green-300">
                   Succès
                 </h4>
-                <p className="text-sm text-success-800 dark:text-success-200">{success}</p>
+                <p className="text-sm text-green-200">{success}</p>
               </div>
             </div>
           </Card>

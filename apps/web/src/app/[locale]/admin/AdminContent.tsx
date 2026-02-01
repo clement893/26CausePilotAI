@@ -129,8 +129,8 @@ export default function AdminContent() {
       <MotionDiv variant="slideUp" delay={300} className="mt-8">
         <Card className="hover:shadow-xl transition-all duration-300">
           <div className="flex items-center gap-4 mb-6">
-            <div className="p-3 bg-info-100 dark:bg-info-900/30 rounded-lg">
-              <Sparkles className="w-6 h-6 text-info-600 dark:text-info-400" />
+            <div className="p-3 bg-blue-500/20 rounded-lg">
+              <Sparkles className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h3 className="text-xl font-semibold text-foreground">Service Tests</h3>
@@ -290,25 +290,25 @@ export default function AdminContent() {
 
       <Section title="Statut du système" className="mt-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 border rounded-lg bg-secondary-100 dark:bg-secondary-900 border-secondary-200 dark:border-secondary-800">
+          <div className="p-4 border rounded-lg bg-green-500/20 border-green-500/30">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-secondary-900 dark:text-secondary-100">
+              <span className="text-sm font-medium text-green-300">
                 API Backend
               </span>
               <Badge variant="success">En ligne</Badge>
             </div>
           </div>
-          <div className="p-4 border rounded-lg bg-secondary-100 dark:bg-secondary-900 border-secondary-200 dark:border-secondary-800">
+          <div className="p-4 border rounded-lg bg-green-500/20 border-green-500/30">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-secondary-900 dark:text-secondary-100">
+              <span className="text-sm font-medium text-green-300">
                 Base de données
               </span>
               <Badge variant="success">Connectée</Badge>
             </div>
           </div>
-          <div className="p-4 border rounded-lg bg-secondary-100 dark:bg-secondary-900 border-secondary-200 dark:border-secondary-800">
+          <div className="p-4 border rounded-lg bg-green-500/20 border-green-500/30">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-secondary-900 dark:text-secondary-100">
+              <span className="text-sm font-medium text-green-300">
                 Services
               </span>
               <Badge variant="success">Opérationnels</Badge>

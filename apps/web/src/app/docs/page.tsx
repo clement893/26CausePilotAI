@@ -97,7 +97,7 @@ function DocsContent() {
                 <li key={linkIndex}>
                   <a
                     href={link.href}
-                    className="text-info-600 dark:text-info-400 hover:underline text-sm"
+                    className="text-info-600 text-blue-400 hover:underline text-sm"
                   >
                     {link.title}
                   </a>
@@ -151,7 +151,7 @@ function DocsContent() {
         <p className="text-muted-foreground mb-4">
           Exemples d'utilisation de l'API REST avec différents langages de programmation.
         </p>
-        <div className="bg-gray-900 dark:bg-gray-800 text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-gray-700">
+        <div className="bg-gray-900 bg-[#1C1C26] text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-gray-700">
           <code>
             {`// Exemple avec fetch
 const response = await fetch('/api/v1/users', {
@@ -279,7 +279,7 @@ const data = await response.json();`}
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Repository GitHub
                 </a>
@@ -292,7 +292,7 @@ const data = await response.json();`}
               <li>
                 <Link
                   href="/dashboard"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Tableau de bord
                 </Link>
@@ -307,7 +307,7 @@ const data = await response.json();`}
                   href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/clement893/26CausePilotAI'}/issues`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Signaler un problème
                 </a>
@@ -317,7 +317,7 @@ const data = await response.json();`}
                   href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/clement893/26CausePilotAI'}/discussions`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Discussions
                 </a>
