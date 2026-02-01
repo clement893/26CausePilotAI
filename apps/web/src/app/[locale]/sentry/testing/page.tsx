@@ -372,13 +372,13 @@ function SentryTestContent() {
       </Card>
 
       {/* Where to Find Errors */}
-      <Card className="bg-info-50 dark:bg-info-900/20 border-info-200 dark:border-info-800">
-        <h2 className="text-xl font-semibold mb-4 text-info-900 dark:text-info-100">
+      <Card className="bg-info-50 bg-blue-500/20 border-info-200 border-blue-500/30">
+        <h2 className="text-xl font-semibold mb-4 text-info-900 text-blue-300">
           📊 Où trouver vos erreurs dans Sentry
         </h2>
-        <div className="space-y-4 text-sm text-info-800 dark:text-info-200">
+        <div className="space-y-4 text-sm text-info-800 text-blue-200">
           <div>
-            <h3 className="font-semibold mb-2 text-info-900 dark:text-info-100">
+            <h3 className="font-semibold mb-2 text-info-900 text-blue-300">
               Section principale : <strong>Issues</strong>
             </h3>
             <ol className="list-decimal list-inside ml-2 space-y-1">
@@ -405,7 +405,7 @@ function SentryTestContent() {
             </ol>
           </div>
           <div>
-            <h3 className="font-semibold mb-2 text-info-900 dark:text-info-100">
+            <h3 className="font-semibold mb-2 text-info-900 text-blue-300">
               Filtres utiles :
             </h3>
             <ul className="list-disc list-inside ml-2 space-y-1">
@@ -424,35 +424,35 @@ function SentryTestContent() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-2 text-info-900 dark:text-info-100">
+            <h3 className="font-semibold mb-2 text-info-900 text-blue-300">
               ⚠️ Important en développement :
             </h3>
             <p className="ml-2">
               Ajoutez{' '}
-              <code className="bg-info-100 dark:bg-info-900 px-1 rounded">
+              <code className="bg-info-100 bg-blue-500/20 px-1 rounded">
                 NEXT_PUBLIC_SENTRY_ENABLE_DEV=true
               </code>{' '}
               dans votre{' '}
-              <code className="bg-info-100 dark:bg-info-900 px-1 rounded">.env.local</code> et{' '}
+              <code className="bg-info-100 bg-blue-500/20 px-1 rounded">.env.local</code> et{' '}
               <strong>redémarrez le serveur</strong>.
             </p>
           </div>
           <div>
-            <h3 className="font-semibold mb-2 text-info-900 dark:text-info-100">
+            <h3 className="font-semibold mb-2 text-info-900 text-blue-300">
               🔍 Vérifier l'envoi :
             </h3>
             <p className="ml-2">
               Ouvrez les DevTools (F12) → Onglet <strong>Network</strong> → Filtrez par "sentry" →
               Vous devriez voir une requête POST vers{' '}
-              <code className="bg-info-100 dark:bg-info-900 px-1 rounded">*.ingest.sentry.io</code>{' '}
+              <code className="bg-info-100 bg-blue-500/20 px-1 rounded">*.ingest.sentry.io</code>{' '}
               avec un status 200.
             </p>
           </div>
-          <div className="pt-2 border-t border-info-200 dark:border-info-700">
+          <div className="pt-2 border-t border-info-200 border-blue-500/30">
             <p className="text-xs">
               💡 <strong>Astuce</strong> : Les erreurs peuvent prendre 5-10 secondes à apparaître
               dans Sentry. Consultez{' '}
-              <code className="bg-info-100 dark:bg-info-900 px-1 rounded">
+              <code className="bg-info-100 bg-blue-500/20 px-1 rounded">
                 SENTRY_DASHBOARD_GUIDE.md
               </code>{' '}
               pour plus de détails.
