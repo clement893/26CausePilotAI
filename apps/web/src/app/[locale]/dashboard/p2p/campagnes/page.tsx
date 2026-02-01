@@ -9,7 +9,7 @@ import { Container, Button, useToast } from '@/components/ui';
 import { Plus, Target } from 'lucide-react';
 import { useOrganization } from '@/hooks/useOrganization';
 import { listP2PCampaigns, deleteP2PCampaign } from '@/app/actions/p2p';
-// import { P2PCampaignList } from '@/components/p2p/P2PCampaignList';
+// import { P2PCampaignList } from '@/components/p2p';
 import { LoadingSkeleton } from '@/components/ui';
 import { logger } from '@/lib/logger';
 
@@ -125,14 +125,33 @@ export default function P2PCampagnesPage() {
         </Button>
       </div>
 
-      <P2PCampaignList
-        campaigns={campaigns}
-        isLoading={isLoading}
-        onCreateClick={handleCreate}
-        onCampaignClick={handleCampaignClick}
-        onCampaignEdit={handleCampaignEdit}
-        onCampaignDelete={handleCampaignDelete}
-      />
+      {campaigns.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {campaigns.map((campaign) => (
+            <div key={campaign.id} className="p-4 border border-white/10 rounded-lg bg-white/5">
+              <h3 className="text-lg font-semibold text-white mb-2">{campaign.name}</h3>
+              <p className="text-sm text-gray-400 mb-4">{campaign.description || 'Aucune description'}</p>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => handleCampaignClick(campaign.id)}>
+                  Voir
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleCampaignEdit(campaign.id)}>
+                  Modifier
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Card>
+          <div className="text-center py-12">
+            <p className="text-gray-400">Aucune campagne trouvée</p>
+            <Button variant="primary" onClick={handleCreate} className="mt-4">
+              Créer votre première campagne
+            </Button>
+          </div>
+        </Card>
+      )}
     </Container>
   );
 }
