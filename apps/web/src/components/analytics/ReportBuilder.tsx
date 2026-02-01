@@ -79,18 +79,14 @@ export default function ReportBuilder({
   };
   const selectedFields = config.fields.filter((f) => f.selected);
   return (
-    <Card className={clsx('bg-background', className)}>
-      {' '}
+    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
       <div className="space-y-6">
-        {' '}
-        {/* Report Info */}{' '}
+        {/* Report Info */}
         <div className="space-y-4">
-          {' '}
           <div className="flex items-center gap-2 mb-4">
-            {' '}
-            <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400" />{' '}
-            <h3 className="text-lg font-semibold text-foreground"> Report Builder </h3>{' '}
-          </div>{' '}
+            <FileText className="w-5 h-5 text-blue-400 dark:text-primary-400" />
+            <h3 className="text-lg font-semibold text-white dark:text-foreground">Report Builder</h3>
+          </div>
           <Input
             label="Report Name"
             value={config.name}
@@ -105,14 +101,12 @@ export default function ReportBuilder({
             placeholder="Describe what this report shows"
           />{' '}
         </div>{' '}
-        {/* Date Range */}{' '}
+        {/* Date Range */}
         <div className="space-y-4">
-          {' '}
           <div className="flex items-center gap-2 mb-2">
-            {' '}
-            <Calendar className="w-4 h-4 text-muted-foreground" />{' '}
-            <label className="text-sm font-medium text-foreground"> Date Range </label>{' '}
-          </div>{' '}
+            <Calendar className="w-4 h-4 text-gray-500 dark:text-muted-foreground" />
+            <label className="text-sm font-medium text-white dark:text-foreground">Date Range</label>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             {' '}
             <Input
@@ -131,48 +125,41 @@ export default function ReportBuilder({
             />{' '}
           </div>{' '}
         </div>{' '}
-        {/* Fields Selection */}{' '}
+        {/* Fields Selection */}
         <div className="space-y-4">
-          {' '}
-          <label className="block text-sm font-medium text-foreground"> Select Fields </label>{' '}
-          <div className="space-y-3 max-h-64 overflow-y-auto border border-border rounded-lg p-4">
-            {' '}
+          <label className="block text-sm font-medium text-white dark:text-foreground">Select Fields</label>
+          <div className="space-y-3 max-h-64 overflow-y-auto border border-gray-800 dark:border-border rounded-lg p-4 custom-scrollbar glass-effect bg-[#1C1C26] dark:bg-background">
             {config.fields.map((field) => (
               <div
                 key={field.id}
-                className="flex items-center justify-between p-2 hover:bg-muted dark:hover:bg-background rounded-lg"
+                className="flex items-center justify-between p-2 hover:bg-[#252532] dark:hover:bg-muted rounded-lg"
               >
-                {' '}
                 <div className="flex items-center gap-3">
-                  {' '}
                   <Checkbox
                     checked={field.selected}
                     onChange={() => handleFieldToggle(field.id)}
-                  />{' '}
+                  />
                   <div>
-                    {' '}
-                    <div className="text-sm font-medium text-foreground"> {field.name} </div>{' '}
-                    <div className="text-xs text-muted-foreground"> {field.type} </div>{' '}
-                  </div>{' '}
-                </div>{' '}
+                    <div className="text-sm font-medium text-white dark:text-foreground">{field.name}</div>
+                    <div className="text-xs text-gray-400 dark:text-muted-foreground">{field.type}</div>
+                  </div>
+                </div>
                 <Badge
                   variant={
                     field.type === 'metric' ? 'info' : field.type === 'date' ? 'warning' : 'default'
                   }
                 >
-                  {' '}
-                  {field.type}{' '}
-                </Badge>{' '}
+                  {field.type}
+                </Badge>
               </div>
-            ))}{' '}
-          </div>{' '}
+            ))}
+          </div>
           {selectedFields.length > 0 && (
-            <div className="text-sm text-muted-foreground">
-              {' '}
-              {selectedFields.length} field{selectedFields.length !== 1 ? 's' : ''} selected{' '}
+            <div className="text-sm text-gray-400 dark:text-muted-foreground">
+              {selectedFields.length} field{selectedFields.length !== 1 ? 's' : ''} selected
             </div>
-          )}{' '}
-        </div>{' '}
+          )}
+        </div>
         {/* Grouping & Sorting */}{' '}
         {selectedFields.length > 0 && (
           <div className="grid grid-cols-2 gap-4">
@@ -208,33 +195,30 @@ export default function ReportBuilder({
             setConfig({ ...config, format: e.target.value as 'table' | 'chart' | 'both' })
           }
         />{' '}
-        {/* Actions */}{' '}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
-          {' '}
+        {/* Actions */}
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800 dark:border-border">
           {onPreview && (
             <Button
               variant="outline"
               onClick={() => onPreview(config)}
               disabled={!config.name.trim() || selectedFields.length === 0}
+              className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
             >
-              {' '}
-              Preview{' '}
+              Preview
             </Button>
-          )}{' '}
+          )}
           <Button
-            variant="primary"
+            variant="gradient"
             onClick={handleSave}
             loading={loading}
             disabled={!config.name.trim() || selectedFields.length === 0}
           >
-            {' '}
             <span className="flex items-center gap-2">
-              {' '}
-              <Save className="w-4 h-4" /> Save Report{' '}
-            </span>{' '}
-          </Button>{' '}
-        </div>{' '}
-      </div>{' '}
+              <Save className="w-4 h-4" /> Save Report
+            </span>
+          </Button>
+        </div>
+      </div>
     </Card>
   );
 }

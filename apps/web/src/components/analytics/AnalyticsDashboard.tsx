@@ -139,8 +139,8 @@ export default function AnalyticsDashboard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Analytics Dashboard</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h2 className="text-2xl font-bold text-white dark:text-foreground">Analytics Dashboard</h2>
+          <p className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
             Track your business metrics and performance
           </p>
         </div>
@@ -174,11 +174,11 @@ export default function AnalyticsDashboard({
               }
             }}
             className={clsx(
-              'px-4 py-2 border rounded-lg text-sm',
-              'bg-background',
-              'text-foreground',
-              'border-border',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+              'px-4 py-2 border rounded-lg text-sm form-input-glow',
+              'bg-[#1C1C26] dark:bg-background',
+              'text-white dark:text-foreground',
+              'border-gray-700 dark:border-border',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
             )}
           >
             {periodOptions.map((option) => (
@@ -188,7 +188,7 @@ export default function AnalyticsDashboard({
             ))}
           </select>
           {onExport && (
-            <Button variant="outline" onClick={onExport}>
+            <Button variant="outline" onClick={onExport} className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
               <span className="flex items-center gap-2">
                 <Download className="w-4 h-4" />
                 Export
@@ -201,37 +201,37 @@ export default function AnalyticsDashboard({
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {displayMetrics.map((metric, index) => (
-          <Card key={index} className="bg-background">
+          <Card key={index} variant="glass" className="border border-gray-800 dark:border-border hover-lift">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   {metric.icon && (
-                    <div className="text-primary-600 dark:text-primary-400">{metric.icon}</div>
+                    <div className="text-blue-400 dark:text-primary-400">{metric.icon}</div>
                   )}
-                  <span className="text-sm font-medium text-muted-foreground">{metric.label}</span>
+                  <span className="text-sm font-medium text-gray-400 dark:text-muted-foreground">{metric.label}</span>
                 </div>
-                <div className="text-2xl font-bold text-foreground mb-1">
+                <div className="text-2xl font-bold text-white dark:text-foreground mb-1">
                   {formatValue(metric.value, metric.format)}
                 </div>
                 {metric.change !== undefined && (
                   <div className="flex items-center gap-1">
                     {metric.changeType === 'increase' ? (
-                      <TrendingUp className="w-4 h-4 text-success-600 dark:text-success-400" />
+                      <TrendingUp className="w-4 h-4 text-green-400 dark:text-success-400" />
                     ) : (
-                      <TrendingDown className="w-4 h-4 text-error-600 dark:text-error-400" />
+                      <TrendingDown className="w-4 h-4 text-red-400 dark:text-error-400" />
                     )}
                     <span
                       className={clsx(
                         'text-sm font-medium',
                         metric.changeType === 'increase'
-                          ? 'text-success-600 dark:text-success-400'
-                          : 'text-error-600 dark:text-error-400'
+                          ? 'text-green-400 dark:text-success-400'
+                          : 'text-red-400 dark:text-error-400'
                       )}
                     >
                       {Math.abs(metric.change)}%{' '}
                       {metric.changeType === 'increase' ? 'increase' : 'decrease'}
                     </span>
-                    <span className="text-sm text-muted-foreground">vs last period</span>
+                    <span className="text-sm text-gray-400 dark:text-muted-foreground">vs last period</span>
                   </div>
                 )}
               </div>
@@ -242,16 +242,16 @@ export default function AnalyticsDashboard({
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card title="Revenue Trend" className="bg-background">
+        <Card variant="glass" title="Revenue Trend" className="border border-gray-800 dark:border-border">
           <Chart type="line" data={revenueData} title="Revenue" height={250} />
         </Card>
-        <Card title="User Growth" className="bg-background">
+        <Card variant="glass" title="User Growth" className="border border-gray-800 dark:border-border">
           <Chart type="bar" data={userGrowthData} title="Active Users" height={250} />
         </Card>
       </div>
 
       {/* Additional Analytics */}
-      <Card title="Traffic Sources" className="bg-background">
+      <Card variant="glass" title="Traffic Sources" className="border border-gray-800 dark:border-border">
         <div className="space-y-4">
           {[
             { source: 'Direct', visitors: 45230, percentage: 45 },
@@ -261,14 +261,14 @@ export default function AnalyticsDashboard({
           ].map((item, index) => (
             <div key={index} className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-foreground">{item.source}</span>
-                <span className="text-muted-foreground">
+                <span className="font-medium text-white dark:text-foreground">{item.source}</span>
+                <span className="text-gray-400 dark:text-muted-foreground">
                   {item.visitors.toLocaleString()} ({item.percentage}%)
                 </span>
               </div>
-              <div className="w-full bg-muted rounded-full h-2">
+              <div className="w-full bg-[#1C1C26] dark:bg-muted rounded-full h-2">
                 <div
-                  className="bg-primary-600 dark:bg-primary-500 h-2 rounded-full transition-all"
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all"
                   style={{ width: `${item.percentage}%` }}
                 />
               </div>

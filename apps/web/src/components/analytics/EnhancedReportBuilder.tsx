@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { clsx } from 'clsx';
 import { Plus, Trash2, Save, BarChart3, PieChart, LineChart, Table } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -73,13 +74,10 @@ export function EnhancedReportBuilder({
   };
   return (
     <div className={`space-y-6 ${className}`}>
-      {' '}
-      {/* Basic Info */}{' '}
-      <Card>
-        {' '}
-        <h3 className="text-lg font-semibold mb-4">Report Configuration</h3>{' '}
+      {/* Basic Info */}
+      <Card variant="glass" className="border border-gray-800 dark:border-border">
+        <h3 className="text-lg font-semibold mb-4 text-white dark:text-foreground">Report Configuration</h3>
         <div className="space-y-4">
-          {' '}
           <Input
             label="Report Name"
             value={config.name}
@@ -88,13 +86,11 @@ export function EnhancedReportBuilder({
             }
             placeholder="e.g., Monthly Sales Report"
             required
-          />{' '}
+          />
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-1">
-              {' '}
-              Description{' '}
-            </label>{' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-1">
+              Description
+            </label>
             <textarea
               value={config.description || ''}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -102,9 +98,9 @@ export function EnhancedReportBuilder({
               }
               placeholder="Describe what this report shows..."
               rows={2}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background"
-            />{' '}
-          </div>{' '}
+              className="w-full px-3 py-2 border border-gray-700 dark:border-border rounded-lg bg-[#1C1C26] dark:bg-background text-white dark:text-foreground form-input-glow"
+            />
+          </div>
           <Input
             label="Data Source"
             value={config.dataSource}
@@ -113,20 +109,17 @@ export function EnhancedReportBuilder({
             }
             placeholder="e.g., /api/v1/projects"
             required
-          />{' '}
-        </div>{' '}
-      </Card>{' '}
-      {/* Filters */}{' '}
-      <Card>
-        {' '}
+          />
+        </div>
+      </Card>
+      {/* Filters */}
+      <Card variant="glass" className="border border-gray-800 dark:border-border">
         <div className="flex items-center justify-between mb-4">
-          {' '}
-          <h3 className="text-lg font-semibold">Filters</h3>{' '}
-          <Button variant="outline" size="sm" onClick={addFilter}>
-            {' '}
-            <Plus className="h-4 w-4 mr-2" /> Add Filter{' '}
-          </Button>{' '}
-        </div>{' '}
+          <h3 className="text-lg font-semibold text-white dark:text-foreground">Filters</h3>
+          <Button variant="outline" size="sm" onClick={addFilter} className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+            <Plus className="h-4 w-4 mr-2" /> Add Filter
+          </Button>
+        </div>
         <div className="space-y-3">
           {' '}
           {config.filters.map((filter, index) => (
@@ -142,25 +135,23 @@ export function EnhancedReportBuilder({
                 className="flex-1"
               />{' '}
               <div className="flex-1">
-                {' '}
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  {' '}
-                  Operator{' '}
-                </label>{' '}
+                <label className="block text-sm font-medium text-white dark:text-foreground mb-1">
+                  Operator
+                </label>
                 <select
                   value={filter.operator}
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                     updateFilter(index, { operator: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                  className="w-full px-3 py-2 border border-gray-700 dark:border-border rounded-lg bg-[#1C1C26] dark:bg-background text-white dark:text-foreground form-input-glow"
                 >
-                  {' '}
-                  <option value="equals">Equals</option> <option value="contains">Contains</option>{' '}
-                  <option value="gte">Greater than or equal</option>{' '}
-                  <option value="lte">Less than or equal</option>{' '}
-                  <option value="in">In list</option>{' '}
-                </select>{' '}
-              </div>{' '}
+                  <option value="equals">Equals</option>
+                  <option value="contains">Contains</option>
+                  <option value="gte">Greater than or equal</option>
+                  <option value="lte">Less than or equal</option>
+                  <option value="in">In list</option>
+                </select>
+              </div>
               <Input
                 label="Value"
                 value={String(filter.value || '')}
@@ -169,32 +160,28 @@ export function EnhancedReportBuilder({
                 }
                 placeholder="Filter value"
                 className="flex-1"
-              />{' '}
+              />
               <button
                 onClick={() => removeFilter(index)}
-                className="p-2 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                className="p-2 hover:bg-red-500/20 dark:hover:bg-error-900/20 rounded text-red-400 dark:text-error-500"
               >
-                {' '}
-                <Trash2 className="h-4 w-4" />{' '}
-              </button>{' '}
+                <Trash2 className="h-4 w-4" />
+              </button>
             </div>
-          ))}{' '}
+          ))}
           {config.filters.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">No filters added</p>
-          )}{' '}
-        </div>{' '}
-      </Card>{' '}
-      {/* Aggregations */}{' '}
-      <Card>
-        {' '}
+            <p className="text-sm text-gray-400 dark:text-muted-foreground text-center py-4">No filters added</p>
+          )}
+        </div>
+      </Card>
+      {/* Aggregations */}
+      <Card variant="glass" className="border border-gray-800 dark:border-border">
         <div className="flex items-center justify-between mb-4">
-          {' '}
-          <h3 className="text-lg font-semibold">Aggregations</h3>{' '}
-          <Button variant="outline" size="sm" onClick={addAggregation}>
-            {' '}
-            <Plus className="h-4 w-4 mr-2" /> Add Aggregation{' '}
-          </Button>{' '}
-        </div>{' '}
+          <h3 className="text-lg font-semibold text-white dark:text-foreground">Aggregations</h3>
+          <Button variant="outline" size="sm" onClick={addAggregation} className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+            <Plus className="h-4 w-4 mr-2" /> Add Aggregation
+          </Button>
+        </div>
         <div className="space-y-3">
           {' '}
           {config.aggregations.map((agg, index) => (
@@ -210,11 +197,9 @@ export function EnhancedReportBuilder({
                 className="flex-1"
               />{' '}
               <div className="flex-1">
-                {' '}
-                <label className="block text-sm font-medium text-foreground mb-1">
-                  {' '}
-                  Function{' '}
-                </label>{' '}
+                <label className="block text-sm font-medium text-white dark:text-foreground mb-1">
+                  Function
+                </label>
                 <select
                   value={agg.function}
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -222,14 +207,15 @@ export function EnhancedReportBuilder({
                       function: e.target.value as ReportConfig['aggregations'][0]['function'],
                     })
                   }
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                  className="w-full px-3 py-2 border border-gray-700 dark:border-border rounded-lg bg-[#1C1C26] dark:bg-background text-white dark:text-foreground form-input-glow"
                 >
-                  {' '}
-                  <option value="sum">Sum</option> <option value="avg">Average</option>{' '}
-                  <option value="count">Count</option> <option value="min">Min</option>{' '}
-                  <option value="max">Max</option>{' '}
-                </select>{' '}
-              </div>{' '}
+                  <option value="sum">Sum</option>
+                  <option value="avg">Average</option>
+                  <option value="count">Count</option>
+                  <option value="min">Min</option>
+                  <option value="max">Max</option>
+                </select>
+              </div>
               <Input
                 label="Alias (optional)"
                 value={agg.alias || ''}
@@ -238,62 +224,60 @@ export function EnhancedReportBuilder({
                 }
                 placeholder="Display name"
                 className="flex-1"
-              />{' '}
+              />
               <button
                 onClick={() => removeAggregation(index)}
-                className="p-2 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                className="p-2 hover:bg-red-500/20 dark:hover:bg-error-900/20 rounded text-red-400 dark:text-error-500"
               >
-                {' '}
-                <Trash2 className="h-4 w-4" />{' '}
-              </button>{' '}
+                <Trash2 className="h-4 w-4" />
+              </button>
             </div>
-          ))}{' '}
+          ))}
           {config.aggregations.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">No aggregations added</p>
-          )}{' '}
-        </div>{' '}
-      </Card>{' '}
-      {/* Chart Type */}{' '}
-      <Card>
-        {' '}
-        <h3 className="text-lg font-semibold mb-4">Visualization</h3>{' '}
+            <p className="text-sm text-gray-400 dark:text-muted-foreground text-center py-4">No aggregations added</p>
+          )}
+        </div>
+      </Card>
+      {/* Chart Type */}
+      <Card variant="glass" className="border border-gray-800 dark:border-border">
+        <h3 className="text-lg font-semibold mb-4 text-white dark:text-foreground">Visualization</h3>
         <div className="grid grid-cols-4 gap-2">
-          {' '}
           {(['bar', 'line', 'pie', 'table'] as const).map((type) => (
             <button
               key={type}
               onClick={() => setConfig({ ...config, chartType: type })}
-              className={`p-4 border rounded-lg flex flex-col items-center gap-2 ${config.chartType === type ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-border'}`}
+              className={clsx(
+                'p-4 border rounded-lg flex flex-col items-center gap-2 transition-all hover-lift',
+                config.chartType === type
+                  ? 'border-blue-500 dark:border-primary-400 glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/20'
+                  : 'border-gray-700 dark:border-border hover:border-gray-600 dark:hover:border-gray-600',
+                'bg-[#1C1C26] dark:bg-background'
+              )}
             >
-              {' '}
-              {type === 'bar' && <BarChart3 className="h-6 w-6" />}{' '}
-              {type === 'line' && <LineChart className="h-6 w-6" />}{' '}
-              {type === 'pie' && <PieChart className="h-6 w-6" />}{' '}
-              {type === 'table' && <Table className="h-6 w-6" />}{' '}
-              <span className="text-xs capitalize">{type}</span>{' '}
+              {type === 'bar' && <BarChart3 className="h-6 w-6 text-blue-400 dark:text-primary-400" />}
+              {type === 'line' && <LineChart className="h-6 w-6 text-blue-400 dark:text-primary-400" />}
+              {type === 'pie' && <PieChart className="h-6 w-6 text-blue-400 dark:text-primary-400" />}
+              {type === 'table' && <Table className="h-6 w-6 text-blue-400 dark:text-primary-400" />}
+              <span className="text-xs capitalize text-white dark:text-foreground">{type}</span>
             </button>
-          ))}{' '}
-        </div>{' '}
-      </Card>{' '}
-      {/* Export */}{' '}
+          ))}
+        </div>
+      </Card>
+      {/* Export */}
       {reportData.length > 0 && (
-        <Card>
-          {' '}
+        <Card variant="glass" className="border border-gray-800 dark:border-border">
           <div className="flex items-center justify-between">
-            {' '}
-            <h3 className="text-lg font-semibold">Export Report</h3>{' '}
-            <DataExporter data={reportData} filename={config.name} />{' '}
-          </div>{' '}
+            <h3 className="text-lg font-semibold text-white dark:text-foreground">Export Report</h3>
+            <DataExporter data={reportData} filename={config.name} />
+          </div>
         </Card>
-      )}{' '}
-      {/* Save Button */}{' '}
+      )}
+      {/* Save Button */}
       <div className="flex justify-end">
-        {' '}
-        <Button variant="primary" onClick={handleSave}>
-          {' '}
-          <Save className="h-4 w-4 mr-2" /> Save Report Configuration{' '}
-        </Button>{' '}
-      </div>{' '}
+        <Button variant="gradient" onClick={handleSave}>
+          <Save className="h-4 w-4 mr-2" /> Save Report Configuration
+        </Button>
+      </div>
     </div>
   );
 }
