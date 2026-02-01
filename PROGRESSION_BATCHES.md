@@ -402,15 +402,27 @@
 
 **Progression:** 5/5 (100%) ✅ COMPLÉTÉ
 
+### Batch 31: Features Standards - Content Components Part 2 (4 composants)
+**Statut:** ✅ COMPLÉTÉ  
+**Priorité:** MOYENNE ⭐  
+**Commit:** `f3ab2b8` - feat(ui): Batch 31 - Alignement composants Content Part 2
+
+- [x] `content/CategoriesManager.tsx` - Card glass, gradient buttons, form-input-glow pour inputs, dark selects ✅
+- [x] `content/TagsManager.tsx` - Card glass, gradient buttons, form-input-glow pour inputs, dark selects ✅
+- [x] `content/TemplatesManager.tsx` - Card glass, gradient buttons, form-input-glow pour inputs, dark selects et checkboxes ✅
+- [x] `content/ScheduledContentManager.tsx` - Card glass, gradient buttons, form-input-glow pour inputs, dark selects ✅
+
+**Progression:** 4/4 (100%) ✅ COMPLÉTÉ
+
 ---
 
 ## 📈 Statistiques Globales
 
-- **Batches complétés:** 30
-- **Composants modifiés:** 145/357+ (40.6%)
+- **Batches complétés:** 31
+- **Composants modifiés:** 149/357+ (41.7%)
 - **Phase 1 (UI fondamentaux):** 82/91 composants (90%)
 - **Phase 2 (Layout):** 12/14 composants (86%) - **PHASE 2 TERMINÉE** ✅
-- **Phase 3 (Features):** 52/252+ composants (20.6%) - **EN COURS** 🔄
+- **Phase 3 (Features):** 56/252+ composants (22.2%) - **EN COURS** 🔄
 - **Dernière mise à jour:** 2026-02-01
 
 ---
