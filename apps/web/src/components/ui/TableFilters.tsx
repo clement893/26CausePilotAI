@@ -32,7 +32,7 @@ export default function TableFilters<T extends Record<string, unknown>>({
                 key={column.key}
                 value={String(filters[column.key] ?? '')}
                 onChange={(e) => onFilterChange(column.key, e.target.value)}
-                className="px-3 py-2 border border-gray-700 dark:border-border rounded-lg bg-[#1C1C26] dark:bg-background text-white dark:text-foreground text-sm form-input-glow"
+                className="px-3 py-2 border border-gray-700 border-gray-800 rounded-lg bg-[#1C1C26] bg-[#1C1C26] text-white text-white text-sm form-input-glow"
               >
                 <option value="" className="bg-[#1C1C26]">Tous {column.label}</option>
                 {column.filterOptions.map((option) => (

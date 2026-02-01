@@ -17,7 +17,7 @@ export default function Loading({
     <div
       className={clsx(
         'rounded-full animate-spin border-t-transparent',
-        'border-blue-500 dark:border-primary-400',
+        'border-blue-500 border-blue-500',
         sizes[size],
         className
       )}
@@ -29,16 +29,16 @@ export default function Loading({
   );
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/50 dark:bg-background/90 backdrop-blur-sm z-50">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/50 bg-[#0A0A0F]/90 backdrop-blur-sm z-50">
         {spinner}
-        {text && <p className="mt-4 text-gray-300 dark:text-muted-foreground">{text}</p>}
+        {text && <p className="mt-4 text-gray-300 text-gray-400">{text}</p>}
       </div>
     );
   }
   return (
     <div className="flex flex-col items-center justify-center">
       {spinner}
-      {text && <p className="mt-2 text-sm text-gray-300 dark:text-muted-foreground">{text}</p>}
+      {text && <p className="mt-2 text-sm text-gray-300 text-gray-400">{text}</p>}
     </div>
   );
 }

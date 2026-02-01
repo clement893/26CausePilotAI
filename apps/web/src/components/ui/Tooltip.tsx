@@ -51,9 +51,9 @@ export default function Tooltip({
       {isVisible && (
         <div
           className={clsx(
-            'absolute z-50 px-3 py-2 text-sm text-white dark:text-background',
-            'glass-effect bg-[#13131A] dark:bg-foreground rounded-md shadow-lg',
-            'border border-gray-800 dark:border-border',
+            'absolute z-50 px-3 py-2 text-sm text-white text-white',
+            'glass-effect bg-[#13131A] bg-[#13131A] rounded-md shadow-lg',
+            'border border-gray-800 border-gray-800',
             'whitespace-nowrap pointer-events-none',
             positionClasses[position],
             className

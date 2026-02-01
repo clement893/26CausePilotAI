@@ -22,10 +22,10 @@ export default function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className={clsx('flex flex-col items-center justify-center py-12 px-4', className)}>
-      {icon && <div className="mb-4 text-gray-400 dark:text-muted-foreground">{icon}</div>}
-      <h3 className="text-lg font-medium text-white dark:text-foreground mb-2">{title}</h3>
+      {icon && <div className="mb-4 text-gray-400 text-gray-400">{icon}</div>}
+      <h3 className="text-lg font-medium text-white text-white mb-2">{title}</h3>
       {description && (
-        <p className="text-sm text-gray-400 dark:text-muted-foreground text-center max-w-md mb-6">{description}</p>
+        <p className="text-sm text-gray-400 text-gray-400 text-center max-w-md mb-6">{description}</p>
       )}
       {action && (
         <Button onClick={action.onClick} variant="primary">

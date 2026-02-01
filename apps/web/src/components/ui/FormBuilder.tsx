@@ -167,9 +167,9 @@ export default function FormBuilder({ fields, onSubmit, submitLabel = 'Soumettre
         return (
           <div className="space-y-2">
             {field.label && (
-              <label className="block text-sm font-medium text-gray-300 dark:text-foreground">
+              <label className="block text-sm font-medium text-gray-300 text-white">
                 {field.label}
-                {field.required && <span className="text-red-400 dark:text-error-400 ml-1">*</span>}
+                {field.required && <span className="text-red-400 text-red-400 ml-1">*</span>}
               </label>
             )}
             {field.options?.map((option) => (
@@ -185,8 +185,8 @@ export default function FormBuilder({ fields, onSubmit, submitLabel = 'Soumettre
                 onBlur={() => handleBlur(field.name)}
               />
             ))}
-            {errors[field.name] && <p className="text-sm text-red-400 dark:text-error-400">{errors[field.name]}</p>}
-            {field.helperText && !errors[field.name] && <p className="text-sm text-gray-400 dark:text-muted-foreground">{field.helperText}</p>}
+            {errors[field.name] && <p className="text-sm text-red-400 text-red-400">{errors[field.name]}</p>}
+            {field.helperText && !errors[field.name] && <p className="text-sm text-gray-400 text-gray-400">{field.helperText}</p>}
           </div>
         );
 

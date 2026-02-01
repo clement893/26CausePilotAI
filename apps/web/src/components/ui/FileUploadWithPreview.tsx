@@ -97,7 +97,7 @@ export default function FileUploadWithPreview({
       {files.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {files.map((file, index) => (
-            <div key={index} className="relative group glass-effect border border-gray-800 dark:border-border rounded-lg overflow-hidden bg-[#13131A] dark:bg-muted hover-lift">
+            <div key={index} className="relative group glass-effect border border-gray-800 border-gray-800 rounded-lg overflow-hidden bg-[#13131A] bg-[#1C1C26] hover-lift">
               {previews[file.name] ? (
                 <div className="aspect-square relative">
                   <img src={previews[file.name]} alt={file.name} className="w-full h-full object-cover" />
@@ -115,8 +115,8 @@ export default function FileUploadWithPreview({
               ) : (
                 <div className="aspect-square flex flex-col items-center justify-center p-4">
                   <div className="text-4xl mb-2">{getFileIcon(file)}</div>
-                  <p className="text-xs text-white dark:text-foreground text-center truncate w-full px-2">{file.name}</p>
-                  <p className="text-xs text-gray-400 dark:text-muted-foreground mt-1">{(file.size / 1024).toFixed(2)} KB</p>
+                  <p className="text-xs text-white text-white text-center truncate w-full px-2">{file.name}</p>
+                  <p className="text-xs text-gray-400 text-gray-400 mt-1">{(file.size / 1024).toFixed(2)} KB</p>
                   <Button variant="ghost" size="sm" onClick={() => removeFile(index)} className="mt-2">
                     Supprimer
                   </Button>

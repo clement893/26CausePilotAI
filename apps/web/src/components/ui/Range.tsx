@@ -65,9 +65,9 @@ export default function Range({
       {' '}
       {label && (
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-300 dark:text-foreground">{label}</label>
+          <label className="text-sm font-medium text-gray-300 text-white">{label}</label>
           {showValues && (
-            <span className="text-sm text-gray-400 dark:text-muted-foreground">
+            <span className="text-sm text-gray-400 text-gray-400">
               {minValue} - {maxValue}
             </span>
           )}
@@ -75,7 +75,7 @@ export default function Range({
       )}
       <div className="relative">
         {/* Track */}
-        <div className="h-2 bg-[#1C1C26] dark:bg-muted rounded-lg relative">
+        <div className="h-2 bg-[#1C1C26] bg-[#1C1C26] rounded-lg relative">
           {/* Active range */}
           <div
             className="absolute h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg"
@@ -129,7 +129,7 @@ export default function Range({
         />
       </div>
       {showValues && !label && (
-        <div className="flex justify-between text-sm text-gray-400 dark:text-muted-foreground">
+        <div className="flex justify-between text-sm text-gray-400 text-gray-400">
           <span>{minValue}</span> <span>{maxValue}</span>
         </div>
       )}
