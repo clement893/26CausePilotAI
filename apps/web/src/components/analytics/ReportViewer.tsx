@@ -65,7 +65,7 @@ export default function ReportViewer({
         label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
         sortable: true,
         render: (value) => (
-          <span className="text-white dark:text-foreground">
+          <span className="text-white">
             {typeof value === 'number' ? value.toLocaleString() : String(value)}
           </span>
         ),
@@ -75,17 +75,17 @@ export default function ReportViewer({
   return (
     <div className={clsx('space-y-6', className)}>
       {/* Header */}
-      <Card variant="glass" className="border border-gray-800 dark:border-border">
+      <Card variant="glass" className="border border-gray-800">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <BarChart3 className="w-5 h-5 text-blue-400 dark:text-primary-400" />
-              <h2 className="text-xl font-bold text-white dark:text-foreground">{report.name}</h2>
+              <BarChart3 className="w-5 h-5 text-blue-400" />
+              <h2 className="text-xl font-bold text-white">{report.name}</h2>
             </div>
             {report.description && (
-              <p className="text-sm text-gray-400 dark:text-muted-foreground mb-3">{report.description}</p>
+              <p className="text-sm text-gray-400 mb-3">{report.description}</p>
             )}
-            <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-muted-foreground">
+            <div className="flex items-center gap-4 text-xs text-gray-400">
               <div className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
                 {new Date(report.dateRange.start).toLocaleDateString()} -{' '}
@@ -96,7 +96,7 @@ export default function ReportViewer({
           </div>
           <div className="flex items-center gap-2">
             {onRefresh && (
-              <Button variant="ghost" size="sm" onClick={onRefresh} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+              <Button variant="ghost" size="sm" onClick={onRefresh} className="text-gray-300 hover:bg-[#252532] hover:text-white">
                 <span className="flex items-center gap-2">
                   <RefreshCw className="w-4 h-4" />
                   Refresh
@@ -104,7 +104,7 @@ export default function ReportViewer({
               </Button>
             )}
             {onShare && (
-              <Button variant="ghost" size="sm" onClick={onShare} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+              <Button variant="ghost" size="sm" onClick={onShare} className="text-gray-300 hover:bg-[#252532] hover:text-white">
                 <span className="flex items-center gap-2">
                   <Share2 className="w-4 h-4" />
                   Share
@@ -113,20 +113,23 @@ export default function ReportViewer({
             )}
             {onExport && (
               <div className="flex items-center gap-2">
-                <select
-                  value={exportFormat}
-                  onChange={(e) => setExportFormat(e.target.value as 'csv' | 'pdf' | 'excel')}
-                  className={clsx(
-                    'px-2 py-1 border rounded text-xs form-input-glow',
-                    'bg-[#1C1C26] dark:bg-background',
-                    'text-white dark:text-foreground',
-                    'border-gray-700 dark:border-border'
-                  )}
-                >
-                  <option value="csv">CSV</option>
-                  <option value="pdf">PDF</option>
-                  <option value="excel">Excel</option>
-                </select>
+                <div className="form-input-glow">
+                  <select
+                    value={exportFormat}
+                    onChange={(e) => setExportFormat(e.target.value as 'csv' | 'pdf' | 'excel')}
+                    className={clsx(
+                      'px-2 py-1 border rounded text-xs',
+                      'bg-[#1C1C26]',
+                      'text-white',
+                      'border-gray-700',
+                      'focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    )}
+                  >
+                    <option value="csv">CSV</option>
+                    <option value="pdf">PDF</option>
+                    <option value="excel">Excel</option>
+                  </select>
+                </div>
                 <Button variant="gradient" size="sm" onClick={handleExport} loading={loading}>
                   <span className="flex items-center gap-2">
                     <Download className="w-4 h-4" />
@@ -141,14 +144,14 @@ export default function ReportViewer({
 
       {/* Chart */}
       {(report.format === 'chart' || report.format === 'both') && report.data.chart && (
-        <Card variant="glass" title="Chart Visualization" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Chart Visualization" className="border border-gray-800">
           <Chart type={report.data.chartType || 'line'} data={report.data.chart} height={300} />
         </Card>
       )}
 
       {/* Table */}
       {(report.format === 'table' || report.format === 'both') && report.data.table && (
-        <Card variant="glass" title="Data Table" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Data Table" className="border border-gray-800">
           <DataTable
             data={report.data.table}
             columns={columns}

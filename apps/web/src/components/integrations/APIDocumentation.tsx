@@ -169,22 +169,22 @@ export default function APIDocumentation({
   const uniqueTags = Array.from(new Set(endpoints.flatMap((e) => e.tags || [])));
 
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <Book className="w-5 h-5 text-blue-400 dark:text-primary-400" />
-          <h3 className="text-lg font-semibold text-white dark:text-foreground">API Documentation</h3>
+          <Book className="w-5 h-5 text-blue-400" />
+          <h3 className="text-lg font-semibold text-white">API Documentation</h3>
         </div>
-        <p className="text-sm text-gray-400 dark:text-muted-foreground">
+        <p className="text-sm text-gray-400">
           Base URL:{' '}
-          <code className="text-xs bg-[#0A0A0F] dark:bg-muted px-2 py-1 rounded text-white dark:text-foreground">{baseUrl}</code>
+          <code className="text-xs bg-[#0A0A0F] px-2 py-1 rounded text-white">{baseUrl}</code>
         </p>
       </div>
 
       {/* Tags Filter */}
       {uniqueTags.length > 0 && (
         <div className="mb-6 flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-gray-400 dark:text-muted-foreground">Tags:</span>
+          <span className="text-sm text-gray-400">Tags:</span>
           {uniqueTags.map((tag) => (
             <Badge key={tag} variant="info">
               {tag}
@@ -201,20 +201,20 @@ export default function APIDocumentation({
           const codeExample = getCodeExample(endpoint);
 
           return (
-            <div key={index} className="border border-gray-800 dark:border-border rounded-lg overflow-hidden glass-effect bg-[#1C1C26] dark:bg-background">
+            <div key={index} className="border border-gray-800 rounded-lg overflow-hidden glass-effect bg-[#1C1C26]">
               <button
                 onClick={() => toggleEndpoint(endpoint.path)}
-                className="w-full p-4 flex items-center justify-between hover:bg-[#252532] dark:hover:bg-muted transition-colors"
+                className="w-full p-4 flex items-center justify-between hover:bg-[#252532] transition-colors"
               >
                 <div className="flex items-center gap-3 flex-1">
                   {isExpanded ? (
-                    <ChevronDown className="w-4 h-4 text-gray-400 dark:text-muted-foreground" />
+                    <ChevronDown className="w-4 h-4 text-gray-400" />
                   ) : (
-                    <ChevronRight className="w-4 h-4 text-gray-400 dark:text-muted-foreground" />
+                    <ChevronRight className="w-4 h-4 text-gray-400" />
                   )}
                   <Badge variant={methodColors[endpoint.method]}>{endpoint.method}</Badge>
-                  <code className="text-sm font-mono text-white dark:text-foreground">{endpoint.path}</code>
-                  <span className="text-sm text-gray-400 dark:text-muted-foreground">{endpoint.description}</span>
+                  <code className="text-sm font-mono text-white">{endpoint.path}</code>
+                  <span className="text-sm text-gray-400">{endpoint.description}</span>
                 </div>
                 {endpoint.tags && endpoint.tags.length > 0 && (
                   <div className="flex items-center gap-1">
@@ -228,22 +228,22 @@ export default function APIDocumentation({
               </button>
 
               {isExpanded && (
-                <div className="p-4 border-t border-gray-800 dark:border-border glass-effect bg-[#0A0A0F] dark:bg-muted space-y-4">
+                <div className="p-4 border-t border-gray-800 glass-effect bg-[#0A0A0F] space-y-4">
                   {/* Parameters */}
                   {endpoint.parameters && endpoint.parameters.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-semibold text-white dark:text-foreground mb-2">Parameters</h4>
+                      <h4 className="text-sm font-semibold text-white mb-2">Parameters</h4>
                       <div className="space-y-2">
                         {endpoint.parameters.map((param, idx) => (
-                          <div key={idx} className="text-sm p-2 bg-[#1C1C26] dark:bg-background rounded border border-gray-800 dark:border-border">
+                          <div key={idx} className="text-sm p-2 bg-[#1C1C26] rounded border border-gray-800">
                             <div className="flex items-center gap-2">
-                              <code className="font-mono text-blue-400 dark:text-primary-400">
+                              <code className="font-mono text-blue-400">
                                 {param.name}
                               </code>
                               <Badge variant="default">{param.type}</Badge>
                               {param.required && <Badge variant="error">Required</Badge>}
                             </div>
-                            <p className="text-xs text-gray-400 dark:text-muted-foreground mt-1">{param.description}</p>
+                            <p className="text-xs text-gray-400 mt-1">{param.description}</p>
                           </div>
                         ))}
                       </div>
@@ -253,9 +253,9 @@ export default function APIDocumentation({
                   {/* Request Body */}
                   {endpoint.requestBody && (
                     <div>
-                      <h4 className="text-sm font-semibold text-white dark:text-foreground mb-2">Request Body</h4>
+                      <h4 className="text-sm font-semibold text-white mb-2">Request Body</h4>
                       <div className="relative">
-                        <pre className="p-3 bg-[#0A0A0F] dark:bg-muted rounded-lg text-xs text-gray-300 dark:text-muted-foreground overflow-x-auto">
+                        <pre className="p-3 bg-[#0A0A0F] rounded-lg text-xs text-gray-300 overflow-x-auto">
                           <code>{JSON.stringify(endpoint.requestBody.example, null, 2)}</code>
                         </pre>
                         <button
@@ -265,7 +265,7 @@ export default function APIDocumentation({
                               `${codeId}-body`
                             )
                           }
-                          className="absolute top-2 right-2 p-1 text-gray-400 dark:text-muted-foreground hover:text-blue-400 dark:hover:text-primary-400"
+                          className="absolute top-2 right-2 p-1 text-gray-400 hover:text-blue-400 hover:text-primary-400"
                         >
                           {copiedCode === `${codeId}-body` ? (
                             <Check className="w-4 h-4" />
@@ -279,17 +279,17 @@ export default function APIDocumentation({
 
                   {/* Code Example */}
                   <div>
-                    <h4 className="text-sm font-semibold text-white dark:text-foreground mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
                       <Code className="w-4 h-4 text-blue-400" />
                       Code Example
                     </h4>
                     <div className="relative">
-                      <pre className="p-3 bg-[#0A0A0F] dark:bg-muted rounded-lg text-xs text-gray-300 dark:text-muted-foreground overflow-x-auto">
+                      <pre className="p-3 bg-[#0A0A0F] rounded-lg text-xs text-gray-300 overflow-x-auto">
                         <code>{codeExample}</code>
                       </pre>
                       <button
                         onClick={() => copyToClipboard(codeExample, codeId)}
-                        className="absolute top-2 right-2 p-1 text-gray-400 dark:text-muted-foreground hover:text-blue-400 dark:hover:text-primary-400"
+                        className="absolute top-2 right-2 p-1 text-gray-400 hover:text-blue-400 hover:text-primary-400"
                       >
                         {copiedCode === codeId ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                       </button>
@@ -299,10 +299,10 @@ export default function APIDocumentation({
                   {/* Responses */}
                   {endpoint.responses && endpoint.responses.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-semibold text-white dark:text-foreground mb-2">Responses</h4>
+                      <h4 className="text-sm font-semibold text-white mb-2">Responses</h4>
                       <div className="space-y-2">
                         {endpoint.responses.map((response, idx) => (
-                          <div key={idx} className="p-3 bg-[#1C1C26] dark:bg-background rounded border border-gray-800 dark:border-border">
+                          <div key={idx} className="p-3 bg-[#1C1C26] rounded border border-gray-800">
                             <div className="flex items-center gap-2 mb-2">
                               <Badge
                                 variant={
@@ -315,10 +315,10 @@ export default function APIDocumentation({
                               >
                                 {response.status}
                               </Badge>
-                              <span className="text-sm text-white dark:text-foreground">{response.description}</span>
+                              <span className="text-sm text-white">{response.description}</span>
                             </div>
                             {response.example != null && (
-                              <pre className="text-xs bg-[#0A0A0F] dark:bg-muted p-2 rounded overflow-x-auto text-gray-300 dark:text-muted-foreground">
+                              <pre className="text-xs bg-[#0A0A0F] p-2 rounded overflow-x-auto text-gray-300">
                                 <code>{JSON.stringify(response.example, null, 2)}</code>
                               </pre>
                             )}

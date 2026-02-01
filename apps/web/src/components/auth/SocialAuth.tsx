@@ -156,11 +156,11 @@ export default function SocialAuth({
               className={clsx(
                 'flex items-center justify-center gap-3',
                 'border-2 transition-all',
-                'bg-[#13131A] dark:bg-background',
-                'hover:bg-[#1C1C26] dark:hover:bg-muted',
-                'text-white dark:text-foreground',
-                'border-gray-700 dark:border-border',
-                'hover:border-blue-500 dark:hover:border-primary-500'
+                'bg-[#13131A]',
+                'hover:bg-[#1C1C26]',
+                'text-white',
+                'border-gray-700',
+                'hover:border-blue-500'
               )}
             >
               <span className={clsx('flex-shrink-0', isLoading && 'opacity-50')}>
@@ -174,10 +174,10 @@ export default function SocialAuth({
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-800 dark:border-border" />
+          <div className="w-full border-t border-gray-800" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-[#13131A] dark:bg-background text-gray-400 dark:text-muted-foreground">Or continue with email</span>
+          <span className="px-2 bg-[#13131A] text-gray-400">Or continue with email</span>
         </div>
       </div>
     </div>

@@ -79,13 +79,13 @@ export default function ReportBuilder({
   };
   const selectedFields = config.fields.filter((f) => f.selected);
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="space-y-6">
         {/* Report Info */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-4">
-            <FileText className="w-5 h-5 text-blue-400 dark:text-primary-400" />
-            <h3 className="text-lg font-semibold text-white dark:text-foreground">Report Builder</h3>
+            <FileText className="w-5 h-5 text-blue-400" />
+            <h3 className="text-lg font-semibold text-white">Report Builder</h3>
           </div>
           <Input
             label="Report Name"
@@ -93,46 +93,45 @@ export default function ReportBuilder({
             onChange={(e) => setConfig({ ...config, name: e.target.value })}
             placeholder="My Custom Report"
             required
-          />{' '}
+          />
           <Input
             label="Description (Optional)"
             value={config.description || ''}
             onChange={(e) => setConfig({ ...config, description: e.target.value })}
             placeholder="Describe what this report shows"
-          />{' '}
-        </div>{' '}
+          />
+        </div>
         {/* Date Range */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-4 h-4 text-gray-500 dark:text-muted-foreground" />
-            <label className="text-sm font-medium text-white dark:text-foreground">Date Range</label>
+            <Calendar className="w-4 h-4 text-gray-500" />
+            <label className="text-sm font-medium text-white">Date Range</label>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            {' '}
             <Input
               type="date"
               value={config.dateRange.start}
               onChange={(e) =>
                 setConfig({ ...config, dateRange: { ...config.dateRange, start: e.target.value } })
               }
-            />{' '}
+            />
             <Input
               type="date"
               value={config.dateRange.end}
               onChange={(e) =>
                 setConfig({ ...config, dateRange: { ...config.dateRange, end: e.target.value } })
               }
-            />{' '}
-          </div>{' '}
-        </div>{' '}
+            />
+          </div>
+        </div>
         {/* Fields Selection */}
         <div className="space-y-4">
-          <label className="block text-sm font-medium text-white dark:text-foreground">Select Fields</label>
-          <div className="space-y-3 max-h-64 overflow-y-auto border border-gray-800 dark:border-border rounded-lg p-4 custom-scrollbar glass-effect bg-[#1C1C26] dark:bg-background">
+          <label className="block text-sm font-medium text-white">Select Fields</label>
+          <div className="space-y-3 max-h-64 overflow-y-auto border border-gray-800 rounded-lg p-4 custom-scrollbar glass-effect bg-[#1C1C26]">
             {config.fields.map((field) => (
               <div
                 key={field.id}
-                className="flex items-center justify-between p-2 hover:bg-[#252532] dark:hover:bg-muted rounded-lg"
+                className="flex items-center justify-between p-2 hover:bg-[#252532] rounded-lg"
               >
                 <div className="flex items-center gap-3">
                   <Checkbox
@@ -140,8 +139,8 @@ export default function ReportBuilder({
                     onChange={() => handleFieldToggle(field.id)}
                   />
                   <div>
-                    <div className="text-sm font-medium text-white dark:text-foreground">{field.name}</div>
-                    <div className="text-xs text-gray-400 dark:text-muted-foreground">{field.type}</div>
+                    <div className="text-sm font-medium text-white">{field.name}</div>
+                    <div className="text-xs text-gray-400">{field.type}</div>
                   </div>
                 </div>
                 <Badge
@@ -155,15 +154,14 @@ export default function ReportBuilder({
             ))}
           </div>
           {selectedFields.length > 0 && (
-            <div className="text-sm text-gray-400 dark:text-muted-foreground">
+            <div className="text-sm text-gray-400">
               {selectedFields.length} field{selectedFields.length !== 1 ? 's' : ''} selected
             </div>
           )}
         </div>
-        {/* Grouping & Sorting */}{' '}
+        {/* Grouping & Sorting */}
         {selectedFields.length > 0 && (
           <div className="grid grid-cols-2 gap-4">
-            {' '}
             <Select
               label="Group By"
               options={[
@@ -174,7 +172,7 @@ export default function ReportBuilder({
               ]}
               value={config.groupBy || ''}
               onChange={(e) => setConfig({ ...config, groupBy: e.target.value })}
-            />{' '}
+            />
             <Select
               label="Sort By"
               options={[
@@ -183,10 +181,10 @@ export default function ReportBuilder({
               ]}
               value={config.sortBy || ''}
               onChange={(e) => setConfig({ ...config, sortBy: e.target.value })}
-            />{' '}
+            />
           </div>
-        )}{' '}
-        {/* Format */}{' '}
+        )}
+        {/* Format */}
         <Select
           label="Report Format"
           options={formatOptions}
@@ -194,15 +192,15 @@ export default function ReportBuilder({
           onChange={(e) =>
             setConfig({ ...config, format: e.target.value as 'table' | 'chart' | 'both' })
           }
-        />{' '}
+        />
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800 dark:border-border">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
           {onPreview && (
             <Button
               variant="outline"
               onClick={() => onPreview(config)}
               disabled={!config.name.trim() || selectedFields.length === 0}
-              className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Preview
             </Button>

@@ -6,8 +6,8 @@ export default function UserProfile() {
   if (status === 'loading') {
     return (
       <div className="flex items-center gap-2">
-        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500 dark:border-muted-foreground"></div>
-        <span className="text-gray-400 dark:text-muted-foreground">Loading...</span>
+        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500"></div>
+        <span className="text-gray-400">Loading...</span>
       </div>
     );
   }
@@ -20,15 +20,15 @@ export default function UserProfile() {
         <img
           src={session.user.image}
           alt={session.user.name ?? 'User'}
-          className="w-10 h-10 rounded-full border-2 border-gray-700 dark:border-border"
+          className="w-10 h-10 rounded-full border-2 border-gray-700"
         />
       )}
       <div className="flex flex-col">
-        <span className="text-sm font-medium text-white dark:text-foreground">
+        <span className="text-sm font-medium text-white">
           {session.user?.name ?? session.user?.email}
         </span>
         {session.user?.email && session.user?.name && (
-          <span className="text-xs text-gray-400 dark:text-muted-foreground">{session.user.email}</span>
+          <span className="text-xs text-gray-400">{session.user.email}</span>
         )}
       </div>
       <SignOutButton variant="secondary" />

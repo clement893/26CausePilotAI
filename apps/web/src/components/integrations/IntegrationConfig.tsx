@@ -78,7 +78,7 @@ export default function IntegrationConfig({
     }
   };
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -86,19 +86,19 @@ export default function IntegrationConfig({
             {integration.icon ? (
               <Avatar src={integration.icon} name={integration.name} size="lg" />
             ) : (
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/30 flex items-center justify-center">
-                <Key className="w-6 h-6 text-blue-400 dark:text-primary-400" />
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                <Key className="w-6 h-6 text-blue-400" />
               </div>
             )}
             <div>
-              <h3 className="text-lg font-semibold text-white dark:text-foreground">
+              <h3 className="text-lg font-semibold text-white">
                 Configure {integration.name}
               </h3>
-              <p className="text-sm text-gray-400 dark:text-muted-foreground">{integration.description}</p>
+              <p className="text-sm text-gray-400">{integration.description}</p>
             </div>
           </div>
           {onCancel && (
-            <Button variant="ghost" size="sm" onClick={onCancel} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+            <Button variant="ghost" size="sm" onClick={onCancel} className="text-gray-300 hover:bg-[#252532] hover:text-white">
               <span className="flex items-center gap-2">
                 <X className="w-4 h-4" /> Cancel
               </span>
@@ -124,10 +124,10 @@ export default function IntegrationConfig({
             ))}
           </div>
         ) : (
-          <div className="p-4 bg-blue-500/20 dark:bg-info-900/20 rounded-lg border border-blue-500/30 dark:border-info-800">
+          <div className="p-4 bg-blue-500/20 rounded-lg border border-blue-500/30">
             <div className="flex items-start gap-2">
-              <AlertCircle className="w-5 h-5 text-blue-400 dark:text-info-400 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-blue-200 dark:text-info-200">
+              <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-blue-200">
                 <div className="font-medium mb-1">No Configuration Required</div>
                 <div>This integration doesn't require any additional configuration.</div>
               </div>
@@ -136,10 +136,10 @@ export default function IntegrationConfig({
         )}
         {/* Test Connection */}
         {onTest && fields.length > 0 && (
-          <div className="flex items-center justify-between p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
+          <div className="flex items-center justify-between p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
             <div>
-              <div className="text-sm font-medium text-white dark:text-foreground mb-1">Test Connection</div>
-              <div className="text-xs text-gray-400 dark:text-muted-foreground">
+              <div className="text-sm font-medium text-white mb-1">Test Connection</div>
+              <div className="text-xs text-gray-400">
                 Verify your configuration before saving
               </div>
             </div>
@@ -158,7 +158,7 @@ export default function IntegrationConfig({
                   </span>
                 </Badge>
               )}
-              <Button variant="outline" size="sm" onClick={handleTest} className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#252532] dark:hover:bg-primary-900/20">
+              <Button variant="outline" size="sm" onClick={handleTest} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
                 Test
               </Button>
             </div>
@@ -166,14 +166,14 @@ export default function IntegrationConfig({
         )}
         {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-red-500/20 dark:bg-danger-900/20 rounded-lg border border-red-500/30 dark:border-danger-800 text-sm text-red-400 dark:text-danger-200">
+          <div className="p-3 bg-red-500/20 rounded-lg border border-red-500/30 text-sm text-red-400">
             {errors.submit}
           </div>
         )}
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800 dark:border-border">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
           {onCancel && (
-            <Button variant="ghost" onClick={onCancel} disabled={loading} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+            <Button variant="ghost" onClick={onCancel} disabled={loading} className="text-gray-300 hover:bg-[#252532] hover:text-white">
               Cancel
             </Button>
           )}

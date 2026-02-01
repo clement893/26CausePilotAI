@@ -87,13 +87,13 @@ export default function WebhookManager({
   };
   return (
     <>
-      <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+      <Card variant="glass" className={clsx('border border-gray-800', className)}>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-white dark:text-foreground flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <Webhook className="w-5 h-5 text-blue-400" /> Webhook Manager
             </h3>
-            <p className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
+            <p className="text-sm text-gray-400 mt-1">
               Manage webhook endpoints and monitor delivery status
             </p>
           </div>
@@ -105,17 +105,17 @@ export default function WebhookManager({
         </div>
         {webhooks.length === 0 ? (
           <div className="text-center py-12">
-            <Webhook className="w-12 h-12 text-gray-500 dark:text-muted-foreground mx-auto mb-4" />
-            <p className="text-gray-400 dark:text-muted-foreground">No webhooks configured</p>
+            <Webhook className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+            <p className="text-gray-400">No webhooks configured</p>
           </div>
         ) : (
           <div className="space-y-4">
             {webhooks.map((webhook) => (
-              <div key={webhook.id} className="p-4 border border-gray-800 dark:border-border rounded-lg glass-effect bg-[#1C1C26] dark:bg-muted">
+              <div key={webhook.id} className="p-4 border border-gray-800 rounded-lg glass-effect bg-[#1C1C26]">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-white dark:text-foreground">{webhook.name}</span>
+                      <span className="font-medium text-white">{webhook.name}</span>
                       {webhook.active ? (
                         <Badge variant="success">
                           <span className="flex items-center gap-1">
@@ -131,16 +131,16 @@ export default function WebhookManager({
                         </Badge>
                       )}
                     </div>
-                    <div className="text-sm text-gray-400 dark:text-muted-foreground mb-2 font-mono">
+                    <div className="text-sm text-gray-400 mb-2 font-mono">
                       {webhook.url}
                     </div>
-                    <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-muted-foreground mb-2">
+                    <div className="flex items-center gap-4 text-xs text-gray-400 mb-2">
                       <div className="flex items-center gap-1">
                         <Activity className="w-3 h-3" /> Success: {webhook.successCount} (
                         {getSuccessRate(webhook)}%)
                       </div>
                       {webhook.failureCount > 0 && (
-                        <div className="text-red-400 dark:text-danger-400">
+                        <div className="text-red-400">
                           Failures: {webhook.failureCount}
                         </div>
                       )}
@@ -162,13 +162,13 @@ export default function WebhookManager({
                       onChange={(e) => handleToggle(webhook.id, e.target.checked)}
                     />
                     {onTest && (
-                      <Button variant="ghost" size="sm" onClick={() => onTest(webhook.id)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+                      <Button variant="ghost" size="sm" onClick={() => onTest(webhook.id)} className="text-gray-300 hover:bg-[#1C1C26]">
                         <span className="flex items-center gap-2">
                           <Activity className="w-4 h-4" /> Test
                         </span>
                       </Button>
                     )}
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(webhook.id)} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(webhook.id)} className="text-gray-300 hover:bg-[#1C1C26]">
                       <span className="flex items-center gap-2">
                         <Trash2 className="w-4 h-4" /> Delete
                       </span>
@@ -192,7 +192,7 @@ export default function WebhookManager({
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Webhook Name
             </label>
             <input
@@ -202,15 +202,15 @@ export default function WebhookManager({
               placeholder="My Webhook"
               className={clsx(
                 'w-full px-4 py-2 border rounded-lg form-input-glow',
-                'bg-[#1C1C26] dark:bg-background',
-                'text-white dark:text-foreground',
-                'border-gray-700 dark:border-border',
-                'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
+                'bg-[#1C1C26]',
+                'text-white',
+                'border-gray-700',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-primary-400'
               )}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Webhook URL
             </label>
             <input
@@ -220,22 +220,22 @@ export default function WebhookManager({
               placeholder="https://example.com/webhook"
               className={clsx(
                 'w-full px-4 py-2 border rounded-lg form-input-glow',
-                'bg-[#1C1C26] dark:bg-background',
-                'text-white dark:text-foreground',
-                'border-gray-700 dark:border-border',
-                'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
+                'bg-[#1C1C26]',
+                'text-white',
+                'border-gray-700',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-primary-400'
               )}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Events to Subscribe
             </label>
             <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
               {availableEvents.map((event) => (
                 <label
                   key={event.id}
-                  className="flex items-center gap-3 p-3 border border-gray-700 dark:border-border rounded-lg cursor-pointer hover:bg-[#252532] dark:hover:bg-muted glass-effect bg-[#1C1C26] dark:bg-background"
+                  className="flex items-center gap-3 p-3 border border-gray-700 rounded-lg cursor-pointer hover:bg-[#252532] glass-effect bg-[#1C1C26]"
                 >
                   <input
                     type="checkbox"
@@ -251,7 +251,7 @@ export default function WebhookManager({
                       }
                     }}
                   />
-                  <span className="text-sm text-white dark:text-foreground">{event.label}</span>
+                  <span className="text-sm text-white">{event.label}</span>
                 </label>
               ))}
             </div>
@@ -263,7 +263,7 @@ export default function WebhookManager({
                 setShowCreateModal(false);
                 setFormData({ name: '', url: '', events: [] });
               }}
-              className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted"
+              className="text-gray-300 hover:bg-[#1C1C26]"
             >
               Cancel
             </Button>

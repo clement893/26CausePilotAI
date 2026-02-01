@@ -139,56 +139,58 @@ export default function AnalyticsDashboard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white dark:text-foreground">Analytics Dashboard</h2>
-          <p className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
+          <h2 className="text-2xl font-bold text-white">Analytics Dashboard</h2>
+          <p className="text-sm text-gray-400 mt-1">
             Track your business metrics and performance
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <select
-            value={selectedPeriod}
-            onChange={(e) => {
-              const value = e.target.value as '7d' | '30d' | '90d' | '1y' | 'custom';
-              setSelectedPeriod(value);
-              if (value !== 'custom' && onDateRangeChange) {
-                const end = new Date();
-                const start = new Date();
-                switch (value) {
-                  case '7d':
-                    start.setDate(end.getDate() - 7);
-                    break;
-                  case '30d':
-                    start.setDate(end.getDate() - 30);
-                    break;
-                  case '90d':
-                    start.setDate(end.getDate() - 90);
-                    break;
-                  case '1y':
-                    start.setFullYear(end.getFullYear() - 1);
-                    break;
+          <div className="form-input-glow">
+            <select
+              value={selectedPeriod}
+              onChange={(e) => {
+                const value = e.target.value as '7d' | '30d' | '90d' | '1y' | 'custom';
+                setSelectedPeriod(value);
+                if (value !== 'custom' && onDateRangeChange) {
+                  const end = new Date();
+                  const start = new Date();
+                  switch (value) {
+                    case '7d':
+                      start.setDate(end.getDate() - 7);
+                      break;
+                    case '30d':
+                      start.setDate(end.getDate() - 30);
+                      break;
+                    case '90d':
+                      start.setDate(end.getDate() - 90);
+                      break;
+                    case '1y':
+                      start.setFullYear(end.getFullYear() - 1);
+                      break;
+                  }
+                  onDateRangeChange({
+                    start: start.toISOString(),
+                    end: end.toISOString(),
+                  });
                 }
-                onDateRangeChange({
-                  start: start.toISOString(),
-                  end: end.toISOString(),
-                });
-              }
-            }}
-            className={clsx(
-              'px-4 py-2 border rounded-lg text-sm form-input-glow',
-              'bg-[#1C1C26] dark:bg-background',
-              'text-white dark:text-foreground',
-              'border-gray-700 dark:border-border',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
-            )}
-          >
-            {periodOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+              }}
+              className={clsx(
+                'px-4 py-2 border rounded-lg text-sm',
+                'bg-[#1C1C26]',
+                'text-white',
+                'border-gray-700',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500'
+              )}
+            >
+              {periodOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
           {onExport && (
-            <Button variant="outline" onClick={onExport} className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+            <Button variant="outline" onClick={onExport} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
               <span className="flex items-center gap-2">
                 <Download className="w-4 h-4" />
                 Export
@@ -201,37 +203,37 @@ export default function AnalyticsDashboard({
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {displayMetrics.map((metric, index) => (
-          <Card key={index} variant="glass" className="border border-gray-800 dark:border-border hover-lift">
+          <Card key={index} variant="glass" className="border border-gray-800 hover-lift">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   {metric.icon && (
-                    <div className="text-blue-400 dark:text-primary-400">{metric.icon}</div>
+                    <div className="text-blue-400">{metric.icon}</div>
                   )}
-                  <span className="text-sm font-medium text-gray-400 dark:text-muted-foreground">{metric.label}</span>
+                  <span className="text-sm font-medium text-gray-400">{metric.label}</span>
                 </div>
-                <div className="text-2xl font-bold text-white dark:text-foreground mb-1">
+                <div className="text-2xl font-bold text-white mb-1">
                   {formatValue(metric.value, metric.format)}
                 </div>
                 {metric.change !== undefined && (
                   <div className="flex items-center gap-1">
                     {metric.changeType === 'increase' ? (
-                      <TrendingUp className="w-4 h-4 text-green-400 dark:text-success-400" />
+                      <TrendingUp className="w-4 h-4 text-green-400" />
                     ) : (
-                      <TrendingDown className="w-4 h-4 text-red-400 dark:text-error-400" />
+                      <TrendingDown className="w-4 h-4 text-red-400" />
                     )}
                     <span
                       className={clsx(
                         'text-sm font-medium',
                         metric.changeType === 'increase'
-                          ? 'text-green-400 dark:text-success-400'
-                          : 'text-red-400 dark:text-error-400'
+                          ? 'text-green-400'
+                          : 'text-red-400'
                       )}
                     >
                       {Math.abs(metric.change)}%{' '}
                       {metric.changeType === 'increase' ? 'increase' : 'decrease'}
                     </span>
-                    <span className="text-sm text-gray-400 dark:text-muted-foreground">vs last period</span>
+                    <span className="text-sm text-gray-400">vs last period</span>
                   </div>
                 )}
               </div>
@@ -242,16 +244,16 @@ export default function AnalyticsDashboard({
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card variant="glass" title="Revenue Trend" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Revenue Trend" className="border border-gray-800">
           <Chart type="line" data={revenueData} title="Revenue" height={250} />
         </Card>
-        <Card variant="glass" title="User Growth" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="User Growth" className="border border-gray-800">
           <Chart type="bar" data={userGrowthData} title="Active Users" height={250} />
         </Card>
       </div>
 
       {/* Additional Analytics */}
-      <Card variant="glass" title="Traffic Sources" className="border border-gray-800 dark:border-border">
+      <Card variant="glass" title="Traffic Sources" className="border border-gray-800">
         <div className="space-y-4">
           {[
             { source: 'Direct', visitors: 45230, percentage: 45 },
@@ -261,12 +263,12 @@ export default function AnalyticsDashboard({
           ].map((item, index) => (
             <div key={index} className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-white dark:text-foreground">{item.source}</span>
-                <span className="text-gray-400 dark:text-muted-foreground">
+                <span className="font-medium text-white">{item.source}</span>
+                <span className="text-gray-400">
                   {item.visitors.toLocaleString()} ({item.percentage}%)
                 </span>
               </div>
-              <div className="w-full bg-[#1C1C26] dark:bg-muted rounded-full h-2">
+              <div className="w-full bg-[#1C1C26] rounded-full h-2 border border-gray-800">
                 <div
                   className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all"
                   style={{ width: `${item.percentage}%` }}

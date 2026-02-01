@@ -85,9 +85,9 @@ export default function NotificationBell({
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
           'relative p-2 rounded-lg transition-colors',
-          'text-white dark:text-foreground',
-          'hover:bg-[#1C1C26] dark:hover:bg-muted',
-          'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
+          'text-white',
+          'hover:bg-[#1C1C26]',
+          'focus:outline-none focus:ring-2 focus:ring-blue-500'
         )}
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}
       >
@@ -103,14 +103,14 @@ export default function NotificationBell({
 
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 w-96 z-50">
-          <div className="glass-effect bg-[#13131A] dark:bg-background rounded-lg shadow-xl border border-gray-800 dark:border-border max-h-[600px] flex flex-col">
+          <div className="glass-effect bg-[#13131A] rounded-lg shadow-xl border border-gray-800 max-h-[600px] flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-800 dark:border-border">
-              <h3 className="text-lg font-semibold text-white dark:text-foreground">
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+              <h3 className="text-lg font-semibold text-white">
                 Notifications
               </h3>
               <Dropdown
-                trigger={<button className="p-1 text-gray-300 dark:text-foreground hover:text-white dark:hover:text-foreground">⋯</button>}
+                trigger={<button className="p-1 text-gray-300 hover:text-white">⋯</button>}
                 items={dropdownItems}
               />
             </div>
@@ -131,13 +131,13 @@ export default function NotificationBell({
 
             {/* Footer */}
             {notifications.length > 5 && (
-              <div className="p-4 border-t border-gray-800 dark:border-border">
+              <div className="p-4 border-t border-gray-800">
                 <button
                   onClick={() => {
                     setIsOpen(false);
                     onViewAll?.();
                   }}
-                  className="w-full text-center text-sm font-medium text-blue-400 dark:text-primary-400 hover:text-blue-300 dark:hover:text-primary-300"
+                  className="w-full text-center text-sm font-medium text-blue-400 hover:text-blue-300"
                 >
                   View All Notifications ({notifications.length})
                 </button>

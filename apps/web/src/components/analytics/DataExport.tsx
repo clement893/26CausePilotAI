@@ -88,15 +88,15 @@ export default function DataExport({
     }
   };
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="space-y-6">
         <div className="flex items-center gap-2 mb-4">
-          <Download className="w-5 h-5 text-blue-400 dark:text-primary-400" />
-          <h3 className="text-lg font-semibold text-white dark:text-foreground">Export Data</h3>
+          <Download className="w-5 h-5 text-blue-400" />
+          <h3 className="text-lg font-semibold text-white">Export Data</h3>
         </div>
         {/* Format Selection */}
         <div>
-          <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+          <label className="block text-sm font-medium text-white mb-2">
             Export Format
           </label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -110,15 +110,15 @@ export default function DataExport({
                   'p-4 border-2 rounded-lg transition-all hover-lift',
                   'flex flex-col items-center gap-2',
                   config.format === option.value
-                    ? 'border-blue-500 dark:border-primary-400 glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/20'
-                    : 'border-gray-700 dark:border-border hover:border-gray-600 dark:hover:border-gray-600',
-                  'bg-[#1C1C26] dark:bg-background'
+                    ? 'border-blue-500 glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20'
+                    : 'border-gray-700 hover:border-gray-600',
+                  'bg-[#1C1C26]'
                 )}
               >
-                <div className="text-blue-400 dark:text-primary-400">
+                <div className="text-blue-400">
                   {getFormatIcon(option.value)}
                 </div>
-                <span className="text-sm font-medium text-white dark:text-foreground">{option.label}</span>
+                <span className="text-sm font-medium text-white">{option.label}</span>
               </button>
             ))}
           </div>
@@ -126,31 +126,31 @@ export default function DataExport({
         {/* Field Selection */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <label className="block text-sm font-medium text-white dark:text-foreground">
+            <label className="block text-sm font-medium text-white">
               Select Fields
             </label>
             <button
               onClick={handleSelectAll}
-              className="text-sm text-blue-400 dark:text-primary-400 hover:text-blue-300 dark:hover:text-primary-300"
+              className="text-sm text-blue-400 hover:text-blue-300"
             >
               {localFields.every((f) => f.selected) ? 'Deselect All' : 'Select All'}
             </button>
           </div>
-          <div className="space-y-2 max-h-64 overflow-y-auto border border-gray-800 dark:border-border rounded-lg p-4 custom-scrollbar glass-effect bg-[#1C1C26] dark:bg-background">
+          <div className="space-y-2 max-h-64 overflow-y-auto border border-gray-800 rounded-lg p-4 custom-scrollbar glass-effect bg-[#1C1C26]">
             {localFields.map((field) => (
               <label
                 key={field.id}
-                className="flex items-center gap-3 p-2 hover:bg-[#252532] dark:hover:bg-muted rounded-lg cursor-pointer"
+                className="flex items-center gap-3 p-2 hover:bg-[#252532] rounded-lg cursor-pointer"
               >
                 <Checkbox
                   checked={field.selected}
                   onChange={() => handleFieldToggle(field.id)}
                 />
-                <span className="text-sm text-white dark:text-foreground">{field.name}</span>
+                <span className="text-sm text-white">{field.name}</span>
               </label>
             ))}
           </div>
-          <div className="text-xs text-gray-400 dark:text-muted-foreground mt-2">
+          <div className="text-xs text-gray-400 mt-2">
             {config.fields.length} field{config.fields.length !== 1 ? 's' : ''} selected
           </div>
         </div>
@@ -161,11 +161,11 @@ export default function DataExport({
               checked={config.includeHeaders}
               onChange={(e) => setConfig({ ...config, includeHeaders: e.target.checked })}
             />
-            <span className="text-sm text-white dark:text-foreground">Include column headers</span>
+            <span className="text-sm text-white">Include column headers</span>
           </label>
         </div>
         {/* Export Button */}
-        <div className="pt-4 border-t border-gray-800 dark:border-border">
+        <div className="pt-4 border-t border-gray-800">
           <Button
             variant="gradient"
             fullWidth

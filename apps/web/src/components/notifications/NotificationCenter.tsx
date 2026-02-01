@@ -69,26 +69,26 @@ export default function NotificationCenter({
   const getTypeStyles = (type: NotificationUI['notification_type']) => {
     switch (type) {
       case 'success':
-        return 'border-green-500/30 dark:border-success-800 bg-green-500/10 dark:bg-success-900/20';
+        return 'border-green-500/30 bg-green-500/10';
       case 'warning':
-        return 'border-yellow-500/30 dark:border-warning-800 bg-yellow-500/10 dark:bg-warning-900/20';
+        return 'border-yellow-500/30 bg-yellow-500/10';
       case 'error':
-        return 'border-red-500/30 dark:border-danger-800 bg-red-500/10 dark:bg-danger-900/20';
+        return 'border-red-500/30 bg-red-500/10';
       default:
-        return 'border-blue-500/30 dark:border-primary-800 bg-blue-500/10 dark:bg-primary-900/20';
+        return 'border-blue-500/30 bg-blue-500/10';
     }
   };
 
   return (
-    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white dark:text-foreground flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             <Bell className="w-5 h-5 text-blue-400" /> Notifications
             {unreadCount > 0 && <Badge variant="error">{unreadCount}</Badge>}
           </h3>
           {unreadCount > 0 && onMarkAllAsRead && (
-            <Button variant="ghost" size="sm" onClick={handleMarkAllAsRead} className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
+            <Button variant="ghost" size="sm" onClick={handleMarkAllAsRead} className="text-gray-300 hover:bg-[#252532] hover:text-white">
               <span className="flex items-center gap-2">
                 <Check className="w-4 h-4" /> Mark All Read
               </span>
@@ -96,7 +96,7 @@ export default function NotificationCenter({
           )}
         </div>
         {/* Filter Tabs */}
-        <div className="flex items-center gap-2 border-b border-gray-800 dark:border-border">
+        <div className="flex items-center gap-2 border-b border-gray-800">
           {(['all', 'unread', 'read'] as const).map((filterType) => (
             <button
               key={filterType}
@@ -104,8 +104,8 @@ export default function NotificationCenter({
               className={clsx(
                 'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
                 filter === filterType
-                  ? 'border-blue-500 dark:border-primary-400 text-blue-400 dark:text-primary-400'
-                  : 'border-transparent text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground'
+                  ? 'border-blue-500 text-blue-400'
+                  : 'border-transparent text-gray-400 hover:text-white'
               )}
             >
               {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
@@ -121,8 +121,8 @@ export default function NotificationCenter({
       {/* Notifications List */}
       {filteredNotifications.length === 0 ? (
         <div className="text-center py-12">
-          <Bell className="w-12 h-12 text-gray-500 dark:text-muted-foreground mx-auto mb-4" />
-          <p className="text-gray-400 dark:text-muted-foreground">
+          <Bell className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-400">
             {filter === 'unread' ? 'No unread notifications' : 'No notifications'}
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function NotificationCenter({
               className={clsx(
                 'p-4 rounded-lg border transition-colors glass-effect',
                 getTypeStyles(notification.notification_type),
-                !notification.read && 'ring-2 ring-blue-500 dark:ring-primary-400'
+                !notification.read && 'ring-2 ring-blue-500'
               )}
             >
               <div className="flex items-start gap-3">
@@ -148,8 +148,8 @@ export default function NotificationCenter({
                     />
                   ) : (
                     notification.icon || (
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/30 flex items-center justify-center">
-                        <Bell className="w-4 h-4 text-blue-400 dark:text-primary-400" />
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                        <Bell className="w-4 h-4 text-blue-400" />
                       </div>
                     )
                   )}
@@ -159,22 +159,22 @@ export default function NotificationCenter({
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-semibold text-white dark:text-foreground">
+                        <h4 className="text-sm font-semibold text-white">
                           {notification.title}
                         </h4>
                         {!notification.read && (
-                          <div className="w-2 h-2 rounded-full bg-blue-400 dark:bg-primary-400" />
+                          <div className="w-2 h-2 rounded-full bg-blue-400" />
                         )}
                       </div>
-                      <p className="text-sm text-gray-300 dark:text-foreground mb-2">{notification.message}</p>
+                      <p className="text-sm text-gray-300 mb-2">{notification.message}</p>
                       <div className="flex items-center gap-3">
-                        <span className="text-xs text-gray-400 dark:text-muted-foreground">
+                        <span className="text-xs text-gray-400">
                           {formatTimestamp(notification.created_at)}
                         </span>
                         {notification.action_url && (
                           <button
                             onClick={() => onActionClick?.(notification)}
-                            className="text-xs font-medium text-blue-400 dark:text-primary-400 hover:text-blue-300 dark:hover:text-primary-300"
+                            className="text-xs font-medium text-blue-400 hover:text-blue-300"
                           >
                             {notification.action_label || 'View'}
                           </button>
@@ -186,7 +186,7 @@ export default function NotificationCenter({
                       {!notification.read && onMarkAsRead && (
                         <button
                           onClick={() => handleMarkAsRead(notification.id)}
-                          className="p-1 text-gray-400 dark:text-muted-foreground hover:text-green-400 dark:hover:text-success-400 transition-colors"
+                          className="p-1 text-gray-400 hover:text-green-400 transition-colors"
                           title="Mark as read"
                         >
                           <Check className="w-4 h-4" />
@@ -195,7 +195,7 @@ export default function NotificationCenter({
                       {onDelete && (
                         <button
                           onClick={() => handleDelete(notification.id)}
-                          className="p-1 text-gray-400 dark:text-muted-foreground hover:text-red-400 dark:hover:text-danger-400 transition-colors"
+                          className="p-1 text-gray-400 hover:text-red-400 transition-colors"
                           title="Delete"
                         >
                           <X className="w-4 h-4" />
