@@ -109,19 +109,19 @@ export default function MultiSelect({
   return (
     <div ref={containerRef} className={clsx('relative', fullWidth && 'w-full', className)}>
       {label && (
-        <label className="block text-sm font-medium text-gray-300 dark:text-foreground mb-1">{label}</label>
+        <label className="block text-sm font-medium text-gray-300 text-white mb-1">{label}</label>
       )}
 
       <div
         className={clsx(
           'min-h-[42px] w-full px-3 py-2 border rounded-lg',
-          'bg-[#1C1C26] dark:bg-background',
-          'text-white dark:text-foreground',
-          'focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-500 dark:focus-within:ring-primary-400 focus-within:border-transparent',
+          'bg-[#1C1C26] bg-[#1C1C26]',
+          'text-white text-white',
+          'focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-blue-400 focus-within:border-transparent',
           error
-            ? 'border-error-500 dark:border-error-400 focus-within:ring-error-500 dark:focus-within:ring-error-400'
-            : 'border-gray-700 dark:border-border',
-          disabled && 'bg-[#1C1C26] dark:bg-muted cursor-not-allowed opacity-60',
+            ? 'border-error-500 border-red-500/30 focus-within:ring-error-500 focus-within:ring-red-400'
+            : 'border-gray-700 border-gray-800',
+          disabled && 'bg-[#1C1C26] bg-[#1C1C26] cursor-not-allowed opacity-60',
           'cursor-text'
         )}
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -159,7 +159,7 @@ export default function MultiSelect({
               onFocus={() => setIsOpen(true)}
               placeholder={value.length === 0 ? placeholder : ''}
               disabled={disabled}
-              className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-white dark:text-foreground placeholder:text-gray-500 dark:placeholder:text-muted-foreground"
+              className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-white text-white placeholder:text-gray-500 placeholder-gray-400"
               aria-label="Search options"
             />
           )}
@@ -169,7 +169,7 @@ export default function MultiSelect({
             <button
               type="button"
               onClick={handleClear}
-              className="text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-muted-foreground focus:outline-none transition-colors"
+              className="text-gray-400 text-gray-400 hover:text-white hover:text-gray-400 focus:outline-none transition-colors"
               aria-label="Clear selection"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,7 +180,7 @@ export default function MultiSelect({
 
           {/* Dropdown Icon */}
           <svg
-            className={clsx('w-5 h-5 text-gray-400 dark:text-muted-foreground transition-transform', isOpen && 'transform rotate-180')}
+            className={clsx('w-5 h-5 text-gray-400 text-gray-400 transition-transform', isOpen && 'transform rotate-180')}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -194,20 +194,20 @@ export default function MultiSelect({
       {isOpen && (
         <div
           className={clsx(
-            'absolute z-50 w-full mt-1 glass-effect bg-[#13131A] dark:bg-background',
-            'border border-gray-800 dark:border-border rounded-lg shadow-lg',
+            'absolute z-50 w-full mt-1 glass-effect bg-[#13131A] bg-[#1C1C26]',
+            'border border-gray-800 border-gray-800 rounded-lg shadow-lg',
             'max-h-60 overflow-y-auto custom-scrollbar'
           )}
           role="listbox"
         >
           {filteredOptions.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-gray-400 dark:text-muted-foreground text-center">Aucune option trouvée</div>
+            <div className="px-4 py-3 text-sm text-gray-400 text-gray-400 text-center">Aucune option trouvée</div>
           ) : (
             <div className="py-1">
               {Object.entries(groupedOptions).map(([group, groupOptions]) => (
                 <div key={group}>
                   {Object.keys(groupedOptions).length > 1 && (
-                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 dark:text-muted-foreground uppercase tracking-wider">
+                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 text-gray-400 uppercase tracking-wider">
                       {group}
                     </div>
                   )}
@@ -224,8 +224,8 @@ export default function MultiSelect({
                         className={clsx(
                           'w-full text-left px-3 py-2 text-sm transition-colors',
                           isSelected
-                            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 border-l-4 border-l-blue-500'
-                            : 'text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted',
+                            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white text-blue-300 border-l-4 border-l-blue-500'
+                            : 'text-gray-300 text-white hover:bg-[#1C1C26] hover:bg-[#1C1C26]',
                           isDisabled && 'opacity-50 cursor-not-allowed'
                         )}
                         role="option"
@@ -237,7 +237,7 @@ export default function MultiSelect({
                               'w-4 h-4 border rounded flex items-center justify-center',
                               isSelected
                                 ? 'bg-gradient-to-r from-blue-500 to-purple-500 border-blue-500'
-                                : 'border-gray-700 dark:border-border'
+                                : 'border-gray-700 border-gray-800'
                             )}
                           >
                             {isSelected && (
@@ -260,7 +260,7 @@ export default function MultiSelect({
 
       {/* Error/Helper Text */}
       {error && (
-        <p className="mt-1 text-sm text-error-600 dark:text-error-400" role="alert">
+        <p className="mt-1 text-sm text-error-600 text-red-400" role="alert">
           {error}
         </p>
       )}

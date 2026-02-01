@@ -66,27 +66,27 @@ const createVariantStyles = (base: string[], hover: string[], focus: string[], c
 
 const variants = {
   primary: createVariantStyles(
-    ['bg-primary-600', 'dark:bg-primary-500', 'text-background'],
-    ['hover:bg-primary-700', 'dark:hover:bg-primary-600'],
-    ['focus:ring-primary-500', 'dark:focus:ring-primary-400'],
+    ['bg-primary-600', 'bg-blue-500', 'text-background'],
+    ['hover:bg-primary-700', 'hover:bg-blue-600'],
+    ['focus:ring-primary-500', 'focus:ring-blue-400'],
     'color-primary-500'
   ),
   secondary: createVariantStyles(
-    ['bg-secondary-600', 'dark:bg-secondary-500', 'text-background'],
-    ['hover:bg-secondary-700', 'dark:hover:bg-secondary-600'],
-    ['focus:ring-secondary-500', 'dark:focus:ring-secondary-400'],
+    ['bg-secondary-600', 'bg-green-500', 'text-background'],
+    ['hover:bg-secondary-700', 'hover:bg-green-600'],
+    ['focus:ring-secondary-500', 'focus:ring-green-400'],
     'color-secondary-500'
   ),
   outline: [
     'border-2',
     'border-primary-600',
-    'dark:border-primary-500',
+    'border-blue-500',
     'text-primary-600',
-    'dark:text-primary-400',
+    'text-blue-400',
     'hover:bg-primary-50',
-    'dark:hover:bg-primary-900/20',
+    'hover:bg-blue-500/20',
     'focus:ring-primary-500',
-    'dark:focus:ring-primary-400',
+    'focus:ring-blue-400',
     '[border-color:var(--color-primary-500)]',
     '[color:var(--color-primary-500)]',
   ].join(' '),
@@ -94,18 +94,18 @@ const variants = {
     'text-foreground',
     'hover:bg-muted',
     'focus:ring-primary-500',
-    'dark:focus:ring-primary-400',
+    'focus:ring-blue-400',
   ].join(' '),
   danger: createVariantStyles(
-    ['bg-error-600', 'dark:bg-error-500', 'text-background'],
-    ['hover:bg-error-700', 'dark:hover:bg-error-600'],
-    ['focus:ring-error-500', 'dark:focus:ring-error-400'],
+    ['bg-error-600', 'bg-red-500', 'text-background'],
+    ['hover:bg-error-700', 'hover:bg-red-600'],
+    ['focus:ring-error-500', 'focus:ring-red-400'],
     'color-error-500'
   ),
   error: createVariantStyles(
-    ['bg-error-600', 'dark:bg-error-500', 'text-background'],
-    ['hover:bg-error-700', 'dark:hover:bg-error-600'],
-    ['focus:ring-error-500', 'dark:focus:ring-error-400'],
+    ['bg-error-600', 'bg-red-500', 'text-background'],
+    ['hover:bg-error-700', 'hover:bg-red-600'],
+    ['focus:ring-error-500', 'focus:ring-red-400'],
     'color-error-500'
   ),
   // Gradient variant for modern dark UI
@@ -117,7 +117,7 @@ const variants = {
     'hover:from-blue-600',
     'hover:to-purple-600',
     'focus:ring-primary-500',
-    'dark:focus:ring-primary-400',
+    'focus:ring-blue-400',
   ].join(' '),
 };
 

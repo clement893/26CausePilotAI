@@ -41,18 +41,18 @@ const placementClasses = {
   'right-end': 'left-full bottom-0 ml-2',
 };
 const arrowClasses = {
-  top: 'top-full left-1/2 -translate-x-1/2 border-t-gray-200 dark:border-t-gray-700',
-  'top-start': 'top-full left-4 border-t-gray-200 dark:border-t-gray-700',
-  'top-end': 'top-full right-4 border-t-gray-200 dark:border-t-gray-700',
-  bottom: 'bottom-full left-1/2 -translate-x-1/2 border-b-gray-200 dark:border-b-gray-700',
-  'bottom-start': 'bottom-full left-4 border-b-gray-200 dark:border-b-gray-700',
-  'bottom-end': 'bottom-full right-4 border-b-gray-200 dark:border-b-gray-700',
-  left: 'left-full top-1/2 -translate-y-1/2 border-l-gray-200 dark:border-l-gray-700',
-  'left-start': 'left-full top-4 border-l-gray-200 dark:border-l-gray-700',
-  'left-end': 'left-full bottom-4 border-l-gray-200 dark:border-l-gray-700',
-  right: 'right-full top-1/2 -translate-y-1/2 border-r-gray-200 dark:border-r-gray-700',
-  'right-start': 'right-full top-4 border-r-gray-200 dark:border-r-gray-700',
-  'right-end': 'right-full bottom-4 border-r-gray-200 dark:border-r-gray-700',
+  top: 'top-full left-1/2 -translate-x-1/2 border-t-gray-200 border-t-gray-800',
+  'top-start': 'top-full left-4 border-t-gray-200 border-t-gray-800',
+  'top-end': 'top-full right-4 border-t-gray-200 border-t-gray-800',
+  bottom: 'bottom-full left-1/2 -translate-x-1/2 border-b-gray-200 border-b-gray-800',
+  'bottom-start': 'bottom-full left-4 border-b-gray-200 border-b-gray-800',
+  'bottom-end': 'bottom-full right-4 border-b-gray-200 border-b-gray-800',
+  left: 'left-full top-1/2 -translate-y-1/2 border-l-gray-200 border-l-gray-800',
+  'left-start': 'left-full top-4 border-l-gray-200 border-l-gray-800',
+  'left-end': 'left-full bottom-4 border-l-gray-200 border-l-gray-800',
+  right: 'right-full top-1/2 -translate-y-1/2 border-r-gray-200 border-r-gray-800',
+  'right-start': 'right-full top-4 border-r-gray-200 border-r-gray-800',
+  'right-end': 'right-full bottom-4 border-r-gray-200 border-r-gray-800',
 };
 export default function Popover({
   trigger,
@@ -120,8 +120,8 @@ export default function Popover({
             ref={contentRef}
             className={clsx(
               'absolute z-50',
-              'glass-effect bg-[#13131A] dark:bg-background',
-              'border border-gray-800 dark:border-border',
+              'glass-effect bg-[#13131A] bg-[#1C1C26]',
+              'border border-gray-800 border-gray-800',
               'rounded-lg shadow-strong',
               'min-w-[200px]',
               placementClasses[placement],
@@ -143,13 +143,13 @@ export default function Popover({
                   'absolute w-0 h-0',
                   arrowClasses[placement],
                   placement.startsWith('top') &&
-                    'border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#13131A] dark:border-t-gray-800',
+                    'border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-800',
                   placement.startsWith('bottom') &&
-                    'border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#13131A] dark:border-b-gray-800',
+                    'border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-gray-800',
                   placement.startsWith('left') &&
-                    'border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#13131A] dark:border-l-gray-800',
+                    'border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-gray-800',
                   placement.startsWith('right') &&
-                    'border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#13131A] dark:border-r-gray-800'
+                    'border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-gray-800'
                 )}
               />
             )}{' '}
