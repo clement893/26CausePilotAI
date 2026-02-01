@@ -13,9 +13,17 @@ export default function Skeleton({
   height,
   animation = 'pulse',
 }: SkeletonProps) {
-  const baseStyles = 'bg-muted';
-  const animations = { pulse: 'animate-pulse', wave: 'animate-pulse', none: '' };
-  const variants = { text: 'rounded', circular: 'rounded-full', rectangular: 'rounded' };
+  const baseStyles = 'bg-[#1C1C26] dark:bg-muted';
+  const animations = { 
+    pulse: 'animate-pulse', 
+    wave: 'shimmer', 
+    none: '' 
+  };
+  const variants = { 
+    text: 'rounded', 
+    circular: 'rounded-full', 
+    rectangular: 'rounded' 
+  };
   const style: React.CSSProperties = {};
   if (width) style.width = typeof width === 'number' ? `${width}px` : width;
   if (height) style.height = typeof height === 'number' ? `${height}px` : height;

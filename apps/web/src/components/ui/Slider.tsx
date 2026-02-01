@@ -51,13 +51,11 @@ export default function Slider({
       {' '}
       {label && (
         <div className="flex items-center justify-between">
-          {' '}
-          <label className="text-sm font-medium text-foreground">{label}</label>{' '}
-          {showValue && <span className="text-sm text-muted-foreground">{currentValue}</span>}{' '}
+          <label className="text-sm font-medium text-gray-300 dark:text-foreground">{label}</label>
+          {showValue && <span className="text-sm text-gray-400 dark:text-muted-foreground">{currentValue}</span>}
         </div>
-      )}{' '}
+      )}
       <div className="relative">
-        {' '}
         <input
           ref={inputRef}
           type="range"
@@ -68,12 +66,15 @@ export default function Slider({
           onChange={handleChange}
           disabled={disabled}
           className={clsx(
-            'w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer',
+            'w-full h-2 bg-[#1C1C26] dark:bg-muted rounded-lg appearance-none cursor-pointer',
             'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
             disabled && 'opacity-50 cursor-not-allowed',
-            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:bg-primary-700',
-            '[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary-600 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:hover:bg-primary-700'
+            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-blue-500 [&::-webkit-slider-thumb]:to-purple-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:from-blue-600 [&::-webkit-slider-thumb]:hover:to-purple-600',
+            '[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gradient-to-r [&::-moz-range-thumb]:from-blue-500 [&::-moz-range-thumb]:to-purple-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:hover:from-blue-600 [&::-moz-range-thumb]:hover:to-purple-600'
           )}
+          style={{
+            background: `linear-gradient(to right, rgb(59, 130, 246) 0%, rgb(139, 92, 246) ${((currentValue - min) / (max - min)) * 100}%, rgb(28, 28, 38) ${((currentValue - min) / (max - min)) * 100}%, rgb(28, 28, 38) 100%)`
+          }}
           aria-label={label}
           aria-valuemin={min}
           aria-valuemax={max}
@@ -82,24 +83,22 @@ export default function Slider({
         />{' '}
         {marks && marks.length > 0 && (
           <div className="flex justify-between mt-2">
-            {' '}
             {marks.map((mark) => (
               <div
                 key={mark.value}
                 className="flex flex-col items-center"
                 style={{ left: `${((mark.value - min) / (max - min)) * 100}%` }}
               >
-                {' '}
-                <div className="w-1 h-1 bg-muted rounded-full mb-1" />{' '}
-                <span className="text-xs text-muted-foreground">{mark.label}</span>{' '}
+                <div className="w-1 h-1 bg-[#1C1C26] dark:bg-muted rounded-full mb-1" />
+                <span className="text-xs text-gray-400 dark:text-muted-foreground">{mark.label}</span>
               </div>
-            ))}{' '}
+            ))}
           </div>
-        )}{' '}
-      </div>{' '}
+        )}
+      </div>
       {showValue && !label && (
-        <div className="text-sm text-muted-foreground text-right">{currentValue}</div>
-      )}{' '}
+        <div className="text-sm text-gray-400 dark:text-muted-foreground text-right">{currentValue}</div>
+      )}
     </div>
   );
 }

@@ -26,50 +26,47 @@ export default function SearchBar({
     onSearch?.('');
   };
   return (
-    <div className={clsx('relative', fullWidth && 'w-full')}>
-      {' '}
-      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-        {' '}
+    <div className={clsx('relative form-input-glow', fullWidth && 'w-full')}>
+      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-muted-foreground">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          {' '}
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />{' '}
-        </svg>{' '}
-      </div>{' '}
+          />
+        </svg>
+      </div>
       <input
         type="text"
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
         className={clsx(
-          'w-full pl-10 pr-10 py-2 border border-border rounded-lg',
+          'w-full pl-10 pr-10 py-2 border border-gray-700 dark:border-border rounded-lg',
+          'bg-[#1C1C26] dark:bg-background text-white dark:text-foreground',
+          'placeholder:text-gray-500 dark:placeholder:text-muted-foreground',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
           className
         )}
         {...props}
-      />{' '}
+      />
       {showClearButton && value && (
         <button
           onClick={handleClear}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-foreground transition-colors"
           aria-label="Clear search"
         >
-          {' '}
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            {' '}
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
               d="M6 18L18 6M6 6l12 12"
-            />{' '}
-          </svg>{' '}
+            />
+          </svg>
         </button>
-      )}{' '}
+      )}
     </div>
   );
 }

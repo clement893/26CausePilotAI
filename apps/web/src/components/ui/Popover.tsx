@@ -120,8 +120,8 @@ export default function Popover({
             ref={contentRef}
             className={clsx(
               'absolute z-50',
-              'bg-background',
-              'border border-border',
+              'glass-effect bg-[#13131A] dark:bg-background',
+              'border border-gray-800 dark:border-border',
               'rounded-lg shadow-strong',
               'min-w-[200px]',
               placementClasses[placement],
@@ -143,13 +143,13 @@ export default function Popover({
                   'absolute w-0 h-0',
                   arrowClasses[placement],
                   placement.startsWith('top') &&
-                    'border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white dark:border-t-gray-800',
+                    'border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#13131A] dark:border-t-gray-800',
                   placement.startsWith('bottom') &&
-                    'border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white dark:border-b-gray-800',
+                    'border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#13131A] dark:border-b-gray-800',
                   placement.startsWith('left') &&
-                    'border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-white dark:border-l-gray-800',
+                    'border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#13131A] dark:border-l-gray-800',
                   placement.startsWith('right') &&
-                    'border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-white dark:border-r-gray-800'
+                    'border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#13131A] dark:border-r-gray-800'
                 )}
               />
             )}{' '}
