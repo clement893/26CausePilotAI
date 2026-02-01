@@ -67,7 +67,7 @@ const features = [
 
 export function HomeFeatures() {
   return (
-    <section className="py-32 bg-white dark:bg-gray-950 relative overflow-hidden">
+    <section className="py-32 bg-[#0A0A0F] relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-full blur-3xl" />
@@ -80,21 +80,21 @@ export function HomeFeatures() {
               variant="info" 
               className="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm"
             >
-              <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+              <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600from-blue-400to-purple-400 bg-clip-text text-transparent">
                 Powerful Features
               </span>
             </Badge>
           </div>
 
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight animate-fade-in-up animation-delay-100">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight animate-fade-in-up animation-delay-100">
             Everything you need to
             <br />
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               scale your impact
             </span>
           </h2>
 
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-200">
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-200">
             Replace fragmented tools with one unified platform designed for the modern nonprofit era.
           </p>
         </div>
@@ -113,7 +113,7 @@ export function HomeFeatures() {
                 <div className={`absolute -inset-0.5 bg-gradient-to-r ${feature.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
                 
                 {/* Card */}
-                <Card className={`relative h-full p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border ${feature.borderColor} hover:border-${feature.glowColor}-500/40 transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-2xl overflow-hidden`}>
+                <Card className={`relative h-full p-8 bg-[#1C1C26]/80 backdrop-blur-sm border ${feature.borderColor} hover:border-${feature.glowColor}-500/40 transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-2xl overflow-hidden`}>
                   {/* Gradient overlay on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${feature.iconBg} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                   
@@ -130,12 +130,12 @@ export function HomeFeatures() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-gray-700 dark:group-hover:from-white dark:group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
+                    <h3 className="text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-gray-700group-hover:from-whitegroup-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
                       {feature.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <p className="text-gray-300 leading-relaxed">
                       {feature.description}
                     </p>
 
@@ -158,7 +158,7 @@ export function HomeFeatures() {
 
         {/* Bottom CTA */}
         <div className="mt-20 text-center animate-fade-in-up animation-delay-600">
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+          <p className="text-lg text-gray-300 mb-6">
             Ready to transform your fundraising?
           </p>
           <button className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105 transition-all duration-300">

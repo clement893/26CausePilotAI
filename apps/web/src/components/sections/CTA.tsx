@@ -4,7 +4,7 @@ import { Heart, ArrowRight, CheckCircle2 } from 'lucide-react';
 export default function CTA() {
   return (
     <section
-      className="relative py-32 overflow-hidden bg-[#1a4d2e] dark:bg-[#0f2e1a]"
+      className="relative py-32 overflow-hidden bg-[#1a4d2e]"
       aria-labelledby="cta-heading"
     >
       {/* Animated Background */}

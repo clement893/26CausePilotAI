@@ -30,7 +30,7 @@ export function HomeNewsletter() {
   };
 
   return (
-    <section className="py-32 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-blue-950/20 dark:via-purple-950/20 dark:to-pink-950/20 relative overflow-hidden">
+    <section className="py-32 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50from-blue-950/20via-purple-950/20to-pink-950/20 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       
@@ -46,7 +46,7 @@ export function HomeNewsletter() {
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
             
             {/* Card */}
-            <div className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl p-12 md:p-16 shadow-2xl border border-gray-200/50 dark:border-gray-700/50">
+            <div className="relative bg-[#1C1C26]/90 backdrop-blur-xl rounded-3xl p-12 md:p-16 shadow-2xl border border-gray-800/50">
               {/* Content */}
               <div className="text-center space-y-8">
                 {/* Badge */}
@@ -55,7 +55,7 @@ export function HomeNewsletter() {
                     variant="info" 
                     className="px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm"
                   >
-                    <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                    <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600from-blue-400to-purple-400 bg-clip-text text-transparent">
                       Stay Ahead of the Curve
                     </span>
                   </Badge>
@@ -63,25 +63,25 @@ export function HomeNewsletter() {
 
                 {/* Heading */}
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-fade-in-up animation-delay-100">
-                  <span className="text-gray-900 dark:text-white block mb-2">
+                  <span className="text-white block mb-2">
                     Get the latest fundraising insights
                   </span>
-                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent block">
+                  <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent block">
                     delivered to your inbox
                   </span>
                 </h2>
 
                 {/* Description */}
-                <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
-                  Join <span className="font-semibold text-gray-900 dark:text-white">2,000+</span> nonprofit leaders receiving our weekly{' '}
-                  <span className="font-semibold text-blue-600 dark:text-blue-400">"Tech for Good"</span> digest. 
+                <p className="text-xl text-gray-300 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
+                  Join <span className="font-semibold text-white">2,000+</span> nonprofit leaders receiving our weekly{' '}
+                  <span className="font-semibold text-blue-400">"Tech for Good"</span> digest. 
                   No spam, just impact.
                 </p>
 
                 {/* Form or Success State */}
                 {!isSubmitted ? (
                   <form onSubmit={handleSubmit} className="max-w-2xl mx-auto animate-fade-in-up animation-delay-300">
-                    <div className="flex flex-col sm:flex-row gap-4 p-2 bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-inner">
+                    <div className="flex flex-col sm:flex-row gap-4 p-2 bg-[#1C1C26] rounded-2xl shadow-inner">
                       <div className="flex-1 relative">
                         <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <Input
@@ -91,7 +91,7 @@ export function HomeNewsletter() {
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                           required
                           disabled={isSubmitting}
-                          className="w-full pl-12 pr-4 py-4 text-lg bg-white dark:bg-gray-900 border-0 focus:ring-2 focus:ring-blue-500 rounded-xl"
+                          className="w-full pl-12 pr-4 py-4 text-lg bg-[#0A0A0F] border-0 focus:ring-2 focus:ring-blue-500 rounded-xl"
                         />
                       </div>
                       <Button
@@ -115,16 +115,16 @@ export function HomeNewsletter() {
                     </div>
                   </form>
                 ) : (
-                  <div className="max-w-2xl mx-auto p-8 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-2xl border-2 border-green-200 dark:border-green-800 animate-scale-in">
+                  <div className="max-w-2xl mx-auto p-8 bg-gradient-to-br from-green-50 to-emerald-50from-green-950/30to-emerald-950/30 rounded-2xl border-2 border-green-500/30 animate-scale-in">
                     <div className="flex items-center justify-center gap-4 mb-4">
                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-xl">
                         <CheckCircle2 className="w-8 h-8 text-white" />
                       </div>
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-2xl font-bold text-white mb-2">
                       Welcome aboard! 🎉
                     </h3>
-                    <p className="text-lg text-gray-700 dark:text-gray-300">
+                    <p className="text-lg text-gray-300">
                       Thank you for subscribing! Check your inbox for a confirmation email.
                     </p>
                   </div>
@@ -140,8 +140,8 @@ export function HomeNewsletter() {
                     ].map((item, i) => {
                       const Icon = item.icon;
                       return (
-                        <div key={i} className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                          <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        <div key={i} className="flex items-center gap-2 text-gray-400">
+                          <Icon className="w-5 h-5 text-blue-400" />
                           <span className="text-sm font-medium">{item.text}</span>
                         </div>
                       );
@@ -157,13 +157,13 @@ export function HomeNewsletter() {
                         {[1, 2, 3, 4, 5].map((i) => (
                           <div
                             key={i}
-                            className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-white dark:border-gray-900 flex items-center justify-center text-white font-semibold text-sm"
+                            className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-whiteborder-gray-900 flex items-center justify-center text-white font-semibold text-sm"
                           >
                             {String.fromCharCode(64 + i)}
                           </div>
                         ))}
                       </div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400 ml-2">
+                      <span className="text-sm text-gray-400 ml-2">
                         Join 2,000+ nonprofit leaders
                       </span>
                     </div>

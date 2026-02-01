@@ -12,7 +12,7 @@ const stats: Stat[] = [
 ];
 export default function Stats() {
   return (
-    <section className="py-24 bg-[#1a4d2e] dark:bg-[#0f2e1a] relative overflow-hidden">
+    <section className="py-24 bg-[#1a4d2e] relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-72 h-72 bg-white rounded-full blur-3xl" />

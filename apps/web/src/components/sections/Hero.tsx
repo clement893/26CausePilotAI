@@ -32,12 +32,12 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200 dark:from-muted dark:via-muted dark:to-muted overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0F] via-[#13131A] to-[#1C1C26] overflow-hidden">
       {/* Background decoration - Optimized with will-change and reduced opacity */}
       <div className="absolute inset-0 overflow-hidden">
         <div
           className={clsx(
-            'absolute -top-40 -right-40 w-80 h-80 bg-primary-400 rounded-full mix-blend-multiply filter blur-xl opacity-10',
+            'absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10',
             !prefersReducedMotion && isLoaded && 'animate-blob',
             'will-change-transform'
           )}
@@ -48,7 +48,7 @@ export default function Hero() {
         />
         <div
           className={clsx(
-            'absolute -bottom-40 -left-40 w-80 h-80 bg-primary-300 rounded-full mix-blend-multiply filter blur-xl opacity-10',
+            'absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-10',
             !prefersReducedMotion && isLoaded && 'animate-blob',
             'will-change-transform'
           )}
@@ -59,7 +59,7 @@ export default function Hero() {
         />
         <div
           className={clsx(
-            'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-10',
+            'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-10',
             !prefersReducedMotion && isLoaded && 'animate-blob',
             'will-change-transform'
           )}
@@ -84,7 +84,7 @@ export default function Hero() {
           style={{ animationDelay: '0.1s' }}
         >
           <span className="block mb-2">CAUSE PILOT</span>
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 dark:from-primary-400 dark:via-primary-300 dark:to-primary-200">
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
             AI-POWERED FUNDRAISING
           </span>
         </h1>

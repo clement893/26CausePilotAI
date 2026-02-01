@@ -54,7 +54,7 @@ export function HomeDemo() {
   const selectedMsg = demoMessages.find((m) => m.id === selectedMessage);
 
   return (
-    <section className="py-32 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20 dark:from-gray-900 dark:via-blue-950/20 dark:to-purple-950/10 relative overflow-hidden">
+    <section className="py-32 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20from-[#0A0A0F] via-[#13131A] to-[#1C1C26] relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-full blur-3xl" />
@@ -67,28 +67,28 @@ export function HomeDemo() {
               variant="success" 
               className="px-4 py-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 backdrop-blur-sm"
             >
-              <span className="font-semibold bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent">
+              <span className="font-semibold bg-gradient-to-r from-green-600 to-emerald-600from-green-400to-emerald-400 bg-clip-text text-transparent">
                 Try It Yourself
               </span>
             </Badge>
           </div>
 
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight animate-fade-in-up animation-delay-100">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight animate-fade-in-up animation-delay-100">
             Experience the
             <br />
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               Magic
             </span>
           </h2>
 
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-200">
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-200">
             See how CausePilot AI transforms generic fundraising appeals into compelling, donor-centric messages in seconds.
           </p>
         </div>
 
         {/* Demo Interface */}
         <div className="max-w-6xl mx-auto">
-          <Card className="p-8 md:p-12 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-2xl">
+          <Card className="p-8 md:p-12 bg-[#1C1C26]/90 backdrop-blur-xl border border-gray-800/50 shadow-2xl">
             <div className="grid md:grid-cols-2 gap-12">
               {/* Left Side - Input */}
               <div className="space-y-6">
@@ -96,7 +96,7 @@ export function HomeDemo() {
                   <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 text-white font-bold shadow-lg">
                     1
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-bold text-white">
                     Select a draft message
                   </h3>
                 </div>
@@ -108,8 +108,8 @@ export function HomeDemo() {
                       onClick={() => handleSelectMessage(msg.id)}
                       className={`group relative w-full text-left p-6 rounded-2xl border-2 transition-all duration-300 ${
                         selectedMessage === msg.id
-                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 shadow-xl scale-[1.02]'
-                          : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:scale-[1.01]'
+                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50from-blue-950/50to-purple-950/50 shadow-xl scale-[1.02]'
+                          : 'border-gray-800 hover:border-blue-500 hover:shadow-lg hover:scale-[1.01]'
                       }`}
                     >
                       {/* Gradient border on hover */}
@@ -121,13 +121,13 @@ export function HomeDemo() {
                         <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                           selectedMessage === msg.id
                             ? 'border-blue-500 bg-blue-500'
-                            : 'border-gray-300 dark:border-gray-600 group-hover:border-blue-400'
+                            : 'border-gray-700 group-hover:border-blue-500'
                         }`}>
                           {selectedMessage === msg.id && (
                             <Check className="w-4 h-4 text-white" />
                           )}
                         </div>
-                        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <p className="text-sm text-gray-300 leading-relaxed">
                           {msg.original}
                         </p>
                       </div>
@@ -154,17 +154,17 @@ export function HomeDemo() {
                   <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 text-white font-bold shadow-lg">
                     2
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-bold text-white">
                     See AI Enhancement
                   </h3>
                 </div>
 
                 {/* Empty state */}
                 {!selectedMessage && (
-                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50">
+                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-gray-800 rounded-2xl bg-[#1C1C26]/50">
                     <div className="text-center p-8">
                       <Sparkles className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500 dark:text-gray-400">
+                      <p className="text-gray-500text-gray-400">
                         Select a message to see the AI-enhanced version
                       </p>
                     </div>
@@ -173,7 +173,7 @@ export function HomeDemo() {
 
                 {/* Loading state */}
                 {isEnhancing && selectedMsg && (
-                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-blue-300 dark:border-blue-700 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30">
+                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-blue-300border-blue-700 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50from-blue-950/30to-purple-950/30">
                     <div className="text-center p-8">
                       <div className="relative w-16 h-16 mx-auto mb-6">
                         <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${selectedMsg.color} animate-ping opacity-20`} />
@@ -181,10 +181,10 @@ export function HomeDemo() {
                           <Sparkles className="w-8 h-8 text-white animate-spin" />
                         </div>
                       </div>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      <p className="text-lg font-semibold text-white mb-2">
                         AI is enhancing your message...
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-400">
                         Analyzing tone, context, and donor psychology
                       </p>
                     </div>
@@ -193,10 +193,10 @@ export function HomeDemo() {
 
                 {/* Waiting state */}
                 {selectedMessage && !showEnhanced && !isEnhancing && (
-                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50">
+                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-gray-800 rounded-2xl bg-[#1C1C26]/50">
                     <div className="text-center p-8">
                       <Wand2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500 dark:text-gray-400">
+                      <p className="text-gray-500text-gray-400">
                         Click "Enhance with AI" to see the transformation
                       </p>
                     </div>
@@ -210,26 +210,26 @@ export function HomeDemo() {
                     <div className={`absolute -inset-1 bg-gradient-to-r ${selectedMsg.color} rounded-2xl blur-xl opacity-30`} />
                     
                     {/* Content */}
-                    <div className="relative p-8 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 dark:from-green-950/30 dark:via-blue-950/30 dark:to-purple-950/30 rounded-2xl border-2 border-green-200 dark:border-green-800 shadow-2xl">
+                    <div className="relative p-8 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50from-green-950/30via-blue-950/30to-purple-950/30 rounded-2xl border-2 border-green-500/30 shadow-2xl">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
                           <Sparkles className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-green-700 dark:text-green-400 mb-1">
+                          <p className="text-sm font-bold text-green-400 mb-1">
                             AI-Enhanced Message
                           </p>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
+                          <p className="text-xs text-gray-400">
                             Optimized for engagement and conversion
                           </p>
                         </div>
                       </div>
-                      <p className="text-gray-800 dark:text-gray-200 leading-relaxed text-lg">
+                      <p className="text-gray-800text-gray-200 leading-relaxed text-lg">
                         {selectedMsg.enhanced}
                       </p>
                       
                       {/* Metrics */}
-                      <div className="mt-6 pt-6 border-t border-green-200 dark:border-green-800 grid grid-cols-3 gap-4">
+                      <div className="mt-6 pt-6 border-t border-green-500/30 grid grid-cols-3 gap-4">
                         {[
                           { label: 'Engagement', value: '+156%', color: 'text-green-600' },
                           { label: 'Clarity', value: '+89%', color: 'text-blue-600' },
@@ -237,7 +237,7 @@ export function HomeDemo() {
                         ].map((metric, i) => (
                           <div key={i} className="text-center">
                             <p className={`text-2xl font-bold ${metric.color}`}>{metric.value}</p>
-                            <p className="text-xs text-gray-600 dark:text-gray-400">{metric.label}</p>
+                            <p className="text-xs text-gray-400">{metric.label}</p>
                           </div>
                         ))}
                       </div>
