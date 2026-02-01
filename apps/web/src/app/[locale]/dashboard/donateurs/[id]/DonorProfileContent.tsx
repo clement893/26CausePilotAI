@@ -30,6 +30,8 @@ import {
   DonationHistoryTable,
   NotesList,
   ActivityTimeline,
+  ChurnRiskIndicator,
+  ChurnRiskBar,
 } from '@/components/donators';
 import { SubscriptionCard } from '@/components/donation-subscriptions';
 import { listSubscriptionsAction } from '@/app/actions/subscriptions/list';
@@ -44,7 +46,17 @@ function formatCurrency(amount: string): string {
   );
 }
 
+/**
+ * Récupère le score de propension du donateur
+ * Utilise le score calculé (RFM) s'il existe, sinon calcule un score simple
+ */
 function getScore(donor: DonorWithStats): number {
+  // Utiliser le score de propension calculé (RFM) s'il existe
+  if (donor.score !== undefined && donor.score !== null) {
+    return donor.score;
+  }
+  
+  // Fallback : calcul simple si le score n'a pas encore été calculé
   const count = donor.donation_count ?? 0;
   const total = parseFloat(donor.total_donated ?? '0');
   let score = Math.min(50, count * 5);
@@ -261,6 +273,21 @@ export default function DonorProfileContent() {
                   </div>
                 </Card>
               )}
+              <Card>
+                <h2 className="text-lg font-semibold mb-4">Risque de churn</h2>
+                <div className="space-y-4">
+                  {donor.churn_probability !== null && donor.churn_probability !== undefined ? (
+                    <>
+                      <ChurnRiskIndicator churnProbability={donor.churn_probability} />
+                      <ChurnRiskBar churnProbability={donor.churn_probability} />
+                    </>
+                  ) : (
+                    <div className="text-sm text-[var(--text-tertiary,#6B6B7B)]">
+                      Le risque de churn n'a pas encore été calculé pour ce donateur.
+                    </div>
+                  )}
+                </div>
+              </Card>
             </div>
           </TabPanel>
 

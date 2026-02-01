@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react';
 import type { EmailBlock, TextBlockProps, ImageBlockProps, ButtonBlockProps, SeparatorBlockProps } from './types';
+import { AIGenerateButton } from '@/components/ai/AIGenerateButton';
 
 export interface InspectorPanelProps {
   block: EmailBlock | null;
@@ -53,7 +54,19 @@ export function InspectorPanel({ block, onUpdate, onUnsplashSearch }: InspectorP
       <div className="w-64 shrink-0 space-y-3">
         <h3 className="text-sm font-medium text-[var(--text-secondary,#A0A0B0)]">Texte</h3>
         <div className="rounded-xl border border-white/10 bg-[var(--background-secondary,#13131A)] p-4 space-y-3">
-          <label className="block text-xs text-[var(--text-secondary,#A0A0B0)]">Contenu</label>
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-xs text-[var(--text-secondary,#A0A0B0)]">Contenu</label>
+            <AIGenerateButton
+              contentType="email"
+              onGenerated={(content) => {
+                // Nettoyer le HTML et extraire le texte si nécessaire
+                const textContent = content.replace(/<[^>]*>/g, '').trim() || content;
+                update({ content: textContent });
+              }}
+              context="Email marketing pour collecte de fonds"
+              size="sm"
+            />
+          </div>
           <textarea
             value={p?.content ?? ''}
             onChange={(e) => update({ content: e.target.value })}

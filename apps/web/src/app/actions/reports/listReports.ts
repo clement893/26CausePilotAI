@@ -18,7 +18,8 @@ export async function listReportsAction(
   userId: string
 ): Promise<{ reports?: ReportListItem[]; error?: string }> {
   try {
-    const rows = await prisma.report.findMany({
+    const reportModel = (prisma as unknown as { report: { findMany: (args: { where: { userId: string }; orderBy: { updatedAt: string }; select: { id: true; name: true; description: true; createdAt: true } }) => Promise<{ id: string; name: string; description: string | null; createdAt: Date }[]> } }).report;
+    const rows = await reportModel.findMany({
       where: { userId },
       orderBy: { updatedAt: 'desc' },
       select: { id: true, name: true, description: true, createdAt: true },

@@ -10,7 +10,7 @@ import { Link } from '@/i18n/routing';
 import { useAuthStore } from '@/lib/store';
 import { useOrganization } from '@/hooks/useOrganization';
 import { getPredefinedReportData } from '@/app/actions/reports/getPredefinedReportData';
-import { PREDEFINED_REPORT_TYPES, REPORT_METRICS } from '@/app/actions/reports/types';
+import { PREDEFINED_REPORT_TYPES } from '@/app/actions/reports/types';
 import type { PredefinedReportType } from '@/app/actions/reports/types';
 import { ReportView, ExportButtons, ScheduleReportModal } from '@/components/reports';
 import { Button } from '@/components/ui';
@@ -18,11 +18,6 @@ import { ChevronRight, Loader2, CalendarClock } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
-
-function getMetricLabel(metric: string): string {
-  const m = REPORT_METRICS.find((x) => x.value === metric);
-  return m?.label ?? metric;
-}
 
 const PREDEFINED_METRICS: Record<PredefinedReportType, string> = {
   annual_donations: 'total_donations',

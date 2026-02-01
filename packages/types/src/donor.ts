@@ -35,6 +35,8 @@ export interface Donor {
   first_donation_date?: string; // ISO datetime string
   last_donation_date?: string; // ISO datetime string
   donation_count: number;
+  score?: number; // Score de propension (0-100)
+  churn_probability?: number; // Probabilité de churn (0-1) - Étape 5.3.1
   created_at: string; // ISO datetime string
   updated_at: string; // ISO datetime string
 }
@@ -188,6 +190,20 @@ export interface DonorNoteCreate {
   is_private?: boolean;
 }
 
+// ============= Étape 5.2.2 - Analyse de Sentiments =============
+export interface Comment {
+  id: string;
+  content: string;
+  sentiment?: 'positive' | 'negative' | 'neutral';
+  donatorId: string;
+  createdAt: string;
+}
+
+export interface CommentCreate {
+  content: string;
+  donatorId: string;
+}
+
 export interface DonorActivity {
   id: string;
   donor_id: string;
@@ -303,6 +319,31 @@ export interface DonorSegmentUpdate {
 
 export interface DonorSegmentList {
   items: DonorSegment[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+// ============= Segment Suggestion Types =============
+
+export interface SegmentSuggestion {
+  id: string;
+  organization_id: string;
+  name: string;
+  description: string;
+  criteria: Record<string, any>;
+  donor_count: number;
+  cluster_id?: string;
+  confidence?: number;
+  is_accepted: boolean;
+  accepted_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SegmentSuggestionList {
+  items: SegmentSuggestion[];
   total: number;
   page: number;
   page_size: number;

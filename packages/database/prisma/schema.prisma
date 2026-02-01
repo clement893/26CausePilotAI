@@ -100,6 +100,8 @@ model Organization {
   emailTemplates    EmailTemplate[]
   audiences         Audience[]
   workflows         Workflow[]
+  segmentSuggestions SegmentSuggestion[]
+  p2pCampaigns       P2PCampaign[]
 
   // Timestamps
   createdAt   DateTime @default(now())
@@ -277,6 +279,9 @@ model Donator {
   // Segmentation automatique (sera calculé par l'IA)
   segment       String?  // VIP, Active, Inactive, New, etc.
   score         Int      @default(0) // Score de propension au don (0-100)
+  
+  // Prédiction de churn (Étape 5.3.1)
+  churnProbability Float? // Probabilité de churn (0-1)
 
   // Métriques de dons (seront calculées)
   totalDonations Decimal @default(0) @db.Decimal(10, 2)
@@ -301,6 +306,13 @@ model Donator {
   emailCampaigns EmailCampaign[]
   audiences      Audience[]
 
+  // Relations commentaires (Étape 5.2.2)
+  comments       Comment[]
+  
+  // Relations P2P (Étape 6.1.1)
+  // Note: Les participants P2P peuvent être des donateurs existants ou de nouveaux participants
+  // La relation se fait via l'email dans P2PParticipant
+
   // Timestamps
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -310,6 +322,7 @@ model Donator {
   @@index([organizationId])
   @@index([segment])
   @@index([lastDonationDate])
+  @@index([churnProbability])
   @@map("donators")
 }
 
@@ -732,4 +745,202 @@ model Workflow {
   @@index([organizationId])
   @@index([status])
   @@map("workflows")
+}
+
+// ============= Étape 5.1.2 - Segmentation Intelligente =============
+model SegmentSuggestion {
+  id          String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  name        String   // Nom du segment suggéré (ex: "Donateurs à haut potentiel")
+  description String   @db.Text // Description du segment
+  criteria    Json     // Critères de segmentation (ex: {min_total_donated: 1000, min_score: 70})
+  donorCount  Int      @default(0) // Nombre de donateurs correspondant aux critères
+  
+  // Métadonnées du clustering
+  clusterId   String?  // ID du cluster (pour regrouper les suggestions similaires)
+  confidence  Float?   // Score de confiance (0-1) de la suggestion
+  
+  // Statut
+  isAccepted  Boolean  @default(false) // Si l'utilisateur a accepté et créé le segment
+  acceptedAt  DateTime? // Date d'acceptation
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([isAccepted])
+  @@index([clusterId])
+  @@map("segment_suggestions")
+}
+
+// ============= Étape 6.1.1 - Modèles P2P (Peer-to-Peer) =============
+enum P2PCampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum P2PParticipantStatus {
+  ACTIVE
+  INACTIVE
+  COMPLETED
+}
+
+// Campagne P2P principale
+model P2PCampaign {
+  id          String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // Informations de base
+  name        String
+  description String?  @db.Text
+  slug        String   @unique // URL-friendly identifier
+  
+  // Dates
+  startDate   DateTime?
+  endDate     DateTime?
+  
+  // Objectifs
+  goalAmount  Decimal? @db.Decimal(10, 2)
+  goalParticipants Int?
+  
+  // Statut
+  status      P2PCampaignStatus @default(DRAFT)
+  
+  // Configuration
+  allowTeams  Boolean  @default(true) // Permet la création d'équipes
+  allowIndividualParticipants Boolean @default(true) // Permet les participants individuels
+  minTeamSize Int?     // Taille minimale d'équipe
+  maxTeamSize Int?     // Taille maximale d'équipe
+  
+  // Branding
+  coverImage  String?  // URL de l'image de couverture
+  logo        String?  // URL du logo
+  primaryColor String?  // Couleur principale
+  
+  // Statistiques (calculées)
+  totalRaised Decimal  @default(0) @db.Decimal(10, 2)
+  participantCount Int @default(0)
+  teamCount   Int     @default(0)
+  donationCount Int   @default(0)
+  
+  // Relations
+  participants P2PParticipant[]
+  teams        P2PTeam[]
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([organizationId])
+  @@index([status])
+  @@index([slug])
+  @@index([startDate])
+  @@index([endDate])
+  @@map("p2p_campaigns")
+}
+
+// Équipe de participants P2P
+model P2PTeam {
+  id          String   @id @default(cuid())
+  campaignId  String
+  campaign    P2PCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  // Informations de base
+  name        String
+  description String?  @db.Text
+  slug        String   // URL-friendly identifier (unique par campagne)
+  
+  // Chef d'équipe (participant principal)
+  teamLeaderId String?  // Référence au participant chef d'équipe
+  
+  // Objectifs
+  goalAmount  Decimal? @db.Decimal(10, 2)
+  
+  // Statistiques (calculées)
+  totalRaised Decimal  @default(0) @db.Decimal(10, 2)
+  memberCount Int      @default(0)
+  donationCount Int    @default(0)
+  
+  // Relations
+  participants P2PParticipant[]
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([campaignId, slug])
+  @@index([campaignId])
+  @@index([teamLeaderId])
+  @@map("p2p_teams")
+}
+
+// Participant P2P (individuel ou membre d'équipe)
+model P2PParticipant {
+  id          String   @id @default(cuid())
+  campaignId  String
+  campaign    P2PCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  // Équipe (optionnel - null si participant individuel)
+  teamId      String?
+  team        P2PTeam? @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  
+  // Informations du participant
+  firstName   String
+  lastName   String
+  email       String
+  phone       String?
+  
+  // Page de collecte personnalisée
+  slug        String   // URL-friendly identifier (unique par campagne)
+  personalMessage String? @db.Text // Message personnalisé sur la page
+  
+  // Objectifs personnels
+  goalAmount  Decimal? @db.Decimal(10, 2)
+  
+  // Statut
+  status      P2PParticipantStatus @default(ACTIVE)
+  
+  // Statistiques (calculées)
+  totalRaised Decimal  @default(0) @db.Decimal(10, 2)
+  donationCount Int    @default(0)
+  
+  // Métadonnées
+  profileImage String? // URL de la photo de profil
+  customFields Json?   // Champs personnalisés additionnels
+  
+  // Relations avec les dons (via DonationFormSubmission ou Donation)
+  // Note: Les dons sont liés via le champ campaignId dans Donation
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([campaignId, slug])
+  @@unique([campaignId, email]) // Un email unique par campagne
+  @@index([campaignId])
+  @@index([teamId])
+  @@index([email])
+  @@index([status])
+  @@map("p2p_participants")
+}
+
+// ============= Étape 5.2.2 - Analyse de Sentiments =============
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  sentiment String?  // "positive", "negative", "neutral"
+  donatorId String
+  donator   Donator  @relation(fields: [donatorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([donatorId])
+  @@index([sentiment])
+  @@index([createdAt])
+  @@map("comments")
 }

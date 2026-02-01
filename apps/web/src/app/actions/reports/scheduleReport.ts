@@ -57,7 +57,22 @@ export async function scheduleReportAction(
 
     const nextRunAt = computeNextRunAt(input.frequency);
 
-    const schedule = await prisma.reportSchedule.create({
+    const reportScheduleModel = (prisma as unknown as {
+      reportSchedule: {
+        create: (args: {
+          data: {
+            name: string;
+            userId: string;
+            reportId: string | null;
+            predefinedReportType: string | null;
+            frequency: ScheduleFrequency;
+            recipients: object;
+            nextRunAt: Date;
+          };
+        }) => Promise<{ id: string }>;
+      };
+    }).reportSchedule;
+    const schedule = await reportScheduleModel.create({
       data: {
         name: input.name,
         userId: input.userId,

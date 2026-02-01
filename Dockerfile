@@ -12,6 +12,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/types/package.json ./packages/types/
+COPY packages/core/package.json ./packages/core/
 
 # Install dependencies
 # Sharp will automatically download prebuilt binaries (faster than building from source)
@@ -34,6 +35,7 @@ COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=deps /app/apps/web/package.json ./apps/web/package.json
 COPY --from=deps /app/packages/types/package.json ./packages/types/package.json
+COPY --from=deps /app/packages/core/package.json ./packages/core/package.json
 # Reinstall to recreate symlinks for binaries
 # Railway caches .pnpm-store automatically via railway.json, so pnpm will reuse cached packages
 # Use --prefer-offline to use cache if available, but don't fail if not

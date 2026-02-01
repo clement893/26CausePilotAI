@@ -44,6 +44,7 @@
     "@axe-core/react": "^4.11.0",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.2.2",
+    "@modele/core": "workspace:*",
     "@modele/types": "workspace:*",
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@prisma/client": "^6.19.0",

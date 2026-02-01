@@ -40,7 +40,8 @@ export function ExportButtons({
 }: ExportButtonsProps) {
   const exportPdf = useCallback(() => {
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const pageWidth = doc.getPageWidth();
+    const internal = (doc as unknown as { internal?: { pageSize?: { getWidth?(): number } } }).internal;
+    const pageWidth = internal?.pageSize?.getWidth?.() ?? 210; // A4 width in mm
     let y = 20;
 
     doc.setFontSize(18);

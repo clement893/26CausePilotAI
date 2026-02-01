@@ -38,27 +38,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
 
-    // Paths - Configuration partagée pour les packages
+    // Paths - Packages utilisés (types, database, core)
     "paths": {
       "@modele/types": ["./packages/types/src"],
       "@modele/types/*": ["./packages/types/src/*"],
-      "@modele/analytics": ["./packages/analytics/src"],
-      "@modele/analytics/*": ["./packages/analytics/src/*"],
-      "@modele/auth": ["./packages/auth/src"],
-      "@modele/auth/*": ["./packages/auth/src/*"],
-      "@modele/campaigns": ["./packages/campaigns/src"],
-      "@modele/campaigns/*": ["./packages/campaigns/src/*"],
-      "@modele/core": ["./packages/core/src"],
-      "@modele/core/*": ["./packages/core/src/*"],
       "@modele/database": ["./packages/database"],
-      "@modele/donators": ["./packages/donators/src"],
-      "@modele/donators/*": ["./packages/donators/src/*"],
-      "@modele/forms": ["./packages/forms/src"],
-      "@modele/forms/*": ["./packages/forms/src/*"],
-      "@modele/marketing": ["./packages/marketing/src"],
-      "@modele/marketing/*": ["./packages/marketing/src/*"],
-      "@modele/ui": ["./packages/ui/src"],
-      "@modele/ui/*": ["./packages/ui/src/*"]
+      "@modele/core": ["./packages/core/src"],
+      "@modele/core/*": ["./packages/core/src/*"]
     }
   },
   "exclude": ["node_modules", "dist", "build", ".next", "out"]

@@ -1,9 +1,7 @@
 /**
  * Error Handling Module
- * Main export for error handling utilities
+ * Re-exports from @modele/core and app-specific API error handling.
  */
 
-export * from './types';
-export * from './AppError';
+export * from '@modele/core/errors';
 export * from './api';
-export * from './utils';

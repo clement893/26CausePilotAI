@@ -28,6 +28,7 @@ import type {
   DonorSegmentCreate,
   DonorSegmentUpdate,
   DonorSegmentList,
+  SegmentSuggestionList,
   DonorCommunication,
   DonorCommunicationCreate,
   DonorCommunicationUpdate,
@@ -279,6 +280,32 @@ export async function recalculateSegment(organizationId: string, segmentId: stri
   const response = await apiClient.post<DonorSegment>(
     `/v1/organizations/${organizationId}/segments/${segmentId}/recalculate`
   );
+  return extractApiData(response);
+}
+
+// ============= Segment Suggestions =============
+
+export interface ListSegmentSuggestionsParams {
+  organizationId: string;
+  page?: number;
+  pageSize?: number;
+  includeAccepted?: boolean;
+}
+
+export async function listSegmentSuggestions(
+  params: ListSegmentSuggestionsParams
+): Promise<SegmentSuggestionList> {
+  const { organizationId, ...queryParams } = params;
+  const queryString = new URLSearchParams();
+  
+  if (queryParams.page) queryString.append('page', queryParams.page.toString());
+  if (queryParams.pageSize) queryString.append('page_size', queryParams.pageSize.toString());
+  if (queryParams.includeAccepted !== undefined) {
+    queryString.append('include_accepted', queryParams.includeAccepted.toString());
+  }
+  
+  const url = `/v1/organizations/${organizationId}/segment-suggestions${queryString.toString() ? `?${queryString.toString()}` : ''}`;
+  const response = await apiClient.get<SegmentSuggestionList>(url);
   return extractApiData(response);
 }
 
