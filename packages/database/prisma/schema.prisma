@@ -12,9 +12,10 @@ datasource db {
 
 // ============= 1. Enum Role =============
 enum Role {
-  ADMIN    // Administrateur système - accès complet
+  ADMIN // Administrateur système - accès complet
   DIRECTOR // Gestionnaire Philanthropique (Directeur) - lecture seule sur campagnes
-  MANAGER  // Gestionnaire de Campagnes - accès complet aux campagnes
+  MANAGER // Gestionnaire de Campagnes - accès complet aux campagnes
+  SUPER_ADMIN // Super Admin - accès à toutes les organisations
 }
 
 // ============= Étape 2.1.1 - Enums Formulaires de Don =============
@@ -46,6 +47,21 @@ enum SubscriptionStatus {
   EXPIRED
 }
 
+// ============= Étape 7.1.1 - Enums Super Admin =============
+enum SubscriptionPlan {
+  FREE
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum OrganizationSubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+  TRIAL
+}
+
 // ============= Étape 3.1.1 - Enums Marketing =============
 enum EmailCampaignStatus {
   DRAFT
@@ -62,50 +78,56 @@ enum AudienceType {
 
 // ============= 2. Modèle Organization =============
 model Organization {
-  id          String   @id @default(cuid())
-  name        String   // Nom de l'organisation (ex: "Croix-Rouge Québec")
-  slug        String   @unique // URL-friendly identifier (ex: "croix-rouge-quebec")
+  id   String @id @default(cuid())
+  name String // Nom de l'organisation (ex: "Croix-Rouge Québec")
+  slug String @unique // URL-friendly identifier (ex: "croix-rouge-quebec")
 
   // Informations de branding
-  logo        String?  // URL du logo de l'organisation
-  website     String?  // Site web officiel
-  description String?  @db.Text // Description de la mission
+  logo        String? // URL du logo de l'organisation
+  website     String? // Site web officiel
+  description String? @db.Text // Description de la mission
 
   // Coordonnées
-  email       String?  // Email de contact principal
-  phone       String?  // Téléphone principal
-  address     String?  // Adresse physique complète
-  city        String?
-  province    String?
-  postalCode  String?
-  country     String   @default("CA") // Code pays ISO (CA, US, FR, etc.)
+  email      String? // Email de contact principal
+  phone      String? // Téléphone principal
+  address    String? // Adresse physique complète
+  city       String?
+  province   String?
+  postalCode String?
+  country    String  @default("CA") // Code pays ISO (CA, US, FR, etc.)
 
   // Paramètres système
-  timezone    String   @default("America/Toronto") // Fuseau horaire
-  currency    String   @default("CAD") // Devise par défaut (CAD, USD, EUR)
-  language    String   @default("fr") // Langue par défaut (fr, en)
+  timezone String @default("America/Toronto") // Fuseau horaire
+  currency String @default("CAD") // Devise par défaut (CAD, USD, EUR)
+  language String @default("fr") // Langue par défaut (fr, en)
 
   // Statut
-  isActive    Boolean  @default(true) // Organisation active ou suspendue
+  isActive Boolean @default(true) // Organisation active ou suspendue
 
   // Relations
-  users             User[]
-  donators          Donator[]
-  donationForms     DonationForm[]
-  formSubmissions   DonationFormSubmission[]
-  paymentIntents    PaymentIntent[]
-  subscriptions     Subscription[]
-  donations         Donation[]
-  emailCampaigns    EmailCampaign[]
-  emailTemplates    EmailTemplate[]
-  audiences         Audience[]
-  workflows         Workflow[]
-  segmentSuggestions SegmentSuggestion[]
-  p2pCampaigns       P2PCampaign[]
+  users                    User[]
+  donators                 Donator[]
+  donationForms            DonationForm[]
+  formSubmissions          DonationFormSubmission[]
+  paymentIntents           PaymentIntent[]
+  subscriptions            Subscription[]
+  donations                Donation[]
+  emailCampaigns           EmailCampaign[]
+  emailTemplates           EmailTemplate[]
+  audiences                Audience[]
+  workflows                Workflow[]
+  segmentSuggestions       SegmentSuggestion[]
+  p2pCampaigns             P2PCampaign[]
+  organizationSubscription OrganizationSubscription?
+  systemLogs               SystemLog[]
+  campaigns                Campaign[]
+  objectives               Objective[]
+  budgets                  Budget[]
+  goals                    Goal[]
 
   // Timestamps
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([slug])
   @@index([isActive])
@@ -119,22 +141,22 @@ model User {
   emailVerified DateTime?
 
   // Informations personnelles
-  firstName     String?
-  lastName      String?
-  phone         String?
-  avatar        String?   // URL de l'avatar
+  firstName String?
+  lastName  String?
+  phone     String?
+  avatar    String? // URL de l'avatar
 
   // Authentification
-  password      String?   // Hash du mot de passe (si auth locale)
+  password String? // Hash du mot de passe (si auth locale)
 
   // Organisation et rôle
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  role           Role      @default(MANAGER)
+  role           Role         @default(MANAGER)
 
   // Statut
-  isActive      Boolean   @default(true)
-  lastLoginAt   DateTime?
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
 
   // Relations existantes (à conserver)
   accounts        Account[]
@@ -142,10 +164,15 @@ model User {
   dashboardLayout DashboardLayout?
   reports         Report[]
   reportSchedules ReportSchedule[]
+  systemLogs      SystemLog[]
+  objectives      Objective[]
+  keyResults      KeyResult[]
+  budgetItems     BudgetItem[]
+  goals           Goal[]
 
   // Timestamps
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([email])
   @@index([organizationId])
@@ -192,7 +219,7 @@ model DashboardLayout {
   id        String   @id @default(cuid())
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  layout    Json     // Position et taille des widgets (react-grid-layout)
+  layout    Json // Position et taille des widgets (react-grid-layout)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -204,7 +231,7 @@ model Report {
   id          String   @id @default(cuid())
   name        String
   description String?  @db.Text
-  config      Json     // métriques, dimensions, période
+  config      Json // métriques, dimensions, période
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
@@ -216,17 +243,17 @@ model Report {
 
 // ============= Étape 4.2.3 - Planification des rapports =============
 model ReportSchedule {
-  id                  String   @id @default(cuid())
-  name                String   // Libellé de la planification
-  userId              String
-  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reportId            String?  // Rapport personnalisé (optionnel)
-  predefinedReportType String?  // Type de rapport prédéfini (optionnel)
-  frequency           String   // daily | weekly | monthly
-  recipients          Json     // ["email1@example.com", "email2@example.com"]
-  nextRunAt           DateTime?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                   String    @id @default(cuid())
+  name                 String // Libellé de la planification
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reportId             String? // Rapport personnalisé (optionnel)
+  predefinedReportType String? // Type de rapport prédéfini (optionnel)
+  frequency            String // daily | weekly | monthly
+  recipients           Json // ["email1@example.com", "email2@example.com"]
+  nextRunAt            DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   @@index([userId])
   @@index([nextRunAt])
@@ -235,63 +262,63 @@ model ReportSchedule {
 
 // ============= 4. Modèle Donator =============
 model Donator {
-  id            String   @id @default(cuid())
+  id String @id @default(cuid())
 
   // Informations personnelles
-  email         String   // Email principal du donateur
-  firstName     String?
-  lastName      String?
-  phone         String?
+  email     String // Email principal du donateur
+  firstName String?
+  lastName  String?
+  phone     String?
 
   // Adresse
-  address       String?
-  city          String?
-  province      String?
-  postalCode    String?
-  country       String?
+  address    String?
+  city       String?
+  province   String?
+  postalCode String?
+  country    String?
 
   // Informations professionnelles
-  profession    String?
-  employer      String?
-  sector        String?  // Secteur d'activité
+  profession String?
+  employer   String?
+  sector     String? // Secteur d'activité
 
   // Préférences de communication
-  preferredChannel String? // email, phone, sms, mail
-  preferredLanguage String @default("fr") // fr, en
+  preferredChannel       String? // email, phone, sms, mail
+  preferredLanguage      String  @default("fr") // fr, en
   communicationFrequency String? // weekly, monthly, quarterly
 
   // Intérêts et causes
-  interests     String[] // Array de causes d'intérêt
+  interests String[] // Array de causes d'intérêt
 
   // Champs personnalisés (JSON pour flexibilité)
-  customFields  Json?    // Champs additionnels spécifiques à l'organisation
+  customFields Json? // Champs additionnels spécifiques à l'organisation
 
   // Consentements RGPD/PIPEDA
-  consentEmail  Boolean  @default(false)
-  consentPhone  Boolean  @default(false)
-  consentSMS    Boolean  @default(false)
-  consentMail   Boolean  @default(false)
-  consentDate   DateTime?
+  consentEmail Boolean   @default(false)
+  consentPhone Boolean   @default(false)
+  consentSMS   Boolean   @default(false)
+  consentMail  Boolean   @default(false)
+  consentDate  DateTime?
 
   // Désinscription email marketing (Étape 3.1.1)
   unsubscribedAt DateTime?
 
   // Segmentation automatique (sera calculé par l'IA)
-  segment       String?  // VIP, Active, Inactive, New, etc.
-  score         Int      @default(0) // Score de propension au don (0-100)
-  
+  segment String? // VIP, Active, Inactive, New, etc.
+  score   Int     @default(0) // Score de propension au don (0-100)
+
   // Prédiction de churn (Étape 5.3.1)
   churnProbability Float? // Probabilité de churn (0-1)
 
   // Métriques de dons (seront calculées)
-  totalDonations Decimal @default(0) @db.Decimal(10, 2)
-  donationCount  Int     @default(0)
-  averageDonation Decimal @default(0) @db.Decimal(10, 2)
-  lastDonationDate DateTime?
+  totalDonations    Decimal   @default(0) @db.Decimal(10, 2)
+  donationCount     Int       @default(0)
+  averageDonation   Decimal   @default(0) @db.Decimal(10, 2)
+  lastDonationDate  DateTime?
   firstDonationDate DateTime?
 
   // Statut
-  isActive      Boolean  @default(true)
+  isActive Boolean @default(true)
 
   // Organisation (multi-tenant)
   organizationId String
@@ -307,15 +334,15 @@ model Donator {
   audiences      Audience[]
 
   // Relations commentaires (Étape 5.2.2)
-  comments       Comment[]
-  
+  comments Comment[]
+
   // Relations P2P (Étape 6.1.1)
   // Note: Les participants P2P peuvent être des donateurs existants ou de nouveaux participants
   // La relation se fait via l'email dans P2PParticipant
 
   // Timestamps
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([email, organizationId]) // Un email unique par organisation
   @@index([email])
@@ -328,11 +355,11 @@ model Donator {
 
 // ============= 5. Modèle Donation (Phase 1 + liens formulaires) =============
 model Donation {
-  id     String @id @default(cuid())
+  id String @id @default(cuid())
 
   // Donateur
   donatorId String
-  donator   Donator  @relation(fields: [donatorId], references: [id], onDelete: Cascade)
+  donator   Donator @relation(fields: [donatorId], references: [id], onDelete: Cascade)
 
   // Montant
   amount   Decimal @db.Decimal(10, 2)
@@ -342,11 +369,11 @@ model Donation {
   status String @default("completed") // pending, completed, failed, refunded
 
   // Lien vers le formulaire (si don via formulaire)
-  formId      String?
-  form        DonationForm? @relation(fields: [formId], references: [id], onDelete: SetNull)
+  formId String?
+  form   DonationForm? @relation(fields: [formId], references: [id], onDelete: SetNull)
 
   // Lien vers la soumission (si don via formulaire)
-  submissionId String?  @unique
+  submissionId String?                 @unique
   submission   DonationFormSubmission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
 
   // Lien vers l'abonnement (si don récurrent)
@@ -372,23 +399,23 @@ model Donation {
 
 // ============= Étape 2.1.1 - DonationForm =============
 model DonationForm {
-  id          String   @id @default(cuid())
+  id String @id @default(cuid())
 
   // Informations de base
   title       String
-  description String?  @db.Text
-  slug        String   @unique
+  description String? @db.Text
+  slug        String  @unique
 
   // Configuration des montants
   amountType       String   @default("flexible") // flexible, fixed
-  suggestedAmounts Json     // Array de montants suggérés [25, 50, 100, 250, 500]
+  suggestedAmounts Json // Array de montants suggérés [25, 50, 100, 250, 500]
   minAmount        Decimal? @db.Decimal(10, 2)
   maxAmount        Decimal? @db.Decimal(10, 2)
   currency         String   @default("CAD")
 
   // Dons récurrents
   allowRecurring Boolean @default(false)
-  frequencies    Json?   // Array de fréquences ["monthly", "quarterly", "yearly"]
+  frequencies    Json? // Array de fréquences ["monthly", "quarterly", "yearly"]
 
   // Champs du formulaire
   requiredFields Json // Array de champs requis ["email", "firstName", "lastName"]
@@ -409,20 +436,20 @@ model DonationForm {
   redirectUrl     String?
 
   // Paramètres avancés
-  enableConsents Boolean @default(true)
-  consentText    String? @db.Text
-  enableCaptcha  Boolean @default(false)
+  enableConsents Boolean   @default(true)
+  consentText    String?   @db.Text
+  enableCaptcha  Boolean   @default(false)
   maxDonations   Int?
   startDate      DateTime?
   endDate        DateTime?
-  goalAmount     Decimal? @db.Decimal(10, 2)
+  goalAmount     Decimal?  @db.Decimal(10, 2)
 
   // Statistiques (calculées)
-  totalCollected   Decimal @default(0) @db.Decimal(10, 2)
-  donationCount    Int     @default(0)
-  viewCount        Int     @default(0)
-  submissionCount  Int     @default(0)
-  conversionRate   Decimal @default(0) @db.Decimal(5, 2)
+  totalCollected  Decimal @default(0) @db.Decimal(10, 2)
+  donationCount   Int     @default(0)
+  viewCount       Int     @default(0)
+  submissionCount Int     @default(0)
+  conversionRate  Decimal @default(0) @db.Decimal(5, 2)
 
   // Statut
   status   FormStatus @default(DRAFT)
@@ -431,7 +458,8 @@ model DonationForm {
   // Relations
   submissions   DonationFormSubmission[]
   subscriptions Subscription[]
-  donations      Donation[]
+  donations     Donation[]
+  goals         Goal[]
 
   // Organisation (multi-tenant)
   organizationId String
@@ -439,8 +467,8 @@ model DonationForm {
 
   // Timestamps
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([slug])
   @@index([organizationId])
@@ -450,7 +478,7 @@ model DonationForm {
 
 // ============= Étape 2.1.1 - DonationFormSubmission =============
 model DonationFormSubmission {
-  id     String @id @default(cuid())
+  id String @id @default(cuid())
 
   // Formulaire lié
   formId String
@@ -458,7 +486,7 @@ model DonationFormSubmission {
 
   // Donateur
   donatorId String?
-  donator   Donator?  @relation(fields: [donatorId], references: [id], onDelete: SetNull)
+  donator   Donator? @relation(fields: [donatorId], references: [id], onDelete: SetNull)
 
   // Montant
   amount   Decimal @db.Decimal(10, 2)
@@ -483,9 +511,9 @@ model DonationFormSubmission {
   country    String?
 
   // Message et dédicace
-  message     String?  @db.Text
+  message     String? @db.Text
   dedication  String?
-  isAnonymous Boolean  @default(false)
+  isAnonymous Boolean @default(false)
 
   // Consentements
   consentEmail Boolean @default(false)
@@ -524,10 +552,10 @@ model DonationFormSubmission {
 
 // ============= Étape 2.1.1 - PaymentIntent =============
 model PaymentIntent {
-  id     String @id @default(cuid())
+  id String @id @default(cuid())
 
   // Soumission liée
-  submissionId String  @unique
+  submissionId String                 @unique
   submission   DonationFormSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   // Passerelle
@@ -572,7 +600,7 @@ model PaymentIntent {
 
 // ============= Étape 2.1.1 - Subscription =============
 model Subscription {
-  id     String @id @default(cuid())
+  id String @id @default(cuid())
 
   // Donateur
   donatorId String
@@ -583,12 +611,12 @@ model Subscription {
   form   DonationForm @relation(fields: [formId], references: [id], onDelete: Cascade)
 
   // Soumission initiale
-  submissionId String  @unique
+  submissionId String                 @unique
   submission   DonationFormSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   // Configuration
-  amount   Decimal @db.Decimal(10, 2)
-  currency String  @default("CAD")
+  amount    Decimal @db.Decimal(10, 2)
+  currency  String  @default("CAD")
   frequency String // monthly, quarterly, yearly
 
   // Passerelle
@@ -626,14 +654,14 @@ model Subscription {
 
 // ============= Étape 3.1.1 - EmailTemplate =============
 model EmailTemplate {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
-  description String?  @db.Text
+  description String? @db.Text
 
   // Contenu (éditeur drag & drop)
-  content   Json     // Structure pour l'éditeur
-  html      String   @db.Text // HTML généré à partir du content
-  thumbnail String?  // URL de l'image d'aperçu
+  content   Json // Structure pour l'éditeur
+  html      String  @db.Text // HTML généré à partir du content
+  thumbnail String? // URL de l'image d'aperçu
 
   // Organisation (multi-tenant)
   organizationId String
@@ -658,7 +686,7 @@ model Audience {
   type        AudienceType // STATIC = liste fixe, DYNAMIC = segments par règles
 
   // STATIC: liste de donateurs via relation; DYNAMIC: règles de segmentation
-  rules Json? // Règles pour segments dynamiques (ex: segment, lastDonationDate, etc.)
+  rules              Json? // Règles pour segments dynamiques (ex: segment, lastDonationDate, etc.)
   // DYNAMIC: nombre de donateurs (mis à jour par "Rafraîchir" - Étape 3.2.2)
   cachedDonatorCount Int?
 
@@ -683,7 +711,7 @@ model Audience {
 
 // ============= Étape 3.1.1 - EmailCampaign =============
 model EmailCampaign {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
   name      String
   subject   String
   fromName  String
@@ -698,7 +726,7 @@ model EmailCampaign {
   templateId String
   template   EmailTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict)
   audienceId String
-  audience   Audience     @relation(fields: [audienceId], references: [id], onDelete: Restrict)
+  audience   Audience      @relation(fields: [audienceId], references: [id], onDelete: Restrict)
 
   // Stats (sent, delivered, opened, clicked, bounced, unsubscribed)
   stats Json?
@@ -732,7 +760,7 @@ model Workflow {
   id             String         @id @default(cuid())
   name           String
   organizationId String
-  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   status         WorkflowStatus @default(DRAFT)
 
   // Graphe (nœuds et connexions au format React Flow / XYFlow)
@@ -749,25 +777,25 @@ model Workflow {
 
 // ============= Étape 5.1.2 - Segmentation Intelligente =============
 model SegmentSuggestion {
-  id          String   @id @default(cuid())
+  id             String       @id @default(cuid())
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
-  name        String   // Nom du segment suggéré (ex: "Donateurs à haut potentiel")
-  description String   @db.Text // Description du segment
-  criteria    Json     // Critères de segmentation (ex: {min_total_donated: 1000, min_score: 70})
-  donorCount  Int      @default(0) // Nombre de donateurs correspondant aux critères
-  
+
+  name        String // Nom du segment suggéré (ex: "Donateurs à haut potentiel")
+  description String @db.Text // Description du segment
+  criteria    Json // Critères de segmentation (ex: {min_total_donated: 1000, min_score: 70})
+  donorCount  Int    @default(0) // Nombre de donateurs correspondant aux critères
+
   // Métadonnées du clustering
-  clusterId   String?  // ID du cluster (pour regrouper les suggestions similaires)
-  confidence  Float?   // Score de confiance (0-1) de la suggestion
-  
+  clusterId  String? // ID du cluster (pour regrouper les suggestions similaires)
+  confidence Float? // Score de confiance (0-1) de la suggestion
+
   // Statut
-  isAccepted  Boolean  @default(false) // Si l'utilisateur a accepté et créé le segment
-  acceptedAt  DateTime? // Date d'acceptation
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isAccepted Boolean   @default(false) // Si l'utilisateur a accepté et créé le segment
+  acceptedAt DateTime? // Date d'acceptation
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([organizationId])
   @@index([isAccepted])
@@ -792,51 +820,51 @@ enum P2PParticipantStatus {
 
 // Campagne P2P principale
 model P2PCampaign {
-  id          String   @id @default(cuid())
+  id             String       @id @default(cuid())
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   // Informations de base
   name        String
-  description String?  @db.Text
-  slug        String   @unique // URL-friendly identifier
-  
+  description String? @db.Text
+  slug        String  @unique // URL-friendly identifier
+
   // Dates
-  startDate   DateTime?
-  endDate     DateTime?
-  
+  startDate DateTime?
+  endDate   DateTime?
+
   // Objectifs
-  goalAmount  Decimal? @db.Decimal(10, 2)
+  goalAmount       Decimal? @db.Decimal(10, 2)
   goalParticipants Int?
-  
+
   // Statut
-  status      P2PCampaignStatus @default(DRAFT)
-  
+  status P2PCampaignStatus @default(DRAFT)
+
   // Configuration
-  allowTeams  Boolean  @default(true) // Permet la création d'équipes
+  allowTeams                  Boolean @default(true) // Permet la création d'équipes
   allowIndividualParticipants Boolean @default(true) // Permet les participants individuels
-  minTeamSize Int?     // Taille minimale d'équipe
-  maxTeamSize Int?     // Taille maximale d'équipe
-  
+  minTeamSize                 Int? // Taille minimale d'équipe
+  maxTeamSize                 Int? // Taille maximale d'équipe
+
   // Branding
-  coverImage  String?  // URL de l'image de couverture
-  logo        String?  // URL du logo
-  primaryColor String?  // Couleur principale
-  
+  coverImage   String? // URL de l'image de couverture
+  logo         String? // URL du logo
+  primaryColor String? // Couleur principale
+
   // Statistiques (calculées)
-  totalRaised Decimal  @default(0) @db.Decimal(10, 2)
-  participantCount Int @default(0)
-  teamCount   Int     @default(0)
-  donationCount Int   @default(0)
-  
+  totalRaised      Decimal @default(0) @db.Decimal(10, 2)
+  participantCount Int     @default(0)
+  teamCount        Int     @default(0)
+  donationCount    Int     @default(0)
+
   // Relations
   participants P2PParticipant[]
   teams        P2PTeam[]
-  
+
   // Timestamps
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([organizationId])
   @@index([status])
   @@index([slug])
@@ -847,33 +875,33 @@ model P2PCampaign {
 
 // Équipe de participants P2P
 model P2PTeam {
-  id          String   @id @default(cuid())
-  campaignId  String
-  campaign    P2PCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   P2PCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   // Informations de base
   name        String
-  description String?  @db.Text
-  slug        String   // URL-friendly identifier (unique par campagne)
-  
+  description String? @db.Text
+  slug        String // URL-friendly identifier (unique par campagne)
+
   // Chef d'équipe (participant principal)
-  teamLeaderId String?  // Référence au participant chef d'équipe
-  
+  teamLeaderId String? // Référence au participant chef d'équipe
+
   // Objectifs
-  goalAmount  Decimal? @db.Decimal(10, 2)
-  
+  goalAmount Decimal? @db.Decimal(10, 2)
+
   // Statistiques (calculées)
-  totalRaised Decimal  @default(0) @db.Decimal(10, 2)
-  memberCount Int      @default(0)
-  donationCount Int    @default(0)
-  
+  totalRaised   Decimal @default(0) @db.Decimal(10, 2)
+  memberCount   Int     @default(0)
+  donationCount Int     @default(0)
+
   // Relations
   participants P2PParticipant[]
-  
+
   // Timestamps
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@unique([campaignId, slug])
   @@index([campaignId])
   @@index([teamLeaderId])
@@ -882,45 +910,45 @@ model P2PTeam {
 
 // Participant P2P (individuel ou membre d'équipe)
 model P2PParticipant {
-  id          String   @id @default(cuid())
-  campaignId  String
-  campaign    P2PCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   P2PCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   // Équipe (optionnel - null si participant individuel)
-  teamId      String?
-  team        P2PTeam? @relation(fields: [teamId], references: [id], onDelete: SetNull)
-  
+  teamId String?
+  team   P2PTeam? @relation(fields: [teamId], references: [id], onDelete: SetNull)
+
   // Informations du participant
-  firstName   String
-  lastName   String
-  email       String
-  phone       String?
-  
+  firstName String
+  lastName  String
+  email     String
+  phone     String?
+
   // Page de collecte personnalisée
-  slug        String   // URL-friendly identifier (unique par campagne)
+  slug            String // URL-friendly identifier (unique par campagne)
   personalMessage String? @db.Text // Message personnalisé sur la page
-  
+
   // Objectifs personnels
-  goalAmount  Decimal? @db.Decimal(10, 2)
-  
+  goalAmount Decimal? @db.Decimal(10, 2)
+
   // Statut
-  status      P2PParticipantStatus @default(ACTIVE)
-  
+  status P2PParticipantStatus @default(ACTIVE)
+
   // Statistiques (calculées)
-  totalRaised Decimal  @default(0) @db.Decimal(10, 2)
-  donationCount Int    @default(0)
-  
+  totalRaised   Decimal @default(0) @db.Decimal(10, 2)
+  donationCount Int     @default(0)
+
   // Métadonnées
   profileImage String? // URL de la photo de profil
-  customFields Json?   // Champs personnalisés additionnels
-  
+  customFields Json? // Champs personnalisés additionnels
+
   // Relations avec les dons (via DonationFormSubmission ou Donation)
   // Note: Les dons sont liés via le champ campaignId dans Donation
-  
+
   // Timestamps
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@unique([campaignId, slug])
   @@unique([campaignId, email]) // Un email unique par campagne
   @@index([campaignId])
@@ -934,7 +962,7 @@ model P2PParticipant {
 model Comment {
   id        String   @id @default(cuid())
   content   String   @db.Text
-  sentiment String?  // "positive", "negative", "neutral"
+  sentiment String? // "positive", "negative", "neutral"
   donatorId String
   donator   Donator  @relation(fields: [donatorId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
@@ -943,4 +971,357 @@ model Comment {
   @@index([sentiment])
   @@index([createdAt])
   @@map("comments")
+}
+
+// ============= Étape 7.1.1 - Modèles Super Admin =============
+
+// Abonnement d'organisation (différent de Subscription pour dons récurrents)
+model OrganizationSubscription {
+  id             String       @id @default(cuid())
+  organizationId String       @unique
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Plan et statut
+  plan   SubscriptionPlan               @default(FREE)
+  status OrganizationSubscriptionStatus @default(TRIAL)
+
+  // Limites du plan
+  maxUsers     Int @default(5) // Nombre max d'utilisateurs
+  maxDonors    Int @default(1000) // Nombre max de donateurs
+  maxForms     Int @default(3) // Nombre max de formulaires
+  maxCampaigns Int @default(5) // Nombre max de campagnes
+
+  // Dates
+  startDate    DateTime  @default(now())
+  endDate      DateTime? // Date de fin (null si actif indéfiniment)
+  trialEndDate DateTime? // Date de fin de l'essai gratuit
+
+  // Facturation
+  stripeCustomerId     String? @unique
+  stripeSubscriptionId String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+  @@map("organization_subscriptions")
+}
+
+// Logs système
+model SystemLog {
+  id String @id @default(cuid())
+
+  // Contexte
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Type et niveau
+  type  String // "auth", "donation", "email", "api", "error", etc.
+  level String // "info", "warning", "error", "critical"
+
+  // Message et détails
+  message String @db.Text
+  details Json? // Données supplémentaires (ex: stack trace, request body)
+
+  // Métadonnées
+  ipAddress  String?
+  userAgent  String? @db.Text
+  endpoint   String? // Route API appelée
+  method     String? // GET, POST, etc.
+  statusCode Int? // Code HTTP de réponse
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([type])
+  @@index([level])
+  @@index([createdAt])
+  @@map("system_logs")
+}
+
+// Métriques de la plateforme
+model PlatformMetric {
+  id String @id @default(cuid())
+
+  // Métriques globales (toutes organisations)
+  totalOrganizations Int   @default(0)
+  totalUsers         Int   @default(0)
+  totalDonors        Int   @default(0)
+  totalDonations     Int   @default(0)
+  totalRevenue       Float @default(0)
+
+  // Métriques d'activité
+  activeOrganizations Int @default(0) // Organisations actives ce mois
+  newOrganizations    Int @default(0) // Nouvelles organisations ce mois
+  activeUsers         Int @default(0) // Utilisateurs actifs ce mois
+
+  // Métriques techniques
+  apiCalls    Int   @default(0) // Nombre d'appels API
+  emailsSent  Int   @default(0) // Emails envoyés
+  smsSent     Int   @default(0) // SMS envoyés
+  storageUsed Float @default(0) // Stockage utilisé (en GB)
+
+  // Date de snapshot
+  date DateTime @default(now())
+
+  createdAt DateTime @default(now())
+
+  @@index([date])
+  @@map("platform_metrics")
+}
+
+// ============= Étape 7.2.1 - Planification stratégique (OKR) =============
+
+enum ObjectiveStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+model Objective {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Informations de base
+  title       String // Ex: "Augmenter l'engagement des donateurs"
+  description String? @db.Text
+
+  // Période
+  startDate DateTime
+  endDate   DateTime
+
+  // Statut et progression
+  status   ObjectiveStatus @default(DRAFT)
+  progress Float           @default(0) // 0-100 (calculé automatiquement)
+
+  // Responsable
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  // Relations
+  keyResults KeyResult[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([ownerId])
+  @@index([status])
+  @@map("objectives")
+}
+
+model KeyResult {
+  id          String    @id @default(cuid())
+  objectiveId String
+  objective   Objective @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+
+  // Informations de base
+  title       String // Ex: "Atteindre un taux de rétention de 75%"
+  description String? @db.Text
+
+  // Mesure
+  metric       String // Ex: "Taux de rétention"
+  unit         String // Ex: "%", "$", "nombre"
+  startValue   Float  @default(0)
+  targetValue  Float
+  currentValue Float  @default(0)
+
+  // Progression
+  progress Float @default(0) // 0-100 (calculé automatiquement)
+
+  // Responsable
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([objectiveId])
+  @@index([ownerId])
+  @@map("key_results")
+}
+
+// ============= Étape 7.2.2 - Gestion des budgets =============
+
+enum BudgetStatus {
+  DRAFT
+  ACTIVE
+  CLOSED
+}
+
+enum BudgetItemType {
+  REVENUE // Revenu
+  EXPENSE // Dépense
+}
+
+model Budget {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Informations de base
+  name        String // Ex: "Budget 2025"
+  description String? @db.Text
+
+  // Période fiscale
+  fiscalYear Int // Ex: 2025
+  startDate  DateTime
+  endDate    DateTime
+
+  // Statut
+  status BudgetStatus @default(DRAFT)
+
+  // Totaux (calculés automatiquement)
+  totalRevenuePlanned Float @default(0)
+  totalRevenueActual  Float @default(0)
+  totalExpensePlanned Float @default(0)
+  totalExpenseActual  Float @default(0)
+
+  // Relations
+  items BudgetItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([fiscalYear])
+  @@index([status])
+  @@map("budgets")
+}
+
+model BudgetItem {
+  id       String @id @default(cuid())
+  budgetId String
+  budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+
+  // Informations de base
+  name        String // Ex: "Dons individuels", "Salaires"
+  description String?        @db.Text
+  category    String // Ex: "Dons", "Événements", "Personnel", "Marketing"
+  type        BudgetItemType // REVENUE ou EXPENSE
+
+  // Montants
+  plannedAmount Float // Montant prévu
+  actualAmount  Float @default(0) // Montant réel
+
+  // Variance
+  variance        Float @default(0) // actualAmount - plannedAmount
+  variancePercent Float @default(0) // (variance / plannedAmount) * 100
+
+  // Responsable
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([budgetId])
+  @@index([type])
+  @@index([category])
+  @@map("budget_items")
+}
+
+// ============= Modèle Campaign (pour relation avec Goal) =============
+// Note: Campaign peut être géré dans les bases de données d'organisation séparées,
+// mais nous avons besoin d'une référence ici pour les relations Prisma
+
+model Campaign {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Informations de base
+  name        String
+  description String? @db.Text
+
+  // Dates
+  startDate DateTime?
+  endDate   DateTime?
+
+  // Objectifs
+  goalAmount Decimal? @db.Decimal(10, 2)
+  goalDonors Int?
+
+  // Statut
+  status String @default("draft") // draft, active, paused, completed, cancelled
+
+  // Statistiques
+  totalRaised   Decimal @default(0) @db.Decimal(10, 2)
+  donorCount    Int     @default(0)
+  donationCount Int     @default(0)
+
+  // Métadonnées
+  imageUrl    String?
+  externalUrl String?
+
+  // Relations
+  goals Goal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+  @@map("campaigns")
+}
+
+// ============= Étape 7.2.3 - Gestion des objectifs (Goals) =============
+
+enum GoalType {
+  CAMPAIGN // Objectif pour une campagne
+  FORM // Objectif pour un formulaire
+  ORGANIZATION // Objectif global pour l'organisation
+  CUSTOM // Objectif personnalisé
+}
+
+model Goal {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Type et cible
+  type       GoalType
+  campaignId String?
+  campaign   Campaign?     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  formId     String?
+  form       DonationForm? @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  // Informations de base
+  name        String // Ex: "Objectif de dons Q1"
+  description String? @db.Text
+
+  // Métrique
+  metric       String // Ex: "Montant total", "Nombre de dons", "Nombre de donateurs"
+  unit         String // Ex: "$", "dons", "donateurs"
+  targetValue  Float // Valeur cible
+  currentValue Float  @default(0) // Valeur actuelle
+
+  // Période
+  startDate DateTime
+  endDate   DateTime
+
+  // Progression
+  progress    Float     @default(0) // 0-100 (calculé automatiquement)
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+
+  // Responsable
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([type])
+  @@index([campaignId])
+  @@index([formId])
+  @@index([ownerId])
+  @@map("goals")
 }
