@@ -151,6 +151,16 @@ export const authConfig: NextAuthConfig = {
       }
       return true;
     },
+    async redirect({ url, baseUrl }) {
+      // Allow same-origin callbackUrl (e.g. /fr/dashboard) after OAuth
+      if (url.startsWith('/')) return `${baseUrl.replace(/\/$/, '')}${url}`;
+      try {
+        if (new URL(url).origin === new URL(baseUrl).origin) return url;
+      } catch {
+        // ignore invalid URL
+      }
+      return baseUrl;
+    },
   },
   session: {
     strategy: 'jwt',

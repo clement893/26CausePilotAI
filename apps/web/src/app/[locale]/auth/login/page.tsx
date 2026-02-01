@@ -5,12 +5,12 @@
  * React Hook Form + Zod, AuthCard/AuthInput/AuthButton, callbackUrl, design system
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { signIn, getSession } from 'next-auth/react';
 import { loginSchema, type LoginInput } from '@/lib/validations/auth';
 import { AuthCard, AuthInput, AuthButton } from '@/components/auth';
 
@@ -36,6 +36,15 @@ export default function LoginPage() {
       ? new URLSearchParams(window.location.search).get('callbackUrl') ?? '/dashboard'
       : '/dashboard';
 
+  // If already signed in (e.g. after OAuth callback), redirect to callbackUrl
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session?.user) {
+        router.replace(callbackUrl);
+      }
+    });
+  }, [callbackUrl, router]);
+
   const onSubmit = async (data: LoginInput) => {
     setLoading(true);
     try {
@@ -60,7 +69,10 @@ export default function LoginPage() {
   const onGoogle = async () => {
     setOauthLoading(true);
     try {
-      await signIn('google', { callbackUrl });
+      // Pass absolute URL so NextAuth redirects correctly after OAuth
+      const base = typeof window !== 'undefined' ? window.location.origin : '';
+      const url = callbackUrl.startsWith('http') ? callbackUrl : `${base}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
+      await signIn('google', { callbackUrl: url });
     } finally {
       setOauthLoading(false);
     }
