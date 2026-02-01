@@ -59,7 +59,7 @@ COPY apps/web ./apps/web
 COPY packages ./packages
 # Generate Prisma client (required for API routes that use @prisma/client at build time)
 ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
-RUN pnpm exec prisma generate --schema=packages/database/prisma/schema.prisma
+RUN pnpm --filter @modele/database exec prisma generate --schema=prisma/schema.prisma
 # Copy the API manifest script (needed for api:manifest build step)
 # Copy directly to apps/web/scripts so it's accessible during build
 RUN mkdir -p apps/web/scripts
