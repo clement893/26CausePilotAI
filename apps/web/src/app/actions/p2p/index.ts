@@ -16,3 +16,15 @@ export type { UpdateP2PCampaignParams, UpdateP2PCampaignResult } from './updateC
 
 export { deleteP2PCampaign } from './deleteCampaign';
 export type { DeleteP2PCampaignParams, DeleteP2PCampaignResult } from './deleteCampaign';
+
+export { createP2PParticipant } from './createParticipant';
+export type { CreateP2PParticipantParams, CreateP2PParticipantResult } from './createParticipant';
+
+export { getP2PParticipant } from './getParticipant';
+export type { GetP2PParticipantParams, GetP2PParticipantResult, P2PParticipantDetails } from './getParticipant';
+
+export { listP2PParticipants } from './listParticipants';
+export type { ListP2PParticipantsParams, ListP2PParticipantsResult, P2PParticipantListItem } from './listParticipants';
+
+export { getP2PCampaignBySlug } from './getCampaignBySlug';
+export type { GetP2PCampaignBySlugParams, GetP2PCampaignBySlugResult, P2PCampaignPublicDetails } from './getCampaignBySlug';
