@@ -122,6 +122,14 @@ Pour stocker les PDF de reçus fiscaux et envoyer un lien de téléchargement pa
 | `AWS_REGION`            | Région du bucket                         | Non    | `us-east-1`| `us-east-1`                |
 | `AWS_S3_PUBLIC_BASE_URL`| URL de base publique du bucket (optionnel) | Non  | -          | `https://cdn.example.com`  |
 
+### Unsplash (Éditeur email Étape 3.1.2)
+
+Pour la recherche d’images dans l’éditeur de templates email (`/api/unsplash/search`). Côté serveur uniquement.
+
+| Variable                 | Description                    | Requis | Défaut | Exemple   |
+| ------------------------ | ------------------------------ | ------ | ------ | --------- |
+| `UNSPLASH_ACCESS_KEY`    | Clé d’accès API Unsplash        | Non    | -      | `xxx`     |
+
 ### GitHub (Optionnel)
 
 | Variable                 | Description         | Requis | Défaut | Exemple                        |
