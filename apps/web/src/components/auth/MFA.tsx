@@ -134,11 +134,11 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
   };
 
   return (
-    <Card className={clsx('p-6', className)}>
+    <Card variant="glass" className={clsx('p-6 border border-gray-800 dark:border-border', className)}>
       <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Two-Factor Authentication</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <h2 className="text-2xl font-bold text-white dark:text-foreground">Two-Factor Authentication</h2>
+          <p className="mt-2 text-sm text-gray-400 dark:text-muted-foreground">
             {step === 'setup'
               ? 'Set up two-factor authentication for your account'
               : email
@@ -156,16 +156,16 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
         {step === 'setup' ? (
           <div className="space-y-4">
             {qrCodeUrl && (
-              <div className="flex justify-center p-4 bg-background rounded-lg border border-border">
+              <div className="flex justify-center p-4 glass-effect bg-[#1C1C26] dark:bg-background rounded-lg border border-gray-800 dark:border-border">
                 <img src={qrCodeUrl} alt="QR Code for MFA setup" className="w-48 h-48" />
               </div>
             )}
 
             {secret && (
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">Manual Entry Key</label>
+                <label className="block text-sm font-medium text-white dark:text-foreground">Manual Entry Key</label>
                 <div className="flex items-center gap-2">
-                  <code className="flex-1 px-4 py-2 bg-muted text-foreground rounded-lg font-mono text-sm break-all">
+                  <code className="flex-1 px-4 py-2 bg-[#1C1C26] dark:bg-muted text-white dark:text-foreground rounded-lg font-mono text-sm break-all border border-gray-700 dark:border-border">
                     {secret}
                   </code>
                   <Button
@@ -174,18 +174,19 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
                     onClick={() => {
                       navigator.clipboard.writeText(secret);
                     }}
+                    className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
                   >
                     Copy
                   </Button>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-400 dark:text-muted-foreground">
                   If you can't scan the QR code, enter this key manually in your authenticator app
                 </p>
               </div>
             )}
 
             <div className="pt-4">
-              <p className="text-sm font-medium text-foreground mb-3">
+              <p className="text-sm font-medium text-white dark:text-foreground mb-3">
                 Enter the code from your authenticator app to verify:
               </p>
               <div className="flex gap-2 justify-center">
@@ -204,9 +205,9 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
                     onPaste={index === 0 ? handlePaste : undefined}
                     className={clsx(
                       'w-12 h-12 text-center text-lg font-semibold rounded-lg border transition-all',
-                      'bg-background text-foreground',
-                      'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-                      error ? 'border-error-500 dark:border-error-400' : 'border-border'
+                      'bg-[#1C1C26] dark:bg-background text-white dark:text-foreground',
+                      'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400',
+                      error ? 'border-red-500 dark:border-error-400' : 'border-gray-700 dark:border-border'
                     )}
                     disabled={loading}
                   />
@@ -223,11 +224,12 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
                 }}
                 disabled={loading}
                 fullWidth
+                className="border-gray-700 dark:border-secondary-500 text-gray-300 dark:text-secondary-400 hover:bg-[#1C1C26] dark:hover:bg-secondary-900/20"
               >
                 Back
               </Button>
               <Button
-                variant="primary"
+                variant="gradient"
                 onClick={() => handleVerify()}
                 loading={loading}
                 disabled={code.length !== 6}
@@ -255,9 +257,9 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
                   onPaste={index === 0 ? handlePaste : undefined}
                   className={clsx(
                     'w-12 h-12 text-center text-lg font-semibold rounded-lg border transition-all',
-                    'bg-background text-foreground',
-                    'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-                    error ? 'border-error-500 dark:border-error-400' : 'border-border'
+                    'bg-[#1C1C26] dark:bg-background text-white dark:text-foreground',
+                    'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400',
+                    error ? 'border-red-500 dark:border-error-400' : 'border-gray-700 dark:border-border'
                   )}
                   disabled={loading}
                 />
@@ -272,12 +274,12 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
 
             <div className="flex gap-3">
               {onCancel && (
-                <Button variant="secondary" onClick={onCancel} disabled={loading} fullWidth>
+                <Button variant="secondary" onClick={onCancel} disabled={loading} fullWidth className="border-gray-700 dark:border-secondary-500 text-gray-300 dark:text-secondary-400 hover:bg-[#1C1C26] dark:hover:bg-secondary-900/20">
                   Cancel
                 </Button>
               )}
               <Button
-                variant="primary"
+                variant="gradient"
                 onClick={() => handleVerify()}
                 loading={loading}
                 disabled={code.length !== 6}
@@ -288,8 +290,8 @@ export default function MFA({ onVerify, onCancel, qrCodeUrl, secret, email, clas
             </div>
 
             {qrCodeUrl && (
-              <div className="pt-4 border-t border-border">
-                <Button variant="ghost" onClick={handleSetup} fullWidth className="text-sm">
+              <div className="pt-4 border-t border-gray-800 dark:border-border">
+                <Button variant="ghost" onClick={handleSetup} fullWidth className="text-sm text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
                   Set up authenticator app
                 </Button>
               </div>
