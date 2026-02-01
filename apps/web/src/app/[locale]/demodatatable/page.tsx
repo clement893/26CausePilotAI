@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Badge } from '@/components/ui/Badge';
-import { Checkbox } from '@/components/ui/Checkbox';
+import Container from '@/components/ui/Container';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
+import Badge from '@/components/ui/Badge';
+import Checkbox from '@/components/ui/Checkbox';
 import {
   Search,
   Filter,
@@ -21,7 +21,6 @@ import {
   Edit,
   Eye,
   Star,
-  Heart,
   TrendingUp,
   Calendar,
   DollarSign,
@@ -192,7 +191,7 @@ export default function DemoDataTablePage() {
                   type="text"
                   placeholder="Search donors..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                   className="pl-10 bg-[#1C1C26] border-gray-700"
                 />
               </div>

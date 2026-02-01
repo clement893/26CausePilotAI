@@ -1,16 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Badge } from '@/components/ui/Badge';
-import { Switch } from '@/components/ui/Switch';
-import { Checkbox } from '@/components/ui/Checkbox';
+import Container from '@/components/ui/Container';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
+import Badge from '@/components/ui/Badge';
+import Switch from '@/components/ui/Switch';
+import Checkbox from '@/components/ui/Checkbox';
 import {
   CheckCircle,
-  Circle,
   Upload,
   X,
   FileText,
@@ -22,13 +21,6 @@ import {
   DollarSign,
   Target,
   Users,
-  Mail,
-  Phone,
-  MapPin,
-  Globe,
-  Lock,
-  Eye,
-  EyeOff,
   ChevronRight,
   ChevronLeft,
 } from 'lucide-react';
@@ -203,7 +195,7 @@ export default function DemoFormsPage() {
                         type="text"
                         placeholder="Enter a compelling campaign name"
                         value={campaignName}
-                        onChange={(e) => setCampaignName(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCampaignName(e.target.value)}
                         className="bg-[#1C1C26] border-gray-700"
                       />
                     </div>
@@ -218,7 +210,7 @@ export default function DemoFormsPage() {
                           type="number"
                           placeholder="50000"
                           value={campaignGoal}
-                          onChange={(e) => setCampaignGoal(e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCampaignGoal(e.target.value)}
                           className="bg-[#1C1C26] border-gray-700 pl-10"
                         />
                       </div>
@@ -232,7 +224,7 @@ export default function DemoFormsPage() {
                         rows={4}
                         placeholder="Describe your campaign and its impact..."
                         value={campaignDescription}
-                        onChange={(e) => setCampaignDescription(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCampaignDescription(e.target.value)}
                         className="w-full px-4 py-3 bg-[#1C1C26] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                       />
                     </div>
@@ -244,7 +236,7 @@ export default function DemoFormsPage() {
                         </label>
                         <select
                           value={category}
-                          onChange={(e) => setCategory(e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}
                           className="w-full px-4 py-3 bg-[#1C1C26] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                         >
                           <option value="">Select a category</option>
@@ -286,7 +278,7 @@ export default function DemoFormsPage() {
                           <Input
                             type="date"
                             value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
                             className="bg-[#1C1C26] border-gray-700 pl-10"
                           />
                         </div>
@@ -301,7 +293,7 @@ export default function DemoFormsPage() {
                           <Input
                             type="date"
                             value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
                             className="bg-[#1C1C26] border-gray-700 pl-10"
                           />
                         </div>

@@ -1,21 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
+import Container from '@/components/ui/Container';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Badge from '@/components/ui/Badge';
 import {
   TrendingUp,
-  TrendingDown,
   Users,
   DollarSign,
   Target,
   Percent,
-  Calendar,
   Clock,
   ArrowUp,
-  ArrowDown,
   RefreshCw,
   Download,
   Lightbulb,
@@ -23,8 +20,6 @@ import {
   CheckCircle,
   Zap,
   Mail,
-  Heart,
-  Gift,
 } from 'lucide-react';
 
 /**

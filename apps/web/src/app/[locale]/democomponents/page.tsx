@@ -1,21 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@/components/ui/Container';
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { Input } from '@/components/ui/Input';
-import { Badge } from '@/components/ui/Badge';
-import { Alert } from '@/components/ui/Alert';
-import { Modal } from '@/components/ui/Modal';
-import { Progress } from '@/components/ui/Progress';
-import { Switch } from '@/components/ui/Switch';
-import { Checkbox } from '@/components/ui/Checkbox';
-import { Tabs } from '@/components/ui/Tabs';
+import Container from '@/components/ui/Container';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import Input from '@/components/ui/Input';
+import Badge from '@/components/ui/Badge';
+import Alert from '@/components/ui/Alert';
+import Modal from '@/components/ui/Modal';
+import Switch from '@/components/ui/Switch';
+import Checkbox from '@/components/ui/Checkbox';
 import { 
   Sparkles, 
   Rocket, 
-  Heart, 
   Star, 
   CheckCircle, 
   AlertCircle, 
@@ -24,14 +21,8 @@ import {
   Download,
   Upload,
   Search,
-  Settings,
-  User,
   Mail,
   Phone,
-  Calendar,
-  Clock,
-  TrendingUp,
-  TrendingDown,
   Zap,
   Shield,
   Award
