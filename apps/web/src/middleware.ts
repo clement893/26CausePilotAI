@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
-import { getToken } from 'next-auth/jwt';
+import { auth } from '@/lib/auth';
 import { verifyToken, extractTokenFromHeader } from '@/lib/auth/jwt';
 import { routing } from './i18n/routing';
 
@@ -24,17 +24,10 @@ export const config = {
 };
 
 /**
- * Middleware to protect authenticated routes and handle i18n
- * Verifies JWT token presence and validity before allowing access
- * Handles locale routing with next-intl
- *
- * Security improvements:
- * - Verifies JWT tokens server-side
- * - Checks token expiration
- * - Validates token signature
- * - Supports both cookie-based and header-based authentication
+ * Middleware: i18n + NextAuth session (auth() from NextAuth v5) + protected routes.
+ * auth() runs first and sets request.auth so the same session cookie (e.g. after Google OAuth) is read correctly.
  */
-export async function middleware(request: NextRequest) {
+async function middlewareWithAuth(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Exclude non-localized routes from i18n middleware
@@ -91,22 +84,17 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  // NextAuth: protect page routes (Étape 1.1.2) - redirect if no session
+  // NextAuth v5: session from auth() wrapper (same cookie as after Google OAuth)
+  const session = (request as NextRequest & { auth?: { user?: { role?: string } } }).auth;
   if (!pathname.startsWith('/api/')) {
-    const nextAuthToken = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET ?? '',
-      salt: 'next-auth.session-token',
-    });
-    if (!nextAuthToken) {
+    if (!session) {
       const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
       const loginUrl = new URL(`/${locale}/auth/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
       return NextResponse.redirect(loginUrl);
     }
-    // Routes /admin/* require role ADMIN
     if (pathnameWithoutLocale.startsWith('/admin')) {
-      const role = (nextAuthToken as { role?: string }).role;
+      const role = session?.user?.role;
       if (role !== 'ADMIN') {
         const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
         return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));
@@ -162,3 +150,5 @@ export async function middleware(request: NextRequest) {
 
   return response;
 }
+
+export default auth(middlewareWithAuth);
