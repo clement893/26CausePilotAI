@@ -1,5 +1,25 @@
 # 🔧 Guide de correction : Erreur Google OAuth redirect_uri_mismatch
 
+## Correction rapide (production)
+
+1. **Dans votre hébergeur (Railway, Vercel, etc.)** : ajoutez la variable d'environnement  
+   `NEXTAUTH_URL` = l’URL publique de votre app **sans slash final**  
+   (ex. `https://votre-app.railway.app` ou `https://votre-domaine.com`).
+
+2. **Dans Google Cloud Console** :  
+   [Credentials](https://console.cloud.google.com/apis/credentials) → votre **OAuth 2.0 Client ID** → **Authorized redirect URIs** → ajoutez **exactement** :  
+   `https://votre-app.railway.app/api/auth/callback/google`  
+   (remplacez par votre vraie URL + `/api/auth/callback/google`).
+
+3. **Vérifier l’URI côté serveur** : ouvrez dans le navigateur  
+   `https://votre-app.railway.app/api/auth/redirect-uri`  
+   et copiez la valeur `redirect_uri` dans Google Console.  
+   Vous pouvez aussi utiliser la page **Diagnostic Google OAuth** : `/auth/google/diagnostic`.
+
+4. Sauvegardez dans Google Console, attendez 2–5 minutes, puis réessayez la connexion avec Google.
+
+---
+
 ## Problème
 
 Vous rencontrez l'erreur :
