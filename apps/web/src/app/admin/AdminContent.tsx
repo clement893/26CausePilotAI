@@ -15,7 +15,7 @@ export default function AdminContent() {
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card title="Invitations" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-gray-400 mb-4">
             Gérer les invitations utilisateurs et les accès au système.
           </p>
           <Link href="/admin/invitations">
@@ -26,7 +26,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Utilisateurs" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-gray-400 mb-4">
             Consulter et gérer les utilisateurs du système.
           </p>
           <Link href="/admin/users">
@@ -37,7 +37,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Organisations" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">Gérer les organisations et leurs paramètres.</p>
+          <p className="text-gray-400 mb-4">Gérer les organisations et leurs paramètres.</p>
           <Link href="/admin/organizations">
             <Button variant="primary" className="w-full">
               Gérer les organisations
@@ -46,7 +46,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Paramètres" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">Configuration générale du système.</p>
+          <p className="text-gray-400 mb-4">Configuration générale du système.</p>
           <Link href="/admin/settings">
             <Button variant="primary" className="w-full">
               Configurer
@@ -55,7 +55,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Logs" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">Consulter les logs système et les activités.</p>
+          <p className="text-gray-400 mb-4">Consulter les logs système et les activités.</p>
           <Link href="/admin-logs/testing">
             <Button variant="primary" className="w-full">
               Voir les logs
@@ -64,7 +64,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Statistiques" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-gray-400 mb-4">
             Visualiser les statistiques et métriques du système.
           </p>
           <Link href="/admin/statistics">

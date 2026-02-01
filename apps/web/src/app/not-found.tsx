@@ -22,13 +22,13 @@ export default function NotFound() {
               <h1 className="text-8xl md:text-9xl font-bold text-primary-600 text-blue-400 mb-4">
                 404
               </h1>
-              <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-4">
+              <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4">
                 Page non trouvée
               </h2>
-              <p className="text-lg text-muted-foreground mb-2">
+              <p className="text-lg text-gray-400 mb-2">
                 La page que vous recherchez n'existe pas ou a été déplacée.
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 Vérifiez l'URL ou retournez à la page d'accueil.
               </p>
             </div>
@@ -55,8 +55,8 @@ export default function NotFound() {
               </Link>
             </div>
             {/* Helpful Links */}
-            <div className="mt-8 pt-6 border-t border-border">
-              <p className="text-sm text-muted-foreground mb-3">Liens utiles:</p>
+            <div className="mt-8 pt-6 border-t border-gray-800">
+              <p className="text-sm text-gray-400 mb-3">Liens utiles:</p>
               <div className="flex flex-wrap justify-center gap-4 text-sm">
                 <Link
                   href="/docs"

@@ -54,7 +54,7 @@ function OrganisationsContent() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground mb-2">Organisations</h1>
-          <p className="text-muted-foreground">Gérez les organisations du système multi-tenant</p>
+          <p className="text-gray-400">Gérez les organisations du système multi-tenant</p>
         </div>
         <Button
           onClick={() => router.push('/dashboard/super-admin/organisations/new')}
@@ -80,9 +80,9 @@ function OrganisationsContent() {
       ) : (!organizations || organizations.length === 0) ? (
         <Card>
           <div className="text-center py-12">
-            <Building className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+            <Building className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Aucune organisation</h3>
-            <p className="text-muted-foreground mb-6">Créez votre première organisation pour commencer</p>
+            <p className="text-gray-400 mb-6">Créez votre première organisation pour commencer</p>
             <Button onClick={() => router.push('/dashboard/super-admin/organisations/new')}>
               <Plus className="w-4 h-4 mr-2" />
               Créer une organisation
@@ -104,7 +104,7 @@ function OrganisationsContent() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-foreground">{org.name}</h3>
-                    <p className="text-sm text-muted-foreground">/{org.slug}</p>
+                    <p className="text-sm text-gray-400">/{org.slug}</p>
                   </div>
                 </div>
                 <Badge variant={org.isActive ? 'success' : 'default'}>
@@ -114,14 +114,14 @@ function OrganisationsContent() {
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-2">
+                  <span className="text-gray-400 flex items-center gap-2">
                     <BarChart3 className="w-4 h-4" />
                     Modules activés
                   </span>
                   <span className="font-semibold text-foreground">{org.enabledModulesCount} / 6</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-2">
+                  <span className="text-gray-400 flex items-center gap-2">
                     <Users className="w-4 h-4" />
                     Membres
                   </span>
@@ -177,7 +177,7 @@ function OrganisationsContent() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{(organizations || []).length}</p>
-                <p className="text-sm text-muted-foreground">Organisations totales</p>
+                <p className="text-sm text-gray-400">Organisations totales</p>
               </div>
             </div>
           </Card>
@@ -190,7 +190,7 @@ function OrganisationsContent() {
                 <p className="text-2xl font-bold text-foreground">
                   {(organizations || []).filter((o) => o.isActive).length}
                 </p>
-                <p className="text-sm text-muted-foreground">Organisations actives</p>
+                <p className="text-sm text-gray-400">Organisations actives</p>
               </div>
             </div>
           </Card>
@@ -203,7 +203,7 @@ function OrganisationsContent() {
                 <p className="text-2xl font-bold text-foreground">
                   {(organizations || []).reduce((acc, org) => acc + (org.totalMembers || 0), 0)}
                 </p>
-                <p className="text-sm text-muted-foreground">Membres totaux</p>
+                <p className="text-sm text-gray-400">Membres totaux</p>
               </div>
             </div>
           </Card>

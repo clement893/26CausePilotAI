@@ -183,7 +183,7 @@ function ProjectsContent() {
       label: 'Description',
       sortable: true,
       render: (value) => (
-        <span className="text-muted-foreground">
+        <span className="text-gray-400">
           {value && String(value).length > 50
             ? `${String(value).substring(0, 50)}...`
             : value
@@ -205,7 +205,7 @@ function ProjectsContent() {
       label: 'Créé le',
       sortable: true,
       render: (value) => (
-        <span className="text-muted-foreground">
+        <span className="text-gray-400">
           {new Date(String(value)).toLocaleDateString('fr-FR')}
         </span>
       ),

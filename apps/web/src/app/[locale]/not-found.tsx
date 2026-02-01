@@ -24,14 +24,14 @@ export default function NotFound() {
               <div className="text-8xl md:text-9xl font-bold text-primary-600 text-blue-400 mb-4">
                 404
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 {t('notFound.title') || 'Page non trouvée'}
               </h1>
-              <p className="text-lg text-muted-foreground mb-2">
+              <p className="text-lg text-gray-400 mb-2">
                 {t('notFound.description') ||
                   "La page que vous recherchez n'existe pas ou a été déplacée."}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 {t('notFound.suggestion') || "Vérifiez l'URL ou retournez à la page d'accueil."}
               </p>
             </div>
@@ -60,8 +60,8 @@ export default function NotFound() {
             </div>
 
             {/* Helpful Links */}
-            <div className="mt-8 pt-6 border-t border-border">
-              <p className="text-sm text-muted-foreground mb-3">
+            <div className="mt-8 pt-6 border-t border-gray-800">
+              <p className="text-sm text-gray-400 mb-3">
                 {t('notFound.helpfulLinks') || 'Liens utiles:'}
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-sm">

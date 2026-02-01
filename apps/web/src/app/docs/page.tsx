@@ -81,7 +81,7 @@ function DocsContent() {
     <Container className="py-12">
       <div className="mb-12 text-center">
         <h1 className="text-5xl font-bold text-foreground mb-4">Documentation</h1>
-        <p className="text-xl text-muted-foreground">
+        <p className="text-xl text-gray-400">
           Tout ce dont vous avez besoin pour utiliser la plateforme
         </p>
       </div>
@@ -91,7 +91,7 @@ function DocsContent() {
         {sections.map((section, index) => (
           <Card key={index} hover className="h-full">
             <h2 className="text-xl font-bold text-foreground mb-2">{section.title}</h2>
-            <p className="text-muted-foreground mb-4 text-sm">{section.description}</p>
+            <p className="text-gray-400 mb-4 text-sm">{section.description}</p>
             <ul className="space-y-2">
               {section.links.map((link, linkIndex) => (
                 <li key={linkIndex}>
@@ -111,7 +111,7 @@ function DocsContent() {
       {/* API Documentation */}
       <Card id="api-auth" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Documentation API</h2>
-        <p className="text-muted-foreground mb-6">
+        <p className="text-gray-400 mb-6">
           La documentation complète de l'API est disponible via Swagger UI. Vous pouvez explorer
           tous les endpoints, tester les requêtes et voir les schémas de données.
         </p>
@@ -136,11 +136,11 @@ function DocsContent() {
       {/* API Endpoints */}
       <Card id="api-endpoints" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Endpoints API</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           L'API REST fournit des endpoints pour l'authentification, la gestion des utilisateurs, des
           projets et bien plus encore.
         </p>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Consultez la documentation Swagger pour la liste complète des endpoints disponibles.
         </p>
       </Card>
@@ -148,7 +148,7 @@ function DocsContent() {
       {/* API Examples */}
       <Card id="api-examples" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Exemples API</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           Exemples d'utilisation de l'API REST avec différents langages de programmation.
         </p>
         <div className="bg-gray-900 bg-[#1C1C26] text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-gray-700">
@@ -167,7 +167,7 @@ const data = await response.json();`}
       {/* Components Section */}
       <Card id="components-buttons" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Composants UI</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           La bibliothèque de composants inclut des boutons, formulaires, cartes et bien plus encore.
         </p>
         <Link href="/components">
@@ -177,7 +177,7 @@ const data = await response.json();`}
 
       <Card id="components-forms" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Formulaires</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           Composants de formulaire réutilisables avec validation intégrée.
         </p>
         <Link href="/components/forms">
@@ -187,7 +187,7 @@ const data = await response.json();`}
 
       <Card id="components-cards" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Cartes</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           Composants de carte pour afficher du contenu de manière structurée.
         </p>
         <Link href="/components/layout">
@@ -198,30 +198,30 @@ const data = await response.json();`}
       {/* Guides Section */}
       <Card id="guides-utilisateurs" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Gestion des utilisateurs</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           Guide pour gérer les utilisateurs, les rôles et les permissions dans l'application.
         </p>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Accédez au tableau de bord d'administration pour gérer les utilisateurs.
         </p>
       </Card>
 
       <Card id="guides-campagnes" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Création de projets</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           Guide pour créer et gérer des projets dans l'application.
         </p>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Utilisez le tableau de bord pour créer et organiser vos projets.
         </p>
       </Card>
 
       <Card id="guides-rapports" className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-6">Rapports</h2>
-        <p className="text-muted-foreground mb-4">
+        <p className="text-gray-400 mb-4">
           Guide pour générer et consulter les rapports dans l'application.
         </p>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Les rapports sont disponibles dans le tableau de bord et peuvent être exportés.
         </p>
       </Card>
@@ -232,20 +232,20 @@ const data = await response.json();`}
         <div className="space-y-6">
           <div id="installation">
             <h3 className="text-xl font-semibold text-foreground mb-3">1. Installation</h3>
-            <div className="bg-muted text-success-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-border">
+            <div className="bg-[#1C1C26] text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-gray-800">
               <code>npm install</code>
             </div>
           </div>
           <div id="configuration">
             <h3 className="text-xl font-semibold text-foreground mb-3">2. Configuration</h3>
-            <p className="text-muted-foreground mb-3">
+            <p className="text-gray-400 mb-3">
               Créez un fichier{' '}
               <Badge variant="default" className="mx-1">
                 .env.local
               </Badge>{' '}
               avec vos variables d'environnement :
             </p>
-            <div className="bg-muted text-success-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-border">
+            <div className="bg-[#1C1C26] text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-gray-800">
               <code>
                 NEXT_PUBLIC_API_URL=http://localhost:8000
                 <br />
@@ -257,7 +257,7 @@ const data = await response.json();`}
           </div>
           <div id="premiers-pas">
             <h3 className="text-xl font-semibold text-foreground mb-3">3. Lancer le serveur</h3>
-            <div className="bg-muted text-success-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-border">
+            <div className="bg-[#1C1C26] text-green-400 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-gray-800">
               <code>npm run dev</code>
             </div>
           </div>
@@ -337,7 +337,7 @@ export default function DocsPage() {
         <Container className="py-12">
           <div className="text-center">
             <h1 className="text-5xl font-bold text-foreground mb-4">Documentation</h1>
-            <p className="text-xl text-muted-foreground">Chargement...</p>
+            <p className="text-xl text-gray-400">Chargement...</p>
           </div>
         </Container>
       }

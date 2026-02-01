@@ -11,12 +11,12 @@ function GestionContent() {
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">Gestion Super Admin</h1>
-        <p className="text-muted-foreground">Gérez les utilisateurs et les permissions système</p>
+        <p className="text-gray-400">Gérez les utilisateurs et les permissions système</p>
       </div>
 
       <Card title="Gestion système">
         <div className="space-y-4">
-          <p className="text-muted-foreground">Contenu de la page Gestion à venir...</p>
+          <p className="text-gray-400">Contenu de la page Gestion à venir...</p>
         </div>
       </Card>
     </Container>

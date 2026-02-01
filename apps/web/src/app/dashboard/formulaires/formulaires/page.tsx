@@ -10,12 +10,12 @@ export default function FormulairesPage() {
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">Formulaires</h1>
-        <p className="text-muted-foreground">Créez et gérez vos formulaires de collecte</p>
+        <p className="text-gray-400">Créez et gérez vos formulaires de collecte</p>
       </div>
 
       <Card title="Liste des formulaires">
         <div className="space-y-4">
-          <p className="text-muted-foreground">Contenu de la page Formulaires à venir...</p>
+          <p className="text-gray-400">Contenu de la page Formulaires à venir...</p>
         </div>
       </Card>
     </Container>

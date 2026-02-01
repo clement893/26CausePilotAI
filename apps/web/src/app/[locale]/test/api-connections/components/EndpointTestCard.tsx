@@ -55,17 +55,17 @@ export function EndpointTestCard({
       <div className="flex items-center justify-between mb-4">
         <div className="flex-1">
           <h2 className="text-xl font-semibold">Critical Endpoints Test</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-gray-400 mt-1">
             Test all critical endpoints that were created/fixed in the API alignment batches
           </p>
           {testProgress && (
             <div className="mt-3">
               <div className="flex items-center gap-3 text-sm">
-                <span className="text-muted-foreground">
+                <span className="text-gray-400">
                   Progress: {testProgress.completed}/{testProgress.total} ({testProgress.percentage}
                   %)
                 </span>
-                <div className="flex-1 bg-muted rounded-full h-2 max-w-md">
+                <div className="flex-1 bg-[#1C1C26] rounded-full h-2 max-w-md">
                   <div
                     className="bg-primary-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${testProgress.percentage}%` }}
@@ -81,7 +81,7 @@ export function EndpointTestCard({
                 </span>
                 <span className="text-error-600 text-red-400">✗ {testProgress.error}</span>
                 {testProgress.pending > 0 && (
-                  <span className="text-muted-foreground">⏳ {testProgress.pending}</span>
+                  <span className="text-gray-400">⏳ {testProgress.pending}</span>
                 )}
               </div>
             </div>
@@ -125,7 +125,7 @@ export function EndpointTestCard({
                     <span className="text-success-600">✓ {categorySuccessCount}</span>
                     <span className="text-error-600">✗ {categoryErrorCount}</span>
                     {categoryPendingCount > 0 && (
-                      <span className="text-muted-foreground">⏳ {categoryPendingCount}</span>
+                      <span className="text-gray-400">⏳ {categoryPendingCount}</span>
                     )}
                   </div>
                 </div>
@@ -141,7 +141,7 @@ export function EndpointTestCard({
                             ? 'bg-green-500/20 border-green-500/30'
                             : test.status === 'error'
                               ? 'bg-red-500/20 border-red-500/30'
-                              : 'bg-muted border-border'
+                              : 'bg-[#1C1C26] border-gray-800'
                         }`}
                         role="listitem"
                       >
@@ -160,7 +160,7 @@ export function EndpointTestCard({
                                 />
                               ) : (
                                 <Loader2
-                                  className="h-4 w-4 text-muted-foreground animate-spin flex-shrink-0"
+                                  className="h-4 w-4 text-gray-400 animate-spin flex-shrink-0"
                                   aria-hidden="true"
                                 />
                               )}
@@ -169,7 +169,7 @@ export function EndpointTestCard({
                               </span>
                             </div>
                             {test.message && (
-                              <p className="text-xs text-muted-foreground truncate">
+                              <p className="text-xs text-gray-400 truncate">
                                 {test.message}
                               </p>
                             )}
@@ -213,7 +213,7 @@ export function EndpointTestCard({
                           ? 'bg-green-500/20 border-green-500/30'
                           : test.status === 'error'
                             ? 'bg-red-500/20 border-red-500/30'
-                            : 'bg-muted border-border'
+                            : 'bg-[#1C1C26] border-gray-800'
                       }`}
                       role="listitem"
                     >
@@ -232,7 +232,7 @@ export function EndpointTestCard({
                               />
                             ) : (
                               <Loader2
-                                className="h-4 w-4 text-muted-foreground animate-spin flex-shrink-0"
+                                className="h-4 w-4 text-gray-400 animate-spin flex-shrink-0"
                                 aria-hidden="true"
                               />
                             )}
@@ -241,7 +241,7 @@ export function EndpointTestCard({
                             </span>
                           </div>
                           {test.message && (
-                            <p className="text-xs text-muted-foreground truncate">{test.message}</p>
+                            <p className="text-xs text-gray-400 truncate">{test.message}</p>
                           )}
                         </div>
                         <Button
@@ -277,12 +277,12 @@ export function EndpointTestCard({
               <span>Errors: {stats.errorCount}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Loader2 className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <Loader2 className="h-4 w-4 text-gray-400" aria-hidden="true" />
               <span>Pending: {stats.pendingCount}</span>
             </div>
             {stats.avgResponseTime !== null && (
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">
+                <span className="text-gray-400">
                   Avg Response: {stats.avgResponseTime}ms
                 </span>
               </div>

@@ -139,12 +139,12 @@ function BecomeSuperAdminContent() {
             <Card>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground font-medium">Email:</span>
+                  <span className="text-gray-400 font-medium">Email:</span>
                   <span className="text-foreground">{user.email}</span>
                 </div>
                 {isSuperAdmin !== null && (
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground font-medium">Statut Superadmin:</span>
+                    <span className="text-gray-400 font-medium">Statut Superadmin:</span>
                     <Badge variant={isSuperAdmin ? 'success' : 'default'}>
                       {isSuperAdmin ? (
                         <>
@@ -213,7 +213,7 @@ function BecomeSuperAdminContent() {
                     onChange={(e) => setBootstrapKey(e.target.value)}
                     placeholder="Entrez la clé bootstrap"
                   />
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="mt-1 text-xs text-gray-400">
                     Cette clé doit correspondre à la variable <code>BOOTSTRAP_SUPERADMIN_KEY</code>{' '}
                     dans votre backend.
                   </p>

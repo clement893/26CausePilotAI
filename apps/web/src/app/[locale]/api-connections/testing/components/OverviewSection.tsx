@@ -99,7 +99,7 @@ export function OverviewSection({
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="text-lg font-semibold mb-1">Overall Health Score</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400">
               Based on connection, performance, and security metrics
             </p>
           </div>
@@ -115,7 +115,7 @@ export function OverviewSection({
             </Badge>
           </div>
         </div>
-        <div className="w-full bg-muted rounded-full h-3 mb-2">
+        <div className="w-full bg-[#1C1C26] rounded-full h-3 mb-2">
           <div
             className={`h-3 rounded-full transition-all duration-500 ${
               metrics.healthScore >= 90
@@ -156,8 +156,8 @@ export function OverviewSection({
               {metrics.connectionRate}%
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground">Frontend and backend connectivity</p>
-          <div className="mt-2 w-full bg-muted rounded-full h-2">
+          <p className="text-sm text-gray-400">Frontend and backend connectivity</p>
+          <div className="mt-2 w-full bg-[#1C1C26] rounded-full h-2">
             <div
               className="bg-info-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${metrics.connectionRate}%` }}
@@ -183,8 +183,8 @@ export function OverviewSection({
               {metrics.performanceRate}%
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground">API response times and efficiency</p>
-          <div className="mt-2 w-full bg-muted rounded-full h-2">
+          <p className="text-sm text-gray-400">API response times and efficiency</p>
+          <div className="mt-2 w-full bg-[#1C1C26] rounded-full h-2">
             <div
               className="bg-warning-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${metrics.performanceRate}%` }}
@@ -210,8 +210,8 @@ export function OverviewSection({
               {metrics.securityRate}%
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground">Authentication and security endpoints</p>
-          <div className="mt-2 w-full bg-muted rounded-full h-2">
+          <p className="text-sm text-gray-400">Authentication and security endpoints</p>
+          <div className="mt-2 w-full bg-[#1C1C26] rounded-full h-2">
             <div
               className="bg-success-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${metrics.securityRate}%` }}
@@ -222,14 +222,14 @@ export function OverviewSection({
 
       {/* Feature Status Summary */}
       {metrics.totalFeatures > 0 && (
-        <div className="p-4 border rounded-lg bg-muted/50">
+        <div className="p-4 border rounded-lg bg-[#1C1C26]/50">
           <div className="flex items-center gap-2 mb-3">
-            <Activity className="h-5 w-5 text-muted-foreground" />
+            <Activity className="h-5 w-5 text-gray-400" />
             <h4 className="font-semibold">Feature Status Summary</h4>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
             <div>
-              <div className="text-muted-foreground">Total Features</div>
+              <div className="text-gray-400">Total Features</div>
               <div className="text-lg font-semibold">{metrics.totalFeatures}</div>
             </div>
             <div>
@@ -245,7 +245,7 @@ export function OverviewSection({
               <div className="text-lg font-semibold">{metrics.inactiveFeatures}</div>
             </div>
             <div>
-              <div className="text-muted-foreground">Success Rate</div>
+              <div className="text-gray-400">Success Rate</div>
               <div className="text-lg font-semibold">
                 {metrics.totalFeatures > 0
                   ? Math.round((metrics.activeFeatures / metrics.totalFeatures) * 100)
@@ -259,7 +259,7 @@ export function OverviewSection({
 
       {/* Quick Status Section */}
       {status && (
-        <div className="mt-6 pt-6 border-t border-border">
+        <div className="mt-6 pt-6 border-t border-gray-800">
           <h3 className="text-lg font-semibold mb-4">Quick Status</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {status.frontend && (
@@ -269,7 +269,7 @@ export function OverviewSection({
                   <Alert variant="warning" className="mt-2">
                     <p className="text-sm">{status.frontend.error}</p>
                     {status.frontend.message && (
-                      <p className="text-xs mt-1 text-muted-foreground">
+                      <p className="text-xs mt-1 text-gray-400">
                         {status.frontend.message}
                       </p>
                     )}
@@ -278,7 +278,7 @@ export function OverviewSection({
                   <Alert variant="info" className="mt-2">
                     <p className="text-sm">{status.frontend.message}</p>
                     {status.frontend.note && (
-                      <p className="text-xs mt-1 text-muted-foreground">{status.frontend.note}</p>
+                      <p className="text-xs mt-1 text-gray-400">{status.frontend.note}</p>
                     )}
                   </Alert>
                 ) : status.frontend.total !== undefined ? (
@@ -319,7 +319,7 @@ export function OverviewSection({
                   <Alert variant="error" className="mt-2">
                     <p className="text-sm">{status.backend.error}</p>
                     {status.backend.message && (
-                      <p className="text-xs mt-1 text-muted-foreground">{status.backend.message}</p>
+                      <p className="text-xs mt-1 text-gray-400">{status.backend.message}</p>
                     )}
                   </Alert>
                 ) : status.backend.message ? (

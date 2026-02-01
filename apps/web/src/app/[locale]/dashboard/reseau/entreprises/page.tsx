@@ -361,7 +361,7 @@ function CompaniesContent() {
           <div>
             <div className="font-medium">{company.name}</div>
             {company.parent_company_name && (
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-400">
                 Filiale de {company.parent_company_name}
               </div>
             )}
@@ -390,7 +390,7 @@ function CompaniesContent() {
       label: 'Pays',
       sortable: true,
       render: (value) => (
-        <span className="text-muted-foreground">{value ? String(value) : '-'}</span>
+        <span className="text-gray-400">{value ? String(value) : '-'}</span>
       ),
     },
     {
@@ -399,14 +399,14 @@ function CompaniesContent() {
       sortable: true,
       render: (value) => {
         if (value === undefined || value === null) {
-          return <span className="text-muted-foreground">-</span>;
+          return <span className="text-gray-400">-</span>;
         }
         return value ? (
           <Badge variant="default" className="bg-success-500 text-background">
             Oui
           </Badge>
         ) : (
-          <Badge variant="default" className="border border-border">
+          <Badge variant="default" className="border border-gray-800">
             Non
           </Badge>
         );
@@ -459,7 +459,7 @@ function CompaniesContent() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher par nom, site web, email..."
-            className="w-full pl-10 pr-10 py-2 text-sm border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full pl-10 pr-10 py-2 text-sm border border-gray-800 rounded-md bg-[#13131A] text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
 
           {/* Active filters badges */}
@@ -545,14 +545,14 @@ function CompaniesContent() {
                           className="fixed inset-0 z-10"
                           onClick={() => setShowActionsMenu(false)}
                         />
-                        <div className="absolute right-0 mt-1 w-48 bg-background border border-border rounded-md shadow-lg z-20">
+                        <div className="absolute right-0 mt-1 w-48 bg-background border border-gray-800 rounded-md shadow-lg z-20">
                           <div className="py-1">
                             <button
                               onClick={() => {
                                 setShowImportInstructions(true);
                                 setShowActionsMenu(false);
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26]"
                             >
                               <HelpCircle className="w-3.5 h-3.5" />
                               Instructions d'import
@@ -571,7 +571,7 @@ function CompaniesContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle Excel
@@ -595,7 +595,7 @@ function CompaniesContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle ZIP (avec logos)
@@ -615,7 +615,7 @@ function CompaniesContent() {
                             />
                             <label
                               htmlFor="import-companies"
-                              className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted cursor-pointer"
+                              className="flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] cursor-pointer"
                             >
                               <Upload className="w-3.5 h-3.5" />
                               Importer
@@ -625,7 +625,7 @@ function CompaniesContent() {
                                 handleExport();
                                 setShowActionsMenu(false);
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26]"
                             >
                               <Download className="w-3.5 h-3.5" />
                               Exporter
@@ -635,7 +635,7 @@ function CompaniesContent() {
                                 handleDeleteAll();
                                 setShowActionsMenu(false);
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-destructive hover:bg-destructive/10 border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 border-t border-gray-800"
                               disabled={loading || companies.length === 0}
                             >
                               <Trash2 className="w-3.5 h-3.5" />

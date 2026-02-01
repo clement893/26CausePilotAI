@@ -168,7 +168,7 @@ function OrganizationDetailsContent() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">{organization.name}</h1>
-            <p className="text-muted-foreground">/{organization.slug}</p>
+            <p className="text-gray-400">/{organization.slug}</p>
           </div>
           <Badge variant={organization.isActive ? 'success' : 'default'} className="text-lg px-4 py-2">
             {organization.isActive ? 'Actif' : 'Inactif'}
@@ -179,7 +179,7 @@ function OrganizationDetailsContent() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Modules Section */}
         <Card title="Modules" className="lg:col-span-2">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-gray-400 mb-4">
             Activez ou désactivez les modules disponibles pour cette organisation
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -192,7 +192,7 @@ function OrganizationDetailsContent() {
                   {module.isEnabled ? (
                     <Check className="w-5 h-5 text-success-600" />
                   ) : (
-                    <X className="w-5 h-5 text-muted-foreground" />
+                    <X className="w-5 h-5 text-gray-400" />
                   )}
                   <span className="font-medium text-foreground">
                     {MODULE_LABELS[module.moduleKey] || module.moduleKey}
@@ -212,7 +212,7 @@ function OrganizationDetailsContent() {
 
         {/* Members Section */}
         <Card title="Membres" className="lg:col-span-2">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-gray-400 mb-4">
             Invitez des utilisateurs à rejoindre cette organisation
           </p>
 
@@ -247,7 +247,7 @@ function OrganizationDetailsContent() {
           {/* Members List */}
           <div className="space-y-2">
             {(!members || members.length === 0) ? (
-              <p className="text-center text-muted-foreground py-8">Aucun membre pour le moment</p>
+              <p className="text-center text-gray-400 py-8">Aucun membre pour le moment</p>
             ) : (
               members.map((member) => (
                 <div
@@ -260,7 +260,7 @@ function OrganizationDetailsContent() {
                     </div>
                     <div>
                       <p className="font-medium text-foreground">{member.userEmail}</p>
-                      <p className="text-xs text-muted-foreground capitalize">{member.role}</p>
+                      <p className="text-xs text-gray-400 capitalize">{member.role}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -295,7 +295,7 @@ function OrganizationDetailsContent() {
                 <p className="text-2xl font-bold text-foreground">
                   {(modules || []).filter((m) => m.isEnabled).length}
                 </p>
-                <p className="text-sm text-muted-foreground">Modules activés</p>
+                <p className="text-sm text-gray-400">Modules activés</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -304,7 +304,7 @@ function OrganizationDetailsContent() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{(members || []).length}</p>
-                <p className="text-sm text-muted-foreground">Membres</p>
+                <p className="text-sm text-gray-400">Membres</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -315,7 +315,7 @@ function OrganizationDetailsContent() {
                 <p className="text-2xl font-bold text-foreground">
                   {organization.isActive ? 'Actif' : 'Inactif'}
                 </p>
-                <p className="text-sm text-muted-foreground">Statut</p>
+                <p className="text-sm text-gray-400">Statut</p>
               </div>
             </div>
           </div>

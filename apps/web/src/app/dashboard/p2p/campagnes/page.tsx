@@ -10,12 +10,12 @@ export default function P2PCampagnesPage() {
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">Campagnes P2P</h1>
-        <p className="text-muted-foreground">Gérez vos campagnes peer-to-peer</p>
+        <p className="text-gray-400">Gérez vos campagnes peer-to-peer</p>
       </div>
 
       <Card title="Liste des campagnes P2P">
         <div className="space-y-4">
-          <p className="text-muted-foreground">Contenu de la page Campagnes P2P à venir...</p>
+          <p className="text-gray-400">Contenu de la page Campagnes P2P à venir...</p>
         </div>
       </Card>
     </Container>

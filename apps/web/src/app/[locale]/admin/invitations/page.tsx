@@ -221,7 +221,7 @@ export default function InvitationsPage() {
       label: 'Organisation',
       sortable: true,
       render: (_value: unknown, invitation: Invitation) => (
-        <div className="text-sm text-muted-foreground">{invitation.organization_name}</div>
+        <div className="text-sm text-gray-400">{invitation.organization_name}</div>
       ),
     },
     {
@@ -239,7 +239,7 @@ export default function InvitationsPage() {
       label: 'Invitée le',
       sortable: true,
       render: (_value: unknown, invitation: Invitation) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(invitation.invited_at).toLocaleDateString('fr-FR')}
         </span>
       ),
@@ -249,7 +249,7 @@ export default function InvitationsPage() {
       label: 'Expire le',
       sortable: true,
       render: (_value: unknown, invitation: Invitation) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(invitation.expires_at).toLocaleDateString('fr-FR')}
         </span>
       ),
@@ -290,7 +290,7 @@ export default function InvitationsPage() {
           <div className="mb-8 flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-2">Gestion des Invitations</h1>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Gérer les invitations envoyées aux utilisateurs
               </p>
             </div>
@@ -303,7 +303,7 @@ export default function InvitationsPage() {
               <Card key={status}>
                 <div className="p-4 text-center">
                   <div className="text-2xl font-bold text-foreground">{count}</div>
-                  <div className="text-sm text-muted-foreground capitalize">
+                  <div className="text-sm text-gray-400 capitalize">
                     {status === 'all' ? 'Total' : getStatusLabel(status)}
                   </div>
                 </div>
@@ -340,7 +340,7 @@ export default function InvitationsPage() {
           ) : filteredInvitations.length === 0 ? (
             <Card>
               <div className="py-12 text-center">
-                <p className="text-muted-foreground">
+                <p className="text-gray-400">
                   {filterStatus === 'all'
                     ? 'Aucune invitation'
                     : `Aucune invitation ${getStatusLabel(filterStatus).toLowerCase()}`}

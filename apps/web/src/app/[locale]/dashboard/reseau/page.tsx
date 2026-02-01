@@ -29,9 +29,9 @@ function ReseauContent() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-foreground">Contacts</h3>
-                  <p className="text-sm text-muted-foreground">Gérez vos contacts</p>
+                  <p className="text-sm text-gray-400">Gérez vos contacts</p>
                 </div>
-                <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                <ArrowRight className="w-5 h-5 text-gray-400" />
               </div>
             </div>
           </Card>
@@ -46,9 +46,9 @@ function ReseauContent() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-foreground">Entreprises</h3>
-                  <p className="text-sm text-muted-foreground">Gérez vos entreprises</p>
+                  <p className="text-sm text-gray-400">Gérez vos entreprises</p>
                 </div>
-                <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                <ArrowRight className="w-5 h-5 text-gray-400" />
               </div>
             </div>
           </Card>
@@ -63,9 +63,9 @@ function ReseauContent() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-foreground">Témoignages</h3>
-                  <p className="text-sm text-muted-foreground">Gérez vos témoignages</p>
+                  <p className="text-sm text-gray-400">Gérez vos témoignages</p>
                 </div>
-                <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                <ArrowRight className="w-5 h-5 text-gray-400" />
               </div>
             </div>
           </Card>
@@ -75,7 +75,7 @@ function ReseauContent() {
       <Card>
         <div className="p-6">
           <h2 className="text-2xl font-bold text-foreground mb-4">Module Réseau</h2>
-          <p className="text-muted-foreground">
+          <p className="text-gray-400">
             Bienvenue dans le Module Réseau. Utilisez le menu latéral pour accéder aux différentes
             sections.
           </p>

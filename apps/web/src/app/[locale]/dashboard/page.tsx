@@ -88,13 +88,13 @@ function DashboardContent() {
                 </div>
                 <h2 className="text-2xl font-bold text-foreground">About CausePilot AI</h2>
               </div>
-              <p className="text-base text-muted-foreground mb-4 leading-relaxed">
+              <p className="text-base text-gray-400 mb-4 leading-relaxed">
                 CausePilot AI is an intelligent fundraising platform designed for modern nonprofits. 
                 We combine <span className="font-semibold text-blue-400">predictive donor analytics</span>,{' '}
                 <span className="font-semibold text-green-400">automated stewardship</span>, and{' '}
                 <span className="font-semibold text-blue-400">AI-powered insights</span> to help you maximize your impact.
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 Whether you're managing donor relationships, running campaigns, or analyzing your fundraising performance, 
                 CausePilot AI provides the tools you need to grow your organization's reach and effectiveness.
               </p>
@@ -112,7 +112,7 @@ function DashboardContent() {
       <MotionDiv variant="slideUp" delay={200}>
         <div className="mb-4">
           <h3 className="text-xl font-semibold text-foreground mb-2">Key Features</h3>
-          <p className="text-sm text-muted-foreground">Explore what CausePilot AI can do for your organization</p>
+          <p className="text-sm text-gray-400">Explore what CausePilot AI can do for your organization</p>
         </div>
         <Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="normal">
           <div className="stagger-fade-in opacity-0 stagger-delay-1">
@@ -123,7 +123,7 @@ function DashboardContent() {
                 </div>
                 <div className="flex-1">
                   <h4 className="font-semibold text-foreground mb-1">AI Copilot</h4>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-400">
                     Get intelligent recommendations on when to ask, how much to ask, and who to target using generative AI.
                   </p>
                 </div>
@@ -138,7 +138,7 @@ function DashboardContent() {
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Donor Management</h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   A 360-degree view of your supporters. Track history, preferences, and engagement in one secure CRM.
                 </p>
               </div>
@@ -153,7 +153,7 @@ function DashboardContent() {
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Automated Campaigns</h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Set up multi-channel communication flows that nurture donors automatically while you sleep.
                 </p>
               </div>
@@ -168,7 +168,7 @@ function DashboardContent() {
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Smart Donation Forms</h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Conversion-optimized forms that adapt suggested amounts based on donor history and profile.
                 </p>
               </div>
@@ -183,7 +183,7 @@ function DashboardContent() {
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Impact Analytics</h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Real-time dashboards that turn complex data into actionable insights for your board and team.
                 </p>
               </div>
@@ -198,7 +198,7 @@ function DashboardContent() {
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-1">Secure & Compliant</h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Enterprise-grade security with automated tax receipting and compliance built-in.
                 </p>
               </div>
@@ -218,14 +218,14 @@ function DashboardContent() {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground">Your Profile</h3>
-                <p className="text-sm text-muted-foreground">Account information</p>
+                <p className="text-sm text-gray-400">Account information</p>
               </div>
             </div>
             <Stack gap="normal">
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                <User className="w-5 h-5 text-muted-foreground" />
+                <User className="w-5 h-5 text-gray-400" />
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                     Name
                   </p>
                   <p className="text-base font-semibold text-foreground mt-0.5">
@@ -234,9 +234,9 @@ function DashboardContent() {
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                <Mail className="w-5 h-5 text-muted-foreground" />
+                <Mail className="w-5 h-5 text-gray-400" />
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                     Email
                   </p>
                   <p className="text-base font-semibold text-foreground mt-0.5">
@@ -249,10 +249,10 @@ function DashboardContent() {
                   {user?.is_active ? (
                     <CheckCircle2 className="w-5 h-5 text-green-400" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-muted-foreground" />
+                    <XCircle className="w-5 h-5 text-gray-400" />
                   )}
                   <div>
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                       Status
                     </p>
                     <Badge variant={user?.is_active ? 'success' : 'default'} className="mt-0.5">
@@ -266,10 +266,10 @@ function DashboardContent() {
                   {user?.is_verified ? (
                     <CheckCircle2 className="w-5 h-5 text-green-400" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-muted-foreground" />
+                    <XCircle className="w-5 h-5 text-gray-400" />
                   )}
                   <div>
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                       Verified
                     </p>
                     <Badge variant={user?.is_verified ? 'success' : 'default'} className="mt-0.5">
@@ -289,7 +289,7 @@ function DashboardContent() {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground">Get Started</h3>
-                <p className="text-sm text-muted-foreground">Quick access to key features</p>
+                <p className="text-sm text-gray-400">Quick access to key features</p>
               </div>
             </div>
             <Stack gap="normal">
@@ -359,7 +359,7 @@ function DashboardContent() {
             </div>
             <div>
               <h3 className="text-xl font-semibold text-foreground">System Status</h3>
-              <p className="text-sm text-muted-foreground">All systems operational</p>
+              <p className="text-sm text-gray-400">All systems operational</p>
             </div>
           </div>
           <Grid columns={{ mobile: 1, tablet: 3 }} gap="normal">
@@ -405,7 +405,7 @@ function DashboardContent() {
             </div>
             <div>
               <h3 className="text-xl font-semibold text-foreground">AI Assistant</h3>
-              <p className="text-sm text-muted-foreground">Ask questions about CausePilot AI and get intelligent assistance</p>
+              <p className="text-sm text-gray-400">Ask questions about CausePilot AI and get intelligent assistance</p>
             </div>
           </div>
           <TemplateAIChat />

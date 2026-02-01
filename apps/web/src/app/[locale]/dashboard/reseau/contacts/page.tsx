@@ -420,7 +420,7 @@ function ContactsContent() {
               {contact.first_name} {contact.last_name}
             </div>
             {contact.position && (
-              <div className="text-sm text-muted-foreground">{contact.position}</div>
+              <div className="text-sm text-gray-400">{contact.position}</div>
             )}
           </div>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -439,7 +439,7 @@ function ContactsContent() {
       label: 'Entreprise',
       sortable: true,
       render: (value) => (
-        <span className="text-muted-foreground">{value ? String(value) : '-'}</span>
+        <span className="text-gray-400">{value ? String(value) : '-'}</span>
       ),
     },
     {
@@ -447,20 +447,20 @@ function ContactsContent() {
       label: 'Cercle',
       sortable: true,
       render: (value) => {
-        if (!value) return <span className="text-muted-foreground">-</span>;
+        if (!value) return <span className="text-gray-400">-</span>;
 
         const circleColors: Record<string, string> = {
           client: 'bg-success-500 hover:bg-success-600',
           prospect: 'bg-primary-500 hover:bg-primary-600',
           partenaire: 'bg-secondary-500 hover:bg-secondary-600',
           fournisseur: 'bg-warning-500 hover:bg-warning-600',
-          autre: 'bg-muted hover:bg-muted/80',
+          autre: 'bg-[#1C1C26] hover:bg-[#252532]',
         };
 
         return (
           <Badge
             variant="default"
-            className={`capitalize text-background ${circleColors[String(value)] || 'bg-muted'}`}
+            className={`capitalize text-white ${circleColors[String(value)] || 'bg-[#1C1C26]'}`}
           >
             {String(value)}
           </Badge>
@@ -488,7 +488,7 @@ function ContactsContent() {
       label: 'Ville',
       sortable: true,
       render: (_value, contact) => (
-        <span className="text-muted-foreground">
+        <span className="text-gray-400">
           {[contact.city, contact.country].filter(Boolean).join(', ') || '-'}
         </span>
       ),
@@ -524,7 +524,7 @@ function ContactsContent() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher par nom, email, téléphone, entreprise..."
-            className="w-full pl-10 pr-10 py-2 text-sm border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full pl-10 pr-10 py-2 text-sm border border-gray-800 rounded-md bg-[#13131A] text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
 
           {/* Active filters badges */}
@@ -642,14 +642,14 @@ function ContactsContent() {
                           className="fixed inset-0 z-10"
                           onClick={() => setShowActionsMenu(false)}
                         />
-                        <div className="absolute right-0 mt-1 w-48 bg-background border border-border rounded-md shadow-lg z-20">
+                        <div className="absolute right-0 mt-1 w-48 bg-[#13131A] border border-gray-800 rounded-md shadow-lg z-20">
                           <div className="py-1">
                             <button
                               onClick={() => {
                                 setShowImportInstructions(true);
                                 setShowActionsMenu(false);
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26]"
                             >
                               <HelpCircle className="w-3.5 h-3.5" />
                               Instructions d'import
@@ -668,7 +668,7 @@ function ContactsContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle Excel
@@ -692,7 +692,7 @@ function ContactsContent() {
                                   });
                                 }
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted border-t border-border"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] border-t border-border"
                             >
                               <FileSpreadsheet className="w-3.5 h-3.5" />
                               Modèle ZIP (avec photos)
@@ -712,7 +712,7 @@ function ContactsContent() {
                             />
                             <label
                               htmlFor="import-contacts"
-                              className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted cursor-pointer"
+                              className="flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26] cursor-pointer"
                             >
                               <Upload className="w-3.5 h-3.5" />
                               Importer
@@ -722,7 +722,7 @@ function ContactsContent() {
                                 handleExport();
                                 setShowActionsMenu(false);
                               }}
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted"
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-white hover:bg-[#1C1C26]"
                             >
                               <Download className="w-3.5 h-3.5" />
                               Exporter

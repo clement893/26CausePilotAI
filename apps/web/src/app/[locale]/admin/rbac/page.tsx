@@ -134,7 +134,7 @@ export default function RBACPage() {
         <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-4xl font-bold text-foreground mb-2">Gestion RBAC</h1>
-            <p className="text-muted-foreground">Gestion des rôles et permissions</p>
+            <p className="text-gray-400">Gestion des rôles et permissions</p>
           </div>
           <Button onClick={() => setShowCreateModal(true)}>Créer un rôle</Button>
         </div>
@@ -158,7 +158,7 @@ export default function RBACPage() {
                 ) : (
                   <div className="space-y-2">
                     {roles.length === 0 ? (
-                      <p className="text-muted-foreground text-center py-4">Aucun rôle trouvé</p>
+                      <p className="text-gray-400 text-center py-4">Aucun rôle trouvé</p>
                     ) : (
                       roles.map((role) => (
                         <Button
@@ -182,11 +182,11 @@ export default function RBACPage() {
                               )}
                             </div>
                             {role.description && (
-                              <div className="text-sm text-muted-foreground mt-1">
+                              <div className="text-sm text-gray-400 mt-1">
                                 {role.description}
                               </div>
                             )}
-                            <div className="text-xs text-muted-foreground mt-1">
+                            <div className="text-xs text-gray-400 mt-1">
                               {role.permissions?.length || 0} permission
                               {role.permissions?.length !== 1 ? 's' : ''}
                             </div>
@@ -213,9 +213,9 @@ export default function RBACPage() {
                         {!selectedRole.is_active && <Badge variant="warning">Inactif</Badge>}
                       </div>
                       {selectedRole.description && (
-                        <p className="text-muted-foreground mt-2">{selectedRole.description}</p>
+                        <p className="text-gray-400 mt-2">{selectedRole.description}</p>
                       )}
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm text-gray-400 mt-1">
                         Slug:{' '}
                         <code className="bg-muted px-1 py-0.5 rounded">{selectedRole.slug}</code>
                       </p>
@@ -251,7 +251,7 @@ export default function RBACPage() {
             ) : (
               <Card>
                 <div className="py-12 text-center">
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-400">
                     Sélectionnez un rôle pour voir ses permissions
                   </p>
                 </div>
@@ -331,7 +331,7 @@ export default function RBACPage() {
           <p className="text-foreground">
             Êtes-vous sûr de vouloir supprimer le rôle <strong>{selectedRole?.name}</strong> ?
           </p>
-          <p className="text-sm text-muted-foreground mt-2">
+          <p className="text-sm text-gray-400 mt-2">
             Cette action désactivera le rôle. Les utilisateurs ayant ce rôle perdront leurs
             permissions associées.
           </p>

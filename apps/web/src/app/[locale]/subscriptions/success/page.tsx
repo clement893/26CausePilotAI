@@ -101,7 +101,7 @@ function SubscriptionSuccessContent() {
           {/* Next Steps */}
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-white mb-4">Prochaines étapes</h3>
-            <ul className="text-left space-y-2 text-muted-foreground">
+            <ul className="text-left space-y-2 text-gray-400">
               <li className="flex items-start">
                 <span className="text-success-600 mr-2">✓</span>
                 <span>
@@ -142,7 +142,7 @@ export default function SubscriptionSuccessPage() {
           <Card className="w-full max-w-2xl">
             <div className="p-8 text-center">
               <Loading />
-              <p className="mt-4 text-muted-foreground">Chargement...</p>
+              <p className="mt-4 text-gray-400">Chargement...</p>
             </div>
           </Card>
         </div>

@@ -10,12 +10,12 @@ export default function IntegrationsPage() {
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">Intégrations</h1>
-        <p className="text-muted-foreground">Gérez les intégrations de vos formulaires</p>
+        <p className="text-gray-400">Gérez les intégrations de vos formulaires</p>
       </div>
 
       <Card title="Intégrations de formulaires">
         <div className="space-y-4">
-          <p className="text-muted-foreground">Contenu de la page Intégrations à venir...</p>
+          <p className="text-gray-400">Contenu de la page Intégrations à venir...</p>
         </div>
       </Card>
     </Container>
