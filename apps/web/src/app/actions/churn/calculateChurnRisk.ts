@@ -165,12 +165,13 @@ export async function calculateChurnRisk(): Promise<ChurnRiskResult> {
     let mediumRisk = 0;
     let lowRisk = 0;
 
+    type DonationRow = { amount: unknown; donatedAt: Date };
     for (const donator of donators) {
       const factors = calculateChurnFactors(
         donator.lastDonationDate,
         donator.firstDonationDate,
         donator.donationCount,
-        donator.donations.map(d => ({
+        donator.donations.map((d: DonationRow) => ({
           amount: Number(d.amount),
           createdAt: d.donatedAt,
         })),
@@ -249,11 +250,12 @@ export async function calculateDonatorChurnRisk(donatorId: string): Promise<{
       };
     }
 
+    type DonationRow = { amount: unknown; donatedAt: Date };
     const factors = calculateChurnFactors(
       donator.lastDonationDate,
       donator.firstDonationDate,
       donator.donationCount,
-      donator.donations.map(d => ({
+      donator.donations.map((d: DonationRow) => ({
         amount: Number(d.amount),
         createdAt: d.donatedAt,
       })),

@@ -184,8 +184,9 @@ export async function getDonationAmountSuggestions(
     }
 
     // Calculer les statistiques du donateur
-    const donations = donator.donations.map(d => Number(d.amount));
-    const averageDonation = donations.reduce((sum, amount) => sum + amount, 0) / donations.length;
+    type DonationRow = { amount: unknown };
+    const donations = donator.donations.map((d: DonationRow) => Number(d.amount));
+    const averageDonation = donations.reduce((sum: number, amount: number) => sum + amount, 0) / donations.length;
     const largestDonation = Math.max(...donations);
     const lastDonation = donations.length > 0 ? donations[0] : null;
 
