@@ -69,30 +69,30 @@ function SubscriptionSuccessContent() {
             </svg>
           </div>
 
-          <h1 className="text-4xl font-bold text-foreground mb-4">Abonnement confirmé !</h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          <h1 className="text-4xl font-bold text-white mb-4">Abonnement confirmé !</h1>
+          <p className="text-xl text-gray-400 mb-8">
             Merci pour votre confiance. Votre abonnement <strong>{planName}</strong> est maintenant
             actif.
           </p>
 
           {/* Subscription Details */}
-          <div className="bg-muted rounded-lg p-6 mb-8 text-left">
-            <h2 className="text-lg font-semibold text-foreground mb-4">
+          <div className="bg-[#1C1C26] rounded-lg p-6 mb-8 text-left">
+            <h2 className="text-lg font-semibold text-white mb-4">
               Détails de votre abonnement
             </h2>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Plan:</span>
-                <span className="font-medium text-foreground">{planName}</span>
+                <span className="text-gray-400">Plan:</span>
+                <span className="font-medium text-white">{planName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Période:</span>
-                <span className="font-medium text-foreground">
+                <span className="text-gray-400">Période:</span>
+                <span className="font-medium text-white">
                   {billingPeriod === 'month' ? 'Mensuel' : 'Annuel'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Statut:</span>
+                <span className="text-gray-400">Statut:</span>
                 <span className="font-medium text-success-600 text-green-400">Actif</span>
               </div>
             </div>
@@ -100,7 +100,7 @@ function SubscriptionSuccessContent() {
 
           {/* Next Steps */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Prochaines étapes</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Prochaines étapes</h3>
             <ul className="text-left space-y-2 text-muted-foreground">
               <li className="flex items-start">
                 <span className="text-success-600 mr-2">✓</span>

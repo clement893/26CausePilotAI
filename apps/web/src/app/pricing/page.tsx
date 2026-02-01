@@ -83,8 +83,8 @@ export default function PricingPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100 from-[#1C1C26] to-[#1C1C26]">
       <Container className="py-16">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-foreground mb-4">Tarifs</h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          <h1 className="text-5xl font-bold text-white mb-4">Tarifs</h1>
+          <p className="text-xl text-gray-400 mb-8">
             Choisissez le plan qui correspond à vos besoins
           </p>
 

@@ -163,7 +163,7 @@ function CallbackContent() {
         <Card className="text-center">
           <div className="py-12">
             <Loading />
-            <p className="mt-4 text-muted-foreground">Completing authentication...</p>
+            <p className="mt-4 text-gray-400">Completing authentication...</p>
           </div>
         </Card>
       </Container>
@@ -180,7 +180,7 @@ export default function AuthCallbackPage() {
             <Card className="text-center">
               <div className="py-12">
                 <Loading />
-                <p className="mt-4 text-muted-foreground">Loading...</p>
+                <p className="mt-4 text-gray-400">Loading...</p>
               </div>
             </Card>
           </Container>

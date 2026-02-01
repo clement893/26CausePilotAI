@@ -215,10 +215,10 @@ function LoginContent() {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
+                <div className="w-full border-t border-gray-800"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
+                <span className="px-2 bg-[#13131A] text-gray-400">Or continue with</span>
               </div>
             </div>
 
@@ -261,7 +261,7 @@ function LoginContent() {
             </Button>
           </div>
 
-          <p className="text-center text-muted-foreground mt-6">
+          <p className="text-center text-gray-400 mt-6">
             Don't have an account?{' '}
             <Link
               href="/auth/register"
@@ -285,7 +285,7 @@ export default function LoginPage() {
             <Card>
               <div className="text-center py-8">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
-                <p className="text-muted-foreground">Loading...</p>
+                <p className="text-gray-400">Loading...</p>
               </div>
             </Card>
           </Container>

@@ -29,9 +29,9 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 from-[#1C1C26] to-[#1C1C26]">
       {/* Mobile Header */}
-      <header className="lg:hidden bg-background shadow border-b border-border">
+      <header className="lg:hidden bg-[#13131A] shadow border-b border-gray-800">
         <div className="px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-foreground">
+          <h1 className="text-xl font-bold text-white">
             {pathname === '/dashboard' && 'Dashboard'}
             {pathname === '/dashboard/projects' && 'Projets'}
             {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
@@ -60,9 +60,9 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Desktop Header */}
-          <header className="hidden lg:block bg-background shadow border-b border-border">
+          <header className="hidden lg:block bg-[#13131A] shadow border-b border-gray-800">
             <div className="px-6 py-4 flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-foreground">
+              <h1 className="text-2xl font-bold text-white">
                 {pathname === '/dashboard' && 'Dashboard'}
                 {pathname === '/dashboard/projects' && 'Projets'}
                 {pathname === '/dashboard/become-superadmin' && 'Super Admin'}

@@ -69,7 +69,7 @@ function NewOrganizationContent() {
           </Button>
         </Link>
         <h1 className="text-3xl font-bold text-foreground mb-2">Nouvelle organisation</h1>
-        <p className="text-muted-foreground">Créez une nouvelle organisation avec sa base de données séparée</p>
+        <p className="text-gray-400">Créez une nouvelle organisation avec sa base de données séparée</p>
       </div>
 
       <Card>
@@ -107,7 +107,7 @@ function NewOrganizationContent() {
               pattern="[a-z0-9-]+"
               required
             />
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-gray-400">
               Utilisé pour l'URL et l'identification. Lettres minuscules, chiffres et tirets uniquement.
             </p>
           </div>
