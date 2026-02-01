@@ -105,49 +105,41 @@ export default function TimePicker({
         leftIcon={<Clock className="w-5 h-5" />}
       />{' '}
       {isOpen && (
-        <div className="absolute z-50 mt-2 bg-background border border-border rounded-lg shadow-lg p-4">
-          {' '}
+        <div className="absolute z-50 mt-2 glass-effect bg-[#13131A] dark:bg-background border border-gray-800 dark:border-border rounded-lg shadow-lg p-4 custom-scrollbar">
           <div className="flex gap-4">
-            {' '}
-            {/* Hours */}{' '}
+            {/* Hours */}
             <div className="flex flex-col">
-              {' '}
-              <div className="text-xs font-medium text-muted-foreground mb-2 text-center">
-                {' '}
-                Heures{' '}
-              </div>{' '}
-              <div className="max-h-48 overflow-y-auto">
-                {' '}
+              <div className="text-xs font-medium text-gray-400 dark:text-muted-foreground mb-2 text-center">
+                Heures
+              </div>
+              <div className="max-h-48 overflow-y-auto custom-scrollbar">
                 {generateHours().map((hour) => (
                   <button
                     key={hour}
                     type="button"
                     onClick={() => handleTimeSelect(hour, currentTime.minutes)}
                     className={clsx(
-                      'w-12 px-3 py-2 text-sm rounded hover:bg-muted',
+                      'w-12 px-3 py-2 text-sm rounded transition-colors text-gray-300 dark:text-foreground',
+                      'hover:bg-[#1C1C26] dark:hover:bg-muted',
                       currentTime.hours === hour &&
-                        'bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100 font-medium'
+                        'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 font-medium border-l-4 border-l-blue-500'
                     )}
                   >
-                    {' '}
                     {format === '12h'
                       ? hour === 12
                         ? 12
                         : hour
-                      : String(hour).padStart(2, '0')}{' '}
+                      : String(hour).padStart(2, '0')}
                   </button>
-                ))}{' '}
-              </div>{' '}
-            </div>{' '}
-            {/* Minutes */}{' '}
+                ))}
+              </div>
+            </div>
+            {/* Minutes */}
             <div className="flex flex-col">
-              {' '}
-              <div className="text-xs font-medium text-muted-foreground mb-2 text-center">
-                {' '}
-                Minutes{' '}
-              </div>{' '}
-              <div className="max-h-48 overflow-y-auto">
-                {' '}
+              <div className="text-xs font-medium text-gray-400 dark:text-muted-foreground mb-2 text-center">
+                Minutes
+              </div>
+              <div className="max-h-48 overflow-y-auto custom-scrollbar">
                 {generateMinutes()
                   .filter((min) => min % 5 === 0)
                   .map((minute) => (
@@ -156,27 +148,24 @@ export default function TimePicker({
                       type="button"
                       onClick={() => handleTimeSelect(currentTime.hours, minute)}
                       className={clsx(
-                        'w-12 px-3 py-2 text-sm rounded hover:bg-muted',
+                        'w-12 px-3 py-2 text-sm rounded transition-colors text-gray-300 dark:text-foreground',
+                        'hover:bg-[#1C1C26] dark:hover:bg-muted',
                         currentTime.minutes === minute &&
-                          'bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100 font-medium'
+                          'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 font-medium border-l-4 border-l-blue-500'
                       )}
                     >
-                      {' '}
-                      {String(minute).padStart(2, '0')}{' '}
+                      {String(minute).padStart(2, '0')}
                     </button>
-                  ))}{' '}
-              </div>{' '}
-            </div>{' '}
-            {/* Period (12h format only) */}{' '}
+                  ))}
+              </div>
+            </div>
+            {/* Period (12h format only) */}
             {format === '12h' && (
               <div className="flex flex-col">
-                {' '}
-                <div className="text-xs font-medium text-muted-foreground mb-2 text-center">
-                  {' '}
-                  PÃ©riode{' '}
-                </div>{' '}
+                <div className="text-xs font-medium text-gray-400 dark:text-muted-foreground mb-2 text-center">
+                  Période
+                </div>
                 <div className="flex flex-col gap-1">
-                  {' '}
                   <button
                     type="button"
                     onClick={() =>
@@ -186,14 +175,14 @@ export default function TimePicker({
                       )
                     }
                     className={clsx(
-                      'px-3 py-2 text-sm rounded hover:bg-muted',
+                      'px-3 py-2 text-sm rounded transition-colors text-gray-300 dark:text-foreground',
+                      'hover:bg-[#1C1C26] dark:hover:bg-muted',
                       currentTime.hours < 12 &&
-                        'bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100 font-medium'
+                        'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 font-medium border-l-4 border-l-blue-500'
                     )}
                   >
-                    {' '}
-                    AM{' '}
-                  </button>{' '}
+                    AM
+                  </button>
                   <button
                     type="button"
                     onClick={() =>
@@ -203,20 +192,20 @@ export default function TimePicker({
                       )
                     }
                     className={clsx(
-                      'px-3 py-2 text-sm rounded hover:bg-muted',
+                      'px-3 py-2 text-sm rounded transition-colors text-gray-300 dark:text-foreground',
+                      'hover:bg-[#1C1C26] dark:hover:bg-muted',
                       currentTime.hours >= 12 &&
-                        'bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100 font-medium'
+                        'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 font-medium border-l-4 border-l-blue-500'
                     )}
                   >
-                    {' '}
-                    PM{' '}
-                  </button>{' '}
-                </div>{' '}
+                    PM
+                  </button>
+                </div>
               </div>
-            )}{' '}
-          </div>{' '}
+            )}
+          </div>
         </div>
-      )}{' '}
+      )}
     </div>
   );
 }

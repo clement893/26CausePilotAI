@@ -79,9 +79,9 @@ export default function Form({
 
           return (
             <div key={field.name} className="space-y-2">
-              <label htmlFor={field.name} className="block text-sm font-medium text-foreground">
+              <label htmlFor={field.name} className="block text-sm font-medium text-gray-300 dark:text-foreground">
                 {field.label}
-                {field.required && <span className="text-error-500 dark:text-error-400 ml-1">*</span>}
+                {field.required && <span className="text-red-400 dark:text-error-400 ml-1">*</span>}
               </label>
 
               {field.type === 'textarea' ? (
@@ -94,12 +94,13 @@ export default function Form({
                   defaultValue={String(value)}
                   rows={4}
                   className={clsx(
-                    'w-full px-3 py-2 border rounded-md',
-                    'bg-[var(--color-input)]',
-                    'text-[var(--color-foreground)]',
-                    'border-[var(--color-border)]',
+                    'w-full px-3 py-2 border rounded-md form-input-glow',
+                    'bg-[#1C1C26] dark:bg-[var(--color-input)]',
+                    'text-white dark:text-[var(--color-foreground)]',
+                    'border-gray-700 dark:border-[var(--color-border)]',
+                    'placeholder:text-gray-500 dark:placeholder:text-muted-foreground',
                     'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
-                    error && 'border-error-500 dark:border-error-400',
+                    error && 'border-red-500 dark:border-error-400',
                     field.disabled && 'opacity-50 cursor-not-allowed'
                   )}
                 />
@@ -111,18 +112,18 @@ export default function Form({
                   disabled={field.disabled}
                   defaultValue={String(value)}
                   className={clsx(
-                    'w-full px-3 py-2 border rounded-md',
-                    'bg-[var(--color-input)]',
-                    'text-[var(--color-foreground)]',
-                    'border-[var(--color-border)]',
+                    'w-full px-3 py-2 border rounded-md form-input-glow',
+                    'bg-[#1C1C26] dark:bg-[var(--color-input)]',
+                    'text-white dark:text-[var(--color-foreground)]',
+                    'border-gray-700 dark:border-[var(--color-border)]',
                     'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
-                    error && 'border-error-500 dark:border-error-400',
+                    error && 'border-red-500 dark:border-error-400',
                     field.disabled && 'opacity-50 cursor-not-allowed'
                   )}
                 >
-                  <option value="">Select {field.label}</option>
+                  <option value="" className="bg-[#1C1C26]">Select {field.label}</option>
                   {field.options?.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <option key={option.value} value={option.value} className="bg-[#1C1C26]">
                       {option.label}
                     </option>
                   ))}
@@ -137,12 +138,12 @@ export default function Form({
                     disabled={field.disabled}
                     className={clsx(
                       'w-4 h-4 text-primary-600 dark:text-primary-400 rounded',
-                      'border-border',
+                      'border-gray-700 dark:border-border',
                       'focus:ring-primary-500 dark:focus:ring-primary-400',
                       field.disabled && 'opacity-50 cursor-not-allowed'
                     )}
                   />
-                  <label htmlFor={field.name} className="ml-2 text-sm text-foreground">
+                  <label htmlFor={field.name} className="ml-2 text-sm text-gray-300 dark:text-foreground">
                     {field.helpText}
                   </label>
                 </div>
@@ -156,19 +157,20 @@ export default function Form({
                   disabled={field.disabled}
                   defaultValue={String(value)}
                   className={clsx(
-                    'w-full px-3 py-2 border rounded-md',
-                    'bg-[var(--color-input)]',
-                    'text-[var(--color-foreground)]',
-                    'border-[var(--color-border)]',
+                    'w-full px-3 py-2 border rounded-md form-input-glow',
+                    'bg-[#1C1C26] dark:bg-[var(--color-input)]',
+                    'text-white dark:text-[var(--color-foreground)]',
+                    'border-gray-700 dark:border-[var(--color-border)]',
+                    'placeholder:text-gray-500 dark:placeholder:text-muted-foreground',
                     'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
-                    error && 'border-error-500 dark:border-error-400',
+                    error && 'border-red-500 dark:border-error-400',
                     field.disabled && 'opacity-50 cursor-not-allowed'
                   )}
                 />
               )}
 
-              {error && <p className="text-sm text-error-600 dark:text-error-400">{error}</p>}
-              {field.helpText && !error && <p className="text-sm text-muted-foreground">{field.helpText}</p>}
+              {error && <p className="text-sm text-red-400 dark:text-error-400">{error}</p>}
+              {field.helpText && !error && <p className="text-sm text-gray-400 dark:text-muted-foreground">{field.helpText}</p>}
             </div>
           );
         })}
@@ -182,8 +184,8 @@ export default function Form({
             disabled={loading}
             className={clsx(
               'px-4 py-2 rounded-md font-medium',
-              'bg-primary-600 dark:bg-primary-500 text-background',
-              'hover:bg-primary-700 dark:hover:bg-primary-600',
+              'bg-gradient-to-r from-blue-500 to-purple-500 text-white',
+              'hover:from-blue-600 hover:to-purple-600',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'transition-colors'
@@ -215,9 +217,9 @@ export function FormField({ label, name, required, error, helpText, children }: 
 
   return (
     <div className="space-y-2">
-      <label htmlFor={name} className="block text-sm font-medium text-foreground">
+      <label htmlFor={name} className="block text-sm font-medium text-gray-300 dark:text-foreground">
         {label}
-        {required && <span className="text-error-500 dark:text-error-400 ml-1">*</span>}
+        {required && <span className="text-red-400 dark:text-error-400 ml-1">*</span>}
       </label>
 
       {firstChild && isValidElement(firstChild)
@@ -232,13 +234,13 @@ export function FormField({ label, name, required, error, helpText, children }: 
       {restChildren.length > 0 && restChildren}
 
       {error && (
-        <p id={`${name}-error`} className="text-sm text-error-600 dark:text-error-400">
+        <p id={`${name}-error`} className="text-sm text-red-400 dark:text-error-400">
           {error}
         </p>
       )}
 
       {helpText && !error && (
-        <p id={`${name}-help`} className="text-sm text-muted-foreground">
+        <p id={`${name}-help`} className="text-sm text-gray-400 dark:text-muted-foreground">
           {helpText}
         </p>
       )}
