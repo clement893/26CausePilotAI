@@ -1,12 +1,12 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-11T04:03:13.386Z",
+  "generated": "2026-02-01T17:21:13.608Z",
   "summary": {
-    "total": 141,
+    "total": 175,
     "connected": 56,
     "partial": 24,
-    "needsIntegration": 85,
-    "static": 85
+    "needsIntegration": 119,
+    "static": 119
   },
   "pages": [
     {
@@ -443,6 +443,13 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\components\\page.tsx",
+      "url": "/components",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\content\\categories\\page.tsx",
       "url": "/content/categories",
       "apiCalls": [
@@ -655,6 +662,34 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\dashboard\\administration\\parametres\\page.tsx",
+      "url": "/dashboard/administration/parametres",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\administration\\users\\page.tsx",
+      "url": "/dashboard/administration/users",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\analytics\\dashboard\\page.tsx",
+      "url": "/dashboard/analytics/dashboard",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\analytics\\ia\\page.tsx",
+      "url": "/dashboard/analytics/ia",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\dashboard\\analytics\\page.tsx",
       "url": "/dashboard/analytics",
       "apiCalls": [
@@ -669,6 +704,74 @@
       ]
     },
     {
+      "path": "app\\[locale]\\dashboard\\analytics\\rapports\\page.tsx",
+      "url": "/dashboard/analytics/rapports",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\base-donateur\\campaigns\\page.tsx",
+      "url": "/dashboard/base-donateur/campaigns",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": [
+        "donors"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\base-donateur\\donateurs\\new\\page.tsx",
+      "url": "/dashboard/base-donateur/donateurs/new",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": [
+        "donors",
+        "organizations"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\base-donateur\\donateurs\\page.tsx",
+      "url": "/dashboard/base-donateur/donateurs",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": [
+        "donors",
+        "admin"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\base-donateur\\donateurs\\[id]\\page.tsx",
+      "url": "/dashboard/base-donateur/donateurs/[id]",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": [
+        "donors"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\base-donateur\\segments\\page.tsx",
+      "url": "/dashboard/base-donateur/segments",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": [
+        "donors"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\base-donateur\\statistiques\\page.tsx",
+      "url": "/dashboard/base-donateur/statistiques",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\base-donateur\\tags\\page.tsx",
+      "url": "/dashboard/base-donateur/tags",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\dashboard\\become-superadmin\\page.tsx",
       "url": "/dashboard/become-superadmin",
       "apiCalls": [],
@@ -676,6 +779,41 @@
       "imports": [
         "admin"
       ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\campagnes\\campagnes\\page.tsx",
+      "url": "/dashboard/campagnes/campagnes",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\campagnes\\courriels\\page.tsx",
+      "url": "/dashboard/campagnes/courriels",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\campagnes\\medias-sociaux\\page.tsx",
+      "url": "/dashboard/campagnes/medias-sociaux",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\formulaires\\formulaires\\page.tsx",
+      "url": "/dashboard/formulaires/formulaires",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\formulaires\\integrations\\page.tsx",
+      "url": "/dashboard/formulaires/integrations",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
     },
     {
       "path": "app\\[locale]\\dashboard\\insights\\page.tsx",
@@ -690,6 +828,20 @@
       "imports": [
         "insights"
       ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\p2p\\campagnes\\page.tsx",
+      "url": "/dashboard/p2p/campagnes",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\p2p\\parametres\\page.tsx",
+      "url": "/dashboard/p2p/parametres",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
     },
     {
       "path": "app\\[locale]\\dashboard\\page.tsx",
@@ -863,6 +1015,52 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\dashboard\\super-admin\\dashboard\\page.tsx",
+      "url": "/dashboard/super-admin/dashboard",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\super-admin\\gestion\\page.tsx",
+      "url": "/dashboard/super-admin/gestion",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\super-admin\\organisations\\new\\page.tsx",
+      "url": "/dashboard/super-admin/organisations/new",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": [
+        "organizations"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\super-admin\\organisations\\page.tsx",
+      "url": "/dashboard/super-admin/organisations",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": [
+        "organizations"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\super-admin\\organisations\\[id]\\page.tsx",
+      "url": "/dashboard/super-admin/organisations/[id]",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\super-admin\\parametres\\page.tsx",
+      "url": "/dashboard/super-admin/parametres",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\db\\test\\page.tsx",
       "url": "/db/test",
       "apiCalls": [],
@@ -870,6 +1068,55 @@
       "imports": [
         "client"
       ]
+    },
+    {
+      "path": "app\\[locale]\\democomponents\\page.tsx",
+      "url": "/democomponents",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\demodashboard\\page.tsx",
+      "url": "/demodashboard",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\demodashboard-v2\\page.tsx",
+      "url": "/demodashboard-v2",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\demodatatable\\page.tsx",
+      "url": "/demodatatable",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\demodonors\\page.tsx",
+      "url": "/demodonors",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\demoforms\\page.tsx",
+      "url": "/demoforms",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\demohome\\page.tsx",
+      "url": "/demohome",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
     },
     {
       "path": "app\\[locale]\\docs\\page.tsx",
@@ -1670,6 +1917,13 @@
     {
       "path": "app\\[locale]\\testimonials\\page.tsx",
       "url": "/testimonials",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\theme\\page.tsx",
+      "url": "/theme",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []

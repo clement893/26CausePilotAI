@@ -5,6 +5,7 @@ API endpoints for managing donors in organization-specific databases.
 All endpoints require organization_id query parameter (or use active org for regular users).
 """
 
+import logging
 from typing import Optional, List
 from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, Query
@@ -68,6 +69,7 @@ from app.schemas.organization_donors import (
     RecurringDonationList,
 )
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -467,6 +469,8 @@ async def list_donor_donations(
             "total_pages": total_pages,
         }
         
+    except HTTPException:
+        raise
     except (ProgrammingError, OperationalError) as e:
         error_msg = str(e).lower()
         if "does not exist" in error_msg or "relation" in error_msg:
@@ -481,6 +485,17 @@ async def list_donor_donations(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Database error: {str(e)}"
+        )
+    except Exception as e:
+        logger.exception(
+            "list_donor_donations failed org_id=%s donor_id=%s: %s",
+            organization_id,
+            donor_id,
+            e,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An internal error occurred. Please contact support."
         )
 
 

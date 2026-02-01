@@ -139,6 +139,7 @@ class Donation(DonationBase):
     
     class Config:
         from_attributes = True
+        populate_by_name = True  # ORM has extra_data; schema field has alias='extra_data'
 
 
 class RefundRequest(BaseModel):
