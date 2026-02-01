@@ -10,12 +10,12 @@ export default function StatistiquesPage() {
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">Statistiques</h1>
-        <p className="text-muted-foreground">Visualisez les statistiques de votre base de donateurs</p>
+        <p className="text-gray-400">Visualisez les statistiques de votre base de donateurs</p>
       </div>
 
       <Card title="Statistiques des donateurs">
         <div className="space-y-4">
-          <p className="text-muted-foreground">Contenu de la page Statistiques à venir...</p>
+          <p className="text-gray-400">Contenu de la page Statistiques à venir...</p>
         </div>
       </Card>
     </Container>

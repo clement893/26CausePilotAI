@@ -18,7 +18,7 @@ export function ThemePresets({ presets, onSelect }: ThemePresetsProps) {
     <div className="mt-6">
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-foreground mb-2">Choose a Preset</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-400">
           Start with a pre-configured theme and customize it to your needs
         </p>
       </div>
@@ -34,7 +34,7 @@ export function ThemePresets({ presets, onSelect }: ThemePresetsProps) {
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h4 className="text-lg font-semibold text-foreground">{preset.name}</h4>
-                  <p className="text-sm text-muted-foreground mt-1">{preset.description}</p>
+                  <p className="text-sm text-gray-400 mt-1">{preset.description}</p>
                 </div>
               </div>
 

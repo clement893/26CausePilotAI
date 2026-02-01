@@ -34,7 +34,7 @@ export function ThemeTabs({ activeTab, onTabChange }: ThemeTabsProps) {
               ${
                 activeTab === tab.id
                   ? 'border-b-2 border-primary text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:border-b-2 hover:border-border'
+                  : 'text-gray-400 hover:text-foreground hover:border-b-2 hover:border-border'
               }
             `}
             aria-current={activeTab === tab.id ? 'page' : undefined}

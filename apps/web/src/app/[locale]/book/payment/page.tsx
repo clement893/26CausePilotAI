@@ -29,9 +29,9 @@ export default function PaymentPage() {
       <Container>
         <div className="text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-muted rounded-full mb-4">
-            <Lock className="w-8 h-8 text-muted-foreground" aria-hidden="true" />
+            <Lock className="w-8 h-8 text-gray-400" aria-hidden="true" />
           </div>
-          <p className="text-muted-foreground">Redirection en cours...</p>
+          <p className="text-gray-400">Redirection en cours...</p>
         </div>
       </Container>
     </div>

@@ -24,15 +24,15 @@ function ERPReportsContent() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">Reports & Analytics</h1>
-        <p className="text-muted-foreground">View and generate ERP reports</p>
+        <p className="text-gray-400">View and generate ERP reports</p>
       </div>
 
       <Card title="Coming Soon">
         <div className="text-center py-12">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-gray-400 mb-4">
             Reports will be available once the Report model is implemented.
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-400">
             This feature is planned for a future update.
           </p>
         </div>

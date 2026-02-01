@@ -139,7 +139,7 @@ export default function NewDonorPage() {
     return (
       <Container className="py-8 lg:py-12">
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+          <p className="text-gray-400">Chargement...</p>
         </div>
       </Container>
     );
@@ -150,7 +150,7 @@ export default function NewDonorPage() {
       <Container className="py-8 lg:py-12">
         <Card>
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Aucune organisation active</p>
+            <p className="text-gray-400">Aucune organisation active</p>
           </div>
         </Card>
       </Container>
@@ -167,7 +167,7 @@ export default function NewDonorPage() {
           </Button>
         </Link>
         <h1 className="text-3xl font-bold text-foreground mb-2">Nouveau donateur</h1>
-        <p className="text-muted-foreground">Ajouter un nouveau donateur à votre base de données</p>
+        <p className="text-gray-400">Ajouter un nouveau donateur à votre base de données</p>
       </div>
 
       {/* Database Migration Alert */}
@@ -179,7 +179,7 @@ export default function NewDonorPage() {
                 <AlertCircle className="w-5 h-5 text-warning" />
                 <h3 className="font-semibold text-warning">Migration de base de données requise</h3>
               </div>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-gray-400 mb-4">
                 Les tables de la base de données doivent être créées avant de pouvoir ajouter des donateurs.
                 {error && <span className="block mt-2 text-destructive text-xs font-medium">{error}</span>}
               </p>
@@ -218,7 +218,7 @@ export default function NewDonorPage() {
         </Card>
       )}
 
-      <Card className="border-2 border-border/50 shadow-lg">
+      <Card className="border-2 border-gray-800/50 shadow-lg">
         <form onSubmit={handleSubmit} className="space-y-8">
           {error && !error.includes('Database tables not found') && !showMigrationButton && (
             <div className="p-4 bg-destructive/10 border-2 border-destructive rounded-lg animate-in fade-in slide-in-from-top-2">
@@ -226,7 +226,7 @@ export default function NewDonorPage() {
                 <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
                 <div className="flex-1">
                   <p className="text-destructive font-medium">{error}</p>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     Vérifiez les informations saisies et réessayez.
                   </p>
                 </div>
@@ -250,7 +250,7 @@ export default function NewDonorPage() {
                     Email <span className="text-destructive">*</span>
                   </label>
                   <Tooltip content="L'email doit être unique et sera utilisé pour les communications">
-                    <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                    <Info className="w-4 h-4 text-gray-400 cursor-help" />
                   </Tooltip>
                 </div>
                 <Input
@@ -337,7 +337,7 @@ export default function NewDonorPage() {
             </div>
 
             <div className="space-y-4 pt-4">
-              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+              <div className="p-4 bg-[#1C1C26]/30 rounded-lg hover:bg-[#1C1C26]/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"
@@ -352,7 +352,7 @@ export default function NewDonorPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+              <div className="p-4 bg-[#1C1C26]/30 rounded-lg hover:bg-[#1C1C26]/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"
@@ -367,7 +367,7 @@ export default function NewDonorPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+              <div className="p-4 bg-[#1C1C26]/30 rounded-lg hover:bg-[#1C1C26]/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"
@@ -382,7 +382,7 @@ export default function NewDonorPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
+              <div className="p-4 bg-[#1C1C26]/30 rounded-lg hover:bg-[#1C1C26]/50 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/20">
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"

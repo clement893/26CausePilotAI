@@ -24,15 +24,15 @@ function ERPOrdersContent() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2">Order Management</h1>
-        <p className="text-muted-foreground">Manage all orders in the system</p>
+        <p className="text-gray-400">Manage all orders in the system</p>
       </div>
 
       <Card title="Coming Soon">
         <div className="text-center py-12">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-gray-400 mb-4">
             Order management will be available once the Order model is implemented.
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-400">
             This feature is planned for a future update.
           </p>
         </div>

@@ -325,7 +325,7 @@ export default function ComponentsPage() {
         <Heading level={1} className="mb-4">
           Composants
         </Heading>
-        <Text className="text-muted-foreground">
+        <Text className="text-gray-400">
           Explorez tous les composants disponibles dans la bibliothèque. Tous les composants sont
           liés au thème actif et s'adaptent automatiquement aux couleurs et styles configurés.
         </Text>
@@ -389,7 +389,7 @@ export default function ComponentsPage() {
 
       {/* Results Count */}
       <div className="mb-4 flex items-center justify-between">
-        <Text className="text-muted-foreground">
+        <Text className="text-gray-400">
           {filteredComponents.length} composant{filteredComponents.length > 1 ? 's' : ''} trouvé
           {selectedCategories.length > 0
             ? ` dans ${selectedCategories.length} catégorie${selectedCategories.length > 1 ? 's' : ''}`
@@ -418,13 +418,13 @@ export default function ComponentsPage() {
               <Heading level={3} className="mb-2 text-lg">
                 {component.name}
               </Heading>
-              <Text className="text-sm text-muted-foreground">{component.description}</Text>
+              <Text className="text-sm text-gray-400">{component.description}</Text>
             </Card>
           ))}
         </div>
       ) : (
         <Card className="p-12 text-center">
-          <Text className="text-muted-foreground">
+          <Text className="text-gray-400">
             {searchQuery
               ? `Aucun composant trouvé pour "${searchQuery}"`
               : 'Sélectionnez au moins une catégorie pour afficher les composants'}

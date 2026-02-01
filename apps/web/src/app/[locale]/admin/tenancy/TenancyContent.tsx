@@ -149,10 +149,10 @@ export default function TenancyContent() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Database className="h-5 w-5 text-muted-foreground" />
+                  <Database className="h-5 w-5 text-gray-400" />
                   <div>
                     <p className="font-medium">{t('mode') || 'Mode'}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       {getModeDescription(config.mode)}
                     </p>
                   </div>
@@ -162,12 +162,12 @@ export default function TenancyContent() {
                 </Badge>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-border">
+              <div className="flex items-center justify-between pt-4 border-t border-gray-800">
                 <div className="flex items-center gap-3">
-                  <Shield className="h-5 w-5 text-muted-foreground" />
+                  <Shield className="h-5 w-5 text-gray-400" />
                   <div>
                     <p className="font-medium">{t('status') || 'Status'}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       {config.enabled
                         ? t('enabled') || 'Multi-tenancy is enabled'
                         : t('disabled') || 'Multi-tenancy is disabled'}
@@ -177,7 +177,7 @@ export default function TenancyContent() {
                 {config.enabled ? (
                   <CheckCircle className="h-5 w-5 text-success-500" />
                 ) : (
-                  <XCircle className="h-5 w-5 text-muted-foreground" />
+                  <XCircle className="h-5 w-5 text-gray-400" />
                 )}
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function TenancyContent() {
               </div>
 
               {config.mode === 'separate_db' && (
-                <div className="space-y-4 pt-4 border-t border-border">
+                <div className="space-y-4 pt-4 border-t border-gray-800">
                   <Input
                     label={t('registryUrl') || 'Registry Database URL'}
                     value={config.registryUrl || ''}
@@ -262,40 +262,40 @@ export default function TenancyContent() {
               <div>
                 <h3 className="font-semibold mb-2">{t('modes.title') || 'Available Modes'}</h3>
                 <div className="space-y-3">
-                  <div className="p-3 bg-muted rounded-lg">
+                  <div className="p-3 bg-[#1C1C26] rounded-lg">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge variant="default">SINGLE</Badge>
                       <span className="font-medium">
                         {t('modes.single.label') || 'Single Tenant'}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       {t('modes.single.description') ||
                         'No multi-tenancy. Single database, no filtering. Default mode.'}
                     </p>
                   </div>
 
-                  <div className="p-3 bg-muted rounded-lg">
+                  <div className="p-3 bg-[#1C1C26] rounded-lg">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge variant="info">SHARED_DB</Badge>
                       <span className="font-medium">
                         {t('modes.shared_db.label') || 'Shared Database'}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       {t('modes.shared_db.description') ||
                         'Multi-tenancy with shared database. All data in one database, filtered by team_id.'}
                     </p>
                   </div>
 
-                  <div className="p-3 bg-muted rounded-lg">
+                  <div className="p-3 bg-[#1C1C26] rounded-lg">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge variant="success">SEPARATE_DB</Badge>
                       <span className="font-medium">
                         {t('modes.separate_db.label') || 'Separate Databases'}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       {t('modes.separate_db.description') ||
                         'Multi-tenancy with separate databases. One database per tenant for maximum isolation.'}
                     </p>

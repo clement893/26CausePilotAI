@@ -135,7 +135,7 @@ export default function AdminLogsContent() {
       key: 'timestamp',
       label: 'Date/Heure',
       render: (_value, log) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(log.timestamp).toLocaleString('fr-FR')}
         </span>
       ),
@@ -163,7 +163,7 @@ export default function AdminLogsContent() {
       key: 'user_id',
       label: 'Utilisateur',
       render: (_value, log) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {log.user_id ? `ID: ${log.user_id}` : 'Système'}
         </span>
       ),
@@ -172,7 +172,7 @@ export default function AdminLogsContent() {
       key: 'ip_address',
       label: 'IP',
       render: (_value, log) => (
-        <span className="text-xs text-muted-foreground">{log.ip_address || '-'}</span>
+        <span className="text-xs text-gray-400">{log.ip_address || '-'}</span>
       ),
     },
   ];

@@ -14,12 +14,12 @@ import { ErrorBoundary } from '@/components/errors';
 export default function ERPPortalLayout({ children }: { children: React.ReactNode }) {
   return (
     <ErrorBoundary>
-      <div className="flex min-h-screen bg-muted">
+      <div className="flex min-h-screen bg-[#1C1C26]">
         {/* Sidebar Navigation */}
         <aside className="w-64 bg-background border-r border-border p-6 overflow-y-auto">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-foreground">ERP Portal</h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400">
               Manage orders, inventory, clients, and more
             </p>
           </div>

@@ -44,7 +44,7 @@ export default function TagsPage() {
               Tags
             </h1>
           </div>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-gray-400 text-lg">
             Créez et gérez les tags pour catégoriser vos donateurs
           </p>
         </div>

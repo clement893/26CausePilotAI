@@ -121,7 +121,7 @@ function GoogleAuthTestContent() {
     <Container className="py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-foreground mb-2">Google Auth Test</h1>
-        <p className="text-muted-foreground">Test Google OAuth integration for authentication</p>
+        <p className="text-gray-400">Test Google OAuth integration for authentication</p>
       </div>
 
       {error && (
@@ -146,7 +146,7 @@ function GoogleAuthTestContent() {
         ) : (
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Status:</span>
+              <span className="text-gray-400">Status:</span>
               <Badge variant={status?.configured ? 'success' : 'error'}>
                 {status?.configured ? 'Configured' : 'Not Configured'}
               </Badge>
@@ -160,7 +160,7 @@ function GoogleAuthTestContent() {
                   </Button>
                 </div>
                 <div className="mt-4 p-4 bg-muted rounded">
-                  <p className="text-sm text-muted-foreground mb-2">Authorization URL:</p>
+                  <p className="text-sm text-gray-400 mb-2">Authorization URL:</p>
                   <code className="text-xs break-all">{authUrl}</code>
                 </div>
               </>

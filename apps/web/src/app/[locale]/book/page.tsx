@@ -13,7 +13,7 @@ export default function BookPage() {
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Réservation</h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-xl text-gray-400 mb-8">
             Cette fonctionnalité est en cours de développement.
           </p>
         </div>

@@ -179,7 +179,7 @@ function UploadContent() {
     <Container className="py-8 lg:py-12">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Test S3 Upload</h1>
-        <p className="text-muted-foreground">Testez l'upload de fichiers vers AWS S3</p>
+        <p className="text-gray-400">Testez l'upload de fichiers vers AWS S3</p>
       </div>
 
       {error && (
@@ -210,14 +210,14 @@ function UploadContent() {
 
             {selectedFiles.length > 0 && (
               <div className="space-y-2">
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-gray-400">
                   Fichiers sélectionnés ({selectedFiles.length}):
                 </p>
                 <div className="space-y-2">
                   {selectedFiles.map((file, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                      className="flex items-center justify-between p-3 bg-[#1C1C26] rounded-lg"
                     >
                       <div className="flex items-center gap-3">
                         {getFileIcon(file.type)}

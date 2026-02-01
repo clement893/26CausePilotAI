@@ -502,7 +502,7 @@ export default function OrganizationSettingsPage() {
               <h3 className="text-xl font-semibold mb-2">
                 {t('noOrganization.title') || 'No Organization Found'}
               </h3>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-gray-400 mb-6">
                 {t('noOrganization.description') ||
                   'You need to create an organization to manage settings. Click the button below to get started.'}
               </p>

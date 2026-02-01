@@ -112,7 +112,7 @@ function DatabaseTestContent() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold mb-2">Database Health Check</h1>
-          <p className="text-muted-foreground">
+          <p className="text-gray-400">
             Comprehensive database health monitoring and diagnostics
           </p>
         </div>
@@ -151,7 +151,7 @@ function DatabaseTestContent() {
                 {healthData.timestamp && (
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">Last Check:</span>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-gray-400">
                       {new Date(healthData.timestamp).toLocaleString()}
                     </span>
                   </div>
@@ -159,7 +159,7 @@ function DatabaseTestContent() {
                 {healthData.database_url && (
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">Database:</span>
-                    <span className="text-sm text-muted-foreground font-mono">
+                    <span className="text-sm text-gray-400 font-mono">
                       {healthData.database_url}
                     </span>
                   </div>
@@ -184,11 +184,11 @@ function DatabaseTestContent() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="text-sm text-muted-foreground">Expected:</span>
+                      <span className="text-sm text-gray-400">Expected:</span>
                       <p className="text-lg font-semibold">{healthData.checks.tables.expected}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-muted-foreground">Found:</span>
+                      <span className="text-sm text-gray-400">Found:</span>
                       <p className="text-lg font-semibold">{healthData.checks.tables.found}</p>
                     </div>
                   </div>
@@ -245,7 +245,7 @@ function DatabaseTestContent() {
                         <span className="font-semibold">Duplicate Emails</span>
                         {getStatusBadge(healthData.checks.integrity.duplicate_emails.status)}
                       </div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-gray-400">
                         Count: {healthData.checks.integrity.duplicate_emails.count}
                       </p>
                       {healthData.checks.integrity.duplicate_emails.details &&
@@ -268,7 +268,7 @@ function DatabaseTestContent() {
                         <span className="font-semibold">Orphaned Subscriptions</span>
                         {getStatusBadge(healthData.checks.integrity.orphaned_subscriptions.status)}
                       </div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-gray-400">
                         Count: {healthData.checks.integrity.orphaned_subscriptions.count}
                       </p>
                     </div>
@@ -279,7 +279,7 @@ function DatabaseTestContent() {
                         <span className="font-semibold">Orphaned Team Members</span>
                         {getStatusBadge(healthData.checks.integrity.orphaned_team_members.status)}
                       </div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-gray-400">
                         Count: {healthData.checks.integrity.orphaned_team_members.count}
                       </p>
                     </div>
@@ -290,7 +290,7 @@ function DatabaseTestContent() {
                         <span className="font-semibold">Active Themes</span>
                         {getStatusBadge(healthData.checks.integrity.active_themes.status)}
                       </div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-gray-400">
                         Count: {healthData.checks.integrity.active_themes.count}
                         {healthData.checks.integrity.active_themes.message && (
                           <span className="ml-2">
@@ -310,7 +310,7 @@ function DatabaseTestContent() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Object.entries(healthData.checks.statistics).map(([table, count]) => (
                     <div key={table} className="border rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground mb-1 font-mono">{table}</p>
+                      <p className="text-xs text-gray-400 mb-1 font-mono">{table}</p>
                       <p className="text-lg font-semibold">
                         {typeof count === 'number' ? count.toLocaleString() : count}
                       </p>

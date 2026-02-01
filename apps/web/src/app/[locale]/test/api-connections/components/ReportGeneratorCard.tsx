@@ -29,7 +29,7 @@ export function ReportGeneratorCard({
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-xl font-semibold">Generate Report</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-gray-400 mt-1">
             Generate a comprehensive markdown report of all API connections
           </p>
         </div>
@@ -87,7 +87,7 @@ export function ReportGeneratorCard({
               <div>
                 <p className="font-medium">{report.error || 'Report generation failed'}</p>
                 {report.message && <p className="text-sm mt-1">{report.message}</p>}
-                {report.hint && <p className="text-sm mt-1 text-muted-foreground">{report.hint}</p>}
+                {report.hint && <p className="text-sm mt-1 text-gray-400">{report.hint}</p>}
               </div>
             </Alert>
           ) : (

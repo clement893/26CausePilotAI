@@ -239,15 +239,15 @@ export default function HomePage() {
       </section>
 
       {/* Trusted By Section */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 bg-[#1C1C26]/30">
         <Container>
-          <p className="text-center text-muted-foreground mb-8 text-sm uppercase tracking-wider font-semibold">
+          <p className="text-center text-gray-400 mb-8 text-sm uppercase tracking-wider font-semibold">
             Ils nous font confiance
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
             {['Croix-Rouge', 'Unicef', 'WWF', 'Médecins Sans Frontières'].map((org, index) => (
               <div key={index} className="text-center">
-                <div className="text-2xl font-bold text-muted-foreground">{org}</div>
+                <div className="text-2xl font-bold text-gray-400">{org}</div>
               </div>
             ))}
           </div>
@@ -271,7 +271,7 @@ export default function HomePage() {
                 de fundraising
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
               Tout ce dont vous avez besoin pour gérer vos campagnes, vos donateurs et maximiser votre impact social
             </p>
           </div>
@@ -285,7 +285,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold text-foreground mb-3">{category.title}</h3>
-                <p className="text-muted-foreground mb-6">{category.description}</p>
+                <p className="text-gray-400 mb-6">{category.description}</p>
                 <ul className="space-y-3 flex-1">
                   {category.features.slice(0, 4).map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2">
@@ -310,7 +310,7 @@ export default function HomePage() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
               Ce que disent nos clients
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Plus de 5000 organisations nous font confiance
             </p>
           </div>
@@ -345,7 +345,7 @@ export default function HomePage() {
                 <p className="text-foreground mb-6 text-lg italic">"{testimonial.content}"</p>
                 <div>
                   <p className="font-semibold text-foreground">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  <p className="text-sm text-gray-400">{testimonial.role}</p>
                 </div>
               </Card>
             ))}
@@ -371,7 +371,7 @@ export default function HomePage() {
                 <Brain className="w-8 h-8 text-[#1a4d2e]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">IA Avancée</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Optimisez vos campagnes avec l'intelligence artificielle
               </p>
             </Card>
@@ -381,7 +381,7 @@ export default function HomePage() {
                 <TrendingUp className="w-8 h-8 text-[#cc5500]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">+35% de dons</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Augmentez vos collectes grâce à nos algorithmes
               </p>
             </Card>
@@ -391,7 +391,7 @@ export default function HomePage() {
                 <Zap className="w-8 h-8 text-[#2d5016]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Installation rapide</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Démarrez en moins de 5 minutes
               </p>
             </Card>
@@ -401,7 +401,7 @@ export default function HomePage() {
                 <MessageSquare className="w-8 h-8 text-[#b45309]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Support 24/7</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Une équipe dédiée pour vous accompagner
               </p>
             </Card>
@@ -411,7 +411,7 @@ export default function HomePage() {
                 <Globe className="w-8 h-8 text-[#1a4d2e]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Multi-pays</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Collectez dans 40+ pays
               </p>
             </Card>
@@ -421,7 +421,7 @@ export default function HomePage() {
                 <DollarSign className="w-8 h-8 text-[#cc5500]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Frais réduits</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Les tarifs les plus compétitifs
               </p>
             </Card>
@@ -431,7 +431,7 @@ export default function HomePage() {
                 <Calendar className="w-8 h-8 text-[#2d5016]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Planification</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Planifiez vos campagnes à l'avance
               </p>
             </Card>
@@ -441,7 +441,7 @@ export default function HomePage() {
                 <Shield className="w-8 h-8 text-[#b45309]" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">100% Sécurisé</h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Conformité RGPD totale
               </p>
             </Card>

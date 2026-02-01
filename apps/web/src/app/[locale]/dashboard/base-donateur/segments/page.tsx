@@ -120,7 +120,7 @@ export default function SegmentsPage() {
   if (orgLoading || isLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="mb-8 h-16 animate-pulse rounded-lg bg-muted/60" />
+        <div className="mb-8 h-16 animate-pulse rounded-lg bg-[#1C1C26]/60" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <LoadingSkeleton variant="card" count={6} />
         </div>
@@ -150,7 +150,7 @@ export default function SegmentsPage() {
               Segments
             </h1>
           </div>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-gray-400 text-lg">
             Créez et gérez les segments pour organiser vos donateurs
           </p>
         </div>
@@ -178,7 +178,7 @@ export default function SegmentsPage() {
                 <div className="flex-1">
                   <h3 className="font-semibold">{segment.name}</h3>
                   {segment.description && (
-                    <p className="text-sm text-muted-foreground mt-1">{segment.description}</p>
+                    <p className="text-sm text-gray-400 mt-1">{segment.description}</p>
                   )}
                 </div>
               </div>
@@ -232,7 +232,7 @@ export default function SegmentsPage() {
             <Users className="w-10 h-10 text-primary" />
           </div>
           <h3 className="text-xl font-semibold text-foreground mb-2">Aucun segment créé</h3>
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          <p className="text-gray-400 mb-8 max-w-md mx-auto">
             Créez votre premier segment pour organiser et cibler vos donateurs.
           </p>
           <Button variant="primary" onClick={handleCreate} className="shadow-lg hover:shadow-xl transition-all duration-200">
@@ -297,8 +297,8 @@ export default function SegmentsPage() {
           </div>
 
           {formData.is_automatic && (
-            <div className="p-4 bg-muted rounded-lg">
-              <p className="text-sm text-muted-foreground mb-2">
+            <div className="p-4 bg-[#1C1C26] rounded-lg">
+              <p className="text-sm text-gray-400 mb-2">
                 Les critères seront configurés après la création du segment.
               </p>
             </div>

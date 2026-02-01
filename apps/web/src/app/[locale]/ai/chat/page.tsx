@@ -8,7 +8,7 @@ export default function AIChatPage() {
     <Container className="py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">AI Chat Assistant</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Chat with OpenAI GPT or Anthropic Claude. Choose your preferred AI provider or let the
           system auto-select.
         </p>

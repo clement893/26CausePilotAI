@@ -145,7 +145,7 @@ export default function AdminUsersContent() {
     <Container className="py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-foreground mb-2">Gestion des Utilisateurs</h1>
-        <p className="text-muted-foreground">Gérez tous les utilisateurs de la plateforme</p>
+        <p className="text-gray-400">Gérez tous les utilisateurs de la plateforme</p>
       </div>
 
       {error && (

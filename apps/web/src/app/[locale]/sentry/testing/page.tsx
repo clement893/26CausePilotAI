@@ -144,7 +144,7 @@ function SentryTestContent() {
     <Container className="py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-foreground mb-2">Sentry Test</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Test Sentry error tracking and monitoring integration
         </p>
       </div>
@@ -166,17 +166,17 @@ function SentryTestContent() {
         <h2 className="text-xl font-semibold mb-4">Configuration Status</h2>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Sentry DSN:</span>
+            <span className="text-gray-400">Sentry DSN:</span>
             <Badge variant={isConfigured() ? 'success' : 'error'}>
               {isConfigured() ? 'Configured' : 'Not Configured'}
             </Badge>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Environment:</span>
+            <span className="text-gray-400">Environment:</span>
             <Badge variant="default">{process.env.NODE_ENV || 'development'}</Badge>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Sentry Enabled in Dev:</span>
+            <span className="text-gray-400">Sentry Enabled in Dev:</span>
             <Badge
               variant={process.env.NEXT_PUBLIC_SENTRY_ENABLE_DEV === 'true' ? 'success' : 'warning'}
             >
@@ -186,8 +186,8 @@ function SentryTestContent() {
             </Badge>
           </div>
           {isConfigured() && (
-            <div className="mt-4 p-4 bg-muted rounded">
-              <p className="text-sm text-muted-foreground mb-2">DSN (masked):</p>
+            <div className="mt-4 p-4 bg-[#1C1C26] rounded">
+              <p className="text-sm text-gray-400 mb-2">DSN (masked):</p>
               <code className="text-xs break-all">
                 {process.env.NEXT_PUBLIC_SENTRY_DSN?.replace(/@.*/, '@***') || 'Not set'}
               </code>
@@ -216,7 +216,7 @@ function SentryTestContent() {
           >
             Capture Test Exception
           </Button>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-400">
             This will send a test exception to Sentry with additional context.
           </p>
         </div>
@@ -286,8 +286,8 @@ function SentryTestContent() {
             </Button>
           </div>
           {user && (
-            <div className="p-4 bg-muted rounded">
-              <p className="text-sm text-muted-foreground">
+            <div className="p-4 bg-[#1C1C26] rounded">
+              <p className="text-sm text-gray-400">
                 Current user: {user.email} (ID: {user.id})
               </p>
             </div>

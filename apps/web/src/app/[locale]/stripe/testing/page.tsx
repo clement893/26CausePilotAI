@@ -122,7 +122,7 @@ function StripeTestContent() {
     <Container className="py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-foreground mb-2">Stripe Test</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-400">
           Test Stripe integration for subscriptions and payments
         </p>
       </div>
@@ -145,20 +145,20 @@ function StripeTestContent() {
           <h2 className="text-xl font-semibold mb-4">Current Subscription</h2>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Plan:</span>
+              <span className="text-gray-400">Plan:</span>
               <Badge variant="default">
                 {(mySubscription.plan as { name?: string })?.name || 'N/A'}
               </Badge>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Status:</span>
+              <span className="text-gray-400">Status:</span>
               <Badge variant={mySubscription.status === 'ACTIVE' ? 'success' : 'default'}>
                 {String(mySubscription.status)}
               </Badge>
             </div>
             {mySubscription.current_period_end ? (
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Period End:</span>
+                <span className="text-gray-400">Period End:</span>
                 <span>
                   {new Date(
                     mySubscription.current_period_end as string | number | Date
@@ -190,13 +190,13 @@ function StripeTestContent() {
               <Card key={plan.id} className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{plan.name}</h3>
                 {plan.description && (
-                  <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
+                  <p className="text-sm text-gray-400 mb-4">{plan.description}</p>
                 )}
                 <div className="mb-4">
                   <span className="text-2xl font-bold">
                     {(plan.amount / 100).toFixed(2)} {plan.currency.toUpperCase()}
                   </span>
-                  <span className="text-muted-foreground"> / {plan.interval.toLowerCase()}</span>
+                  <span className="text-gray-400"> / {plan.interval.toLowerCase()}</span>
                 </div>
                 <Button
                   onClick={() => handleCreateCheckout(plan.id)}

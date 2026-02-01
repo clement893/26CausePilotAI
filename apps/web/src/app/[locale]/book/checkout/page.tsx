@@ -21,7 +21,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-background flex items-center justify-center">
       <Container>
         <div className="text-center max-w-2xl mx-auto">
-          <p className="text-muted-foreground">Redirection en cours...</p>
+          <p className="text-gray-400">Redirection en cours...</p>
         </div>
       </Container>
     </div>

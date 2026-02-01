@@ -15,7 +15,7 @@ export default function CityDetailPage() {
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
             Détails de la ville
           </h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-xl text-gray-400 mb-8">
             Cette fonctionnalité est en cours de développement.
           </p>
         </div>

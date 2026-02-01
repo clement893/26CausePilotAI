@@ -98,8 +98,8 @@ export default function AdminAPIKeysContent() {
       render: (_value, key) => (
         <div>
           <div className="font-medium">{key.user_email}</div>
-          {key.user_name && <div className="text-xs text-muted-foreground">{key.user_name}</div>}
-          <div className="text-xs text-muted-foreground">ID: {key.user_id}</div>
+          {key.user_name && <div className="text-xs text-gray-400">{key.user_name}</div>}
+          <div className="text-xs text-gray-400">ID: {key.user_id}</div>
         </div>
       ),
     },
@@ -107,7 +107,7 @@ export default function AdminAPIKeysContent() {
       key: 'key_prefix',
       label: 'Préfixe',
       render: (_value, key) => (
-        <code className="text-sm font-mono bg-muted px-2 py-1 rounded">
+        <code className="text-sm font-mono bg-[#1C1C26] px-2 py-1 rounded">
           {key.key_prefix}••••••••
         </code>
       ),
@@ -141,7 +141,7 @@ export default function AdminAPIKeysContent() {
       render: (_value, key) => (
         <div className="text-sm">
           <div>{key.rotation_policy}</div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-gray-400">
             {key.rotation_count} rotation{key.rotation_count !== 1 ? 's' : ''}
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function AdminAPIKeysContent() {
             {key.usage_count} utilisation{key.usage_count !== 1 ? 's' : ''}
           </div>
           {key.last_used_at && (
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-gray-400">
               Dernière: {new Date(key.last_used_at).toLocaleDateString()}
             </div>
           )}
@@ -169,7 +169,7 @@ export default function AdminAPIKeysContent() {
       render: (_value, key) => (
         <div className="text-sm">
           {new Date(key.created_at).toLocaleDateString()}
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-gray-400">
             {new Date(key.created_at).toLocaleTimeString()}
           </div>
         </div>
@@ -235,7 +235,7 @@ export default function AdminAPIKeysContent() {
                 onChange={(e) => setUserIdFilter(e.target.value)}
                 className="w-40"
               />
-              <label className="flex items-center gap-2 px-4 py-2 border rounded cursor-pointer hover:bg-muted">
+              <label className="flex items-center gap-2 px-4 py-2 border rounded cursor-pointer hover:bg-[#1C1C26]">
                 <input
                   type="checkbox"
                   checked={includeInactive}
@@ -256,8 +256,8 @@ export default function AdminAPIKeysContent() {
             </div>
           ) : filteredKeys.length === 0 ? (
             <div className="text-center py-12">
-              <Key className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">
+              <Key className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-400">
                 {apiKeys.length === 0
                   ? 'Aucune clé API trouvée'
                   : 'Aucune clé API ne correspond à votre recherche'}
@@ -290,7 +290,7 @@ export default function AdminAPIKeysContent() {
               Êtes-vous sûr de vouloir révoquer la clé API <strong>{selectedKey.name}</strong> de{' '}
               <strong>{selectedKey.user_email}</strong> ?
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400">
               Cette action est irréversible. La clé API sera immédiatement désactivée.
             </p>
             <div className="flex justify-end gap-3">

@@ -56,7 +56,7 @@ export function FrontendCheckCard({
                 <p className="font-medium">{frontendCheck.error || 'Check failed'}</p>
                 {frontendCheck.message && <p className="text-sm mt-1">{frontendCheck.message}</p>}
                 {frontendCheck.hint && (
-                  <p className="text-sm mt-1 text-muted-foreground">{frontendCheck.hint}</p>
+                  <p className="text-sm mt-1 text-gray-400">{frontendCheck.hint}</p>
                 )}
               </div>
             </Alert>
@@ -65,7 +65,7 @@ export function FrontendCheckCard({
               {frontendCheck.summary.total !== undefined && (
                 <div className="text-center">
                   <div className="text-2xl font-bold">{frontendCheck.summary.total}</div>
-                  <div className="text-sm text-muted-foreground">Total Pages</div>
+                  <div className="text-sm text-gray-400">Total Pages</div>
                 </div>
               )}
               {frontendCheck.summary.connected !== undefined && (
@@ -73,7 +73,7 @@ export function FrontendCheckCard({
                   <div className="text-2xl font-bold text-success-600">
                     {frontendCheck.summary.connected}
                   </div>
-                  <div className="text-sm text-muted-foreground">✅ Connected</div>
+                  <div className="text-sm text-gray-400">✅ Connected</div>
                 </div>
               )}
               {frontendCheck.summary.partial !== undefined && (
@@ -81,7 +81,7 @@ export function FrontendCheckCard({
                   <div className="text-2xl font-bold text-warning-600">
                     {frontendCheck.summary.partial}
                   </div>
-                  <div className="text-sm text-muted-foreground">⚠️ Partial</div>
+                  <div className="text-sm text-gray-400">⚠️ Partial</div>
                 </div>
               )}
               {frontendCheck.summary.needsIntegration !== undefined && (
@@ -89,7 +89,7 @@ export function FrontendCheckCard({
                   <div className="text-2xl font-bold text-error-600">
                     {frontendCheck.summary.needsIntegration}
                   </div>
-                  <div className="text-sm text-muted-foreground">❌ Needs Integration</div>
+                  <div className="text-sm text-gray-400">❌ Needs Integration</div>
                 </div>
               )}
               {frontendCheck.summary.static !== undefined && (
@@ -97,7 +97,7 @@ export function FrontendCheckCard({
                   <div className="text-2xl font-bold text-info-600">
                     {frontendCheck.summary.static}
                   </div>
-                  <div className="text-sm text-muted-foreground">🟡 Static</div>
+                  <div className="text-sm text-gray-400">🟡 Static</div>
                 </div>
               )}
             </div>
@@ -110,7 +110,7 @@ export function FrontendCheckCard({
                 <Badge variant="info">{frontendCheck.output.length} characters</Badge>
               </div>
               <pre
-                className="bg-muted p-4 rounded-lg text-xs overflow-auto max-h-96 border border-border"
+                className="bg-[#1C1C26] p-4 rounded-lg text-xs overflow-auto max-h-96 border border-gray-800"
                 role="log"
                 aria-label="Frontend check detailed output"
               >

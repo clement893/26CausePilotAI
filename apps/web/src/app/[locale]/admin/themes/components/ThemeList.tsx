@@ -143,7 +143,7 @@ export function ThemeList({
       <Card>
         <div className="p-6 flex items-center justify-center">
           <Loading />
-          <span className="ml-2 text-muted-foreground">Chargement des thèmes...</span>
+          <span className="ml-2 text-gray-400">Chargement des thèmes...</span>
         </div>
       </Card>
     );
@@ -173,7 +173,7 @@ export function ThemeList({
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold text-foreground">Thèmes</h2>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-gray-400 mt-1">
                 {themes.length} thème{themes.length > 1 ? 's' : ''} disponible
                 {themes.length > 1 ? 's' : ''}
               </p>
@@ -186,7 +186,7 @@ export function ThemeList({
 
           {themes.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">Aucun thème disponible</p>
+              <p className="text-gray-400 mb-4">Aucun thème disponible</p>
               <Button onClick={onCreateTheme} variant="primary">
                 <Plus className="w-4 h-4 mr-2" />
                 Créer le premier thème

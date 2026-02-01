@@ -25,7 +25,7 @@ export default function ThemePreviewPage() {
       <Container className="py-8">
         <Card className="p-8">
           <Heading level={2}>Aucun thème actif</Heading>
-          <Text className="text-muted-foreground mb-4">
+          <Text className="text-gray-400 mb-4">
             Aucun thème n'est actuellement actif. Configurez un thème dans les paramètres
             d'administration.
           </Text>
@@ -50,7 +50,7 @@ export default function ThemePreviewPage() {
         <Heading level={1} className="mb-4">
           Thème Actif
         </Heading>
-        <Text className="text-muted-foreground">
+        <Text className="text-gray-400">
           Visualisation complète du thème actuellement appliqué. Toutes les valeurs sont liées
           dynamiquement au thème.
         </Text>
@@ -74,7 +74,7 @@ export default function ThemePreviewPage() {
                 style={{ backgroundColor: config.primary_color }}
               />
               <Text className="text-xs font-medium">Primary</Text>
-              <Text className="text-xs text-muted-foreground font-mono">
+              <Text className="text-xs text-gray-400 font-mono">
                 {config.primary_color}
               </Text>
             </div>
@@ -86,7 +86,7 @@ export default function ThemePreviewPage() {
                 style={{ backgroundColor: config.secondary_color }}
               />
               <Text className="text-xs font-medium">Secondary</Text>
-              <Text className="text-xs text-muted-foreground font-mono">
+              <Text className="text-xs text-gray-400 font-mono">
                 {config.secondary_color}
               </Text>
             </div>
@@ -98,7 +98,7 @@ export default function ThemePreviewPage() {
                 style={{ backgroundColor: config.danger_color }}
               />
               <Text className="text-xs font-medium">Danger</Text>
-              <Text className="text-xs text-muted-foreground font-mono">
+              <Text className="text-xs text-gray-400 font-mono">
                 {config.danger_color}
               </Text>
             </div>
@@ -110,7 +110,7 @@ export default function ThemePreviewPage() {
                 style={{ backgroundColor: config.warning_color }}
               />
               <Text className="text-xs font-medium">Warning</Text>
-              <Text className="text-xs text-muted-foreground font-mono">
+              <Text className="text-xs text-gray-400 font-mono">
                 {config.warning_color}
               </Text>
             </div>
@@ -122,7 +122,7 @@ export default function ThemePreviewPage() {
                 style={{ backgroundColor: config.info_color }}
               />
               <Text className="text-xs font-medium">Info</Text>
-              <Text className="text-xs text-muted-foreground font-mono">
+              <Text className="text-xs text-gray-400 font-mono">
                 {config.info_color}
               </Text>
             </div>
@@ -134,7 +134,7 @@ export default function ThemePreviewPage() {
                 style={{ backgroundColor: config.success_color }}
               />
               <Text className="text-xs font-medium">Success</Text>
-              <Text className="text-xs text-muted-foreground font-mono">
+              <Text className="text-xs text-gray-400 font-mono">
                 {config.success_color}
               </Text>
             </div>
@@ -158,7 +158,7 @@ export default function ThemePreviewPage() {
                       style={{ backgroundColor: value }}
                     />
                     <Text className="text-xs font-medium capitalize">{key}</Text>
-                    <Text className="text-xs text-muted-foreground font-mono">{value}</Text>
+                    <Text className="text-xs text-gray-400 font-mono">{value}</Text>
                   </div>
                 );
               }
@@ -178,13 +178,13 @@ export default function ThemePreviewPage() {
             {config.font_family && (
               <div>
                 <Text className="text-sm font-medium mb-1">Famille de Police</Text>
-                <Text className="text-muted-foreground font-mono">{config.font_family}</Text>
+                <Text className="text-gray-400 font-mono">{config.font_family}</Text>
               </div>
             )}
             {config.typography.fontFamily && (
               <div>
                 <Text className="text-sm font-medium mb-1">Police Principale</Text>
-                <Text className="text-muted-foreground font-mono">
+                <Text className="text-gray-400 font-mono">
                   {String(config.typography.fontFamily)}
                 </Text>
               </div>
@@ -194,7 +194,7 @@ export default function ThemePreviewPage() {
                 <Text className="text-sm font-medium mb-2">Tailles de Police</Text>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {Object.entries(config.typography.fontSize).map(([key, value]) => (
-                    <div key={key} className="p-3 bg-muted rounded">
+                    <div key={key} className="p-3 bg-[#1C1C26] rounded">
                       <Text className="text-xs font-medium mb-1 capitalize">{key}</Text>
                       <Text
                         className="font-mono"
@@ -202,7 +202,7 @@ export default function ThemePreviewPage() {
                       >
                         Aa
                       </Text>
-                      <Text className="text-xs text-muted-foreground font-mono">
+                      <Text className="text-xs text-gray-400 font-mono">
                         {String(value)}
                       </Text>
                     </div>
@@ -218,7 +218,7 @@ export default function ThemePreviewPage() {
                     <Text className="text-sm font-medium mb-2">Poids de Police</Text>
                     <div className="flex flex-wrap gap-4">
                       {Object.entries(fontWeight).map(([key, value]) => (
-                        <div key={key} className="p-3 bg-muted rounded">
+                        <div key={key} className="p-3 bg-[#1C1C26] rounded">
                           <Text className="text-xs font-medium mb-1 capitalize">{key}</Text>
                           <Text className="font-mono" style={{ fontWeight: String(value) }}>
                             {String(value)}
@@ -243,13 +243,13 @@ export default function ThemePreviewPage() {
           </Heading>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(config.spacing).map(([key, value]) => (
-              <div key={key} className="p-3 bg-muted rounded">
+              <div key={key} className="p-3 bg-[#1C1C26] rounded">
                 <Text className="text-xs font-medium mb-1 capitalize">{key}</Text>
                 <div
                   className="bg-primary rounded"
                   style={{ width: String(value), height: '20px' }}
                 />
-                <Text className="text-xs text-muted-foreground font-mono mt-1">
+                <Text className="text-xs text-gray-400 font-mono mt-1">
                   {String(value)}
                 </Text>
               </div>
@@ -266,13 +266,13 @@ export default function ThemePreviewPage() {
           </Heading>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {config.border_radius && (
-              <div className="p-3 bg-muted rounded">
+              <div className="p-3 bg-[#1C1C26] rounded">
                 <Text className="text-xs font-medium mb-1">Base</Text>
                 <div
                   className="bg-primary w-16 h-16"
                   style={{ borderRadius: config.border_radius }}
                 />
-                <Text className="text-xs text-muted-foreground font-mono mt-1">
+                <Text className="text-xs text-gray-400 font-mono mt-1">
                   {config.border_radius}
                 </Text>
               </div>
@@ -280,13 +280,13 @@ export default function ThemePreviewPage() {
             {config.borderRadius &&
               typeof config.borderRadius === 'object' &&
               Object.entries(config.borderRadius).map(([key, value]) => (
-                <div key={key} className="p-3 bg-muted rounded">
+                <div key={key} className="p-3 bg-[#1C1C26] rounded">
                   <Text className="text-xs font-medium mb-1 capitalize">{key}</Text>
                   <div
                     className="bg-primary w-16 h-16"
                     style={{ borderRadius: String(value) }}
                   />
-                  <Text className="text-xs text-muted-foreground font-mono mt-1">
+                  <Text className="text-xs text-gray-400 font-mono mt-1">
                     {String(value)}
                   </Text>
                 </div>
@@ -300,7 +300,7 @@ export default function ThemePreviewPage() {
         <Heading level={2} className="mb-4">
           Configuration Complète (JSON)
         </Heading>
-        <pre className="bg-muted p-4 rounded-lg overflow-auto text-xs">
+        <pre className="bg-[#1C1C26] p-4 rounded-lg overflow-auto text-xs">
           <code>{JSON.stringify(config, null, 2)}</code>
         </pre>
       </Card>

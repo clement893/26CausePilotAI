@@ -564,14 +564,14 @@ export default function AdminStatisticsContent() {
               {statCards.map((stat, index) => (
                 <Card key={index} className="p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-muted-foreground">{stat.title}</h3>
+                    <h3 className="text-sm font-medium text-gray-400">{stat.title}</h3>
                     <Badge variant={stat.variant}>{stat.value.toLocaleString('fr-FR')}</Badge>
                   </div>
                   <div className="mt-2">
                     <p className="text-3xl font-bold text-foreground">
                       {stat.value.toLocaleString('fr-FR')}
                     </p>
-                    <p className="text-sm text-muted-foreground mt-1">{stat.description}</p>
+                    <p className="text-sm text-gray-400 mt-1">{stat.description}</p>
                   </div>
                 </Card>
               ))}
@@ -593,11 +593,11 @@ export default function AdminStatisticsContent() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-muted-foreground">Total des rôles</span>
+                        <span className="text-sm text-gray-400">Total des rôles</span>
                         <Badge variant="info">{detailedMetrics.rbac.total_roles}</Badge>
                       </div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-muted-foreground">Total des permissions</span>
+                        <span className="text-sm text-gray-400">Total des permissions</span>
                         <Badge variant="info">{detailedMetrics.rbac.total_permissions}</Badge>
                       </div>
                     </div>
@@ -607,7 +607,7 @@ export default function AdminStatisticsContent() {
                         {Object.entries(detailedMetrics.rbac.permissions_by_resource).map(
                           ([resource, count]) => (
                             <div key={resource} className="flex items-center justify-between">
-                              <span className="text-sm text-muted-foreground capitalize">
+                              <span className="text-sm text-gray-400 capitalize">
                                 {resource}
                               </span>
                               <Badge variant="default">{count}</Badge>
@@ -623,26 +623,26 @@ export default function AdminStatisticsContent() {
                 <Card className="p-6">
                   <h3 className="text-lg font-semibold mb-4">Statistiques des utilisateurs</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Nouveaux (7 jours)</div>
+                    <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                      <div className="text-sm text-gray-400 mb-1">Nouveaux (7 jours)</div>
                       <div className="text-2xl font-bold">
                         {detailedMetrics.users.new_users_last_7_days}
                       </div>
                     </div>
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Nouveaux (30 jours)</div>
+                    <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                      <div className="text-sm text-gray-400 mb-1">Nouveaux (30 jours)</div>
                       <div className="text-2xl font-bold">
                         {detailedMetrics.users.new_users_last_30_days}
                       </div>
                     </div>
                     <div className="p-4 bg-success/10 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Utilisateurs actifs</div>
+                      <div className="text-sm text-gray-400 mb-1">Utilisateurs actifs</div>
                       <div className="text-2xl font-bold text-success">
                         {detailedMetrics.users.users_by_status.active}
                       </div>
                     </div>
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">
+                    <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                      <div className="text-sm text-gray-400 mb-1">
                         Utilisateurs inactifs
                       </div>
                       <div className="text-2xl font-bold">
@@ -662,7 +662,7 @@ export default function AdminStatisticsContent() {
                         {Object.entries(detailedMetrics.activity.activities_by_type).map(
                           ([type, count]) => (
                             <div key={type} className="flex items-center justify-between">
-                              <span className="text-sm text-muted-foreground capitalize">
+                              <span className="text-sm text-gray-400 capitalize">
                                 {type}
                               </span>
                               <Badge variant="default">{count}</Badge>
@@ -670,7 +670,7 @@ export default function AdminStatisticsContent() {
                           )
                         )}
                         {Object.keys(detailedMetrics.activity.activities_by_type).length === 0 && (
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-gray-400">
                             Aucune activité enregistrée
                           </p>
                         )}
@@ -690,7 +690,7 @@ export default function AdminStatisticsContent() {
                           });
                           return (
                             <div key={date} className="flex items-center justify-between">
-                              <span className="text-sm text-muted-foreground">{dayName}</span>
+                              <span className="text-sm text-gray-400">{dayName}</span>
                               <Badge variant={count > 0 ? 'success' : 'default'}>{count}</Badge>
                             </div>
                           );
@@ -719,7 +719,7 @@ export default function AdminStatisticsContent() {
                                     : 'default';
                             return (
                               <div key={level} className="flex items-center justify-between">
-                                <span className="text-sm text-muted-foreground capitalize">
+                                <span className="text-sm text-gray-400 capitalize">
                                   {level}
                                 </span>
                                 <Badge variant={variant}>{count}</Badge>
@@ -728,13 +728,13 @@ export default function AdminStatisticsContent() {
                           }
                         )}
                         {Object.keys(detailedMetrics.system.logs_by_level).length === 0 && (
-                          <p className="text-sm text-muted-foreground">Aucun log disponible</p>
+                          <p className="text-sm text-gray-400">Aucun log disponible</p>
                         )}
                       </div>
                     </div>
                     <div>
                       <div className="p-4 bg-error/10 rounded-lg">
-                        <div className="text-sm text-muted-foreground mb-1">
+                        <div className="text-sm text-gray-400 mb-1">
                           Erreurs récentes (7 jours)
                         </div>
                         <div className="text-2xl font-bold text-error">
@@ -749,26 +749,26 @@ export default function AdminStatisticsContent() {
                 <Card className="p-6">
                   <h3 className="text-lg font-semibold mb-4">Statistiques des organisations</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Total</div>
+                    <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                      <div className="text-sm text-gray-400 mb-1">Total</div>
                       <div className="text-2xl font-bold">
                         {detailedMetrics.organizations.total}
                       </div>
                     </div>
                     <div className="p-4 bg-success/10 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Actives</div>
+                      <div className="text-sm text-gray-400 mb-1">Actives</div>
                       <div className="text-2xl font-bold text-success">
                         {detailedMetrics.organizations.active}
                       </div>
                     </div>
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Nouvelles (7 jours)</div>
+                    <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                      <div className="text-sm text-gray-400 mb-1">Nouvelles (7 jours)</div>
                       <div className="text-2xl font-bold">
                         {detailedMetrics.organizations.new_last_7_days}
                       </div>
                     </div>
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Nouvelles (30 jours)</div>
+                    <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                      <div className="text-sm text-gray-400 mb-1">Nouvelles (30 jours)</div>
                       <div className="text-2xl font-bold">
                         {detailedMetrics.organizations.new_last_30_days}
                       </div>
@@ -781,26 +781,26 @@ export default function AdminStatisticsContent() {
                   <Card className="p-6">
                     <h3 className="text-lg font-semibold mb-4">Statistiques des abonnements</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      <div className="p-4 bg-muted/50 rounded-lg">
-                        <div className="text-sm text-muted-foreground mb-1">Total</div>
+                      <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                        <div className="text-sm text-gray-400 mb-1">Total</div>
                         <div className="text-2xl font-bold">
                           {detailedMetrics.subscriptions.total}
                         </div>
                       </div>
                       <div className="p-4 bg-success/10 rounded-lg">
-                        <div className="text-sm text-muted-foreground mb-1">Actifs</div>
+                        <div className="text-sm text-gray-400 mb-1">Actifs</div>
                         <div className="text-2xl font-bold text-success">
                           {detailedMetrics.subscriptions.active}
                         </div>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-lg">
-                        <div className="text-sm text-muted-foreground mb-1">Nouveaux (7 jours)</div>
+                      <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                        <div className="text-sm text-gray-400 mb-1">Nouveaux (7 jours)</div>
                         <div className="text-2xl font-bold">
                           {detailedMetrics.subscriptions.new_last_7_days}
                         </div>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-lg">
-                        <div className="text-sm text-muted-foreground mb-1">
+                      <div className="p-4 bg-[#1C1C26]/50 rounded-lg">
+                        <div className="text-sm text-gray-400 mb-1">
                           Nouveaux (30 jours)
                         </div>
                         <div className="text-2xl font-bold">
@@ -815,7 +815,7 @@ export default function AdminStatisticsContent() {
                           {Object.entries(detailedMetrics.subscriptions.by_status).map(
                             ([status, count]) => (
                               <div key={status} className="flex items-center justify-between">
-                                <span className="text-sm text-muted-foreground capitalize">
+                                <span className="text-sm text-gray-400 capitalize">
                                   {status}
                                 </span>
                                 <Badge variant="default">{count}</Badge>
@@ -836,16 +836,16 @@ export default function AdminStatisticsContent() {
                       <h4 className="text-sm font-medium mb-3">Articles de blog</h4>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Total</span>
+                          <span className="text-sm text-gray-400">Total</span>
                           <Badge variant="default">{detailedMetrics.content.total_posts}</Badge>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Publiés</span>
+                          <span className="text-sm text-gray-400">Publiés</span>
                           <Badge variant="success">{detailedMetrics.content.published_posts}</Badge>
                         </div>
                         {detailedMetrics.content.total_posts > 0 && (
                           <div className="mt-2">
-                            <div className="w-full bg-muted rounded-full h-2">
+                            <div className="w-full bg-[#1C1C26] rounded-full h-2">
                               <div
                                 className="bg-success h-2 rounded-full"
                                 style={{
@@ -853,7 +853,7 @@ export default function AdminStatisticsContent() {
                                 }}
                               />
                             </div>
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-xs text-gray-400 mt-1">
                               {Math.round(
                                 (detailedMetrics.content.published_posts /
                                   detailedMetrics.content.total_posts) *
@@ -869,16 +869,16 @@ export default function AdminStatisticsContent() {
                       <h4 className="text-sm font-medium mb-3">Pages</h4>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Total</span>
+                          <span className="text-sm text-gray-400">Total</span>
                           <Badge variant="default">{detailedMetrics.content.total_pages}</Badge>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Publiées</span>
+                          <span className="text-sm text-gray-400">Publiées</span>
                           <Badge variant="success">{detailedMetrics.content.published_pages}</Badge>
                         </div>
                         {detailedMetrics.content.total_pages > 0 && (
                           <div className="mt-2">
-                            <div className="w-full bg-muted rounded-full h-2">
+                            <div className="w-full bg-[#1C1C26] rounded-full h-2">
                               <div
                                 className="bg-success h-2 rounded-full"
                                 style={{
@@ -886,7 +886,7 @@ export default function AdminStatisticsContent() {
                                 }}
                               />
                             </div>
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-xs text-gray-400 mt-1">
                               {Math.round(
                                 (detailedMetrics.content.published_pages /
                                   detailedMetrics.content.total_pages) *
@@ -907,8 +907,8 @@ export default function AdminStatisticsContent() {
                     <h3 className="text-lg font-semibold mb-4">Statistiques des projets</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <div className="p-4 bg-muted/50 rounded-lg mb-4">
-                          <div className="text-sm text-muted-foreground mb-1">
+                        <div className="p-4 bg-[#1C1C26]/50 rounded-lg mb-4">
+                          <div className="text-sm text-gray-400 mb-1">
                             Total des projets
                           </div>
                           <div className="text-2xl font-bold">{detailedMetrics.projects.total}</div>
@@ -929,7 +929,7 @@ export default function AdminStatisticsContent() {
                                       : 'default';
                               return (
                                 <div key={status} className="flex items-center justify-between">
-                                  <span className="text-sm text-muted-foreground capitalize">
+                                  <span className="text-sm text-gray-400 capitalize">
                                     {status}
                                   </span>
                                   <Badge variant={variant}>{count}</Badge>
@@ -946,7 +946,7 @@ export default function AdminStatisticsContent() {
             ) : (
               <Card>
                 <div className="p-6">
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-400">
                     Impossible de charger les métriques détaillées.
                   </p>
                 </div>

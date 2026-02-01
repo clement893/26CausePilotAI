@@ -28,7 +28,7 @@ export function ThemeLivePreview({ config }: ThemeLivePreviewProps) {
       <Card>
         <div className="p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">Live Preview</h3>
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="text-sm text-gray-400 mb-6">
             See how your theme looks applied to real components
           </p>
 
@@ -89,7 +89,7 @@ export function ThemeLivePreview({ config }: ThemeLivePreviewProps) {
                 <Card>
                   <div className="p-4">
                     <h5 className="font-semibold text-foreground mb-2">Card Title</h5>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       This is a sample card with your theme applied.
                     </p>
                   </div>
@@ -97,7 +97,7 @@ export function ThemeLivePreview({ config }: ThemeLivePreviewProps) {
                 <Card>
                   <div className="p-4">
                     <h5 className="font-semibold text-foreground mb-2">Another Card</h5>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       Cards use your theme's background and border colors.
                     </p>
                   </div>

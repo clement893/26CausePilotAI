@@ -318,18 +318,18 @@ export default function DashboardReportsPage() {
                         >
                           <h3 className="font-semibold text-foreground">{report.name}</h3>
                           {report.description && (
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <p className="text-sm text-gray-400 mt-1">
                               {report.description}
                             </p>
                           )}
-                          <p className="text-xs text-muted-foreground mt-2">
+                          <p className="text-xs text-gray-400 mt-2">
                             Generated: {new Date(report.generatedAt).toLocaleString()}
                           </p>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-12 text-muted-foreground">
+                    <div className="text-center py-12 text-gray-400">
                       <p>
                         {t('empty') ||
                           'No reports found. Create your first report using the Report Builder.'}

@@ -111,7 +111,7 @@ function CheckMySuperAdminStatusContent() {
               <div className="flex items-center justify-center py-8">
                 <div className="text-center">
                   <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-info-600 text-blue-400" />
-                  <p className="text-muted-foreground">Vérification en cours...</p>
+                  <p className="text-gray-400">Vérification en cours...</p>
                 </div>
               </div>
             ) : status ? (

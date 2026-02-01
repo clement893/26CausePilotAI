@@ -38,7 +38,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-foreground">Prévisualisation du thème</h3>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-gray-400 mt-1">
             Aperçu en temps réel des composants avec ce thème
           </p>
         </div>
@@ -51,50 +51,50 @@ export function ThemePreview({ config }: ThemePreviewProps) {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <div
-                className="w-full h-20 rounded-lg mb-2 border border-border"
+                className="w-full h-20 rounded-lg mb-2 border border-gray-800"
                 style={{ backgroundColor: config.primary_color }}
               />
-              <p className="text-xs text-muted-foreground">Primaire</p>
+              <p className="text-xs text-gray-400">Primaire</p>
               <p className="text-xs font-mono text-foreground">{config.primary_color}</p>
             </div>
             <div>
               <div
-                className="w-full h-20 rounded-lg mb-2 border border-border"
+                className="w-full h-20 rounded-lg mb-2 border border-gray-800"
                 style={{ backgroundColor: config.secondary_color }}
               />
-              <p className="text-xs text-muted-foreground">Secondaire</p>
+              <p className="text-xs text-gray-400">Secondaire</p>
               <p className="text-xs font-mono text-foreground">{config.secondary_color}</p>
             </div>
             <div>
               <div
-                className="w-full h-20 rounded-lg mb-2 border border-border"
+                className="w-full h-20 rounded-lg mb-2 border border-gray-800"
                 style={{ backgroundColor: config.danger_color }}
               />
-              <p className="text-xs text-muted-foreground">Danger</p>
+              <p className="text-xs text-gray-400">Danger</p>
               <p className="text-xs font-mono text-foreground">{config.danger_color}</p>
             </div>
             <div>
               <div
-                className="w-full h-20 rounded-lg mb-2 border border-border"
+                className="w-full h-20 rounded-lg mb-2 border border-gray-800"
                 style={{ backgroundColor: config.warning_color }}
               />
-              <p className="text-xs text-muted-foreground">Avertissement</p>
+              <p className="text-xs text-gray-400">Avertissement</p>
               <p className="text-xs font-mono text-foreground">{config.warning_color}</p>
             </div>
             <div>
               <div
-                className="w-full h-20 rounded-lg mb-2 border border-border"
+                className="w-full h-20 rounded-lg mb-2 border border-gray-800"
                 style={{ backgroundColor: config.info_color }}
               />
-              <p className="text-xs text-muted-foreground">Info</p>
+              <p className="text-xs text-gray-400">Info</p>
               <p className="text-xs font-mono text-foreground">{config.info_color}</p>
             </div>
             <div>
               <div
-                className="w-full h-20 rounded-lg mb-2 border border-border"
+                className="w-full h-20 rounded-lg mb-2 border border-gray-800"
                 style={{ backgroundColor: config.success_color }}
               />
-              <p className="text-xs text-muted-foreground">Succès</p>
+              <p className="text-xs text-gray-400">Succès</p>
               <p className="text-xs font-mono text-foreground">{config.success_color}</p>
             </div>
           </div>
@@ -155,15 +155,15 @@ export function ThemePreview({ config }: ThemePreviewProps) {
           <div className="space-y-3">
             <div>
               <h1 className="text-4xl font-bold text-foreground">Titre H1</h1>
-              <p className="text-sm text-muted-foreground">Titre principal</p>
+              <p className="text-sm text-gray-400">Titre principal</p>
             </div>
             <div>
               <h2 className="text-3xl font-bold text-foreground">Titre H2</h2>
-              <p className="text-sm text-muted-foreground">Sous-titre</p>
+              <p className="text-sm text-gray-400">Sous-titre</p>
             </div>
             <div>
               <h3 className="text-2xl font-semibold text-foreground">Titre H3</h3>
-              <p className="text-sm text-muted-foreground">Section</p>
+              <p className="text-sm text-gray-400">Section</p>
             </div>
             <div>
               <p className="text-base text-foreground">
@@ -172,7 +172,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Texte secondaire avec couleur muted.</p>
+              <p className="text-sm text-gray-400">Texte secondaire avec couleur muted.</p>
             </div>
           </div>
         </div>
@@ -190,7 +190,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
               <input
                 type="text"
                 placeholder="Saisissez du texte..."
-                className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderRadius: config.border_radius || '8px',
                 }}
@@ -203,7 +203,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
               <textarea
                 placeholder="Saisissez plusieurs lignes..."
                 rows={3}
-                className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderRadius: config.border_radius || '8px',
                 }}
@@ -212,7 +212,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Sélection</label>
               <select
-                className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-gray-800 rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderRadius: config.border_radius || '8px',
                 }}
@@ -241,7 +241,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 Box
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Valeur appliquée:</p>
+                <p className="text-sm text-gray-400">Valeur appliquée:</p>
                 <p className="text-sm font-mono text-foreground">{config.border_radius}</p>
               </div>
             </div>

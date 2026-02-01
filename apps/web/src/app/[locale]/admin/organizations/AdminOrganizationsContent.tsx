@@ -416,16 +416,16 @@ export default function AdminOrganizationsContent() {
             <div>
               <div className="font-medium text-foreground">{team.name}</div>
               {team.description && (
-                <div className="text-sm text-muted-foreground mt-1">{team.description}</div>
+                <div className="text-sm text-gray-400 mt-1">{team.description}</div>
               )}
               {settings?.email && (
-                <div className="text-xs text-muted-foreground mt-1">📧 {settings.email}</div>
+                <div className="text-xs text-gray-400 mt-1">📧 {settings.email}</div>
               )}
               {settings?.phone && (
-                <div className="text-xs text-muted-foreground">📞 {settings.phone}</div>
+                <div className="text-xs text-gray-400">📞 {settings.phone}</div>
               )}
               {settings?.website && (
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-gray-400">
                   🌐{' '}
                   <a
                     href={settings.website}
@@ -438,7 +438,7 @@ export default function AdminOrganizationsContent() {
                 </div>
               )}
               {settings?.address && (
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   📍 {settings.address.line1}, {settings.address.city}, {settings.address.country}
                 </div>
               )}
@@ -455,13 +455,13 @@ export default function AdminOrganizationsContent() {
               <div>
                 <div className="font-medium">{team.owner.email}</div>
                 {(team.owner.first_name || team.owner.last_name) && (
-                  <div className="text-muted-foreground">
+                  <div className="text-gray-400">
                     {[team.owner.first_name, team.owner.last_name].filter(Boolean).join(' ')}
                   </div>
                 )}
               </div>
             ) : (
-              <span className="text-muted-foreground">-</span>
+              <span className="text-gray-400">-</span>
             )}
           </div>
         ),
@@ -475,7 +475,7 @@ export default function AdminOrganizationsContent() {
         key: 'created_at',
         label: 'Créé le',
         render: (_value, team) => (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-gray-400">
             {new Date(team.created_at).toLocaleDateString('fr-FR')}
           </span>
         ),
@@ -706,16 +706,16 @@ export default function AdminOrganizationsContent() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Nom</label>
+                <label className="text-sm font-medium text-gray-400">Nom</label>
                 <p className="text-sm font-medium">{selectedTeam.name}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Slug</label>
+                <label className="text-sm font-medium text-gray-400">Slug</label>
                 <p className="text-sm font-mono">{selectedTeam.slug}</p>
               </div>
               {selectedTeam.description && (
                 <div className="col-span-2">
-                  <label className="text-sm font-medium text-muted-foreground">Description</label>
+                  <label className="text-sm font-medium text-gray-400">Description</label>
                   <p className="text-sm">{selectedTeam.description}</p>
                 </div>
               )}
@@ -741,13 +741,13 @@ export default function AdminOrganizationsContent() {
                   <div className="grid grid-cols-2 gap-4">
                     {settings.email && (
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Email</label>
+                        <label className="text-sm font-medium text-gray-400">Email</label>
                         <p className="text-sm">{settings.email}</p>
                       </div>
                     )}
                     {settings.phone && (
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">
+                        <label className="text-sm font-medium text-gray-400">
                           Téléphone
                         </label>
                         <p className="text-sm">{settings.phone}</p>
@@ -755,7 +755,7 @@ export default function AdminOrganizationsContent() {
                     )}
                     {settings.website && (
                       <div className="col-span-2">
-                        <label className="text-sm font-medium text-muted-foreground">
+                        <label className="text-sm font-medium text-gray-400">
                           Site web
                         </label>
                         <p className="text-sm">
@@ -772,7 +772,7 @@ export default function AdminOrganizationsContent() {
                     )}
                     {settings.address && (
                       <div className="col-span-2">
-                        <label className="text-sm font-medium text-muted-foreground">Adresse</label>
+                        <label className="text-sm font-medium text-gray-400">Adresse</label>
                         <p className="text-sm">
                           {settings.address.line1}
                           {settings.address.line2 && `, ${settings.address.line2}`}
@@ -786,7 +786,7 @@ export default function AdminOrganizationsContent() {
                     )}
                     {settings.timezone && (
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">
+                        <label className="text-sm font-medium text-gray-400">
                           Fuseau horaire
                         </label>
                         <p className="text-sm">{settings.timezone}</p>
@@ -794,7 +794,7 @@ export default function AdminOrganizationsContent() {
                     )}
                     {settings.locale && (
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Locale</label>
+                        <label className="text-sm font-medium text-gray-400">Locale</label>
                         <p className="text-sm">{settings.locale}</p>
                       </div>
                     )}
@@ -809,7 +809,7 @@ export default function AdminOrganizationsContent() {
                 <div>
                   <p className="text-sm font-medium">{selectedTeam.owner.email}</p>
                   {(selectedTeam.owner.first_name || selectedTeam.owner.last_name) && (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-400">
                       {[selectedTeam.owner.first_name, selectedTeam.owner.last_name]
                         .filter(Boolean)
                         .join(' ')}
@@ -817,20 +817,20 @@ export default function AdminOrganizationsContent() {
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">-</p>
+                <p className="text-sm text-gray-400">-</p>
               )}
             </div>
 
             <div className="border-t pt-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Membres</label>
+                  <label className="text-sm font-medium text-gray-400">Membres</label>
                   <p className="text-sm">
                     <Badge>{selectedTeam.member_count || 0}</Badge>
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Créé le</label>
+                  <label className="text-sm font-medium text-gray-400">Créé le</label>
                   <p className="text-sm">
                     {new Date(selectedTeam.created_at).toLocaleDateString('fr-FR')}
                   </p>

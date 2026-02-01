@@ -176,7 +176,7 @@ export default function AdminUsersContent() {
     <Container className="py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-foreground mb-2">Gestion des Utilisateurs</h1>
-        <p className="text-muted-foreground">Gérez tous les utilisateurs de la plateforme</p>
+        <p className="text-gray-400">Gérez tous les utilisateurs de la plateforme</p>
       </div>
 
       {error && (
@@ -283,11 +283,11 @@ function UserRolesDisplay({ userId }: { userId: number }) {
   const { roles, loading } = useUserRoles(userId);
 
   if (loading) {
-    return <span className="text-muted-foreground">Chargement...</span>;
+    return <span className="text-gray-400">Chargement...</span>;
   }
 
   if (roles.length === 0) {
-    return <span className="text-muted-foreground">Aucun rôle</span>;
+    return <span className="text-gray-400">Aucun rôle</span>;
   }
 
   return (

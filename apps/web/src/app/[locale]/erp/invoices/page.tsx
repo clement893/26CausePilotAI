@@ -56,7 +56,7 @@ function ERPInvoicesContent() {
             {(value ? String(value) : '') || row.client_email || 'N/A'}
           </p>
           {row.client_email && value ? (
-            <p className="text-xs text-muted-foreground">{String(row.client_email)}</p>
+            <p className="text-xs text-gray-400">{String(row.client_email)}</p>
           ) : null}
         </div>
       ),
@@ -114,7 +114,7 @@ function ERPInvoicesContent() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-foreground mb-2">All Invoices</h1>
-          <p className="text-muted-foreground">View and manage all invoices in the system</p>
+          <p className="text-gray-400">View and manage all invoices in the system</p>
         </div>
         <div className="flex gap-2">
           <select

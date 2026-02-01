@@ -205,7 +205,7 @@ export default function InvitationsPage() {
           <div className="mb-8 flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-2">Gestion des Invitations</h1>
-              <p className="text-muted-foreground">
+              <p className="text-gray-400">
                 Gérer les invitations envoyées aux utilisateurs
               </p>
             </div>
@@ -218,7 +218,7 @@ export default function InvitationsPage() {
               <Card key={status}>
                 <div className="p-4 text-center">
                   <div className="text-2xl font-bold text-foreground">{count}</div>
-                  <div className="text-sm text-muted-foreground capitalize">
+                  <div className="text-sm text-gray-400 capitalize">
                     {status === 'all' ? 'Total' : getStatusLabel(status)}
                   </div>
                 </div>
@@ -255,7 +255,7 @@ export default function InvitationsPage() {
           ) : filteredInvitations.length === 0 ? (
             <Card>
               <div className="py-12 text-center">
-                <p className="text-muted-foreground">
+                <p className="text-gray-400">
                   {filterStatus === 'all'
                     ? 'Aucune invitation'
                     : `Aucune invitation ${getStatusLabel(filterStatus).toLowerCase()}`}
@@ -266,33 +266,33 @@ export default function InvitationsPage() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse bg-background rounded-lg shadow">
                 <thead>
-                  <tr className="bg-muted border-b border-border">
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <tr className="bg-[#1C1C26] border-b border-gray-800">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Rôle
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Organisation
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Statut
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Invitée le
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Expire le
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {filteredInvitations.map((invitation) => (
-                    <tr key={invitation.id} className="hover:bg-muted">
+                    <tr key={invitation.id} className="hover:bg-[#1C1C26]">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="font-medium text-foreground">{invitation.email}</div>
                       </td>
@@ -300,7 +300,7 @@ export default function InvitationsPage() {
                         <Badge>{invitation.role}</Badge>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-sm text-gray-400">
                           {invitation.organization_name}
                         </div>
                       </td>
@@ -309,10 +309,10 @@ export default function InvitationsPage() {
                           {getStatusLabel(invitation.status)}
                         </Badge>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                         {new Date(invitation.invited_at).toLocaleDateString('fr-FR')}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                         {new Date(invitation.expires_at).toLocaleDateString('fr-FR')}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

@@ -25,11 +25,11 @@ export default function ConfirmationPage() {
             Réservation confirmée
           </h1>
           {bookingReference && (
-            <p className="text-lg font-semibold text-muted-foreground mb-8">
+            <p className="text-lg font-semibold text-gray-400 mb-8">
               Référence : {bookingReference}
             </p>
           )}
-          <p className="text-muted-foreground mb-8">
+          <p className="text-gray-400 mb-8">
             Votre réservation a été créée avec succès. Vous recevrez un email de confirmation sous
             peu.
           </p>

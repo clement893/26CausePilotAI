@@ -88,7 +88,7 @@ export default function CampaignsPage() {
               Campagnes
             </h1>
           </div>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-gray-400 text-lg">
             Gérez vos campagnes de collecte de fonds
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function CampaignsPage() {
             <Target className="w-10 h-10 text-primary" />
           </div>
           <h3 className="text-xl font-semibold text-foreground mb-2">Aucune campagne créée</h3>
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          <p className="text-gray-400 mb-8 max-w-md mx-auto">
             Lancez votre première campagne de collecte pour mobiliser vos donateurs.
           </p>
           <Button variant="primary" className="shadow-lg hover:shadow-xl transition-all duration-200">

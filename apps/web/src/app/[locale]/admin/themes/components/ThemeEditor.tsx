@@ -340,7 +340,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
             <h2 className="text-2xl font-bold text-foreground">
               {theme ? `Éditer "${theme.display_name}"` : 'Créer un nouveau thème'}
             </h2>
-            <p className="text-muted-foreground mt-1">
+            <p className="text-gray-400 mt-1">
               {theme
                 ? 'Modifiez les propriétés du thème'
                 : 'Remplissez le formulaire pour créer un nouveau thème'}

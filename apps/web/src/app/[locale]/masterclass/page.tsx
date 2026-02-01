@@ -18,7 +18,7 @@ export default function MasterclassPage() {
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-foreground">
               Le Programme
             </h1>
-            <hr className="my-8 border-border" />
+            <hr className="my-8 border-gray-800" />
           </div>
 
           {/* Description */}
@@ -35,7 +35,7 @@ export default function MasterclassPage() {
             </p>
           </div>
 
-          <hr className="my-16 border-border" />
+          <hr className="my-16 border-gray-800" />
 
           {/* Day 1 */}
           <div className="mb-16">
@@ -51,7 +51,7 @@ export default function MasterclassPage() {
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <Clock
-                  className="w-5 h-5 text-muted-foreground mt-1 flex-shrink-0"
+                  className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0"
                   aria-hidden="true"
                 />
                 <div>
@@ -84,7 +84,7 @@ export default function MasterclassPage() {
 
               <div className="flex items-start gap-4">
                 <Clock
-                  className="w-5 h-5 text-muted-foreground mt-1 flex-shrink-0"
+                  className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0"
                   aria-hidden="true"
                 />
                 <div>
@@ -117,7 +117,7 @@ export default function MasterclassPage() {
             </div>
           </div>
 
-          <hr className="my-16 border-border" />
+          <hr className="my-16 border-gray-800" />
 
           {/* Day 2 */}
           <div className="mb-16">
@@ -133,7 +133,7 @@ export default function MasterclassPage() {
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <Clock
-                  className="w-5 h-5 text-muted-foreground mt-1 flex-shrink-0"
+                  className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0"
                   aria-hidden="true"
                 />
                 <div>
@@ -166,7 +166,7 @@ export default function MasterclassPage() {
 
               <div className="flex items-start gap-4">
                 <Clock
-                  className="w-5 h-5 text-muted-foreground mt-1 flex-shrink-0"
+                  className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0"
                   aria-hidden="true"
                 />
                 <div>
@@ -199,7 +199,7 @@ export default function MasterclassPage() {
             </div>
           </div>
 
-          <hr className="my-16 border-border" />
+          <hr className="my-16 border-gray-800" />
 
           {/* Learning Objectives */}
           <div className="mb-16">
@@ -248,7 +248,7 @@ export default function MasterclassPage() {
             </ul>
           </div>
 
-          <hr className="my-16 border-border" />
+          <hr className="my-16 border-gray-800" />
 
           {/* Included Resources */}
           <div className="mb-16">
@@ -301,7 +301,7 @@ export default function MasterclassPage() {
           <div className="text-center mt-16">
             <a
               href="/cities"
-              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-muted transition-colors"
+              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-[#1C1C26] transition-colors"
             >
               Réserver ma place
             </a>

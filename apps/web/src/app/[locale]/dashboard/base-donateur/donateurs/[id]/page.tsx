@@ -140,8 +140,8 @@ export default function DonorDetailPage() {
   if (orgLoading || isLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="mb-6 h-10 w-32 animate-pulse rounded-lg bg-muted/60" />
-        <div className="mb-8 h-12 w-64 animate-pulse rounded-lg bg-muted/60" />
+        <div className="mb-6 h-10 w-32 animate-pulse rounded-lg bg-[#1C1C26]/60" />
+        <div className="mb-8 h-12 w-64 animate-pulse rounded-lg bg-[#1C1C26]/60" />
         <LoadingSkeleton variant="stats" count={4} className="mb-8" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <LoadingSkeleton variant="card" count={2} />
@@ -194,9 +194,9 @@ export default function DonorDetailPage() {
                 : donor.email}
             </h1>
             <div className="flex items-center gap-2">
-              <p className="text-muted-foreground">{donor.email}</p>
+              <p className="text-gray-400">{donor.email}</p>
               <Tooltip content={donor.is_active ? 'Ce donateur est actif et peut recevoir des communications' : 'Ce donateur est inactif'}>
-                <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                <Info className="w-4 h-4 text-gray-400 cursor-help" />
               </Tooltip>
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function DonorDetailPage() {
                 <DollarSign className="w-6 h-6 text-primary" />
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mb-2 font-medium">Total donné</p>
+            <p className="text-sm text-gray-400 mb-2 font-medium">Total donné</p>
             <p className="text-3xl font-bold text-primary">{formatCurrency(donor.total_donated)}</p>
           </div>
         </Card>
@@ -228,7 +228,7 @@ export default function DonorDetailPage() {
                 <Activity className="w-6 h-6 text-success" />
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mb-2 font-medium">Nombre de dons</p>
+            <p className="text-sm text-gray-400 mb-2 font-medium">Nombre de dons</p>
             <p className="text-3xl font-bold text-success">{donor.donation_count}</p>
           </div>
         </Card>
@@ -239,7 +239,7 @@ export default function DonorDetailPage() {
                 <TrendingUp className="w-6 h-6 text-warning" />
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mb-2 font-medium">Don moyen</p>
+            <p className="text-sm text-gray-400 mb-2 font-medium">Don moyen</p>
             <p className="text-3xl font-bold text-warning">
               {stats?.average_donation ? formatCurrency(stats.average_donation) : '-'}
             </p>
@@ -252,7 +252,7 @@ export default function DonorDetailPage() {
                 <Calendar className="w-6 h-6 text-info" />
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mb-2 font-medium">Dernier don</p>
+            <p className="text-sm text-gray-400 mb-2 font-medium">Dernier don</p>
             <p className="text-lg font-bold text-info">
               {donor.last_donation_date ? formatDate(donor.last_donation_date) : 'Aucun'}
             </p>
@@ -289,18 +289,18 @@ export default function DonorDetailPage() {
               <h2 className="text-xl font-semibold mb-4">Informations de contact</h2>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-muted-foreground" />
+                  <Mail className="w-5 h-5 text-gray-400" />
                   <span>{donor.email}</span>
                 </div>
                 {donor.phone && (
                   <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-muted-foreground" />
+                    <Phone className="w-5 h-5 text-gray-400" />
                     <span>{donor.phone}</span>
                   </div>
                 )}
                 {donor.address && (
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                     <div>
                       {donor.address.street && <div>{donor.address.street}</div>}
                       {donor.address.city && (
@@ -322,29 +322,29 @@ export default function DonorDetailPage() {
               <h2 className="text-xl font-semibold mb-4">Préférences</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Langue préférée</span>
+                  <span className="text-gray-400">Langue préférée</span>
                   <span>{donor.preferred_language === 'fr' ? 'Français' : 'Anglais'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Email marketing</span>
+                  <span className="text-gray-400">Email marketing</span>
                   <Badge variant={donor.opt_in_email ? 'success' : 'default'}>
                     {donor.opt_in_email ? 'Oui' : 'Non'}
                   </Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">SMS</span>
+                  <span className="text-gray-400">SMS</span>
                   <Badge variant={donor.opt_in_sms ? 'success' : 'default'}>
                     {donor.opt_in_sms ? 'Oui' : 'Non'}
                   </Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Courrier postal</span>
+                  <span className="text-gray-400">Courrier postal</span>
                   <Badge variant={donor.opt_in_postal ? 'success' : 'default'}>
                     {donor.opt_in_postal ? 'Oui' : 'Non'}
                   </Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Anonyme</span>
+                  <span className="text-gray-400">Anonyme</span>
                   <Badge variant={donor.is_anonymous ? 'default' : 'default'}>
                     {donor.is_anonymous ? 'Oui' : 'Non'}
                   </Badge>
@@ -358,23 +358,23 @@ export default function DonorDetailPage() {
                 <h2 className="text-xl font-semibold mb-4">Statistiques détaillées</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Cette année</p>
+                    <p className="text-sm text-gray-400 mb-1">Cette année</p>
                     <p className="text-lg font-semibold">{formatCurrency(stats.this_year_total)}</p>
-                    <p className="text-xs text-muted-foreground">{stats.this_year_count} dons</p>
+                    <p className="text-xs text-gray-400">{stats.this_year_count} dons</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Ce mois</p>
+                    <p className="text-sm text-gray-400 mb-1">Ce mois</p>
                     <p className="text-lg font-semibold">{formatCurrency(stats.this_month_total)}</p>
-                    <p className="text-xs text-muted-foreground">{stats.this_month_count} dons</p>
+                    <p className="text-xs text-gray-400">{stats.this_month_count} dons</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Plus grand don</p>
+                    <p className="text-sm text-gray-400 mb-1">Plus grand don</p>
                     <p className="text-lg font-semibold">
                       {stats.largest_donation ? formatCurrency(stats.largest_donation) : '-'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Premier don</p>
+                    <p className="text-sm text-gray-400 mb-1">Premier don</p>
                     <p className="text-lg font-semibold">
                       {stats.first_donation_date ? formatDate(stats.first_donation_date) : '-'}
                     </p>
@@ -390,11 +390,11 @@ export default function DonorDetailPage() {
             {donations.length === 0 ? (
               <Card>
                 <div className="text-center py-16">
-                  <div className="mx-auto w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-4">
-                    <DollarSign className="w-10 h-10 text-muted-foreground" />
+                  <div className="mx-auto w-20 h-20 bg-[#1C1C26] rounded-full flex items-center justify-center mb-4">
+                    <DollarSign className="w-10 h-10 text-gray-400" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">Aucun don enregistré</h3>
-                  <p className="text-muted-foreground">Les dons de ce donateur apparaîtront ici</p>
+                  <p className="text-gray-400">Les dons de ce donateur apparaîtront ici</p>
                 </div>
               </Card>
             ) : (
@@ -414,7 +414,7 @@ export default function DonorDetailPage() {
                             <p className="text-2xl font-bold text-primary">
                               {formatCurrency(donation.amount)}
                             </p>
-                            <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                            <p className="text-sm text-gray-400 flex items-center gap-1 mt-1">
                               <Calendar className="w-3 h-3" />
                               {formatDate(donation.payment_date || donation.created_at)}
                             </p>
@@ -427,17 +427,17 @@ export default function DonorDetailPage() {
                       
                       <div className="grid grid-cols-2 gap-3 pt-4 border-t">
                         <div>
-                          <p className="text-xs text-muted-foreground mb-1">Type</p>
+                          <p className="text-xs text-gray-400 mb-1">Type</p>
                           <p className="text-sm font-medium capitalize">
                             {donation.donation_type.replace('_', ' ')}
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-muted-foreground mb-1">Reçu fiscal</p>
+                          <p className="text-xs text-gray-400 mb-1">Reçu fiscal</p>
                           {donation.receipt_sent ? (
                             <Badge variant="default" className="text-xs">Envoyé</Badge>
                           ) : (
-                            <span className="text-sm text-muted-foreground">Non envoyé</span>
+                            <span className="text-sm text-gray-400">Non envoyé</span>
                           )}
                         </div>
                       </div>
@@ -497,18 +497,18 @@ export default function DonorDetailPage() {
               <div className="space-y-4">
                 {history.activities.map((activity) => (
                   <div key={activity.id} className="flex gap-4 p-4 border-b last:border-b-0">
-                    <Activity className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <Activity className="w-5 h-5 text-gray-400 mt-0.5" />
                     <div className="flex-1">
                       <div className="flex justify-between items-start">
                         <div>
                           <p className="font-medium capitalize">{activity.activity_type.replace('_', ' ')}</p>
                           {activity.activity_data && Object.keys(activity.activity_data).length > 0 && (
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <p className="text-sm text-gray-400 mt-1">
                               {JSON.stringify(activity.activity_data, null, 2)}
                             </p>
                           )}
                         </div>
-                        <span className="text-sm text-muted-foreground">{formatDateTime(activity.created_at)}</span>
+                        <span className="text-sm text-gray-400">{formatDateTime(activity.created_at)}</span>
                       </div>
                     </div>
                   </div>
@@ -516,7 +516,7 @@ export default function DonorDetailPage() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">Aucune activité enregistrée</p>
+                <p className="text-gray-400">Aucune activité enregistrée</p>
               </div>
             )}
           </Card>

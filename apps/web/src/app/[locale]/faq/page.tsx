@@ -138,8 +138,8 @@ export default function FAQPage() {
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-foreground">
               Questions Fréquentes
             </h1>
-            <hr className="my-8 border-border mx-auto max-w-md" />
-            <p className="text-xl text-muted-foreground mt-6 max-w-3xl mx-auto">
+            <hr className="my-8 border-gray-800 mx-auto max-w-md" />
+            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto">
               Trouvez les réponses aux questions les plus courantes sur la masterclass ACT.
             </p>
           </div>
@@ -148,7 +148,7 @@ export default function FAQPage() {
           <div className="mb-12">
             <div className="relative mb-6">
               <Search
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
                 aria-hidden="true"
               />
               <input
@@ -156,7 +156,7 @@ export default function FAQPage() {
                 placeholder="Rechercher une question..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-border focus:border-foreground focus:outline-none"
+                className="w-full pl-12 pr-4 py-3 border border-gray-800 focus:border-foreground focus:outline-none"
               />
             </div>
 
@@ -168,7 +168,7 @@ export default function FAQPage() {
                   className={`px-4 py-2 border font-bold transition-colors ${
                     selectedCategory === category
                       ? 'bg-foreground text-background border-foreground'
-                      : 'bg-background text-foreground border-foreground hover:bg-muted'
+                      : 'bg-background text-foreground border-foreground hover:bg-[#1C1C26]'
                   }`}
                 >
                   {category}
@@ -181,20 +181,20 @@ export default function FAQPage() {
           <div className="space-y-4">
             {filteredItems.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">
+                <p className="text-gray-400">
                   Aucune question trouvée pour cette recherche.
                 </p>
               </div>
             ) : (
               filteredItems.map((item) => (
-                <div key={item.id} className="border border-border">
+                <div key={item.id} className="border border-gray-800">
                   <button
                     onClick={() => toggleItem(item.id)}
-                    className="w-full flex items-center justify-between p-6 text-left hover:bg-muted transition-colors"
+                    className="w-full flex items-center justify-between p-6 text-left hover:bg-[#1C1C26] transition-colors"
                     aria-expanded={openItems.has(item.id)}
                   >
                     <div className="flex-1 pr-4">
-                      <div className="text-xs font-bold text-muted-foreground mb-2">
+                      <div className="text-xs font-bold text-gray-400 mb-2">
                         {item.category}
                       </div>
                       <h3 className="text-lg font-bold text-foreground">{item.question}</h3>
@@ -208,7 +208,7 @@ export default function FAQPage() {
                   </button>
                   {openItems.has(item.id) && (
                     <div className="px-6 pb-6">
-                      <div className="pt-4 border-t border-border">
+                      <div className="pt-4 border-t border-gray-800">
                         <p className="text-foreground leading-relaxed">{item.answer}</p>
                       </div>
                     </div>
@@ -220,12 +220,12 @@ export default function FAQPage() {
 
           {/* CTA Section */}
           <div className="text-center mt-16">
-            <p className="text-lg text-muted-foreground mb-6">
+            <p className="text-lg text-gray-400 mb-6">
               Vous avez d'autres questions ? N'hésitez pas à nous contacter.
             </p>
             <a
               href="mailto:contact@contextpsy.fr"
-              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-muted transition-colors"
+              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-[#1C1C26] transition-colors"
             >
               Nous contacter
             </a>

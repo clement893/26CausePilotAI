@@ -154,7 +154,7 @@ export function ConfirmActivateModal({
             <p className="text-foreground">
               Êtes-vous sûr de vouloir activer le thème <strong>"{theme.display_name}"</strong> ?
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400">
               Ce thème remplacera le thème actuellement actif et sera appliqué sur toute la
               plateforme.
             </p>

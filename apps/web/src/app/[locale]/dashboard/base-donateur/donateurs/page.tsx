@@ -190,7 +190,7 @@ export default function DonateursPage() {
   if (orgLoading) {
     return (
       <Container className="py-8 lg:py-12">
-        <div className="mb-8 h-20 animate-pulse rounded-lg bg-muted/60" />
+        <div className="mb-8 h-20 animate-pulse rounded-lg bg-[#1C1C26]/60" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <LoadingSkeleton variant="card" count={6} />
         </div>
@@ -203,7 +203,7 @@ export default function DonateursPage() {
       <Container className="py-8 lg:py-12">
         <Card>
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Aucune organisation active</p>
+            <p className="text-gray-400">Aucune organisation active</p>
           </div>
         </Card>
       </Container>
@@ -223,7 +223,7 @@ export default function DonateursPage() {
               Donateurs
             </h1>
           </div>
-          <p className="text-muted-foreground text-lg">Gérez votre base de données de donateurs</p>
+          <p className="text-gray-400 text-lg">Gérez votre base de données de donateurs</p>
         </div>
         <div className="flex gap-3">
           {isSuperAdmin && (
@@ -264,7 +264,7 @@ export default function DonateursPage() {
             <div className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Total donateurs</p>
+                  <p className="text-sm text-gray-400 mb-1">Total donateurs</p>
                   <p className="text-2xl font-bold">{pagination.total}</p>
                 </div>
                 <div className="p-3 bg-primary/10 rounded-full">
@@ -277,7 +277,7 @@ export default function DonateursPage() {
             <div className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Donateurs actifs</p>
+                  <p className="text-sm text-gray-400 mb-1">Donateurs actifs</p>
                   <p className="text-2xl font-bold">
                     {donors.filter(d => d.is_active).length}
                   </p>
@@ -292,7 +292,7 @@ export default function DonateursPage() {
             <div className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Total donné</p>
+                  <p className="text-sm text-gray-400 mb-1">Total donné</p>
                   <p className="text-2xl font-bold">
                     {formatCurrency(
                       donors.reduce((sum, d) => sum + parseFloat(d.total_donated || '0'), 0).toString()
@@ -309,10 +309,10 @@ export default function DonateursPage() {
       )}
 
       {/* Search and Filters - Modern Design */}
-      <Card className="mb-6 border-2 border-border/50 shadow-sm">
+      <Card className="mb-6 border-2 border-gray-800/50 shadow-sm">
         <div className="p-4 space-y-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Tooltip content="Recherchez par nom, prénom ou adresse email">
               <Input
                 type="text"
@@ -356,7 +356,7 @@ export default function DonateursPage() {
             <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
             <div className="flex-1">
               <p className="text-destructive font-medium">{error}</p>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-gray-400 mt-1">
                 Si le problème persiste, vérifiez votre connexion ou contactez le support.
               </p>
             </div>
@@ -382,7 +382,7 @@ export default function DonateursPage() {
             <User className="w-10 h-10 text-primary" />
           </div>
           <h3 className="text-xl font-semibold text-foreground mb-2">Aucun donateur trouvé</h3>
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          <p className="text-gray-400 mb-8 max-w-md mx-auto">
             {searchTerm ? 'Essayez avec d\'autres termes de recherche.' : 'Commencez par ajouter votre premier donateur.'}
           </p>
           {!searchTerm && (
@@ -421,7 +421,7 @@ export default function DonateursPage() {
                         <h3 className="font-semibold text-lg truncate group-hover:text-primary transition-colors">
                           {getDonorName(donor)}
                         </h3>
-                        <p className="text-sm text-muted-foreground truncate flex items-center gap-1 mt-1">
+                        <p className="text-sm text-gray-400 truncate flex items-center gap-1 mt-1">
                           <Mail className="w-3 h-3" />
                           {donor.email}
                         </p>
@@ -430,8 +430,8 @@ export default function DonateursPage() {
 
                     {/* Stats */}
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg group-hover:bg-muted transition-colors">
-                        <div className="flex items-center gap-2 text-muted-foreground">
+                      <div className="flex items-center justify-between p-3 bg-[#1C1C26]/50 rounded-lg group-hover:bg-[#1C1C26] transition-colors">
+                        <div className="flex items-center gap-2 text-gray-400">
                           <DollarSign className="w-4 h-4" />
                           <span className="text-sm">Total donné</span>
                         </div>
@@ -441,13 +441,13 @@ export default function DonateursPage() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-2">
-                        <div className="p-2 bg-muted/30 rounded text-center">
-                          <p className="text-xs text-muted-foreground mb-1">Dons</p>
+                        <div className="p-2 bg-[#1C1C26]/30 rounded text-center">
+                          <p className="text-xs text-gray-400 mb-1">Dons</p>
                           <p className="font-semibold">{donor.donation_count || 0}</p>
                         </div>
                         {donor.phone && (
-                          <div className="p-2 bg-muted/30 rounded text-center">
-                            <p className="text-xs text-muted-foreground mb-1 flex items-center justify-center gap-1">
+                          <div className="p-2 bg-[#1C1C26]/30 rounded text-center">
+                            <p className="text-xs text-gray-400 mb-1 flex items-center justify-center gap-1">
                               <Phone className="w-3 h-3" />
                               Téléphone
                             </p>
@@ -457,7 +457,7 @@ export default function DonateursPage() {
                       </div>
 
                       {donor.last_donation_date && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t">
+                        <div className="flex items-center gap-2 text-sm text-gray-400 pt-2 border-t">
                           <Calendar className="w-4 h-4" />
                           <span>Dernier don: {formatDate(donor.last_donation_date)}</span>
                         </div>
@@ -478,9 +478,9 @@ export default function DonateursPage() {
 
           {/* Pagination - Modern Design */}
           {pagination.totalPages > 1 && (
-            <Card className="border-2 border-border/50">
+            <Card className="border-2 border-gray-800/50">
               <div className="p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-400">
                   Affichage de <span className="font-semibold text-foreground">
                     {(pagination.page - 1) * pagination.pageSize + 1}
                   </span> à <span className="font-semibold text-foreground">
@@ -496,9 +496,9 @@ export default function DonateursPage() {
                   >
                     Précédent
                   </Button>
-                  <div className="px-4 py-2 bg-muted rounded-lg">
+                  <div className="px-4 py-2 bg-[#1C1C26] rounded-lg">
                     <span className="font-semibold">{pagination.page}</span>
-                    <span className="text-muted-foreground"> / {pagination.totalPages}</span>
+                    <span className="text-gray-400"> / {pagination.totalPages}</span>
                   </div>
                   <Button
                     variant="outline"

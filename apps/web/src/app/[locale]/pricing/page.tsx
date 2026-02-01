@@ -99,8 +99,8 @@ export default function PricingPage() {
           {/* Header */}
           <div className="mb-16 text-center">
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-foreground">Tarifs</h1>
-            <hr className="my-8 border-border mx-auto max-w-md" />
-            <p className="text-xl text-muted-foreground mt-6 max-w-3xl mx-auto">
+            <hr className="my-8 border-gray-800 mx-auto max-w-md" />
+            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto">
               Choisissez l'option qui vous convient pour participer à la masterclass ACT.
             </p>
           </div>
@@ -120,10 +120,10 @@ export default function PricingPage() {
                   </div>
                 )}
                 <h2 className="text-3xl font-black text-foreground mb-2">{option.name}</h2>
-                <p className="text-muted-foreground mb-6 text-sm">{option.description}</p>
+                <p className="text-gray-400 mb-6 text-sm">{option.description}</p>
                 <div className="mb-6">
                   <span className="text-5xl font-black text-foreground">{option.price}</span>
-                  <span className="text-xl text-muted-foreground ml-2">{option.currency}</span>
+                  <span className="text-xl text-gray-400 ml-2">{option.currency}</span>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {option.features.map((feature, index) => (
@@ -138,7 +138,7 @@ export default function PricingPage() {
                 </ul>
                 <a
                   href={option.id === 'group' ? 'mailto:contact@contextpsy.fr' : '/cities'}
-                  className="block w-full px-6 py-3 bg-foreground text-background font-bold text-center hover:bg-muted transition-colors"
+                  className="block w-full px-6 py-3 bg-foreground text-background font-bold text-center hover:bg-[#1C1C26] transition-colors"
                 >
                   {option.buttonText}
                 </a>
@@ -146,7 +146,7 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <hr className="my-16 border-border" />
+          <hr className="my-16 border-gray-800" />
 
           {/* FAQ Section */}
           <div className="max-w-3xl mx-auto">
@@ -155,7 +155,7 @@ export default function PricingPage() {
             </h2>
             <div className="space-y-6">
               {faqItems.map((item, index) => (
-                <div key={index} className="border-b border-border pb-6">
+                <div key={index} className="border-b border-gray-800 pb-6">
                   <h3 className="text-xl font-bold text-foreground mb-3">{item.question}</h3>
                   <p className="text-foreground leading-relaxed">{item.answer}</p>
                 </div>
@@ -165,12 +165,12 @@ export default function PricingPage() {
 
           {/* CTA Section */}
           <div className="text-center mt-16">
-            <p className="text-lg text-muted-foreground mb-6">
+            <p className="text-lg text-gray-400 mb-6">
               Des questions ? Contactez-nous pour plus d'informations.
             </p>
             <a
               href="mailto:contact@contextpsy.fr"
-              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-muted transition-colors"
+              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-[#1C1C26] transition-colors"
             >
               Nous contacter
             </a>

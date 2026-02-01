@@ -232,7 +232,7 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Code className="w-5 h-5 text-muted-foreground" />
+          <Code className="w-5 h-5 text-gray-400" />
           <h3 className="text-lg font-semibold text-foreground">Éditeur JSON</h3>
         </div>
         <div className="flex gap-2">
@@ -253,7 +253,7 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
             <div>
               <p className="font-medium">{error}</p>
               {isDirty && (
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-gray-400 mt-1">
                   Le JSON contient des erreurs. Corrigez-les avant de sauvegarder.
                 </p>
               )}
@@ -282,12 +282,12 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
           `}
           placeholder='{"primary_color": "#2563eb", "secondary_color": "#6366f1", ...}'
         />
-        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
+        <div className="absolute bottom-2 right-2 text-xs text-gray-400">
           {jsonValue.split('\n').length} lignes
         </div>
       </div>
 
-      <div className="text-sm text-muted-foreground">
+      <div className="text-sm text-gray-400">
         <p className="font-medium mb-1">Conseils :</p>
         <ul className="list-disc list-inside space-y-1">
           <li>Utilisez le bouton "Formater" pour formater automatiquement le JSON</li>

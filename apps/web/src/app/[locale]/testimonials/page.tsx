@@ -86,8 +86,8 @@ export default function TestimonialsPage() {
           {/* Header */}
           <div className="mb-16 text-center">
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-foreground">Témoignages</h1>
-            <hr className="my-8 border-border mx-auto max-w-md" />
-            <p className="text-xl text-muted-foreground mt-6 max-w-3xl mx-auto">
+            <hr className="my-8 border-gray-800 mx-auto max-w-md" />
+            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto">
               Découvrez ce que disent les participants de la masterclass ACT.
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function TestimonialsPage() {
           {/* Testimonial Carousel */}
           <div className="mb-12">
             {currentTestimonial && (
-              <div className="bg-muted border border-border p-8 md:p-12 relative">
+              <div className="bg-[#1C1C26] border border-gray-800 p-8 md:p-12 relative">
                 {/* Stars */}
                 <div className="flex items-center gap-1 mb-6">
                   {Array.from({ length: currentTestimonial.rating }).map((_, i) => (
@@ -114,14 +114,14 @@ export default function TestimonialsPage() {
 
                 {/* Author Info */}
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
-                    <span className="text-muted-foreground font-bold text-lg">
+                  <div className="w-16 h-16 bg-[#1C1C26] rounded-full flex items-center justify-center">
+                    <span className="text-gray-400 font-bold text-lg">
                       {currentTestimonial.name.charAt(0)}
                     </span>
                   </div>
                   <div>
                     <div className="font-bold text-foreground text-lg">{currentTestimonial.name}</div>
-                    <div className="text-muted-foreground text-sm">
+                    <div className="text-gray-400 text-sm">
                       {currentTestimonial.role} • {currentTestimonial.location}
                     </div>
                   </div>
@@ -130,14 +130,14 @@ export default function TestimonialsPage() {
                 {/* Navigation Arrows */}
                 <button
                   onClick={prevTestimonial}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-border hover:border-foreground transition-colors"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-gray-800 hover:border-foreground transition-colors"
                   aria-label="Témoignage précédent"
                 >
                   <ChevronLeft className="w-6 h-6 text-foreground" aria-hidden="true" />
                 </button>
                 <button
                   onClick={nextTestimonial}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-border hover:border-foreground transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-background border border-gray-800 hover:border-foreground transition-colors"
                   aria-label="Témoignage suivant"
                 >
                   <ChevronRight className="w-6 h-6 text-foreground" aria-hidden="true" />
@@ -153,7 +153,7 @@ export default function TestimonialsPage() {
                 key={index}
                 onClick={() => goToTestimonial(index)}
                 className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentIndex ? 'bg-foreground' : 'bg-muted'
+                  index === currentIndex ? 'bg-foreground' : 'bg-[#1C1C26]'
                 }`}
                 aria-label={`Aller au témoignage ${index + 1}`}
               />
@@ -161,7 +161,7 @@ export default function TestimonialsPage() {
           </div>
 
           {/* All Testimonials Grid */}
-          <hr className="my-16 border-border" />
+          <hr className="my-16 border-gray-800" />
 
           <div>
             <h2 className="text-4xl md:text-5xl font-black text-foreground mb-12 text-center">
@@ -171,7 +171,7 @@ export default function TestimonialsPage() {
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className="border border-border p-6 hover:border-foreground transition-colors"
+                  className="border border-gray-800 p-6 hover:border-foreground transition-colors"
                 >
                   <div className="flex items-center gap-1 mb-4">
                     {Array.from({ length: testimonial.rating }).map((_, i) => (
@@ -184,14 +184,14 @@ export default function TestimonialsPage() {
                   </div>
                   <p className="text-foreground mb-4 leading-relaxed">"{testimonial.text}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
-                      <span className="text-muted-foreground font-bold">
+                    <div className="w-12 h-12 bg-[#1C1C26] rounded-full flex items-center justify-center">
+                      <span className="text-gray-400 font-bold">
                         {testimonial.name.charAt(0)}
                       </span>
                     </div>
                     <div>
                       <div className="font-bold text-foreground">{testimonial.name}</div>
-                      <div className="text-muted-foreground text-sm">
+                      <div className="text-gray-400 text-sm">
                         {testimonial.role} • {testimonial.location}
                       </div>
                     </div>
@@ -204,12 +204,12 @@ export default function TestimonialsPage() {
           {/* CTA Section */}
           <div className="text-center mt-16">
             <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6">Rejoignez-les</h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
               Découvrez pourquoi tant de professionnels recommandent cette masterclass.
             </p>
             <a
               href="/cities"
-              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-muted transition-colors"
+              className="inline-block px-12 py-4 bg-foreground text-background font-bold text-lg hover:bg-[#1C1C26] transition-colors"
             >
               Réserver ma place
             </a>

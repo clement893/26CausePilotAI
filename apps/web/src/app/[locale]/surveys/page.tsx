@@ -140,7 +140,7 @@ export default function SurveysPage() {
         <div className="mt-8">
           {surveys.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">{t('no_surveys') || 'No surveys yet'}</p>
+              <p className="text-gray-400 mb-4">{t('no_surveys') || 'No surveys yet'}</p>
               <Button onClick={handleCreate}>
                 <Plus className="h-4 w-4 mr-2" />
                 {t('create_first_survey') || 'Create Your First Survey'}
@@ -156,9 +156,9 @@ export default function SurveysPage() {
                 >
                   <h3 className="font-semibold mb-2">{survey.name}</h3>
                   {survey.description && (
-                    <p className="text-sm text-muted-foreground mb-2">{survey.description}</p>
+                    <p className="text-sm text-gray-400 mb-2">{survey.description}</p>
                   )}
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <div className="flex items-center justify-between text-sm text-gray-400">
                     <span>
                       {survey.questions.length} {t('questions') || 'questions'}
                     </span>

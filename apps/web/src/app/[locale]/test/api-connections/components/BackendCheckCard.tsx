@@ -38,7 +38,7 @@ export function BackendCheckCard({ backendCheck, isLoading, onCheck }: BackendCh
                 <p className="font-medium">{backendCheck.error || 'Check failed'}</p>
                 {backendCheck.message && <p className="text-sm mt-1">{backendCheck.message}</p>}
                 {backendCheck.hint && (
-                  <p className="text-sm mt-1 text-muted-foreground">{backendCheck.hint}</p>
+                  <p className="text-sm mt-1 text-gray-400">{backendCheck.hint}</p>
                 )}
               </div>
             </Alert>
@@ -49,7 +49,7 @@ export function BackendCheckCard({ backendCheck, isLoading, onCheck }: BackendCh
                   <div className="text-2xl font-bold text-success-600">
                     {backendCheck.summary.registered}
                   </div>
-                  <div className="text-sm text-muted-foreground">✅ Registered</div>
+                  <div className="text-sm text-gray-400">✅ Registered</div>
                 </div>
               )}
               {backendCheck.summary.unregistered !== undefined && (
@@ -57,13 +57,13 @@ export function BackendCheckCard({ backendCheck, isLoading, onCheck }: BackendCh
                   <div className="text-2xl font-bold text-error-600">
                     {backendCheck.summary.unregistered}
                   </div>
-                  <div className="text-sm text-muted-foreground">❌ Unregistered</div>
+                  <div className="text-sm text-gray-400">❌ Unregistered</div>
                 </div>
               )}
               {backendCheck.summary.totalEndpoints !== undefined && (
                 <div className="text-center">
                   <div className="text-2xl font-bold">{backendCheck.summary.totalEndpoints}</div>
-                  <div className="text-sm text-muted-foreground">📊 Total Endpoints</div>
+                  <div className="text-sm text-gray-400">📊 Total Endpoints</div>
                 </div>
               )}
             </div>
@@ -76,7 +76,7 @@ export function BackendCheckCard({ backendCheck, isLoading, onCheck }: BackendCh
                 <Badge variant="info">{backendCheck.output.length} characters</Badge>
               </div>
               <pre
-                className="bg-muted p-4 rounded-lg text-xs overflow-auto max-h-96 border border-border"
+                className="bg-[#1C1C26] p-4 rounded-lg text-xs overflow-auto max-h-96 border border-gray-800"
                 role="log"
                 aria-label="Backend check detailed output"
               >

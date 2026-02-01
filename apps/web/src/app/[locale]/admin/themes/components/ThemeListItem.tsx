@@ -49,9 +49,9 @@ export function ThemeListItem({
           )}
         </div>
         {theme.description && (
-          <p className="text-sm text-muted-foreground mt-1">{theme.description}</p>
+          <p className="text-sm text-gray-400 mt-1">{theme.description}</p>
         )}
-        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+        <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
           <span>ID: {theme.id}</span>
           <span>•</span>
           <span>Créé le {formatDate(theme.created_at)}</span>

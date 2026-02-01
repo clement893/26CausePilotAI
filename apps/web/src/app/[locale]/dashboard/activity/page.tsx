@@ -144,7 +144,7 @@ export default function DashboardActivityPage() {
             {activities.length > 0 ? (
               <ActivityTimeline activities={activities} showUserInfo={true} groupByDate={true} />
             ) : (
-              <div className="text-center py-12 text-muted-foreground">
+              <div className="text-center py-12 text-gray-400">
                 <p>{t('empty') || 'No activity found'}</p>
               </div>
             )}
