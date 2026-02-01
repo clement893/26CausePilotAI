@@ -45,15 +45,15 @@ export function ApiError({
     >
       {children}
       {isNetworkError(appError) && (
-        <div className="mt-4 p-3 bg-warning-50 dark:bg-warning-900/20 rounded-lg">
-          <p className="text-sm text-warning-800 dark:text-warning-200">
+        <div className="mt-4 p-3 glass-effect bg-yellow-500/10 border border-yellow-500/50 rounded-lg">
+          <p className="text-sm text-yellow-400">
             Please check your internet connection and try again.
           </p>
         </div>
       )}
       {isServerError(appError) && (
-        <div className="mt-4 p-3 bg-error-50 dark:bg-error-900/20 rounded-lg">
-          <p className="text-sm text-error-800 dark:text-error-200">
+        <div className="mt-4 p-3 glass-effect bg-red-500/10 border border-red-500/50 rounded-lg">
+          <p className="text-sm text-red-400">
             Our servers are experiencing issues. Please try again later.
           </p>
         </div>

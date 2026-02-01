@@ -44,14 +44,14 @@ const defaultPreferences: PreferencesData = {
   return (
     <div className={className}>
       {' '}
-      <Card title="Configure Your Preferences" className="max-w-2xl mx-auto">
+      <Card variant="glass" title="Configure Your Preferences" className="max-w-2xl mx-auto border border-gray-800">
         {' '}
         <form onSubmit={handleSubmit} className="space-y-6">
           {' '}
           {/* Language */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Language{' '}
             </label>{' '}
@@ -64,12 +64,13 @@ const defaultPreferences: PreferencesData = {
               ]}
               value={formData.language}
               onChange={(e) => setFormData({ ...formData, language: e.target.value })}
+              className="border-gray-700 bg-[#1C1C26] text-white"
             />{' '}
           </div>{' '}
           {/* Timezone */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Timezone{' '}
             </label>{' '}
@@ -84,12 +85,13 @@ const defaultPreferences: PreferencesData = {
               ]}
               value={formData.timezone}
               onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
+              className="border-gray-700 bg-[#1C1C26] text-white"
             />{' '}
           </div>{' '}
           {/* Theme */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2"> Theme </label>{' '}
+            <label className="block text-sm font-medium text-white mb-2"> Theme </label>{' '}
             <Select
               options={[
                 { label: 'System Default', value: 'system' },
@@ -100,15 +102,16 @@ const defaultPreferences: PreferencesData = {
               onChange={(e) =>
                 setFormData({ ...formData, theme: e.target.value as 'light' | 'dark' | 'system' })
               }
+              className="border-gray-700 bg-[#1C1C26] text-white"
             />{' '}
           </div>{' '}
           {/* Email Notifications */}{' '}
-          <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+          <div className="flex items-center justify-between p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg">
             {' '}
             <div>
               {' '}
-              <h4 className="font-medium text-foreground">Email Notifications</h4>{' '}
-              <p className="text-sm text-muted-foreground">
+              <h4 className="font-medium text-white">Email Notifications</h4>{' '}
+              <p className="text-sm text-gray-400">
                 {' '}
                 Receive email notifications for important updates{' '}
               </p>{' '}
@@ -119,12 +122,12 @@ const defaultPreferences: PreferencesData = {
             />{' '}
           </div>{' '}
           {/* Marketing Emails */}{' '}
-          <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+          <div className="flex items-center justify-between p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg">
             {' '}
             <div>
               {' '}
-              <h4 className="font-medium text-foreground">Marketing Emails</h4>{' '}
-              <p className="text-sm text-muted-foreground">
+              <h4 className="font-medium text-white">Marketing Emails</h4>{' '}
+              <p className="text-sm text-gray-400">
                 {' '}
                 Receive emails about new features and promotions{' '}
               </p>{' '}
@@ -135,12 +138,12 @@ const defaultPreferences: PreferencesData = {
             />{' '}
           </div>{' '}
           {/* Weekly Digest */}{' '}
-          <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+          <div className="flex items-center justify-between p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg">
             {' '}
             <div>
               {' '}
-              <h4 className="font-medium text-foreground">Weekly Digest</h4>{' '}
-              <p className="text-sm text-muted-foreground">
+              <h4 className="font-medium text-white">Weekly Digest</h4>{' '}
+              <p className="text-sm text-gray-400">
                 {' '}
                 Receive a weekly summary of your activity{' '}
               </p>{' '}
@@ -156,7 +159,7 @@ const defaultPreferences: PreferencesData = {
             <div>
               {' '}
               {onPrevious && (
-                <Button type="button" variant="ghost" onClick={onPrevious}>
+                <Button type="button" variant="ghost" onClick={onPrevious} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                   {' '}
                   Previous{' '}
                 </Button>
@@ -165,12 +168,12 @@ const defaultPreferences: PreferencesData = {
             <div className="flex gap-4">
               {' '}
               {onSkip && (
-                <Button type="button" variant="ghost" onClick={onSkip}>
+                <Button type="button" variant="ghost" onClick={onSkip} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                   {' '}
                   Skip{' '}
                 </Button>
               )}{' '}
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="gradient">
                 {' '}
                 Continue{' '}
               </Button>{' '}

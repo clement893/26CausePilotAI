@@ -71,7 +71,7 @@ export function ERPNavigation({ className }: ERPNavigationProps) {
       {Object.entries(itemsByModule).map(([module, items]) => (
         <div key={module}>
           {module !== 'other' && (
-            <h3 className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            <h3 className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               {module === 'crm'
                 ? 'CRM'
                 : module === 'orders'
@@ -98,8 +98,8 @@ export function ERPNavigation({ className }: ERPNavigationProps) {
                     className={clsx(
                       'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors',
                       isActive
-                        ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300'
-                        : 'text-foreground hover:bg-muted'
+                        ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/50 text-white'
+                        : 'text-gray-300 hover:bg-[#252532]'
                     )}
                   >
                     {item.icon && (
@@ -110,7 +110,7 @@ export function ERPNavigation({ className }: ERPNavigationProps) {
                     )}
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="ml-auto bg-primary-500 text-background text-xs px-2 py-1 rounded-full">
+                      <span className="ml-auto bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 py-1 rounded-full">
                         {item.badge}
                       </span>
                     )}
@@ -128,8 +128,8 @@ export function ERPNavigation({ className }: ERPNavigationProps) {
                             className={clsx(
                               'flex items-center gap-2 px-3 py-2 rounded text-sm transition-colors',
                               isChildActive
-                                ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                                : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted'
+                                ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-400 border-l-2 border-blue-500'
+                                : 'text-gray-400 hover:bg-[#252532]'
                             )}
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-current" />

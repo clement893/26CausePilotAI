@@ -15,16 +15,16 @@ import { useApi } from '@/hooks/useApi';
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {' '}
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="h-24 bg-muted rounded-lg animate-pulse" />
+            <div key={i} className="h-24 bg-[#1C1C26] border border-gray-800 rounded-lg animate-pulse" />
           ))}{' '}
         </div>
       );
     }
     if (error) {
       return (
-        <Card title="Error">
+        <Card variant="glass" title="Error" className="border border-gray-800">
           {' '}
-          <p className="text-error-600 dark:text-error-400">
+          <p className="text-red-400">
             {' '}
             Failed to load dashboard statistics. Please try again later.{' '}
           </p>{' '}
@@ -64,44 +64,44 @@ import { useApi } from '@/hooks/useApi';
         {/* Financial Overview */}{' '}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {' '}
-          <Card title="Financial Overview">
+          <Card variant="glass" title="Financial Overview" className="border border-gray-800">
             {' '}
             <div className="space-y-4">
               {' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Total Spent</p>{' '}
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm text-gray-400">Total Spent</p>{' '}
+                <p className="text-2xl font-bold text-white">
                   {' '}
                   ${parseFloat(stats.total_spent).toFixed(2)}{' '}
                 </p>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Pending Amount</p>{' '}
-                <p className="text-2xl font-bold text-warning-600 dark:text-warning-400">
+                <p className="text-sm text-gray-400">Pending Amount</p>{' '}
+                <p className="text-2xl font-bold text-yellow-400">
                   {' '}
                   ${parseFloat(stats.pending_amount).toFixed(2)}{' '}
                 </p>{' '}
               </div>{' '}
             </div>{' '}
           </Card>{' '}
-          <Card title="Projects & Invoices">
+          <Card variant="glass" title="Projects & Invoices" className="border border-gray-800">
             {' '}
             <div className="space-y-4">
               {' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Active Projects</p>{' '}
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm text-gray-400">Active Projects</p>{' '}
+                <p className="text-2xl font-bold text-white">
                   {' '}
                   {stats.active_projects} / {stats.total_projects}{' '}
                 </p>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Paid Invoices</p>{' '}
-                <p className="text-2xl font-bold text-success-600 dark:text-success-400">
+                <p className="text-sm text-gray-400">Paid Invoices</p>{' '}
+                <p className="text-2xl font-bold text-green-400">
                   {' '}
                   {stats.paid_invoices} / {stats.total_invoices}{' '}
                 </p>{' '}

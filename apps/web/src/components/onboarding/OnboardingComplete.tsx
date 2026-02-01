@@ -21,17 +21,17 @@ export interface OnboardingCompleteProps {
   return (
     <div className={className}>
       {' '}
-      <Card className="max-w-2xl mx-auto text-center">
+      <Card variant="glass" className="max-w-2xl mx-auto text-center border border-gray-800">
         {' '}
         <div className="mb-6">
           {' '}
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-success-100 dark:bg-success-900/40 mb-4">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full glass-effect bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/50 mb-4">
             {' '}
-            <CheckCircle className="w-10 h-10 text-success-600 dark:text-success-400" />{' '}
+            <CheckCircle className="w-10 h-10 text-green-400" />{' '}
           </div>{' '}
         </div>{' '}
-        <h1 className="text-3xl font-bold text-foreground mb-4"> You're All Set! </h1>{' '}
-        <p className="text-lg text-muted-foreground mb-8">
+        <h1 className="text-3xl font-bold text-white mb-4"> You're All Set! </h1>{' '}
+        <p className="text-lg text-gray-400 mb-8">
           {' '}
           Your account has been set up successfully. You're ready to start using the platform.{' '}
         </p>{' '}
@@ -39,35 +39,35 @@ export interface OnboardingCompleteProps {
           {' '}
           <div className="flex items-start gap-3">
             {' '}
-            <CheckCircle className="w-5 h-5 text-success-600 dark:text-success-400 mt-0.5 flex-shrink-0" />{' '}
+            <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />{' '}
             <div>
               {' '}
-              <h3 className="font-medium text-foreground">Profile configured</h3>{' '}
-              <p className="text-sm text-muted-foreground">Your profile is ready</p>{' '}
+              <h3 className="font-medium text-white">Profile configured</h3>{' '}
+              <p className="text-sm text-gray-400">Your profile is ready</p>{' '}
             </div>{' '}
           </div>{' '}
           <div className="flex items-start gap-3">
             {' '}
-            <CheckCircle className="w-5 h-5 text-success-600 dark:text-success-400 mt-0.5 flex-shrink-0" />{' '}
+            <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />{' '}
             <div>
               {' '}
-              <h3 className="font-medium text-foreground">Preferences saved</h3>{' '}
-              <p className="text-sm text-muted-foreground">Your settings are configured</p>{' '}
+              <h3 className="font-medium text-white">Preferences saved</h3>{' '}
+              <p className="text-sm text-gray-400">Your settings are configured</p>{' '}
             </div>{' '}
           </div>{' '}
           <div className="flex items-start gap-3">
             {' '}
-            <CheckCircle className="w-5 h-5 text-success-600 dark:text-success-400 mt-0.5 flex-shrink-0" />{' '}
+            <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />{' '}
             <div>
               {' '}
-              <h3 className="font-medium text-foreground">Ready to go</h3>{' '}
-              <p className="text-sm text-muted-foreground">Start exploring the platform</p>{' '}
+              <h3 className="font-medium text-white">Ready to go</h3>{' '}
+              <p className="text-sm text-gray-400">Start exploring the platform</p>{' '}
             </div>{' '}
           </div>{' '}
         </div>{' '}
         <div className="flex gap-4 justify-center">
           {' '}
-          <Button variant="primary" onClick={handleFinish}>
+          <Button variant="gradient" onClick={handleFinish}>
             {' '}
             Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />{' '}
           </Button>{' '}

@@ -120,11 +120,11 @@ export default function ErrorReporting({ onSubmit, className }: ErrorReportingPr
   };
 
   return (
-    <Card className={clsx('p-6', className)}>
+    <Card variant="glass" className={clsx('p-6 border border-gray-800', className)}>
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Report an Error</h3>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h3 className="text-lg font-semibold text-white">Report an Error</h3>
+          <p className="text-sm text-gray-400 mt-1">
             Help us improve by reporting bugs or issues you've encountered
           </p>
         </div>
@@ -142,22 +142,26 @@ export default function ErrorReporting({ onSubmit, className }: ErrorReportingPr
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Title"
-            placeholder="Brief description of the issue"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            required
-          />
+          <div className="form-input-glow">
+            <Input
+              label="Title"
+              placeholder="Brief description of the issue"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              required
+            />
+          </div>
 
-          <Textarea
-            label="Description"
-            placeholder="Detailed description of what went wrong"
-            rows={4}
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            required
-          />
+          <div className="form-input-glow">
+            <Textarea
+              label="Description"
+              placeholder="Detailed description of what went wrong"
+              rows={4}
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              required
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Select
@@ -173,6 +177,7 @@ export default function ErrorReporting({ onSubmit, className }: ErrorReportingPr
                 { value: 'critical', label: 'Critical - Blocks functionality' },
               ]}
               required
+              className="border-gray-700 bg-[#1C1C26] text-white"
             />
 
             <Select
@@ -188,38 +193,45 @@ export default function ErrorReporting({ onSubmit, className }: ErrorReportingPr
                 { value: 'other', label: 'Other' },
               ]}
               required
+              className="border-gray-700 bg-[#1C1C26] text-white"
             />
           </div>
 
-          <Textarea
-            label="Steps to Reproduce"
-            placeholder="1. Go to...\n2. Click on...\n3. See error"
-            rows={3}
-            value={formData.stepsToReproduce}
-            onChange={(e) => setFormData({ ...formData, stepsToReproduce: e.target.value })}
-            helperText="List the steps that lead to this issue"
-          />
+          <div className="form-input-glow">
+            <Textarea
+              label="Steps to Reproduce"
+              placeholder="1. Go to...\n2. Click on...\n3. See error"
+              rows={3}
+              value={formData.stepsToReproduce}
+              onChange={(e) => setFormData({ ...formData, stepsToReproduce: e.target.value })}
+              helperText="List the steps that lead to this issue"
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Textarea
-              label="Expected Behavior"
-              placeholder="What should have happened"
-              rows={2}
-              value={formData.expectedBehavior}
-              onChange={(e) => setFormData({ ...formData, expectedBehavior: e.target.value })}
-            />
+            <div className="form-input-glow">
+              <Textarea
+                label="Expected Behavior"
+                placeholder="What should have happened"
+                rows={2}
+                value={formData.expectedBehavior}
+                onChange={(e) => setFormData({ ...formData, expectedBehavior: e.target.value })}
+              />
+            </div>
 
-            <Textarea
-              label="Actual Behavior"
-              placeholder="What actually happened"
-              rows={2}
-              value={formData.actualBehavior}
-              onChange={(e) => setFormData({ ...formData, actualBehavior: e.target.value })}
-            />
+            <div className="form-input-glow">
+              <Textarea
+                label="Actual Behavior"
+                placeholder="What actually happened"
+                rows={2}
+                value={formData.actualBehavior}
+                onChange={(e) => setFormData({ ...formData, actualBehavior: e.target.value })}
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-foreground">Additional Information</label>
+            <label className="block text-sm font-medium text-white">Additional Information</label>
             <div className="space-y-2">
               <Checkbox
                 label="Include screenshot (if available)"
@@ -237,7 +249,7 @@ export default function ErrorReporting({ onSubmit, className }: ErrorReportingPr
           <div className="flex gap-3 pt-4">
             <Button
               type="submit"
-              variant="primary"
+              variant="gradient"
               loading={isSubmitting}
               disabled={!formData.title || !formData.description || !formData.category}
             >
@@ -245,7 +257,7 @@ export default function ErrorReporting({ onSubmit, className }: ErrorReportingPr
             </Button>
             <Button
               type="button"
-              variant="secondary"
+              variant="outline"
               onClick={() => {
                 setFormData({
                   title: '',
@@ -263,6 +275,7 @@ export default function ErrorReporting({ onSubmit, className }: ErrorReportingPr
                 setSubmitError(null);
                 setSubmitSuccess(false);
               }}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532]"
             >
               Reset
             </Button>

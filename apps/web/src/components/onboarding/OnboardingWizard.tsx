@@ -137,19 +137,19 @@ export function OnboardingWizard({
 
   return (
     <div
-      className={`fixed inset-0 bg-foreground/50 flex items-center justify-center z-50 ${className}`}
+      className={`fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 ${className}`}
     >
-      <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <Card variant="glass" className="w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-800">
         <div className="flex items-center justify-between mb-4">
           <div className="flex-1">
-            <h2 className="text-xl font-semibold">Welcome! Let's get started</h2>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h2 className="text-xl font-semibold text-white">Welcome! Let's get started</h2>
+            <p className="text-sm text-gray-400 mt-1">
               Step {currentStepIndex + 1} of {steps.length}
             </p>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-muted dark:hover:bg-muted rounded"
+            className="p-2 hover:bg-[#252532] rounded text-gray-400 hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>
@@ -157,9 +157,9 @@ export function OnboardingWizard({
 
         {/* Progress bar */}
         <div className="mb-6">
-          <div className="h-2 bg-muted rounded-full overflow-hidden">
+          <div className="h-2 bg-[#1C1C26] border border-gray-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-primary-500 transition-all duration-300"
+              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -167,17 +167,17 @@ export function OnboardingWizard({
 
         {/* Step content */}
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-2">{currentStep.title}</h3>
+          <h3 className="text-lg font-semibold mb-2 text-white">{currentStep.title}</h3>
           {currentStep.description && (
-            <p className="text-muted-foreground mb-4">
+            <p className="text-gray-400 mb-4">
               {currentStep.description}
             </p>
           )}
 
           {/* Step-specific content based on step_type */}
           {currentStep.step_type === 'info' && (
-            <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
-              <p className="text-sm">
+            <div className="p-4 glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/50 rounded-lg">
+              <p className="text-sm text-white">
                 This is an informational step. Click "Next" to continue.
               </p>
             </div>
@@ -185,7 +185,7 @@ export function OnboardingWizard({
 
           {currentStep.step_type === 'form' && (
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 Form content would be rendered here based on step_data
                 configuration.
               </p>
@@ -197,7 +197,7 @@ export function OnboardingWizard({
         <div className="flex items-center justify-between">
           <div>
             {!currentStep.required && (
-              <Button variant="outline" onClick={handleSkip}>
+              <Button variant="outline" onClick={handleSkip} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
                 Skip
               </Button>
             )}
@@ -207,13 +207,14 @@ export function OnboardingWizard({
               <Button
                 variant="outline"
                 onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+                className="border-gray-700 text-gray-300 hover:bg-[#252532]"
               >
                 <ChevronLeft className="h-4 w-4 mr-2" />
                 Previous
               </Button>
             )}
             <Button
-              variant="primary"
+              variant="gradient"
               onClick={handleComplete}
               disabled={isCompleting}
             >

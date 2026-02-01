@@ -41,11 +41,11 @@ export default function SubscriptionCard({
     return labels[status] || status;
   };
   return (
-    <Card variant="glass" className="mb-8 border border-gray-800 dark:border-border hover-lift">
+    <Card variant="glass" className="mb-8 border border-gray-800 hover-lift">
       <div className="p-6">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-white dark:text-foreground mb-2">
+            <h2 className="text-2xl font-bold text-white mb-2">
               {subscription.plan_name}
             </h2>
             <Badge variant={getStatusBadge(subscription.status)}>
@@ -53,23 +53,23 @@ export default function SubscriptionCard({
             </Badge>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-white dark:text-foreground">{subscription.amount}€</div>
-            <div className="text-sm text-gray-400 dark:text-muted-foreground">
+            <div className="text-3xl font-bold text-white">{subscription.amount}€</div>
+            <div className="text-sm text-gray-400">
               /{subscription.billing_period === 'month' ? 'month' : 'year'}
             </div>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <div className="text-sm text-gray-400 dark:text-muted-foreground">Current Period</div>
-            <div className="text-lg font-semibold text-white dark:text-foreground">
+            <div className="text-sm text-gray-400">Current Period</div>
+            <div className="text-lg font-semibold text-white">
               {new Date(subscription.current_period_start).toLocaleDateString()} -{' '}
               {new Date(subscription.current_period_end).toLocaleDateString()}
             </div>
           </div>
           <div>
-            <div className="text-sm text-gray-400 dark:text-muted-foreground">Next Payment</div>
-            <div className="text-lg font-semibold text-white dark:text-foreground">
+            <div className="text-sm text-gray-400">Next Payment</div>
+            <div className="text-lg font-semibold text-white">
               {new Date(subscription.current_period_end).toLocaleDateString()}
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function SubscriptionCard({
             <Button
               variant="outline"
               onClick={onCancel}
-              className="border-red-500 dark:border-error-500 text-red-400 dark:text-error-600 hover:bg-red-500/20 dark:hover:bg-error-50"
+              className="border-red-500 text-red-400 hover:bg-red-500/20"
             >
               Cancel Subscription
             </Button>
@@ -94,7 +94,7 @@ export default function SubscriptionCard({
             <Button variant="gradient" onClick={onResume}>Resume Subscription</Button>
           )}
           <Link href="/pricing">
-            <Button variant="outline" className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+            <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-[#1C1C26]">
               Change Plan
             </Button>
           </Link>

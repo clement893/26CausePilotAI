@@ -95,20 +95,20 @@ export function ErrorDisplay({
   const userMessage = getUserFriendlyMessage(errorCode, errorMessage, errorDetails);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-background to-secondary-50 dark:from-muted dark:via-muted dark:to-muted px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0F] px-4">
       <Container>
-        <Card className="max-w-lg w-full mx-auto text-center">
+        <Card variant="glass" className="max-w-lg w-full mx-auto text-center border border-gray-800">
           <div className="p-8 md:p-12">
             <div className="mb-6">
-              <div className="text-7xl md:text-8xl font-bold text-error-600 dark:text-error-400 mb-4">
+              <div className="text-7xl md:text-8xl font-bold text-red-400 mb-4">
                 {errorStatusCode ?? '!'}
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">{errorTitle}</h1>
-              <p className="text-base md:text-lg text-muted-foreground mb-2 leading-relaxed">
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">{errorTitle}</h1>
+              <p className="text-base md:text-lg text-gray-400 mb-2 leading-relaxed">
                 {userMessage}
               </p>
               {isRetryable && autoRetry && countdown !== null && (
-                <p className="text-sm text-muted-foreground mt-3">
+                <p className="text-sm text-gray-400 mt-3">
                   Nouvelle tentative automatique dans {countdown} seconde
                   {countdown !== 1 ? 's' : ''}...
                 </p>
@@ -122,9 +122,9 @@ export function ErrorDisplay({
             )}
 
             {showDetails && errorDetails && Object.keys(errorDetails).length > 0 && (
-              <div className="mb-6 p-4 bg-muted rounded-lg text-left">
-                <h3 className="text-sm font-semibold text-foreground mb-2">Détails techniques:</h3>
-                <pre className="text-xs text-muted-foreground overflow-auto max-h-48">
+              <div className="mb-6 p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg text-left">
+                <h3 className="text-sm font-semibold text-white mb-2">Détails techniques:</h3>
+                <pre className="text-xs text-gray-300 overflow-auto max-h-48">
                   {JSON.stringify(errorDetails, null, 2)}
                 </pre>
               </div>
@@ -134,7 +134,7 @@ export function ErrorDisplay({
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               {onRetry && isRetryable && !autoRetry && (
-                <Button onClick={onRetry} variant="primary" className="w-full sm:w-auto">
+                <Button onClick={onRetry} variant="gradient" className="w-full sm:w-auto">
                   Réessayer
                 </Button>
               )}
@@ -145,7 +145,7 @@ export function ErrorDisplay({
                     setCountdown(null);
                     onRetry();
                   }}
-                  variant="primary"
+                  variant="gradient"
                   disabled={countdown === 0}
                   className="w-full sm:w-auto"
                 >
@@ -155,7 +155,7 @@ export function ErrorDisplay({
               )}
 
               {onReset && (
-                <Button onClick={onReset} variant="secondary" className="w-full sm:w-auto">
+                <Button onClick={onReset} variant="outline" className="w-full sm:w-auto border-gray-700 text-gray-300 hover:bg-[#252532]">
                   Retour
                 </Button>
               )}
@@ -163,7 +163,7 @@ export function ErrorDisplay({
               {!onRetry && !onReset && (
                 <Button
                   onClick={() => (window.location.href = '/')}
-                  variant="primary"
+                  variant="gradient"
                   className="w-full sm:w-auto"
                 >
                   Retour à l'accueil

@@ -204,14 +204,14 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
           <Badge variant="default">{field.type}</Badge>
-          <span className="text-sm font-medium text-foreground">{field.label || field.name}</span>
-          {field.required && <span className="text-xs text-error-500">*</span>}
+          <span className="text-sm font-medium text-white">{field.label || field.name}</span>
+          {field.required && <span className="text-xs text-red-400">*</span>}
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={() => handleEditField(field)}>
+          <Button variant="ghost" size="sm" onClick={() => handleEditField(field)} className="text-gray-400 hover:bg-[#252532] hover:text-white">
             <Settings className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => handleDeleteField(field.id)}>
+          <Button variant="ghost" size="sm" onClick={() => handleDeleteField(field.id)} className="text-gray-400 hover:bg-red-500/20 hover:text-red-400">
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
@@ -224,7 +224,7 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Editor */}
         <div className="lg:col-span-2 space-y-4">
-          <Card title="Form Fields">
+          <Card variant="glass" title="Form Fields" className="border border-gray-800">
             {error && (
               <div className="mb-4">
                 <Alert variant="error" onClose={() => setError(null)}>
@@ -235,36 +235,40 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
 
             <div className="mb-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Form Name *
                 </label>
-                <Input
-                  value={currentForm.name}
-                  onChange={(e) =>
-                    setCurrentForm({
-                      ...currentForm,
-                      name: e.target.value,
-                    })
-                  }
-                  placeholder="Contact Form"
-                />
+                <div className="form-input-glow">
+                  <Input
+                    value={currentForm.name}
+                    onChange={(e) =>
+                      setCurrentForm({
+                        ...currentForm,
+                        name: e.target.value,
+                      })
+                    }
+                    placeholder="Contact Form"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Description
                 </label>
-                <textarea
-                  value={currentForm.description || ''}
-                  onChange={(e) =>
-                    setCurrentForm({
-                      ...currentForm,
-                      description: e.target.value,
-                    })
-                  }
-                  placeholder="Form description"
-                  rows={2}
-                  className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
+                <div className="form-input-glow">
+                  <textarea
+                    value={currentForm.description || ''}
+                    onChange={(e) =>
+                      setCurrentForm({
+                        ...currentForm,
+                        description: e.target.value,
+                      })
+                    }
+                    placeholder="Form description"
+                    rows={2}
+                    className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
               </div>
             </div>
 
@@ -282,6 +286,7 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
                   });
                   setIsAddModalOpen(true);
                 }}
+                className="border-gray-700 text-gray-300 hover:bg-[#252532]"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Field
@@ -289,7 +294,7 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
             </div>
 
             {currentForm.fields.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
+              <div className="text-center py-12 text-gray-400">
                 <p>No fields yet. Add a field to get started.</p>
               </div>
             ) : (
@@ -300,45 +305,49 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
 
         {/* Sidebar */}
         <div className="space-y-4">
-          <Card title="Form Settings">
+          <Card variant="glass" title="Form Settings" className="border border-gray-800">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Submit Button Text
                 </label>
-                <Input
-                  value={currentForm.submitButtonText || 'Submit'}
-                  onChange={(e) =>
-                    setCurrentForm({
-                      ...currentForm,
-                      submitButtonText: e.target.value,
-                    })
-                  }
-                  placeholder="Submit"
-                />
+                <div className="form-input-glow">
+                  <Input
+                    value={currentForm.submitButtonText || 'Submit'}
+                    onChange={(e) =>
+                      setCurrentForm({
+                        ...currentForm,
+                        submitButtonText: e.target.value,
+                      })
+                    }
+                    placeholder="Submit"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Success Message
                 </label>
-                <textarea
-                  value={currentForm.successMessage || ''}
-                  onChange={(e) =>
-                    setCurrentForm({
-                      ...currentForm,
-                      successMessage: e.target.value,
-                    })
-                  }
-                  placeholder="Thank you for your submission!"
-                  rows={3}
-                  className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
+                <div className="form-input-glow">
+                  <textarea
+                    value={currentForm.successMessage || ''}
+                    onChange={(e) =>
+                      setCurrentForm({
+                        ...currentForm,
+                        successMessage: e.target.value,
+                      })
+                    }
+                    placeholder="Thank you for your submission!"
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
               </div>
             </div>
           </Card>
 
-          <Card title="Actions">
-            <Button variant="primary" onClick={handleSave} disabled={isSaving} className="w-full">
+          <Card variant="glass" title="Actions" className="border border-gray-800">
+            <Button variant="gradient" onClick={handleSave} disabled={isSaving} className="w-full">
               <Save className="w-4 h-4 mr-2" />
               {isSaving ? 'Saving...' : 'Save Form'}
             </Button>
@@ -361,10 +370,11 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
           });
         }}
         title={editingField ? 'Edit Field' : 'Add Field'}
+        className="bg-black/70 backdrop-blur-sm"
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Field Type *</label>
+            <label className="block text-sm font-medium text-white mb-2">Field Type *</label>
             <Select
               options={fieldTypes}
               value={newField.type}
@@ -374,64 +384,73 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
                   type: e.target.value as FormFieldConfig['type'],
                 })
               }
+              className="border-gray-700 bg-[#1C1C26] text-white"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Label *</label>
-            <Input
-              value={newField.label}
-              onChange={(e) => setNewField({ ...newField, label: e.target.value })}
-              placeholder="Field Label"
-            />
+            <label className="block text-sm font-medium text-white mb-2">Label *</label>
+            <div className="form-input-glow">
+              <Input
+                value={newField.label}
+                onChange={(e) => setNewField({ ...newField, label: e.target.value })}
+                placeholder="Field Label"
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Name (auto-generated from label)
             </label>
-            <Input
-              value={newField.name}
-              onChange={(e) => setNewField({ ...newField, name: e.target.value })}
-              placeholder="field_name"
-            />
+            <div className="form-input-glow">
+              <Input
+                value={newField.name}
+                onChange={(e) => setNewField({ ...newField, name: e.target.value })}
+                placeholder="field_name"
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Placeholder</label>
-            <Input
-              value={newField.placeholder || ''}
-              onChange={(e) => setNewField({ ...newField, placeholder: e.target.value })}
-              placeholder="Enter text..."
-            />
+            <label className="block text-sm font-medium text-white mb-2">Placeholder</label>
+            <div className="form-input-glow">
+              <Input
+                value={newField.placeholder || ''}
+                onChange={(e) => setNewField({ ...newField, placeholder: e.target.value })}
+                placeholder="Enter text..."
+              />
+            </div>
           </div>
 
           {(newField.type === 'select' || newField.type === 'radio') && (
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Options (one per line)
               </label>
-              <textarea
-                value={
-                  newField.options?.map((o) => `${o?.label || ''}:${o?.value || ''}`).join('\n') ||
-                  ''
-                }
-                onChange={(e) => {
-                  const options = e.target.value
-                    .split('\n')
-                    .filter((line) => line.trim())
-                    .map((line) => {
-                      const [label, value] = line.split(':');
-                      const trimmedLabel = label?.trim() || '';
-                      const trimmedValue = value?.trim() || trimmedLabel;
-                      return { label: trimmedLabel, value: trimmedValue };
-                    });
-                  setNewField({ ...newField, options });
-                }}
-                placeholder="Option 1:value1\nOption 2:value2"
-                rows={4}
-                className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
+              <div className="form-input-glow">
+                <textarea
+                  value={
+                    newField.options?.map((o) => `${o?.label || ''}:${o?.value || ''}`).join('\n') ||
+                    ''
+                  }
+                  onChange={(e) => {
+                    const options = e.target.value
+                      .split('\n')
+                      .filter((line) => line.trim())
+                      .map((line) => {
+                        const [label, value] = line.split(':');
+                        const trimmedLabel = label?.trim() || '';
+                        const trimmedValue = value?.trim() || trimmedLabel;
+                        return { label: trimmedLabel, value: trimmedValue };
+                      });
+                    setNewField({ ...newField, options });
+                  }}
+                  placeholder="Option 1:value1\nOption 2:value2"
+                  rows={4}
+                  className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
             </div>
           )}
 
@@ -440,9 +459,9 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
               type="checkbox"
               checked={newField.required || false}
               onChange={(e) => setNewField({ ...newField, required: e.target.checked })}
-              className="w-4 h-4 text-primary-600 border-border rounded focus:ring-primary-500"
+              className="w-4 h-4 text-primary-600 border-gray-700 bg-[#1C1C26] rounded focus:ring-primary-500"
             />
-            <label className="ml-2 text-sm text-foreground">Required field</label>
+            <label className="ml-2 text-sm text-white">Required field</label>
           </div>
 
           <div className="flex justify-end gap-2">
@@ -459,11 +478,12 @@ export default function CMSFormBuilder({ form, onSave, className }: CMSFormBuild
                   required: false,
                 });
               }}
+              className="text-gray-400 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
             <Button
-              variant="primary"
+              variant="gradient"
               onClick={editingField ? handleUpdateField : handleAddField}
               disabled={!newField.label}
             >

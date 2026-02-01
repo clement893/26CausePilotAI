@@ -123,12 +123,12 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // Default error UI
       return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-muted">
-          <Card className="max-w-2xl w-full">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-[#0A0A0F]">
+          <Card variant="glass" className="max-w-2xl w-full border border-gray-800">
             <div className="space-y-4">
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Something went wrong</h1>
-                <p className="text-muted-foreground mt-2">
+                <h1 className="text-2xl font-bold text-white">Something went wrong</h1>
+                <p className="text-gray-400 mt-2">
                   We're sorry, but something unexpected happened. Our team has been notified.
                 </p>
               </div>
@@ -136,14 +136,14 @@ export class ErrorBoundary extends Component<Props, State> {
               {this.state.eventId && <Alert variant="info">Error ID: {this.state.eventId}</Alert>}
 
               {this.props.showDetails && this.state.error && (
-                <div className="bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded-lg p-4">
-                  <h3 className="text-sm font-semibold text-error-900 dark:text-error-100 mb-2">
+                <div className="glass-effect bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-red-400 mb-2">
                     Error Details
                   </h3>
-                  <pre className="text-xs text-error-800 dark:text-error-200 overflow-auto">
+                  <pre className="text-xs text-red-300 overflow-auto">
                     {this.state.error.toString()}
                     {this.state.errorInfo?.componentStack && (
-                      <div className="mt-2 pt-2 border-t border-error-200 dark:border-error-800">
+                      <div className="mt-2 pt-2 border-t border-red-500/50">
                         {this.state.errorInfo.componentStack}
                       </div>
                     )}
@@ -152,10 +152,10 @@ export class ErrorBoundary extends Component<Props, State> {
               )}
 
               <div className="flex gap-3 pt-4">
-                <Button variant="primary" onClick={this.handleReset}>
+                <Button variant="gradient" onClick={this.handleReset}>
                   Try Again
                 </Button>
-                <Button variant="secondary" onClick={this.handleReload}>
+                <Button variant="outline" onClick={this.handleReload} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
                   Reload Page
                 </Button>
               </div>

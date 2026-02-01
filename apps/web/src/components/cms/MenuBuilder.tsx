@@ -125,9 +125,9 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
     content: (
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-foreground">{item.label}</span>
-          <span className="text-xs text-muted-foreground">{item.url}</span>
-          {item.target === '_blank' && <ExternalLink className="w-3 h-3 text-muted-foreground" />}
+          <span className="text-sm font-medium text-white">{item.label}</span>
+          <span className="text-xs text-gray-400">{item.url}</span>
+          {item.target === '_blank' && <ExternalLink className="w-3 h-3 text-gray-400" />}
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -137,10 +137,11 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
               // Edit functionality - implement when menu editing is needed
               logger.log('Edit item', item);
             }}
+            className="text-gray-400 hover:bg-[#252532] hover:text-white"
           >
             <Edit className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => handleDeleteItem(item.id)}>
+          <Button variant="ghost" size="sm" onClick={() => handleDeleteItem(item.id)} className="text-gray-400 hover:bg-red-500/20 hover:text-red-400">
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
@@ -153,7 +154,7 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Editor */}
         <div className="lg:col-span-2 space-y-4">
-          <Card title="Menu Items">
+          <Card variant="glass" title="Menu Items" className="border border-gray-800">
             {error && (
               <div className="mb-4">
                 <Alert variant="error" onClose={() => setError(null)}>
@@ -164,20 +165,22 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
 
             <div className="mb-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Menu Name</label>
-                <Input
-                  value={currentMenu.name}
-                  onChange={(e) =>
-                    setCurrentMenu({
-                      ...currentMenu,
-                      name: e.target.value,
-                    })
-                  }
-                  placeholder="Main Menu"
-                />
+                <label className="block text-sm font-medium text-white mb-2">Menu Name</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={currentMenu.name}
+                    onChange={(e) =>
+                      setCurrentMenu({
+                        ...currentMenu,
+                        name: e.target.value,
+                      })
+                    }
+                    placeholder="Main Menu"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Location</label>
+                <label className="block text-sm font-medium text-white mb-2">Location</label>
                 <Select
                   options={[
                     { label: 'Header', value: 'header' },
@@ -191,19 +194,20 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
                       location: e.target.value as Menu['location'],
                     })
                   }
+                  className="border-gray-700 bg-[#1C1C26] text-white"
                 />
               </div>
             </div>
 
             <div className="mb-4">
-              <Button variant="outline" onClick={() => setIsAddModalOpen(true)}>
+              <Button variant="outline" onClick={() => setIsAddModalOpen(true)} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Menu Item
               </Button>
             </div>
 
             {currentMenu.items.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
+              <div className="text-center py-12 text-gray-400">
                 <p>No menu items yet. Add an item to get started.</p>
               </div>
             ) : (
@@ -214,9 +218,9 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
 
         {/* Sidebar */}
         <div>
-          <Card title="Actions">
+          <Card variant="glass" title="Actions" className="border border-gray-800">
             <div className="space-y-2">
-              <Button variant="primary" onClick={handleSave} disabled={isSaving} className="w-full">
+              <Button variant="gradient" onClick={handleSave} disabled={isSaving} className="w-full">
                 <Save className="w-4 h-4 mr-2" />
                 {isSaving ? 'Saving...' : 'Save Menu'}
               </Button>
@@ -226,36 +230,40 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
       </div>
 
       {/* Add Item Modal */}
-      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Add Menu Item">
+      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Add Menu Item" className="bg-black/70 backdrop-blur-sm">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Label *</label>
-            <Input
-              value={newItem.label}
-              onChange={(e) =>
-                setNewItem({
-                  ...newItem,
-                  label: e.target.value,
-                })
-              }
-              placeholder="Menu Item Label"
-            />
+            <label className="block text-sm font-medium text-white mb-2">Label *</label>
+            <div className="form-input-glow">
+              <Input
+                value={newItem.label}
+                onChange={(e) =>
+                  setNewItem({
+                    ...newItem,
+                    label: e.target.value,
+                  })
+                }
+                placeholder="Menu Item Label"
+              />
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">URL *</label>
-            <Input
-              value={newItem.url}
-              onChange={(e) =>
-                setNewItem({
-                  ...newItem,
-                  url: e.target.value,
-                })
-              }
-              placeholder="/page or https://example.com"
-            />
+            <label className="block text-sm font-medium text-white mb-2">URL *</label>
+            <div className="form-input-glow">
+              <Input
+                value={newItem.url}
+                onChange={(e) =>
+                  setNewItem({
+                    ...newItem,
+                    url: e.target.value,
+                  })
+                }
+                placeholder="/page or https://example.com"
+              />
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Target</label>
+            <label className="block text-sm font-medium text-white mb-2">Target</label>
             <Select
               options={[
                 { label: 'Same Window', value: '_self' },
@@ -268,14 +276,15 @@ export default function MenuBuilder({ menu, onSave, className }: MenuBuilderProp
                   target: e.target.value as '_self' | '_blank',
                 })
               }
+              className="border-gray-700 bg-[#1C1C26] text-white"
             />
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={() => setIsAddModalOpen(false)}>
+            <Button variant="ghost" onClick={() => setIsAddModalOpen(false)} className="text-gray-400 hover:bg-[#252532] hover:text-white">
               Cancel
             </Button>
             <Button
-              variant="primary"
+              variant="gradient"
               onClick={handleAddItem}
               disabled={!newItem.label || !newItem.url}
             >

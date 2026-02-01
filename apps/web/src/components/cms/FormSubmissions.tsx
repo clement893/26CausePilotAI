@@ -59,7 +59,7 @@ export default function FormSubmissions({
       label: 'Form',
       sortable: true,
       render: (_value: unknown, submission: FormSubmission) => (
-        <span className="font-medium text-foreground">{submission.form_name}</span>
+        <span className="font-medium text-white">{submission.form_name}</span>
       ),
     },
     {
@@ -67,7 +67,7 @@ export default function FormSubmissions({
       label: 'Submitted',
       sortable: true,
       render: (_value: unknown, submission: FormSubmission) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(submission.submitted_at).toLocaleString()}
         </span>
       ),
@@ -78,7 +78,7 @@ export default function FormSubmissions({
       render: (_value: unknown, submission: FormSubmission) => {
         const dataKeys = Object.keys(submission.data || {});
         return (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-gray-400">
             {dataKeys.length} field{dataKeys.length !== 1 ? 's' : ''}
           </span>
         );
@@ -89,7 +89,7 @@ export default function FormSubmissions({
       label: 'Actions',
       render: (_value: unknown, submission: FormSubmission) => (
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={() => handleView(submission)} title="View">
+          <Button variant="ghost" size="sm" onClick={() => handleView(submission)} title="View" className="text-gray-400 hover:bg-[#252532] hover:text-white">
             <Eye className="w-4 h-4" />
           </Button>
           {onDelete && (
@@ -98,6 +98,7 @@ export default function FormSubmissions({
               size="sm"
               onClick={() => onDelete(submission.id)}
               title="Delete"
+              className="text-gray-400 hover:bg-red-500/20 hover:text-red-400"
             >
               <Trash2 className="w-4 h-4" />
             </Button>
@@ -109,10 +110,10 @@ export default function FormSubmissions({
 
   return (
     <div className={className}>
-      <Card title="Form Submissions">
+      <Card variant="glass" title="Form Submissions" className="border border-gray-800">
         {onExport && (
           <div className="mb-4 flex justify-end">
-            <Button variant="outline" onClick={onExport}>
+            <Button variant="outline" onClick={onExport} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
               <Download className="w-4 h-4 mr-2" />
               Export CSV
             </Button>
@@ -137,29 +138,30 @@ export default function FormSubmissions({
         }}
         title={selectedSubmission ? `Submission #${selectedSubmission.id}` : 'View Submission'}
         size="lg"
+        className="bg-black/70 backdrop-blur-sm"
       >
         {selectedSubmission && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-medium text-foreground mb-2">Form</h3>
-              <p className="text-foreground">{selectedSubmission.form_name}</p>
+              <h3 className="text-sm font-medium text-white mb-2">Form</h3>
+              <p className="text-gray-300">{selectedSubmission.form_name}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-foreground mb-2">Submitted At</h3>
-              <p className="text-foreground">
+              <h3 className="text-sm font-medium text-white mb-2">Submitted At</h3>
+              <p className="text-gray-300">
                 {new Date(selectedSubmission.submitted_at).toLocaleString()}
               </p>
             </div>
 
             {selectedSubmission.data && (
               <div>
-                <h3 className="text-sm font-medium text-foreground mb-2">Submission Data</h3>
+                <h3 className="text-sm font-medium text-white mb-2">Submission Data</h3>
                 <div className="space-y-2">
                   {Object.entries(selectedSubmission.data).map(([key, value]) => (
-                    <div key={key} className="border border-border rounded-lg p-3">
-                      <div className="text-xs font-medium text-muted-foreground mb-1">{key}</div>
-                      <div className="text-sm text-foreground">{String(value)}</div>
+                    <div key={key} className="glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg p-3">
+                      <div className="text-xs font-medium text-gray-400 mb-1">{key}</div>
+                      <div className="text-sm text-white">{String(value)}</div>
                     </div>
                   ))}
                 </div>
@@ -168,8 +170,8 @@ export default function FormSubmissions({
 
             {selectedSubmission.ip_address && (
               <div>
-                <h3 className="text-sm font-medium text-foreground mb-2">IP Address</h3>
-                <p className="text-foreground">{selectedSubmission.ip_address}</p>
+                <h3 className="text-sm font-medium text-white mb-2">IP Address</h3>
+                <p className="text-gray-300">{selectedSubmission.ip_address}</p>
               </div>
             )}
           </div>

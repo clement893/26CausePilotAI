@@ -49,19 +49,19 @@ export function PricingCard({ plan, onSelect, isLoading, currentPlanId }: Pricin
         </Badge>
       )}
       <div className="flex-1">
-        <h3 className="text-2xl font-bold mb-2 text-white dark:text-foreground">{plan.name}</h3>
-        <p className="text-gray-400 dark:text-muted-foreground mb-4">{plan.description}</p>
+        <h3 className="text-2xl font-bold mb-2 text-white">{plan.name}</h3>
+        <p className="text-gray-400 mb-4">{plan.description}</p>
         <div className="mb-6">
-          <span className="text-4xl font-bold text-white dark:text-foreground">{formatPrice()}</span>
+          <span className="text-4xl font-bold text-white">{formatPrice()}</span>
           {plan.amount > 0 && (
-            <span className="text-gray-400 dark:text-muted-foreground ml-2">{formatInterval()}</span>
+            <span className="text-gray-400 ml-2">{formatInterval()}</span>
           )}
         </div>
         <ul className="space-y-3 mb-6">
           {featureList.map(([key, value], index) => (
             <li key={index} className="flex items-start">
-              <Check className="w-5 h-5 text-green-400 dark:text-success-500 mr-2 flex-shrink-0 mt-0.5" />
-              <span className="text-sm text-gray-300 dark:text-foreground">
+              <Check className="w-5 h-5 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
+              <span className="text-sm text-gray-300">
                 {typeof value === 'boolean'
                   ? key.replace(/_/g, '').replace(/\b\w/g, (l) => l.toUpperCase())
                   : `${key.replace(/_/g, '').replace(/\b\w/g, (l) => l.toUpperCase())}: ${value}`}
@@ -76,7 +76,7 @@ export function PricingCard({ plan, onSelect, isLoading, currentPlanId }: Pricin
         disabled={isLoading || isCurrentPlan}
         className={clsx(
           'w-full',
-          !plan.is_popular && 'border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20'
+          !plan.is_popular && 'border-gray-700 text-gray-300 hover:bg-[#1C1C26]'
         )}
       >
         {isCurrentPlan ? 'Current Plan' : isLoading ? 'Processing...' : 'Select Plan'}

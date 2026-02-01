@@ -51,7 +51,7 @@ export interface ProfileSetupProps {
   return (
     <div className={className}>
       {' '}
-      <Card title="Set Up Your Profile" className="max-w-2xl mx-auto">
+      <Card variant="glass" title="Set Up Your Profile" className="max-w-2xl mx-auto border border-gray-800">
         {' '}
         <form onSubmit={handleSubmit} className="space-y-6">
           {' '}
@@ -62,7 +62,7 @@ export interface ProfileSetupProps {
               name={formData.displayName || formData.firstName}
               size="xl"
               src={formData.avatar}
-              className="mb-4"
+              className="mb-4 border-4 border-blue-500/50"
             />{' '}
             <label className="cursor-pointer">
               {' '}
@@ -72,7 +72,7 @@ export interface ProfileSetupProps {
                 onChange={handleAvatarChange}
                 className="hidden"
               />{' '}
-              <div className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-muted dark:hover:bg-muted transition-colors">
+              <div className="flex items-center gap-2 px-4 py-2 border border-gray-700 rounded-lg hover:bg-[#252532] transition-colors text-gray-300 hover:text-white">
                 {' '}
                 <Upload className="w-4 h-4" />{' '}
                 <span className="text-sm font-medium">Upload Photo</span>{' '}
@@ -82,45 +82,51 @@ export interface ProfileSetupProps {
           {/* First Name */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               First Name *{' '}
             </label>{' '}
-            <Input
-              value={formData.firstName}
-              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-              placeholder="John"
-              required
-            />{' '}
+            <div className="form-input-glow">
+              <Input
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                placeholder="John"
+                required
+              />
+            </div>
           </div>{' '}
           {/* Last Name */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Last Name *{' '}
             </label>{' '}
-            <Input
-              value={formData.lastName}
-              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-              placeholder="Doe"
-              required
-            />{' '}
+            <div className="form-input-glow">
+              <Input
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                placeholder="Doe"
+                required
+              />
+            </div>
           </div>{' '}
           {/* Display Name */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Display Name *{' '}
             </label>{' '}
-            <Input
-              value={formData.displayName}
-              onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
-              placeholder="johndoe"
-              required
-            />{' '}
-            <p className="mt-1 text-sm text-muted-foreground">
+            <div className="form-input-glow">
+              <Input
+                value={formData.displayName}
+                onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                placeholder="johndoe"
+                required
+              />
+            </div>
+            <p className="mt-1 text-sm text-gray-400">
               {' '}
               This is how your name will appear to others{' '}
             </p>{' '}
@@ -128,17 +134,19 @@ export interface ProfileSetupProps {
           {/* Bio */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Bio (Optional){' '}
             </label>{' '}
-            <textarea
-              value={formData.bio}
-              onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              placeholder="Tell us a bit about yourself..."
-              rows={4}
-              className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />{' '}
+            <div className="form-input-glow">
+              <textarea
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                placeholder="Tell us a bit about yourself..."
+                rows={4}
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
           </div>{' '}
           {/* Actions */}{' '}
           <div className="flex gap-4 justify-between pt-4">
@@ -146,7 +154,7 @@ export interface ProfileSetupProps {
             <div>
               {' '}
               {onPrevious && (
-                <Button type="button" variant="ghost" onClick={onPrevious}>
+                <Button type="button" variant="ghost" onClick={onPrevious} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                   {' '}
                   Previous{' '}
                 </Button>
@@ -155,12 +163,12 @@ export interface ProfileSetupProps {
             <div className="flex gap-4">
               {' '}
               {onSkip && (
-                <Button type="button" variant="ghost" onClick={onSkip}>
+                <Button type="button" variant="ghost" onClick={onSkip} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                   {' '}
                   Skip{' '}
                 </Button>
               )}{' '}
-              <Button type="submit" variant="primary" disabled={!isValid}>
+              <Button type="submit" variant="gradient" disabled={!isValid}>
                 {' '}
                 Continue{' '}
               </Button>{' '}

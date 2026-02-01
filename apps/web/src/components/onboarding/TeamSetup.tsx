@@ -42,23 +42,25 @@ export interface TeamSetupProps {
   return (
     <div className={className}>
       {' '}
-      <Card title="Set Up Your Team (Optional)" className="max-w-2xl mx-auto">
+      <Card variant="glass" title="Set Up Your Team (Optional)" className="max-w-2xl mx-auto border border-gray-800">
         {' '}
         <form onSubmit={handleSubmit} className="space-y-6">
           {' '}
           {/* Team Name */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Team Name{' '}
             </label>{' '}
-            <Input
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              placeholder="My Team"
-            />{' '}
-            <p className="mt-1 text-sm text-muted-foreground">
+            <div className="form-input-glow">
+              <Input
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+                placeholder="My Team"
+              />
+            </div>
+            <p className="mt-1 text-sm text-gray-400">
               {' '}
               You can create or join a team later if you skip this step{' '}
             </p>{' '}
@@ -66,34 +68,35 @@ export interface TeamSetupProps {
           {/* Invite Members */}{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Invite Team Members{' '}
             </label>{' '}
             <div className="flex gap-2 mb-4">
               {' '}
-              <Input
-                type="email"
-                value={newMemberEmail}
-                onChange={(e) => setNewMemberEmail(e.target.value)}
-                placeholder="email@example.com"
-                className="flex-1"
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleAddMember();
-                  }
-                }}
-              />{' '}
+              <div className="form-input-glow flex-1">
+                <Input
+                  type="email"
+                  value={newMemberEmail}
+                  onChange={(e) => setNewMemberEmail(e.target.value)}
+                  placeholder="email@example.com"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddMember();
+                    }
+                  }}
+                />
+              </div>{' '}
               <select
                 value={newMemberRole}
                 onChange={(e) => setNewMemberRole(e.target.value)}
-                className="px-4 py-2 border border-border rounded-lg bg-background text-foreground"
+                className="px-4 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white"
               >
                 {' '}
                 <option value="member">Member</option> <option value="admin">Admin</option>{' '}
               </select>{' '}
-              <Button type="button" onClick={handleAddMember} variant="primary">
+              <Button type="button" onClick={handleAddMember} variant="gradient">
                 {' '}
                 <Plus className="w-4 h-4" />{' '}
               </Button>{' '}
@@ -105,13 +108,13 @@ export interface TeamSetupProps {
                 {members.map((member) => (
                   <div
                     key={member.email}
-                    className="flex items-center justify-between p-3 border border-border rounded-lg"
+                    className="flex items-center justify-between p-3 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg"
                   >
                     {' '}
                     <div className="flex items-center gap-3">
                       {' '}
-                      <Users className="w-5 h-5 text-muted-foreground" />{' '}
-                      <span className="text-foreground">{member.email}</span>{' '}
+                      <Users className="w-5 h-5 text-gray-400" />{' '}
+                      <span className="text-white">{member.email}</span>{' '}
                       <Badge variant="default">{member.role}</Badge>{' '}
                     </div>{' '}
                     <Button
@@ -119,6 +122,7 @@ export interface TeamSetupProps {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRemoveMember(member.email)}
+                      className="text-gray-400 hover:bg-red-500/20 hover:text-red-400"
                     >
                       {' '}
                       <X className="w-4 h-4" />{' '}
@@ -134,7 +138,7 @@ export interface TeamSetupProps {
             <div>
               {' '}
               {onPrevious && (
-                <Button type="button" variant="ghost" onClick={onPrevious}>
+                <Button type="button" variant="ghost" onClick={onPrevious} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                   {' '}
                   Previous{' '}
                 </Button>
@@ -143,12 +147,12 @@ export interface TeamSetupProps {
             <div className="flex gap-4">
               {' '}
               {onSkip && (
-                <Button type="button" variant="ghost" onClick={onSkip}>
+                <Button type="button" variant="ghost" onClick={onSkip} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                   {' '}
                   Skip{' '}
                 </Button>
               )}{' '}
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="gradient">
                 {' '}
                 Continue{' '}
               </Button>{' '}

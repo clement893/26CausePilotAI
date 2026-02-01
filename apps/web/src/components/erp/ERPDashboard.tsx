@@ -15,16 +15,16 @@ import { useApi } from '@/hooks/useApi';
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {' '}
           {[...Array(12)].map((_, i) => (
-            <div key={i} className="h-24 bg-muted rounded-lg animate-pulse" />
+            <div key={i} className="h-24 bg-[#1C1C26] border border-gray-800 rounded-lg animate-pulse" />
           ))}{' '}
         </div>
       );
     }
     if (error) {
       return (
-        <Card title="Error">
+        <Card variant="glass" title="Error" className="border border-gray-800">
           {' '}
-          <p className="text-error-600 dark:text-error-400">
+          <p className="text-red-400">
             {' '}
             Failed to load dashboard statistics. Please try again later.{' '}
           </p>{' '}
@@ -64,44 +64,44 @@ import { useApi } from '@/hooks/useApi';
         {/* Financial Overview */}{' '}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {' '}
-          <Card title="Revenue Overview">
+          <Card variant="glass" title="Revenue Overview" className="border border-gray-800">
             {' '}
             <div className="space-y-4">
               {' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Total Revenue</p>{' '}
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm text-gray-400">Total Revenue</p>{' '}
+                <p className="text-2xl font-bold text-white">
                   {' '}
                   ${parseFloat(stats.total_revenue).toFixed(2)}{' '}
                 </p>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Pending Revenue</p>{' '}
-                <p className="text-2xl font-bold text-warning-600 dark:text-warning-400">
+                <p className="text-sm text-gray-400">Pending Revenue</p>{' '}
+                <p className="text-2xl font-bold text-yellow-400">
                   {' '}
                   ${parseFloat(stats.pending_revenue).toFixed(2)}{' '}
                 </p>{' '}
               </div>{' '}
             </div>{' '}
           </Card>{' '}
-          <Card title="Invoices & Clients">
+          <Card variant="glass" title="Invoices & Clients" className="border border-gray-800">
             {' '}
             <div className="space-y-4">
               {' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Paid Invoices</p>{' '}
-                <p className="text-2xl font-bold text-success-600 dark:text-success-400">
+                <p className="text-sm text-gray-400">Paid Invoices</p>{' '}
+                <p className="text-2xl font-bold text-green-400">
                   {' '}
                   {stats.paid_invoices} / {stats.total_invoices}{' '}
                 </p>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Active Clients</p>{' '}
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-sm text-gray-400">Active Clients</p>{' '}
+                <p className="text-2xl font-bold text-white">
                   {' '}
                   {stats.active_clients} / {stats.total_clients}{' '}
                 </p>{' '}
@@ -111,20 +111,20 @@ import { useApi } from '@/hooks/useApi';
         </div>{' '}
         {/* Inventory Stats */}{' '}
         {(stats.total_products > 0 || stats.low_stock_products > 0) && (
-          <Card title="Inventory Status">
+          <Card variant="glass" title="Inventory Status" className="border border-gray-800">
             {' '}
             <div className="grid grid-cols-2 gap-4">
               {' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Total Products</p>{' '}
-                <p className="text-2xl font-bold text-foreground"> {stats.total_products} </p>{' '}
+                <p className="text-sm text-gray-400">Total Products</p>{' '}
+                <p className="text-2xl font-bold text-white"> {stats.total_products} </p>{' '}
               </div>{' '}
               <div>
                 {' '}
-                <p className="text-sm text-muted-foreground">Low Stock Items</p>{' '}
+                <p className="text-sm text-gray-400">Low Stock Items</p>{' '}
                 <p
-                  className={`text-2xl font-bold ${stats.low_stock_products > 0 ? 'text-error-600 dark:text-error-400' : 'text-success-600 dark:text-success-400'}`}
+                  className={`text-2xl font-bold ${stats.low_stock_products > 0 ? 'text-red-400' : 'text-green-400'}`}
                 >
                   {' '}
                   {stats.low_stock_products}{' '}

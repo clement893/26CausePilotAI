@@ -83,7 +83,7 @@ export default function SEOManager({ initialSettings = {}, onSave, className }: 
 
   return (
     <div className={className}>
-      <Card title="SEO Settings">
+      <Card variant="glass" title="SEO Settings" className="border border-gray-800">
         {success && (
           <div className="mb-4">
             <Alert variant="success">SEO settings saved successfully!</Alert>
@@ -101,77 +101,87 @@ export default function SEOManager({ initialSettings = {}, onSave, className }: 
         <div className="space-y-6">
           {/* Basic SEO */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">Basic SEO</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Basic SEO</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Page Title *
                 </label>
-                <Input
-                  value={settings.title || ''}
-                  onChange={(e) => setSettings({ ...settings, title: e.target.value })}
-                  placeholder="Page Title"
-                  maxLength={60}
-                />
-                <p className="mt-1 text-xs text-muted-foreground">
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.title || ''}
+                    onChange={(e) => setSettings({ ...settings, title: e.target.value })}
+                    placeholder="Page Title"
+                    maxLength={60}
+                  />
+                </div>
+                <p className="mt-1 text-xs text-gray-400">
                   {settings.title?.length || 0}/60 characters
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Meta Description *
                 </label>
-                <Textarea
-                  value={settings.description || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      description: e.target.value,
-                    })
-                  }
-                  placeholder="Meta description"
-                  rows={3}
-                  maxLength={160}
-                />
-                <p className="mt-1 text-xs text-muted-foreground">
+                <div className="form-input-glow">
+                  <Textarea
+                    value={settings.description || ''}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        description: e.target.value,
+                      })
+                    }
+                    placeholder="Meta description"
+                    rows={3}
+                    maxLength={160}
+                  />
+                </div>
+                <p className="mt-1 text-xs text-gray-400">
                   {settings.description?.length || 0}/160 characters
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Keywords</label>
-                <Input
-                  value={settings.keywords || ''}
-                  onChange={(e) => setSettings({ ...settings, keywords: e.target.value })}
-                  placeholder="keyword1, keyword2, keyword3"
-                />
+                <label className="block text-sm font-medium text-white mb-2">Keywords</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.keywords || ''}
+                    onChange={(e) => setSettings({ ...settings, keywords: e.target.value })}
+                    placeholder="keyword1, keyword2, keyword3"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Canonical URL
                 </label>
-                <Input
-                  value={settings.canonicalUrl || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      canonicalUrl: e.target.value,
-                    })
-                  }
-                  placeholder="https://example.com/page"
-                />
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.canonicalUrl || ''}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        canonicalUrl: e.target.value,
+                      })
+                    }
+                    placeholder="https://example.com/page"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Robots</label>
-                <Input
-                  value={settings.robots || 'index, follow'}
-                  onChange={(e) => setSettings({ ...settings, robots: e.target.value })}
-                  placeholder="index, follow"
-                />
-                <p className="mt-1 text-xs text-muted-foreground">
+                <label className="block text-sm font-medium text-white mb-2">Robots</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.robots || 'index, follow'}
+                    onChange={(e) => setSettings({ ...settings, robots: e.target.value })}
+                    placeholder="index, follow"
+                  />
+                </div>
+                <p className="mt-1 text-xs text-gray-400">
                   e.g., "index, follow" or "noindex, nofollow"
                 </p>
               </div>
@@ -180,147 +190,165 @@ export default function SEOManager({ initialSettings = {}, onSave, className }: 
 
           {/* Open Graph */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">
+            <h3 className="text-lg font-semibold text-white mb-4">
               Open Graph (Facebook, LinkedIn)
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">OG Title</label>
-                <Input
-                  value={settings.ogTitle || ''}
-                  onChange={(e) => setSettings({ ...settings, ogTitle: e.target.value })}
-                  placeholder="Open Graph title"
-                />
+                <label className="block text-sm font-medium text-white mb-2">OG Title</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.ogTitle || ''}
+                    onChange={(e) => setSettings({ ...settings, ogTitle: e.target.value })}
+                    placeholder="Open Graph title"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   OG Description
                 </label>
-                <Textarea
-                  value={settings.ogDescription || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      ogDescription: e.target.value,
-                    })
-                  }
-                  placeholder="Open Graph description"
-                  rows={3}
-                />
+                <div className="form-input-glow">
+                  <Textarea
+                    value={settings.ogDescription || ''}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        ogDescription: e.target.value,
+                      })
+                    }
+                    placeholder="Open Graph description"
+                    rows={3}
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   OG Image URL
                 </label>
-                <Input
-                  value={settings.ogImage || ''}
-                  onChange={(e) => setSettings({ ...settings, ogImage: e.target.value })}
-                  placeholder="https://example.com/image.jpg"
-                />
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.ogImage || ''}
+                    onChange={(e) => setSettings({ ...settings, ogImage: e.target.value })}
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">OG Type</label>
-                <Input
-                  value={settings.ogType || 'website'}
-                  onChange={(e) => setSettings({ ...settings, ogType: e.target.value })}
-                  placeholder="website"
-                />
+                <label className="block text-sm font-medium text-white mb-2">OG Type</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.ogType || 'website'}
+                    onChange={(e) => setSettings({ ...settings, ogType: e.target.value })}
+                    placeholder="website"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Twitter Card */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">Twitter Card</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Twitter Card</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Card Type</label>
-                <Input
-                  value={settings.twitterCard || 'summary_large_image'}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      twitterCard: e.target.value,
-                    })
-                  }
-                  placeholder="summary_large_image"
-                />
+                <label className="block text-sm font-medium text-white mb-2">Card Type</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.twitterCard || 'summary_large_image'}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        twitterCard: e.target.value,
+                      })
+                    }
+                    placeholder="summary_large_image"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Twitter Title
                 </label>
-                <Input
-                  value={settings.twitterTitle || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      twitterTitle: e.target.value,
-                    })
-                  }
-                  placeholder="Twitter title"
-                />
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.twitterTitle || ''}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        twitterTitle: e.target.value,
+                      })
+                    }
+                    placeholder="Twitter title"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Twitter Description
                 </label>
-                <Textarea
-                  value={settings.twitterDescription || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      twitterDescription: e.target.value,
-                    })
-                  }
-                  placeholder="Twitter description"
-                  rows={3}
-                />
+                <div className="form-input-glow">
+                  <Textarea
+                    value={settings.twitterDescription || ''}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        twitterDescription: e.target.value,
+                      })
+                    }
+                    placeholder="Twitter description"
+                    rows={3}
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Twitter Image URL
                 </label>
-                <Input
-                  value={settings.twitterImage || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      twitterImage: e.target.value,
-                    })
-                  }
-                  placeholder="https://example.com/twitter-image.jpg"
-                />
+                <div className="form-input-glow">
+                  <Input
+                    value={settings.twitterImage || ''}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        twitterImage: e.target.value,
+                      })
+                    }
+                    placeholder="https://example.com/twitter-image.jpg"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Schema.org */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">Schema.org JSON-LD</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Schema.org JSON-LD</h3>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Schema Markup (JSON)
               </label>
-              <Textarea
-                value={settings.schema || ''}
-                onChange={(e) => setSettings({ ...settings, schema: e.target.value })}
-                placeholder='{"@context":"https://schema.org","@type":"WebPage", ...}'
-                rows={8}
-                className="font-mono text-sm"
-              />
+              <div className="form-input-glow">
+                <Textarea
+                  value={settings.schema || ''}
+                  onChange={(e) => setSettings({ ...settings, schema: e.target.value })}
+                  placeholder='{"@context":"https://schema.org","@type":"WebPage", ...}'
+                  rows={8}
+                  className="font-mono text-sm border-gray-700 bg-[#1C1C26] text-white"
+                />
+              </div>
             </div>
           </div>
 
           {/* Actions */}
           <div className="flex justify-end">
-            <Button variant="primary" onClick={handleSave} disabled={isSaving}>
+            <Button variant="gradient" onClick={handleSave} disabled={isSaving}>
               <Save className="w-4 h-4 mr-2" />
               {isSaving ? 'Saving...' : 'Save SEO Settings'}
             </Button>
