@@ -165,12 +165,12 @@ export default function NotificationSettings({
     const channelData = formData[channel];
     const isEnabled = channelData.enabled;
     return (
-      <Card variant="glass" title={title} className="border border-gray-800 dark:border-border">
+      <Card variant="glass" title={title} className="border border-gray-800border-border">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="text-blue-400">{icon}</div>
-              <span className="text-sm font-medium text-white dark:text-foreground">Enable {title}</span>
+              <span className="text-sm font-medium text-whitetext-foreground">Enable {title}</span>
             </div>
             <Switch
               checked={isEnabled}
@@ -187,18 +187,18 @@ export default function NotificationSettings({
                   onChange={(e) => handleChange(channel, 'frequency', e.target.value)}
                 />
               )}
-              <div className="pt-4 border-t border-gray-800 dark:border-border">
-                <div className="text-sm font-medium text-white dark:text-foreground mb-3">
+              <div className="pt-4 border-t border-gray-800border-border">
+                <div className="text-sm font-medium text-whitetext-foreground mb-3">
                   Notification Types
                 </div>
                 <div className="space-y-3">
                   {notificationTypes.map((type) => (
                     <div key={type.key} className="flex items-center justify-between py-2">
                       <div className="flex-1">
-                        <div className="text-sm font-medium text-white dark:text-foreground">
+                        <div className="text-sm font-medium text-whitetext-foreground">
                           {type.label}
                         </div>
-                        <div className="text-xs text-gray-400 dark:text-muted-foreground">
+                        <div className="text-xs text-gray-400text-muted-foreground">
                           {type.description}
                         </div>
                       </div>
@@ -225,7 +225,7 @@ export default function NotificationSettings({
         {renderChannelSettings('inApp', <Inbox className="w-5 h-5" />, 'In-App Notifications')}
         {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-red-500/20 dark:bg-danger-900/20 rounded-lg border border-red-500/30 dark:border-danger-800 text-sm text-red-400 dark:text-danger-200">
+          <div className="p-3 bg-red-500/20bg-danger-900/20 rounded-lg border border-red-500/30border-danger-800 text-sm text-red-400text-danger-200">
             {errors.submit}
           </div>
         )}

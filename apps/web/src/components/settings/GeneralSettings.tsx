@@ -141,10 +141,10 @@ export interface GeneralSettingsData {
   return (
     <form onSubmit={handleSubmit} className={clsx('space-y-6', className)}>
       {/* Language & Localization */}
-      <Card variant="glass" title="Language & Localization" className="border border-gray-800 dark:border-border">
+      <Card variant="glass" title="Language & Localization" className="border border-gray-800border-border">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
               Language
             </label>
             <Select
@@ -155,7 +155,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
               Timezone
             </label>
             <Select
@@ -166,7 +166,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
               Date Format
             </label>
             <Select
@@ -177,7 +177,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
               Time Format
             </label>
             <Select
@@ -190,7 +190,7 @@ export interface GeneralSettingsData {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+            <label className="block text-sm font-medium text-whitetext-foreground mb-2">
               Week Starts On
             </label>
             <Select
@@ -205,10 +205,10 @@ export interface GeneralSettingsData {
         </div>
       </Card>
       {/* Appearance */}
-      <Card variant="glass" title="Appearance" className="border border-gray-800 dark:border-border">
+      <Card variant="glass" title="Appearance" className="border border-gray-800border-border">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">Theme</label>
+            <label className="block text-sm font-medium text-whitetext-foreground mb-2">Theme</label>
             <Select
               value={formData.theme}
               onChange={(value) =>
@@ -221,14 +221,14 @@ export interface GeneralSettingsData {
         </div>
       </Card>
       {/* Notifications */}
-      <Card variant="glass" title="Notifications" className="border border-gray-800 dark:border-border">
+      <Card variant="glass" title="Notifications" className="border border-gray-800border-border">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <label className="block text-sm font-medium text-white dark:text-foreground">
+              <label className="block text-sm font-medium text-whitetext-foreground">
                 Enable Notifications
               </label>
-              <p className="text-sm text-gray-400 dark:text-muted-foreground">Receive in-app notifications</p>
+              <p className="text-sm text-gray-400text-muted-foreground">Receive in-app notifications</p>
             </div>
             <Switch
               checked={formData.enableNotifications}
@@ -239,10 +239,10 @@ export interface GeneralSettingsData {
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <label className="block text-sm font-medium text-white dark:text-foreground">
+              <label className="block text-sm font-medium text-whitetext-foreground">
                 Email Notifications
               </label>
-              <p className="text-sm text-gray-400 dark:text-muted-foreground">
+              <p className="text-sm text-gray-400text-muted-foreground">
                 Receive notifications via email
               </p>
             </div>

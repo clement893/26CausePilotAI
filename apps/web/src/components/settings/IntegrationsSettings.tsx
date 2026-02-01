@@ -96,7 +96,7 @@ export interface IntegrationsSettingsProps {
                 {categoryIntegrations.map((integration) => (
                   <div
                     key={integration.id}
-                    className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted dark:hover:bg-muted transition-colors"
+                    className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-mutedhover:bg-muted transition-colors"
                   >
                     {' '}
                     <div className="flex-1">
@@ -119,7 +119,7 @@ export interface IntegrationsSettingsProps {
                     <div className="flex items-center gap-3">
                       {' '}
                       {integration.enabled ? (
-                        <span className="flex items-center gap-1 text-sm text-success-600 dark:text-success-400">
+                        <span className="flex items-center gap-1 text-sm text-success-600text-success-400">
                           {' '}
                           <CheckCircle className="w-4 h-4" /> Enabled{' '}
                         </span>

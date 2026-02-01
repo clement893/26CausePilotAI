@@ -56,10 +56,10 @@ export interface APISettingsProps {
     <form onSubmit={handleSubmit} className={className}>
       <div className="space-y-6">
         {/* API Credentials */}
-        <Card variant="glass" title="API Credentials" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="API Credentials" className="border border-gray-800border-border">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
                 API Key
               </label>
               <div className="flex gap-2">
@@ -74,7 +74,7 @@ export interface APISettingsProps {
                   variant="outline"
                   size="sm"
                   onClick={() => setShowApiKey(!showApiKey)}
-                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
+                  className="border-gray-700border-primary-500 text-gray-300text-primary-400 hover:bg-[#1C1C26]hover:bg-primary-900/20"
                 >
                   {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </Button>
@@ -83,17 +83,17 @@ export interface APISettingsProps {
                   variant="outline"
                   size="sm"
                   onClick={() => settings?.apiKey && handleCopy(settings.apiKey)}
-                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
+                  className="border-gray-700border-primary-500 text-gray-300text-primary-400 hover:bg-[#1C1C26]hover:bg-primary-900/20"
                 >
                   <Copy className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="mt-1 text-sm text-gray-400 dark:text-muted-foreground">
+              <p className="mt-1 text-sm text-gray-400text-muted-foreground">
                 Your API key for authenticating requests
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
                 API Secret
               </label>
               <div className="flex gap-2">
@@ -108,7 +108,7 @@ export interface APISettingsProps {
                   variant="outline"
                   size="sm"
                   onClick={() => setShowApiSecret(!showApiSecret)}
-                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
+                  className="border-gray-700border-primary-500 text-gray-300text-primary-400 hover:bg-[#1C1C26]hover:bg-primary-900/20"
                 >
                   {showApiSecret ? (
                     <EyeOff className="w-4 h-4" />
@@ -121,22 +121,22 @@ export interface APISettingsProps {
                   variant="outline"
                   size="sm"
                   onClick={() => settings?.apiSecret && handleCopy(settings.apiSecret)}
-                  className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20"
+                  className="border-gray-700border-primary-500 text-gray-300text-primary-400 hover:bg-[#1C1C26]hover:bg-primary-900/20"
                 >
                   <Copy className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="mt-1 text-sm text-gray-400 dark:text-muted-foreground">
+              <p className="mt-1 text-sm text-gray-400text-muted-foreground">
                 Keep your API secret secure and never share it publicly
               </p>
             </div>
           </div>
         </Card>
         {/* API Configuration */}
-        <Card variant="glass" title="API Configuration" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="API Configuration" className="border border-gray-800border-border">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
                 Base URL
               </label>
               <Input
@@ -148,7 +148,7 @@ export interface APISettingsProps {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              <label className="block text-sm font-medium text-whitetext-foreground mb-2">
                 Rate Limit (requests per minute)
               </label>
               <Input
@@ -163,10 +163,10 @@ export interface APISettingsProps {
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <label className="block text-sm font-medium text-white dark:text-foreground">
+                <label className="block text-sm font-medium text-whitetext-foreground">
                   Enable Webhooks
                 </label>
-                <p className="text-sm text-gray-400 dark:text-muted-foreground">
+                <p className="text-sm text-gray-400text-muted-foreground">
                   Receive webhook notifications for events
                 </p>
               </div>
@@ -179,7 +179,7 @@ export interface APISettingsProps {
             </div>{' '}
             {formData.enableWebhooks && (
               <div>
-                <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+                <label className="block text-sm font-medium text-whitetext-foreground mb-2">
                   Webhook URL
                 </label>
                 <Input
@@ -193,10 +193,10 @@ export interface APISettingsProps {
             )}
             <div className="flex items-center justify-between">
               <div>
-                <label className="block text-sm font-medium text-white dark:text-foreground">
+                <label className="block text-sm font-medium text-whitetext-foreground">
                   Enable API Logging
                 </label>
-                <p className="text-sm text-gray-400 dark:text-muted-foreground">
+                <p className="text-sm text-gray-400text-muted-foreground">
                   Log all API requests for debugging
                 </p>
               </div>
@@ -212,7 +212,7 @@ export interface APISettingsProps {
         {/* Actions */}
         <div className="flex justify-between items-center">
           <Link href="/api-connections/testing">
-            <Button type="button" variant="outline" className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
+            <Button type="button" variant="outline" className="border-gray-700border-primary-500 text-gray-300text-primary-400 hover:bg-[#1C1C26]hover:bg-primary-900/20">
               <ExternalLink className="w-4 h-4 mr-2 inline" /> Test API Connections
             </Button>
           </Link>

@@ -146,7 +146,7 @@ export default function OrganizationSettings({
     <div className={clsx('space-y-6', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Organization Information */}
-        <Card variant="glass" title="Organization Information" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Organization Information" className="border border-gray-800border-border">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -202,7 +202,7 @@ export default function OrganizationSettings({
           </div>{' '}
         </Card>{' '}
         {/* Address */}
-        <Card variant="glass" title="Address" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Address" className="border border-gray-800border-border">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -257,7 +257,7 @@ export default function OrganizationSettings({
           </div>{' '}
         </Card>{' '}
         {/* Regional Settings */}
-        <Card variant="glass" title="Regional Settings" className="border border-gray-800 dark:border-border">
+        <Card variant="glass" title="Regional Settings" className="border border-gray-800border-border">
           {' '}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {' '}
@@ -277,7 +277,7 @@ export default function OrganizationSettings({
         </Card>{' '}
         {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-red-500/20 dark:bg-danger-900/20 rounded-lg border border-red-500/30 dark:border-danger-800 text-sm text-red-400 dark:text-danger-200">
+          <div className="p-3 bg-red-500/20bg-danger-900/20 rounded-lg border border-red-500/30border-danger-800 text-sm text-red-400text-danger-200">
             {errors.submit}
           </div>
         )}
