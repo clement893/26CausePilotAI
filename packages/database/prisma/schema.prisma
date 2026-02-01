@@ -135,8 +135,9 @@ model User {
   lastLoginAt   DateTime?
 
   // Relations existantes (à conserver)
-  accounts      Account[]
-  sessions      Session[]
+  accounts        Account[]
+  sessions        Session[]
+  dashboardLayout DashboardLayout?
 
   // Timestamps
   createdAt     DateTime @default(now())
@@ -180,6 +181,18 @@ model Session {
 
   @@index([userId])
   @@map("sessions")
+}
+
+// ============= Étape 4.1.1 - Dashboard Principal =============
+model DashboardLayout {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  layout    Json     // Position et taille des widgets (react-grid-layout)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("dashboard_layouts")
 }
 
 // ============= 4. Modèle Donator =============
