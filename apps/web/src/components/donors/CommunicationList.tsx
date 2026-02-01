@@ -29,15 +29,6 @@ const communicationIcons = {
   in_person: User,
 };
 
-const statusColors = {
-  sent: 'bg-blue-100 text-blue-800',
-  delivered: 'bg-green-100 text-green-800',
-  opened: 'bg-purple-100 text-purple-800',
-  clicked: 'bg-indigo-100 text-indigo-800',
-  bounced: 'bg-red-100 text-red-800',
-  failed: 'bg-red-100 text-red-800',
-};
-
 export function CommunicationList({ donorId, className }: CommunicationListProps) {
   const { activeOrganization } = useOrganization();
   const [communications, setCommunications] = useState<DonorCommunication[]>([]);
