@@ -91,6 +91,7 @@ Documentation complète de toutes les variables d'environnement utilisées dans 
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Clé publique Stripe | Non    | -      | `pk_test_xxx` ou `pk_live_xxx` |
 | `STRIPE_PUBLIC_KEY`                  | Alias clé publique (lib payment) | Non | -      | `pk_test_xxx`                  |
 | `STRIPE_SECRET_KEY`                  | Clé secrète Stripe (server-side, lib/payment) | Non | - | `sk_test_xxx` ou `sk_live_xxx` |
+| `STRIPE_WEBHOOK_SECRET`             | Secret pour vérifier les webhooks Stripe (Étape 2.2.2) | Non | - | `whsec_xxx`                    |
 
 ### PayPal (Étape 2.2.1 - Passerelles de paiement)
 
@@ -99,6 +100,15 @@ Documentation complète de toutes les variables d'environnement utilisées dans 
 | `PAYPAL_CLIENT_ID`     | Client ID PayPal               | Non    | -       | `xxx`          |
 | `PAYPAL_CLIENT_SECRET` | Client Secret PayPal           | Non    | -       | `xxx`          |
 | `PAYPAL_ENVIRONMENT`   | Environnement : `sandbox` ou `live` | Non | `sandbox` | `live`     |
+| `PAYPAL_WEBHOOK_ID`    | ID du webhook PayPal (Étape 2.2.2 - vérification signature) | Non | - | `xxx`          |
+
+### Base de données (pour webhooks Étape 2.2.2)
+
+Les routes API `/api/webhooks/stripe` et `/api/webhooks/paypal` mettent à jour les paiements et dons via Prisma. En production, le frontend doit avoir accès à la même base que le schéma `packages/database` si ces webhooks sont utilisés.
+
+| Variable        | Description                         | Requis pour webhooks | Exemple                          |
+| --------------- | ----------------------------------- | --------------------- | -------------------------------- |
+| `DATABASE_URL`  | URL PostgreSQL (schéma Prisma don) | Oui si webhooks actifs | `postgresql://user:pass@host:5432/db` |
 
 ### GitHub (Optionnel)
 
