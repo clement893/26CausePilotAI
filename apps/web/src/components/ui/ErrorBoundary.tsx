@@ -130,7 +130,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
       // Default fallback UI
       return (
-        <div className="min-h-[200px] flex items-center justify-center p-6 bg-[#0A0A0F] bg-[#0A0A0F]">
+        <div className="min-h-[200px] flex items-center justify-center p-6 bg-[#0A0A0F]">
           <div className="max-w-md w-full">
             <Alert variant="error" title="Une erreur est survenue" onClose={this.resetErrorBoundary}>
               <div className="space-y-4">
@@ -141,7 +141,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 {this.props.showDetails && this.state.error && (
                   <details className="mt-4">
                     <summary className="cursor-pointer text-sm font-medium mb-2 text-gray-300 text-white">Détails techniques</summary>
-                    <pre className="text-xs bg-[#1C1C26] bg-[#1C1C26] p-3 rounded overflow-auto max-h-48 text-gray-300 text-white border border-gray-800 border-gray-800 custom-scrollbar">
+                    <pre className="text-xs bg-[#1C1C26] p-3 rounded overflow-auto max-h-48 text-gray-300 text-white border border-gray-800 custom-scrollbar">
                       {this.state.error.toString()}
                       {this.state.errorInfo?.componentStack && (
                         <>

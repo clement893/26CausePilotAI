@@ -52,7 +52,7 @@ export default function Slider({
       {label && (
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-gray-300 text-white">{label}</label>
-          {showValue && <span className="text-sm text-gray-400 text-gray-400">{currentValue}</span>}
+          {showValue && <span className="text-sm text-gray-400">{currentValue}</span>}
         </div>
       )}
       <div className="relative">
@@ -66,7 +66,7 @@ export default function Slider({
           onChange={handleChange}
           disabled={disabled}
           className={clsx(
-            'w-full h-2 bg-[#1C1C26] bg-[#1C1C26] rounded-lg appearance-none cursor-pointer',
+            'w-full h-2 bg-[#1C1C26] rounded-lg appearance-none cursor-pointer',
             'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
             disabled && 'opacity-50 cursor-not-allowed',
             '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-blue-500 [&::-webkit-slider-thumb]:to-purple-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:from-blue-600 [&::-webkit-slider-thumb]:hover:to-purple-600',
@@ -89,15 +89,15 @@ export default function Slider({
                 className="flex flex-col items-center"
                 style={{ left: `${((mark.value - min) / (max - min)) * 100}%` }}
               >
-                <div className="w-1 h-1 bg-[#1C1C26] bg-[#1C1C26] rounded-full mb-1" />
-                <span className="text-xs text-gray-400 text-gray-400">{mark.label}</span>
+                <div className="w-1 h-1 bg-[#1C1C26] rounded-full mb-1" />
+                <span className="text-xs text-gray-400">{mark.label}</span>
               </div>
             ))}
           </div>
         )}
       </div>
       {showValue && !label && (
-        <div className="text-sm text-gray-400 text-gray-400 text-right">{currentValue}</div>
+        <div className="text-sm text-gray-400 text-right">{currentValue}</div>
       )}
     </div>
   );

@@ -69,11 +69,11 @@ export default function NotificationCenterConnected({
   if (error) {
     return (
       <div className={className}>
-        <div className="p-4 bg-red-500/20 bg-red-500/20 border border-red-500/30 border-red-500/30 rounded-lg">
-          <p className="text-red-400 text-red-400">Error: {error}</p>
+        <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+          <p className="text-red-400">Error: {error}</p>
           <button
             onClick={() => refresh()}
-            className="mt-2 text-sm text-blue-400 text-blue-400 hover:text-blue-300 hover:text-blue-300"
+            className="mt-2 text-sm text-blue-400 hover:text-blue-300"
           >
             Retry
           </button>
@@ -87,7 +87,7 @@ export default function NotificationCenterConnected({
     return (
       <div className={className}>
         <div className="p-8 text-center">
-          <p className="text-gray-400 text-gray-400">Loading notifications...</p>
+          <p className="text-gray-400">Loading notifications...</p>
         </div>
       </div>
     );

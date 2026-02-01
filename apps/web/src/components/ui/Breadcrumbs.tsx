@@ -32,16 +32,16 @@ export default function Breadcrumbs({ items, separator, className }: Breadcrumbs
               </span>
             )}
             {isLast ? (
-              <span className="text-gray-400 text-gray-400 font-medium">{item.label}</span>
+              <span className="text-gray-400 font-medium">{item.label}</span>
             ) : item.href ? (
               <Link
                 href={item.href}
-                className="text-gray-400 text-gray-400 hover:text-white hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors"
               >
                 {item.label}
               </Link>
             ) : (
-              <span className="text-gray-400 text-gray-400">{item.label}</span>
+              <span className="text-gray-400">{item.label}</span>
             )}
           </div>
         );
