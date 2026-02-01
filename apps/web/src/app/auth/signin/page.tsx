@@ -20,11 +20,11 @@ export default function SignInPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 from-[#0A0A0F] to-[#1C1C26]">
       <Container>
         <Card className="text-center">
           <div className="py-12">
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-gray-600 text-gray-400 mb-4">
               Redirection vers la page de connexion...
             </p>
             <Link href="/auth/login">

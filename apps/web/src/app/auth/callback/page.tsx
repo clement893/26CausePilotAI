@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { Suspense, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -158,7 +158,7 @@ function CallbackContent() {
   }, [handleAuthCallback]);
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-muted dark:to-muted">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 from-[#1C1C26] to-[#1C1C26]">
       <Container>
         <Card className="text-center">
           <div className="py-12">
@@ -175,7 +175,7 @@ export default function AuthCallbackPage() {
   return (
     <Suspense
       fallback={
-        <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-muted dark:to-muted">
+        <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 from-[#1C1C26] to-[#1C1C26]">
           <Container>
             <Card className="text-center">
               <div className="py-12">

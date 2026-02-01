@@ -75,8 +75,8 @@ function NewOrganizationContent() {
       <Card>
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="p-4 rounded-lg bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800">
-              <p className="text-error-600 dark:text-error-400">{error}</p>
+            <div className="p-4 rounded-lg bg-red-500/20 border border-red-500/30">
+              <p className="text-error-600 text-red-400">{error}</p>
             </div>
           )}
 

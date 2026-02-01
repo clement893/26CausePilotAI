@@ -205,7 +205,7 @@ export default function ExampleAuthPage() {
               <div className="mt-4 text-center">
                 <button
                   onClick={() => setActiveTab('forgot')}
-                  className="text-sm text-info-600 hover:text-info-700 dark:text-info-400"
+                  className="text-sm text-info-600 hover:text-info-700 text-blue-400"
                 >
                   Mot de passe oublié ?
                 </button>
@@ -296,7 +296,7 @@ export default function ExampleAuthPage() {
               <div className="mt-4 text-center">
                 <button
                   onClick={() => setActiveTab('login')}
-                  className="text-sm text-info-600 hover:text-info-700 dark:text-info-400"
+                  className="text-sm text-info-600 hover:text-info-700 text-blue-400"
                 >
                   Retour à la connexion
                 </button>

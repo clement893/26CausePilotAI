@@ -82,8 +82,8 @@ function ClientInvoicesContent() {
 
   if (error) {
     return (
-      <div className="p-4 bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded-lg">
-        <p className="text-error-600 dark:text-error-400">
+      <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+        <p className="text-error-600 text-red-400">
           Failed to load invoices. Please try again later.
         </p>
       </div>
