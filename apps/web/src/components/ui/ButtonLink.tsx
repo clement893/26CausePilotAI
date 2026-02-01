@@ -65,7 +65,7 @@ const variants: Record<string, string> = {
     '[border-color:var(--color-primary-500)]',
     '[color:var(--color-primary-500)]',
   ].join(' '),
-  ghost: ['text-foreground', 'hover:bg-muted', 'focus:ring-muted-foreground'].join(' '),
+  ghost: ['text-white', 'hover:bg-[#1C1C26]', 'focus:ring-gray-400'].join(' '),
   danger: createVariantStyles(
     ['bg-error-600', 'bg-red-500', 'text-background'],
     ['hover:bg-error-700', 'hover:bg-red-600'],

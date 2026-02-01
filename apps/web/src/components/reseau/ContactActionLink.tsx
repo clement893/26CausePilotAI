@@ -8,7 +8,7 @@ interface ContactActionLinkProps {
 }
 export default function ContactActionLink({ type, value }: ContactActionLinkProps) {
   if (!value) {
-    return <span className="text-muted-foreground">-</span>;
+    return <span className="text-gray-400">-</span>;
   }
   switch (type) {
     case 'email':
@@ -41,6 +41,6 @@ export default function ContactActionLink({ type, value }: ContactActionLinkProp
         </a>
       );
     default:
-      return <span className="text-muted-foreground">-</span>;
+      return <span className="text-gray-400">-</span>;
   }
 }

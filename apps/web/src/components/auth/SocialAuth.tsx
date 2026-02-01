@@ -51,8 +51,8 @@ const providerConfigs: Record<SocialProvider, ProviderConfig> = {
         />
       </svg>
     ),
-    bgColor: 'bg-background',
-    hoverBgColor: 'hover:bg-muted',
+    bgColor: 'bg-[#13131A]',
+    hoverBgColor: 'hover:bg-[#1C1C26]',
     textColor: 'text-foreground',
     darkBgColor: 'bg-[#13131A]',
     darkHoverBgColor: 'hover:bg-[#1C1C26]',
@@ -68,8 +68,8 @@ const providerConfigs: Record<SocialProvider, ProviderConfig> = {
         />
       </svg>
     ),
-    bgColor: 'bg-background',
-    hoverBgColor: 'hover:bg-muted',
+    bgColor: 'bg-[#13131A]',
+    hoverBgColor: 'hover:bg-[#1C1C26]',
     textColor: 'text-background',
     darkBgColor: '',
     darkHoverBgColor: 'hover:bg-[#1C1C26]',
@@ -84,8 +84,8 @@ const providerConfigs: Record<SocialProvider, ProviderConfig> = {
         <path d="M12.623 11.628H24V23H12.623z" fill="#ffb900" />
       </svg>
     ),
-    bgColor: 'bg-background',
-    hoverBgColor: 'hover:bg-muted',
+    bgColor: 'bg-[#13131A]',
+    hoverBgColor: 'hover:bg-[#1C1C26]',
     textColor: 'text-foreground',
     darkBgColor: 'bg-[#13131A]',
     darkHoverBgColor: 'hover:bg-[#1C1C26]',

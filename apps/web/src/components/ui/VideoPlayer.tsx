@@ -200,7 +200,7 @@ export default function VideoPlayer({
                 size="sm"
                 onClick={togglePlay}
                 aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                className="text-background hover:bg-background/20"
+                className="text-white hover:bg-white/20"
               >
                 {' '}
                 {isPlaying ? (
@@ -214,7 +214,7 @@ export default function VideoPlayer({
                 size="sm"
                 onClick={() => skip(-10)}
                 aria-label="Rewind 10 seconds"
-                className="text-background hover:bg-background/20"
+                className="text-white hover:bg-white/20"
               >
                 {' '}
                 <SkipBack className="w-4 h-4" aria-hidden="true" />{' '}
@@ -224,7 +224,7 @@ export default function VideoPlayer({
                 size="sm"
                 onClick={() => skip(10)}
                 aria-label="Forward 10 seconds"
-                className="text-background hover:bg-background/20"
+                className="text-white hover:bg-white/20"
               >
                 {' '}
                 <SkipForward className="w-4 h-4" aria-hidden="true" />{' '}
@@ -242,7 +242,7 @@ export default function VideoPlayer({
                   size="sm"
                   onClick={toggleMute}
                   aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                  className="text-background hover:bg-background/20"
+                  className="text-white hover:bg-white/20"
                 >
                   {' '}
                   {isMuted ? (
@@ -274,7 +274,7 @@ export default function VideoPlayer({
                 size="sm"
                 onClick={toggleFullscreen}
                 aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-                className="text-background hover:bg-background/20"
+                className="text-white hover:bg-white/20"
               >
                 {' '}
                 {isFullscreen ? (

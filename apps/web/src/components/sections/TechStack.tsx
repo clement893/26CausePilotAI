@@ -45,7 +45,7 @@ const categoryColors = {
 } as const;
 export default function TechStack() {
   return (
-    <section className="py-20 bg-muted" aria-labelledby="tech-stack-heading">
+    <section className="py-20 bg-[#1C1C26]" aria-labelledby="tech-stack-heading">
       {' '}
       <div className="container mx-auto px-4">
         {' '}
@@ -58,7 +58,7 @@ export default function TechStack() {
             {' '}
             Stack Technologique{' '}
           </h2>{' '}
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             {' '}
             Une stack moderne et performante pour vos applications{' '}
           </p>{' '}
@@ -83,7 +83,7 @@ export default function TechStack() {
                   {tech.category}{' '}
                 </Badge>{' '}
               </div>{' '}
-              <p className="text-muted-foreground text-sm flex-grow">{tech.description}</p>{' '}
+              <p className="text-gray-400 text-sm flex-grow">{tech.description}</p>{' '}
             </Card>
           ))}{' '}
         </div>{' '}

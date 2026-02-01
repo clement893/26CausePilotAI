@@ -18,7 +18,7 @@ export default function CompanyCounter({
         {filtered} entreprise{filtered !== 1 ? 's' : ''}{' '}
       </span>{' '}
       {showFilteredBadge && filtered !== total && (
-        <Badge className="text-xs border border-border"> Filtré sur {total} </Badge>
+        <Badge className="text-xs border border-gray-800"> Filtré sur {total} </Badge>
       )}{' '}
     </div>
   );

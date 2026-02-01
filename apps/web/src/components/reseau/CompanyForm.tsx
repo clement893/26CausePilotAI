@@ -48,7 +48,7 @@ export default function CompanyForm({
     }
   };
   return (
-    <Card className="p-6">
+    <Card variant="glass" className="p-6 hover-lift border border-gray-800">
       {' '}
       <form onSubmit={handleSubmit} className="space-y-4">
         {' '}

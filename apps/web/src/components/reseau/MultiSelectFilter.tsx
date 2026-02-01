@@ -68,7 +68,7 @@ export default function MultiSelectFilter({
         />{' '}
       </Button>{' '}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-background border border-border rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-50 w-full mt-1 bg-[#13131A] border border-gray-800 rounded-md shadow-lg max-h-60 overflow-auto">
           {' '}
           <div className="p-2 space-y-1">
             {' '}
@@ -77,20 +77,20 @@ export default function MultiSelectFilter({
               return (
                 <label
                   key={option.value}
-                  className="flex items-center gap-2 p-2 rounded hover:bg-muted cursor-pointer"
+                  className="flex items-center gap-2 p-2 rounded hover:bg-[#1C1C26] cursor-pointer"
                 >
                   {' '}
                   <input
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => toggleOption(option.value)}
-                    className="rounded border-border"
+                    className="rounded border-gray-700"
                   />{' '}
                   <span className="flex-1 text-sm">{option.label}</span>{' '}
                   {isSelected && (
                     <button
                       onClick={(e) => removeValue(option.value, e)}
-                      className="text-muted-foreground hover:text-foreground"
+                      className="text-gray-400 hover:text-white"
                     >
                       {' '}
                       <X className="w-3 h-3" />{' '}

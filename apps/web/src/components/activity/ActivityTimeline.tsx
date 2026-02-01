@@ -69,7 +69,7 @@ const getActivityIcon = (action: string) => {
   if (action.includes('tag')) {
     return <Tag className={`${iconClass} text-pink-500`} />;
   }
-  return <Clock className={`${iconClass} text-muted-foreground`} />;
+  return <Clock className={`${iconClass} text-gray-400`} />;
 };
 
 const formatActivityMessage = (activity: ActivityItem): string => {

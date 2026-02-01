@@ -51,8 +51,8 @@ export default function AdvancedCharts({
         {/* Grid lines */}
         {[0, 25, 50, 75, 100].map((val) => (
           <g key={val}>
-            <line x1={val} y1={0} x2={val} y2={100} stroke="currentColor" strokeWidth="0.5" opacity="0.2" className="text-muted-foreground" />
-            <line x1={0} y1={val} x2={100} y2={val} stroke="currentColor" strokeWidth="0.5" opacity="0.2" className="text-muted-foreground" />
+            <line x1={val} y1={0} x2={val} y2={100} stroke="currentColor" strokeWidth="0.5" opacity="0.2" className="text-gray-400" />
+            <line x1={0} y1={val} x2={100} y2={val} stroke="currentColor" strokeWidth="0.5" opacity="0.2" className="text-gray-400" />
           </g>
         ))}
         {/* Data points */}
@@ -90,7 +90,7 @@ export default function AdvancedCharts({
             stroke="currentColor"
             strokeWidth="0.5"
             opacity="0.2"
-            className="text-muted-foreground"
+            className="text-gray-400"
           />
         ))}
         {/* Axis lines */}
@@ -99,7 +99,7 @@ export default function AdvancedCharts({
           const x = centerX + radius * Math.cos(angle);
           const y = centerY + radius * Math.sin(angle);
           return (
-            <line key={index} x1={centerX} y1={centerY} x2={x} y2={y} stroke="currentColor" strokeWidth="0.5" opacity="0.2" className="text-muted-foreground" />
+            <line key={index} x1={centerX} y1={centerY} x2={x} y2={y} stroke="currentColor" strokeWidth="0.5" opacity="0.2" className="text-gray-400" />
           );
         })}
         {/* Data polygon */}
@@ -199,7 +199,7 @@ export default function AdvancedCharts({
     return (
       <svg viewBox="0 0 100 100" className="w-full h-full">
         {/* Background arc */}
-        <path d={`M ${centerX - radius} ${centerY} A ${radius} ${radius} 0 0 1 ${centerX + radius} ${centerY}`} fill="none" stroke="currentColor" strokeWidth="8" opacity="0.2" className="text-muted-foreground" />
+        <path d={`M ${centerX - radius} ${centerY} A ${radius} ${radius} 0 0 1 ${centerX + radius} ${centerY}`} fill="none" stroke="currentColor" strokeWidth="8" opacity="0.2" className="text-gray-400" />
         {/* Value arc */}
         <path
           d={`M ${centerX - radius} ${centerY} A ${radius} ${radius} 0 ${angle > 0 ? 1 : 0} 1 ${centerX + radius * Math.cos((angle * Math.PI) / 180)} ${centerY + radius * Math.sin((angle * Math.PI) / 180)}`}

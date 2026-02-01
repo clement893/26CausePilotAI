@@ -70,7 +70,7 @@ export function ComponentGallery() {
     <div className="space-y-8">
       {' '}
       <ToastContainer /> {/* Buttons */}{' '}
-      <Card title="Boutons">
+      <Card variant="glass" title="Boutons" className="border border-gray-800">
         {' '}
         <div className="flex flex-wrap gap-4">
           {' '}
@@ -92,7 +92,7 @@ export function ComponentGallery() {
         </div>{' '}
       </Card>{' '}
       {/* Form Inputs */}{' '}
-      <Card title="Champs de Formulaire">
+      <Card variant="glass" title="Champs de Formulaire" className="border border-gray-800">
         {' '}
         <div className="space-y-4">
           {' '}
@@ -115,7 +115,7 @@ export function ComponentGallery() {
         </div>{' '}
       </Card>{' '}
       {/* Badges & Alerts */}{' '}
-      <Card title="Badges et Alertes">
+      <Card variant="glass" title="Badges et Alertes" className="border border-gray-800">
         {' '}
         <div className="space-y-4">
           {' '}
@@ -144,7 +144,7 @@ export function ComponentGallery() {
         </div>{' '}
       </Card>{' '}
       {/* Tabs & Accordion */}{' '}
-      <Card title="Navigation">
+      <Card variant="glass" title="Navigation" className="border border-gray-800">
         {' '}
         <div className="space-y-6">
           {' '}
@@ -171,7 +171,7 @@ export function ComponentGallery() {
         </div>{' '}
       </Card>{' '}
       {/* Progress & Loading */}{' '}
-      <Card title="Chargement">
+      <Card variant="glass" title="Chargement" className="border border-gray-800">
         {' '}
         <div className="space-y-4">
           {' '}
@@ -183,7 +183,7 @@ export function ComponentGallery() {
         </div>{' '}
       </Card>{' '}
       {/* Avatar & Tooltip */}{' '}
-      <Card title="Avatars et Tooltips">
+      <Card variant="glass" title="Avatars et Tooltips" className="border border-gray-800">
         {' '}
         <div className="flex gap-4 items-center">
           {' '}
@@ -195,7 +195,7 @@ export function ComponentGallery() {
         </div>{' '}
       </Card>{' '}
       {/* Modals & Overlays */}{' '}
-      <Card title="Modales et Overlays">
+      <Card variant="glass" title="Modales et Overlays" className="border border-gray-800">
         {' '}
         <div className="flex gap-4 flex-wrap">
           {' '}
@@ -227,7 +227,7 @@ export function ComponentGallery() {
         </Drawer>{' '}
       </Card>{' '}
       {/* Data Components */}{' '}
-      <Card title="Composants de Données">
+      <Card variant="glass" title="Composants de Données" className="border border-gray-800">
         {' '}
         <div className="space-y-6">
           {' '}
@@ -242,7 +242,7 @@ export function ComponentGallery() {
         </div>{' '}
       </Card>{' '}
       {/* New Components */}{' '}
-      <Card title="Nouveaux Composants">
+      <Card variant="glass" title="Nouveaux Composants" className="border border-gray-800">
         {' '}
         <div className="space-y-6">
           {' '}

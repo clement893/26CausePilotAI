@@ -100,9 +100,9 @@ export default function Stepper({
                   <div
                     className={clsx(
                       'w-2 h-2 rounded-full',
-                      status === 'current' && 'bg-background',
-                      status === 'upcoming' && 'bg-muted',
-                      status === 'error' && 'bg-background'
+                      status === 'current' && 'bg-[#13131A]',
+                      status === 'upcoming' && 'bg-[#1C1C26]',
+                      status === 'error' && 'bg-[#13131A]'
                     )}
                   />
                 )}{' '}

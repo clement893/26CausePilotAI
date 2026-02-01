@@ -141,7 +141,7 @@ export interface GeneralSettingsData {
   return (
     <form onSubmit={handleSubmit} className={clsx('space-y-6', className)}>
       {/* Language & Localization */}
-      <Card variant="glass" title="Language & Localization" className="border border-gray-800border-border">
+      <Card variant="glass" title="Language & Localization" className="border border-gray-800">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-whitetext-foreground mb-2">
@@ -205,7 +205,7 @@ export interface GeneralSettingsData {
         </div>
       </Card>
       {/* Appearance */}
-      <Card variant="glass" title="Appearance" className="border border-gray-800border-border">
+      <Card variant="glass" title="Appearance" className="border border-gray-800">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-whitetext-foreground mb-2">Theme</label>
@@ -221,14 +221,14 @@ export interface GeneralSettingsData {
         </div>
       </Card>
       {/* Notifications */}
-      <Card variant="glass" title="Notifications" className="border border-gray-800border-border">
+      <Card variant="glass" title="Notifications" className="border border-gray-800">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <label className="block text-sm font-medium text-whitetext-foreground">
                 Enable Notifications
               </label>
-              <p className="text-sm text-gray-400text-muted-foreground">Receive in-app notifications</p>
+              <p className="text-sm text-gray-400">Receive in-app notifications</p>
             </div>
             <Switch
               checked={formData.enableNotifications}
@@ -242,7 +242,7 @@ export interface GeneralSettingsData {
               <label className="block text-sm font-medium text-whitetext-foreground">
                 Email Notifications
               </label>
-              <p className="text-sm text-gray-400text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 Receive notifications via email
               </p>
             </div>

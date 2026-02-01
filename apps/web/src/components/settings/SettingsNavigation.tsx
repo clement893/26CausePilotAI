@@ -129,8 +129,8 @@ export interface SettingsNavigationProps {
               className={clsx(
                 'h-full transition-all duration-200 hover-lift',
                 active
-                  ? 'border-blue-500border-primary-400'
-                  : 'border-gray-800border-border hover:border-gray-700hover:border-gray-700',
+                  ? 'border-blue-500'
+                  : 'border-gray-800 hover:border-gray-700',
                 'cursor-pointer'
               )}
             >
@@ -140,7 +140,7 @@ export interface SettingsNavigationProps {
                     'flex-shrink-0 p-3 rounded-lg',
                     active
                       ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400text-primary-400'
-                      : 'bg-[#1C1C26]bg-muted text-gray-400text-muted-foreground'
+                      : 'bg-[#1C1C26] text-gray-400'
                   )}
                 >
                   {item.icon}
@@ -150,18 +150,18 @@ export interface SettingsNavigationProps {
                     <h3
                       className={clsx(
                         'text-lg font-semibold',
-                        active ? 'text-whitetext-primary-100' : 'text-whitetext-foreground'
+                        active ? 'text-white' : 'text-white'
                       )}
                     >
                       {item.label}
                     </h3>
                     {item.badge && (
-                      <span className="ml-2 px-2 py-1 text-xs font-medium bg-gradient-to-r from-blue-500/20 to-purple-500/20bg-primary-900/40 text-blue-400text-primary-300 rounded-full">
+                      <span className="ml-2 px-2 py-1 text-xs font-medium bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 rounded-full">
                         {item.badge}
                       </span>
                     )}
                   </div>
-                  <p className="mt-1 text-sm text-gray-400text-muted-foreground line-clamp-2">
+                  <p className="mt-1 text-sm text-gray-400 line-clamp-2">
                     {item.description}
                   </p>
                 </div>

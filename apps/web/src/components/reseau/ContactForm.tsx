@@ -68,7 +68,7 @@ export default function ContactForm({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label htmlFor="first_name" className="block text-sm font-medium mb-1">
-            Prénom <span className="text-destructive">*</span>
+            Prénom <span className="text-red-400">*</span>
           </label>
           <Input
             id="first_name"
@@ -83,7 +83,7 @@ export default function ContactForm({
 
         <div>
           <label htmlFor="last_name" className="block text-sm font-medium mb-1">
-            Nom <span className="text-destructive">*</span>
+            Nom <span className="text-red-400">*</span>
           </label>
           <Input
             id="last_name"
@@ -144,7 +144,7 @@ export default function ContactForm({
                 })
               }
               disabled={isSubmitting || loading}
-              className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-md bg-[#1C1C26] text-white form-input-glow"
             >
               <option value="">Aucune</option>
               {companies.map((company) => (
@@ -182,7 +182,7 @@ export default function ContactForm({
                 setFormData({ ...formData, circle: e.target.value || null })
               }
               disabled={isSubmitting || loading}
-              className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-md bg-[#1C1C26] text-white form-input-glow"
             >
               <option value="">Aucun</option>
               {circles.map((circle) => (
@@ -212,7 +212,7 @@ export default function ContactForm({
                 })
               }
               disabled={isSubmitting || loading}
-              className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-md bg-[#1C1C26] text-white form-input-glow"
             >
               <option value="">Aucun</option>
               {employees.map((employee) => (
@@ -296,7 +296,7 @@ export default function ContactForm({
         </div>
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
         {onCancel && (
           <Button
             type="button"

@@ -107,20 +107,20 @@ export default function ImportLogsViewer({
       case 'warning':
         return <AlertCircle className="w-4 h-4 text-warning-500" />;
       default:
-        return <Info className="w-4 h-4 text-primary-500" />;
+        return <Info className="w-4 h-4 text-blue-400" />;
     }
   };
 
   const getLogColor = (level: string) => {
     switch (level) {
       case 'success':
-        return 'text-success-600 bg-success-50 border-success-200';
+        return 'text-green-400 bg-green-500/20 border-green-500/30';
       case 'error':
-        return 'text-error-600 bg-error-50 border-error-200';
+        return 'text-red-400 bg-red-500/20 border-red-500/30';
       case 'warning':
-        return 'text-warning-600 bg-warning-50 border-warning-200';
+        return 'text-yellow-400 bg-yellow-500/20 border-yellow-500/30';
       default:
-        return 'text-primary-600 bg-primary-50 border-primary-200';
+        return 'text-blue-400 bg-blue-500/20 border-blue-500/30';
     }
   };
 
@@ -130,13 +130,13 @@ export default function ImportLogsViewer({
       : 0;
 
   return (
-    <Card className="p-4">
+    <Card variant="glass" className="p-4 border border-gray-800">
       <div className="space-y-4">
         {/* Status Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {isConnected ? (
-              <Loader2 className="w-4 h-4 animate-spin text-primary" />
+              <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
             ) : (
               <div
                 className={clsx(
@@ -145,7 +145,7 @@ export default function ImportLogsViewer({
                     ? 'bg-success-500'
                     : status?.status === 'failed'
                       ? 'bg-error-500'
-                      : 'bg-muted'
+                      : 'bg-[#1C1C26]'
                 )}
               />
             )}
@@ -160,7 +160,7 @@ export default function ImportLogsViewer({
             </span>
           </div>
           {status?.total && (
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-gray-400">
               {status.progress || 0} / {status.total}
             </span>
           )}
@@ -168,18 +168,18 @@ export default function ImportLogsViewer({
 
         {/* Progress Bar */}
         {status?.total && status?.progress !== undefined && (
-          <div className="w-full bg-muted rounded-full h-2">
+          <div className="w-full bg-[#1C1C26] rounded-full h-2">
             <div
-              className="bg-primary h-2 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
         )}
 
         {/* Logs Container */}
-        <div className="max-h-96 overflow-y-auto space-y-2 border rounded-lg p-3 bg-background">
+        <div className="max-h-96 overflow-y-auto space-y-2 border border-gray-800 rounded-lg p-3 bg-[#13131A]">
           {logs.length === 0 ? (
-            <div className="text-center text-muted-foreground py-8">
+            <div className="text-center text-gray-400 py-8">
               En attente des logs...
             </div>
           ) : (

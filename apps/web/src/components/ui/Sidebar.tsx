@@ -133,9 +133,9 @@ export default function Sidebar({
               )}
               {hasChildren &&
                 (isExpanded ? (
-                  <ChevronDown className="w-4 h-4 transition-transform text-muted-foreground" />
+                  <ChevronDown className="w-4 h-4 transition-transform text-gray-400" />
                 ) : (
-                  <ChevronRight className="w-4 h-4 transition-transform text-muted-foreground" />
+                  <ChevronRight className="w-4 h-4 transition-transform text-gray-400" />
                 ))}
             </div>
           )}
@@ -197,7 +197,7 @@ export default function Sidebar({
       {showSearch && !collapsed && (
         <div className="px-lg py-md border-b border-gray-800 border-gray-800 flex-shrink-0">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
               type="text"
               placeholder="Rechercher..."
@@ -209,7 +209,7 @@ export default function Sidebar({
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Effacer la recherche"
               >
                 <X className="w-4 h-4" />
@@ -221,7 +221,7 @@ export default function Sidebar({
 
       <nav className="p-lg space-y-1 flex-1 overflow-y-auto">
         {filteredItems.length === 0 ? (
-          <div className="px-lg py-md text-sm text-muted-foreground text-center">Aucun résultat trouvé</div>
+          <div className="px-lg py-md text-sm text-gray-400 text-center">Aucun résultat trouvé</div>
         ) : (
           filteredItems.map((item) => renderItem(item))
         )}

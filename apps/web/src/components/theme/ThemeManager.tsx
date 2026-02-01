@@ -29,13 +29,13 @@ function ColorInput({
 }) {
   return (
     <div>
-      <label className="block text-xs text-muted-foreground mb-1">{label}</label>
+      <label className="block text-xs text-gray-400 mb-1">{label}</label>
       <div className="flex gap-2">
         <input
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-10 w-20 rounded border border-border cursor-pointer"
+          className="h-10 w-20 rounded border border-gray-800 cursor-pointer"
         />
         <Input value={value} onChange={(e) => onChange(e.target.value)} className="flex-1" />
       </div>
@@ -118,7 +118,7 @@ export function ThemeManager() {
       <div className="space-y-4">
         <h3 className="text-sm font-semibold text-foreground">Typographie - Polices</h3>
         <div>
-          <label className="block text-xs text-muted-foreground mb-1">
+          <label className="block text-xs text-gray-400 mb-1">
             Police principale (corps de texte)
           </label>
           <Select
@@ -128,7 +128,7 @@ export function ThemeManager() {
           />
         </div>
         <div>
-          <label className="block text-xs text-muted-foreground mb-1">Police des titres</label>
+          <label className="block text-xs text-gray-400 mb-1">Police des titres</label>
           <Select
             options={FONT_OPTIONS}
             value={theme.fontFamilyHeading}
@@ -136,7 +136,7 @@ export function ThemeManager() {
           />
         </div>
         <div>
-          <label className="block text-xs text-muted-foreground mb-1">Police des sous-titres</label>
+          <label className="block text-xs text-gray-400 mb-1">Police des sous-titres</label>
           <Select
             options={FONT_OPTIONS}
             value={theme.fontFamilySubheading}
@@ -200,7 +200,7 @@ export function ThemeManager() {
       <div className="space-y-4">
         <h3 className="text-sm font-semibold text-foreground">Style</h3>
         <div>
-          <label className="block text-xs text-muted-foreground mb-1">Border Radius</label>
+          <label className="block text-xs text-gray-400 mb-1">Border Radius</label>
           <Select
             options={BORDER_RADIUS_OPTIONS}
             value={theme.borderRadius}
@@ -210,7 +210,7 @@ export function ThemeManager() {
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2 pt-4 border-t border-border">
+      <div className="flex gap-2 pt-4 border-t border-gray-800">
         <Button onClick={resetTheme} variant="outline" className="flex-1">
           Réinitialiser
         </Button>

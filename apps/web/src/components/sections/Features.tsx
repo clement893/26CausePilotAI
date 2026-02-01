@@ -46,7 +46,7 @@ const features: Feature[] = [
 ];
 export default function Features() {
   return (
-    <section className="py-20 bg-background">
+    <section className="py-20 bg-[#0A0A0F]">
       {' '}
       <div className="container mx-auto px-4">
         {' '}
@@ -56,7 +56,7 @@ export default function Features() {
             {' '}
             Fonctionnalités{' '}
           </h2>{' '}
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             {' '}
             Tout ce dont vous avez besoin pour démarrer votre projet rapidement{' '}
           </p>{' '}
@@ -68,7 +68,7 @@ export default function Features() {
               {' '}
               <div className="text-5xl mb-4">{feature.icon}</div>{' '}
               <h3 className="text-xl font-bold text-foreground mb-3"> {feature.title} </h3>{' '}
-              <p className="text-muted-foreground leading-relaxed"> {feature.description} </p>{' '}
+              <p className="text-gray-400 leading-relaxed"> {feature.description} </p>{' '}
             </Card>
           ))}{' '}
         </div>{' '}

@@ -8,7 +8,7 @@ interface ViewModeToggleProps {
 }
 export default function ViewModeToggle({ value, onChange }: ViewModeToggleProps) {
   return (
-    <div className="flex items-center gap-1 border border-border rounded-md p-1">
+    <div className="flex items-center gap-1 border border-gray-800 rounded-md p-1">
       {' '}
       <Button
         size="sm"

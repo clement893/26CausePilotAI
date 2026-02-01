@@ -22,7 +22,7 @@ interface ContactDetailProps {
 export default function ContactDetail({ contact, onEdit, onDelete }: ContactDetailProps) {
   const fullName = `${contact.first_name} ${contact.last_name}`;
   return (
-    <Card className="p-6">
+    <Card variant="glass" className="p-6 hover-lift border border-gray-800">
       {' '}
       <div className="flex items-start gap-4">
         {' '}
@@ -30,14 +30,14 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
         <div className="flex-1">
           {' '}
           <h3 className="text-xl font-semibold mb-2">{fullName}</h3>{' '}
-          {contact.position && <p className="text-muted-foreground mb-4">{contact.position}</p>}{' '}
+          {contact.position && <p className="text-gray-400 mb-4">{contact.position}</p>}{' '}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             {' '}
             {contact.email && (
               <div className="flex items-center gap-2">
                 {' '}
-                <Mail className="w-4 h-4 text-muted-foreground" />{' '}
-                <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
+                <Mail className="w-4 h-4 text-gray-400" />{' '}
+                <a href={`mailto:${contact.email}`} className="text-blue-400 hover:underline">
                   {' '}
                   {contact.email}{' '}
                 </a>{' '}
@@ -46,8 +46,8 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
             {contact.phone && (
               <div className="flex items-center gap-2">
                 {' '}
-                <Phone className="w-4 h-4 text-muted-foreground" />{' '}
-                <a href={`tel:${contact.phone}`} className="text-primary hover:underline">
+                <Phone className="w-4 h-4 text-gray-400" />{' '}
+                <a href={`tel:${contact.phone}`} className="text-blue-400 hover:underline">
                   {' '}
                   {contact.phone}{' '}
                 </a>{' '}
@@ -56,14 +56,14 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
             {contact.company_name && (
               <div className="flex items-center gap-2">
                 {' '}
-                <Building2 className="w-4 h-4 text-muted-foreground" />{' '}
+                <Building2 className="w-4 h-4 text-gray-400" />{' '}
                 <span>{contact.company_name}</span>{' '}
               </div>
             )}{' '}
             {contact.position && (
               <div className="flex items-center gap-2">
                 {' '}
-                <Briefcase className="w-4 h-4 text-muted-foreground" />{' '}
+                <Briefcase className="w-4 h-4 text-gray-400" />{' '}
                 <span>{contact.position}</span>{' '}
               </div>
             )}{' '}
@@ -76,7 +76,7 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
             {(contact.city || contact.country) && (
               <div className="flex items-center gap-2">
                 {' '}
-                <MapPin className="w-4 h-4 text-muted-foreground" />{' '}
+                <MapPin className="w-4 h-4 text-gray-400" />{' '}
                 <span>
                   {' '}
                   {[contact.city, contact.country].filter(Boolean).join(',') || '-'}{' '}
@@ -86,21 +86,21 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
             {contact.birthday && (
               <div className="flex items-center gap-2">
                 {' '}
-                <Calendar className="w-4 h-4 text-muted-foreground" />{' '}
+                <Calendar className="w-4 h-4 text-gray-400" />{' '}
                 <span>{new Date(contact.birthday).toLocaleDateString('fr-FR')}</span>{' '}
               </div>
             )}{' '}
             {contact.language && (
               <div className="flex items-center gap-2">
                 {' '}
-                <Globe className="w-4 h-4 text-muted-foreground" />{' '}
+                <Globe className="w-4 h-4 text-gray-400" />{' '}
                 <span>{contact.language}</span>{' '}
               </div>
             )}{' '}
             {contact.linkedin && (
               <div className="flex items-center gap-2">
                 {' '}
-                <Linkedin className="w-4 h-4 text-muted-foreground" />{' '}
+                <Linkedin className="w-4 h-4 text-gray-400" />{' '}
                 <a
                   href={
                     contact.linkedin.startsWith('http')
@@ -109,7 +109,7 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline"
+                  className="text-blue-400 hover:underline"
                 >
                   {' '}
                   LinkedIn{' '}
@@ -125,7 +125,7 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
             )}{' '}
           </div>{' '}
           {(onEdit || onDelete) && (
-            <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+            <div className="flex gap-2 mt-4 pt-4 border-t border-gray-800">
               {' '}
               {onEdit && (
                 <Button variant="outline" onClick={onEdit}>
@@ -134,7 +134,7 @@ export default function ContactDetail({ contact, onEdit, onDelete }: ContactDeta
                 </Button>
               )}{' '}
               {onDelete && (
-                <Button variant="danger" onClick={onDelete}>
+                <Button variant="error" onClick={onDelete}>
                   {' '}
                   <Trash2 className="w-4 h-4 mr-2" /> Supprimer{' '}
                 </Button>

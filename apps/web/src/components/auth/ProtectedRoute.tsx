@@ -346,10 +346,10 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   // Show loader during verification
   if (isChecking || !isAuthorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-muted">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0F]">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-          <div className="text-xl text-muted-foreground">Verifying authentication...</div>
+          <div className="text-xl text-gray-400">Verifying authentication...</div>
         </div>
       </div>
     );

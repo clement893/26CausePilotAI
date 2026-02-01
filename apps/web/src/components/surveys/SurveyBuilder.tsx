@@ -469,7 +469,7 @@ export default function SurveyBuilder({
                         <span className="font-medium">
                           {question.label || t('untitled_question') || 'Untitled Question'}
                         </span>
-                        <span className="text-sm text-muted-foreground capitalize">({question.type})</span>
+                        <span className="text-sm text-gray-400 capitalize">({question.type})</span>
                         {question.required && <span className="text-danger-500 text-xs ml-1">*</span>}
                         {question.showIf && (
                           <span

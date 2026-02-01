@@ -137,7 +137,7 @@ export function FontUploader({
           <Type className="w-5 h-5" />
           Gestion des Polices
         </h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-400">
           Téléchargez des fichiers de polices personnalisées (.woff2, .woff, .ttf, .otf) pour les utiliser dans vos
           thèmes.
         </p>
@@ -162,7 +162,7 @@ export function FontUploader({
             disabled={uploading}
           />
           {uploading && (
-            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="mt-4 flex items-center gap-2 text-sm text-gray-400">
               <Loader2 className="w-4 h-4 animate-spin" />
               <span>Téléchargement en cours...</span>
             </div>
@@ -175,13 +175,13 @@ export function FontUploader({
         <h4 className="text-md font-semibold text-foreground mb-3">Polices Disponibles ({fonts.length})</h4>
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+            <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
           </div>
         ) : fonts.length === 0 ? (
           <Card>
             <div className="p-8 text-center">
-              <Type className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-muted-foreground">
+              <Type className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <p className="text-gray-400">
                 Aucune police téléchargée. Utilisez le formulaire ci-dessus pour en ajouter une.
               </p>
             </div>
@@ -201,7 +201,7 @@ export function FontUploader({
                             className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
                               isSelected
                                 ? 'bg-primary border-primary text-background'
-                                : 'border-border hover:border-primary'
+                                : 'border-gray-800 hover:border-blue-500'
                             }`}
                             aria-label={isSelected ? 'Désélectionner' : 'Sélectionner'}
                           >
@@ -210,21 +210,21 @@ export function FontUploader({
                         )}
                         <h5 className="font-semibold text-foreground truncate">{font.name}</h5>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-2">
+                      <p className="text-sm text-gray-400 mb-2">
                         <span className="font-mono">{font.font_family}</span>
                       </p>
-                      <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        <span className="px-2 py-1 bg-muted rounded">{font.font_format.toUpperCase()}</span>
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-400">
+                        <span className="px-2 py-1 bg-[#1C1C26] rounded">{font.font_format.toUpperCase()}</span>
                         {font.font_weight && font.font_weight !== 'normal' && (
-                          <span className="px-2 py-1 bg-muted rounded">{font.font_weight}</span>
+                          <span className="px-2 py-1 bg-[#1C1C26] rounded">{font.font_weight}</span>
                         )}
                         {font.font_style && font.font_style !== 'normal' && (
-                          <span className="px-2 py-1 bg-muted rounded">{font.font_style}</span>
+                          <span className="px-2 py-1 bg-[#1C1C26] rounded">{font.font_style}</span>
                         )}
-                        <span className="px-2 py-1 bg-muted rounded">{formatFileSize(font.file_size)}</span>
+                        <span className="px-2 py-1 bg-[#1C1C26] rounded">{formatFileSize(font.file_size)}</span>
                       </div>
                       {font.description && (
-                        <p className="text-xs text-muted-foreground mt-2">{font.description}</p>
+                        <p className="text-xs text-gray-400 mt-2">{font.description}</p>
                       )}
                     </div>
                     <Button

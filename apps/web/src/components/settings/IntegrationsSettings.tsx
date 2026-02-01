@@ -104,12 +104,12 @@ export interface IntegrationsSettingsProps {
                       <div className="flex items-center gap-3">
                         {' '}
                         {integration.icon || (
-                          <Puzzle className="w-5 h-5 text-muted-foreground" />
+                          <Puzzle className="w-5 h-5 text-gray-400" />
                         )}{' '}
                         <div>
                           {' '}
                           <h4 className="font-medium text-white"> {integration.name} </h4>{' '}
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-gray-400">
                             {' '}
                             {integration.description}{' '}
                           </p>{' '}
@@ -124,7 +124,7 @@ export interface IntegrationsSettingsProps {
                           <CheckCircle className="w-4 h-4" /> Enabled{' '}
                         </span>
                       ) : (
-                        <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1 text-sm text-gray-400">
                           {' '}
                           <XCircle className="w-4 h-4" /> Disabled{' '}
                         </span>

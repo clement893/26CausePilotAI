@@ -42,7 +42,7 @@ export default function ContactRowActions({
         size="sm"
         variant="ghost"
         onClick={onDelete}
-        className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+        className="h-8 w-8 p-0 text-red-400 hover:text-red-400"
         aria-label={`Supprimer ${contactName}`}
       >
         {' '}

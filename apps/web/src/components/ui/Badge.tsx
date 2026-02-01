@@ -14,7 +14,7 @@ function Badge({ children, variant = 'default', className }: BadgeProps) {
   const variantConfig = getVariant(variant);
 
   const defaultVariants = {
-    default: 'bg-muted text-foreground',
+    default: 'bg-[#1C1C26] text-white',
     success: 'bg-success-50 bg-green-500/20 text-success-900 text-green-300',
     warning: 'bg-warning-50 bg-yellow-500/20 text-warning-900 text-yellow-300',
     error: 'bg-error-50 bg-red-500/20 text-error-900 text-red-300',

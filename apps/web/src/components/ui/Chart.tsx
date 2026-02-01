@@ -164,7 +164,7 @@ export default function Chart({ data, type = 'bar', title, height = 300, classNa
                   backgroundColor: point.color || `hsl(${(index * 360) / data.length}, 70%, 50%)`,
                 }}
               />{' '}
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-gray-400">
                 {' '}
                 {point.label}: {point.value}{' '}
               </span>{' '}

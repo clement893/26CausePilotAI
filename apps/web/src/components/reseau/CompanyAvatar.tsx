@@ -29,11 +29,11 @@ export default function CompanyAvatar({
   }
   return (
     <div
-      className={`${sizeClasses[size]} rounded bg-muted flex items-center justify-center ${className}`}
+      className={`${sizeClasses[size]} rounded bg-[#1C1C26] flex items-center justify-center ${className}`}
     >
       {' '}
       <Building2
-        className={`${size === 'sm' ? 'w-4 h-4' : size === 'md' ? 'w-5 h-5' : 'w-6 h-6'} text-muted-foreground`}
+        className={`${size === 'sm' ? 'w-4 h-4' : size === 'md' ? 'w-5 h-5' : 'w-6 h-6'} text-gray-400`}
       />{' '}
     </div>
   );

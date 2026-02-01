@@ -146,7 +146,7 @@ export default function OrganizationSettings({
     <div className={clsx('space-y-6', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Organization Information */}
-        <Card variant="glass" title="Organization Information" className="border border-gray-800border-border">
+        <Card variant="glass" title="Organization Information" className="border border-gray-800">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -202,7 +202,7 @@ export default function OrganizationSettings({
           </div>{' '}
         </Card>{' '}
         {/* Address */}
-        <Card variant="glass" title="Address" className="border border-gray-800border-border">
+        <Card variant="glass" title="Address" className="border border-gray-800">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -257,7 +257,7 @@ export default function OrganizationSettings({
           </div>{' '}
         </Card>{' '}
         {/* Regional Settings */}
-        <Card variant="glass" title="Regional Settings" className="border border-gray-800border-border">
+        <Card variant="glass" title="Regional Settings" className="border border-gray-800">
           {' '}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {' '}

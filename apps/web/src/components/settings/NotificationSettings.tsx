@@ -165,7 +165,7 @@ export default function NotificationSettings({
     const channelData = formData[channel];
     const isEnabled = channelData.enabled;
     return (
-      <Card variant="glass" title={title} className="border border-gray-800border-border">
+      <Card variant="glass" title={title} className="border border-gray-800">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -187,7 +187,7 @@ export default function NotificationSettings({
                   onChange={(e) => handleChange(channel, 'frequency', e.target.value)}
                 />
               )}
-              <div className="pt-4 border-t border-gray-800border-border">
+              <div className="pt-4 border-t border-gray-800">
                 <div className="text-sm font-medium text-whitetext-foreground mb-3">
                   Notification Types
                 </div>
@@ -198,7 +198,7 @@ export default function NotificationSettings({
                         <div className="text-sm font-medium text-whitetext-foreground">
                           {type.label}
                         </div>
-                        <div className="text-xs text-gray-400text-muted-foreground">
+                        <div className="text-xs text-gray-400">
                           {type.description}
                         </div>
                       </div>

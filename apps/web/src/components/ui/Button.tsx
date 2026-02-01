@@ -92,7 +92,7 @@ const variants = {
   ].join(' '),
   ghost: [
     'text-foreground',
-    'hover:bg-muted',
+    'hover:bg-[#1C1C26]',
     'focus:ring-primary-500',
     'focus:ring-blue-400',
   ].join(' '),

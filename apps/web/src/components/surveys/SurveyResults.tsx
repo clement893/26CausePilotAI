@@ -490,7 +490,7 @@ export default function SurveyResults({
                         return (
                           <div key={index} className="flex items-center gap-4">
                             <span className="w-20 text-sm">{item.name}</span>
-                            <div className="flex-1 bg-muted rounded-full h-6 relative">
+                            <div className="flex-1 bg-[#1C1C26] rounded-full h-6 relative">
                               <div
                                 className={`${color} h-6 rounded-full flex items-center justify-end pr-2`}
                                 style={{
@@ -539,9 +539,9 @@ export default function SurveyResults({
                     <table className="min-w-full border-collapse">
                       <thead>
                         <tr>
-                          <th className="border border-border p-2 text-left"></th>
+                          <th className="border border-gray-800 p-2 text-left"></th>
                           {chartData.columns?.map((col: string) => (
-                            <th key={col} className="border border-border p-2 text-center text-sm">
+                            <th key={col} className="border border-gray-800 p-2 text-center text-sm">
                               {col}
                             </th>
                           ))}
@@ -550,7 +550,7 @@ export default function SurveyResults({
                       <tbody>
                         {chartData.rows?.map((row: string) => (
                           <tr key={row}>
-                            <td className="border border-border p-2 text-sm font-medium">{row}</td>
+                            <td className="border border-gray-800 p-2 text-sm font-medium">{row}</td>
                             {chartData.columns?.map((col: string) => {
                               interface ChartDataPoint {
                                 row: string;
@@ -562,9 +562,9 @@ export default function SurveyResults({
                                 (d) => d.row === row && d.col === col
                               );
                               return (
-                                <td key={col} className="border border-border p-2 text-center">
+                                <td key={col} className="border border-gray-800 p-2 text-center">
                                   <div className="text-sm font-medium">{cellData?.value || 0}</div>
-                                  <div className="text-xs text-muted-foreground">
+                                  <div className="text-xs text-gray-400">
                                     {cellData && typeof cellData.percentage === 'number'
                                       ? Math.round(cellData.percentage)
                                       : 0}
@@ -583,7 +583,7 @@ export default function SurveyResults({
 
               {chartData.type === 'bar' && chartData.isRanking && (
                 <div className="mt-4">
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-gray-400 mb-4">
                     {t('average_rank') || 'Average Rank (lower is better)'}
                   </p>
                   <div className="space-y-2">
@@ -594,7 +594,7 @@ export default function SurveyResults({
                       ) => (
                         <div key={index} className="flex items-center gap-4">
                           <span className="w-32 text-sm">{item.name}</span>
-                          <div className="flex-1 bg-muted rounded-full h-6 relative">
+                          <div className="flex-1 bg-[#1C1C26] rounded-full h-6 relative">
                             <div
                               className="bg-success-500 h-6 rounded-full flex items-center justify-end pr-2"
                               style={{
@@ -609,7 +609,7 @@ export default function SurveyResults({
                               <span className="text-background text-xs">{item.value.toFixed(1)}</span>
                             </div>
                           </div>
-                          <span className="text-sm text-muted-foreground w-16 text-right">
+                          <span className="text-sm text-gray-400 w-16 text-right">
                             {item.count} {t('responses') || 'responses'}
                           </span>
                         </div>
@@ -626,17 +626,17 @@ export default function SurveyResults({
                 </h4>
                 <div className="space-y-2">
                   {chartData.data.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                    <div key={index} className="flex items-center justify-between p-2 bg-[#1C1C26] rounded">
                       <span className="text-sm">{item.name}</span>
                       <div className="flex items-center gap-4">
                         <span className="text-sm font-medium">{item.value}</span>
-                        <div className="w-32 bg-muted rounded-full h-2">
+                        <div className="w-32 bg-[#1C1C26] rounded-full h-2">
                           <div
                             className="bg-primary-500 h-2 rounded-full"
                             style={{ width: `${item.percentage}%` }}
                           />
                         </div>
-                        <span className="text-sm text-muted-foreground w-12 text-right">
+                        <span className="text-sm text-gray-400 w-12 text-right">
                           {Math.round(item.percentage)}%
                         </span>
                       </div>

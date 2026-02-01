@@ -1142,8 +1142,8 @@ export function DatabaseConnectionForm({
                 <p className="font-medium">{testResult.success ? 'Connexion réussie' : 'Échec de la connexion'}</p>
                 <p className="text-sm mt-1">{testResult.message}</p>
                 {testResult.databaseName && (
-                  <p className="text-xs mt-1 text-muted-foreground">
-                    Base de données: <code className="bg-muted px-1 rounded">{testResult.databaseName}</code>
+                  <p className="text-xs mt-1 text-gray-400">
+                    Base de données: <code className="bg-[#1C1C26] px-1 rounded">{testResult.databaseName}</code>
                   </p>
                 )}
               </div>
@@ -1161,7 +1161,7 @@ export function DatabaseConnectionForm({
               <div className="flex-1">
                 <p className="font-medium">✅ Succès - Base de données connectée</p>
                 <p className="text-sm mt-1">{success}</p>
-                <p className="text-xs mt-2 text-muted-foreground">
+                <p className="text-xs mt-2 text-gray-400">
                   Vous pouvez maintenant utiliser le bouton "Mettre à jour la BD" pour créer les tables.
                 </p>
               </div>
@@ -1175,7 +1175,7 @@ export function DatabaseConnectionForm({
               <div className="flex-1">
                 <p className="font-medium">Erreur</p>
                 <p className="text-sm mt-1 whitespace-pre-line">{error}</p>
-                <p className="text-xs mt-2 text-muted-foreground">
+                <p className="text-xs mt-2 text-gray-400">
                   Vérifiez la console du navigateur (F12) pour plus de détails.
                 </p>
               </div>
@@ -1397,7 +1397,7 @@ export function DatabaseConnectionForm({
                 <h3 className="text-sm font-medium text-foreground">
                   Tables de la base de données
                   {databaseName && (
-                    <span className="text-xs text-muted-foreground ml-2">
+                    <span className="text-xs text-gray-400 ml-2">
                       ({databaseName})
                     </span>
                   )}
@@ -1423,18 +1423,18 @@ export function DatabaseConnectionForm({
               </div>
               
               {databaseTables.length > 0 ? (
-                <div className="p-4 rounded-lg bg-muted/30 border border-border">
+                <div className="p-4 rounded-lg bg-[#1C1C26]/30 border border-gray-800">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                     {databaseTables.map((table) => {
                       const tableInfo = TABLES_TO_BE_CREATED.find(t => t.name === table);
                       return (
                         <div
                           key={table}
-                          className="px-3 py-2 rounded-md bg-background border border-border text-sm"
+                          className="px-3 py-2 rounded-md bg-[#13131A] border border-gray-800 text-sm"
                         >
                           <p className="font-mono font-semibold text-foreground">{table}</p>
                           {tableInfo && (
-                            <p className="text-xs text-muted-foreground mt-0.5">
+                            <p className="text-xs text-gray-400 mt-0.5">
                               {tableInfo.description}
                             </p>
                           )}
@@ -1442,7 +1442,7 @@ export function DatabaseConnectionForm({
                       );
                     })}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-3">
+                  <p className="text-xs text-gray-400 mt-3">
                     {databaseTables.length} table{databaseTables.length > 1 ? 's' : ''} trouvée{databaseTables.length > 1 ? 's' : ''}
                     {databaseTables.length < TABLES_TO_BE_CREATED.length && (
                       <span className="text-yellow-400 ml-2">
@@ -1452,8 +1452,8 @@ export function DatabaseConnectionForm({
                   </p>
                 </div>
               ) : (
-                <div className="p-4 rounded-lg bg-muted/30 border border-border">
-                  <p className="text-sm text-muted-foreground">
+                <div className="p-4 rounded-lg bg-[#1C1C26]/30 border border-gray-800">
+                  <p className="text-sm text-gray-400">
                     {isLoadingTables ? (
                       'Chargement des tables...'
                     ) : (

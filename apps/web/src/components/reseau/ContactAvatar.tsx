@@ -32,19 +32,19 @@ export default function ContactAvatar({
   const initials = `${contact.first_name?.[0] || ''}${contact.last_name?.[0] || ''}`.toUpperCase();
   return (
     <div
-      className={`${sizeClasses[size]} rounded-full bg-muted flex items-center justify-center ${className}`}
+      className={`${sizeClasses[size]} rounded-full bg-[#1C1C26] flex items-center justify-center ${className}`}
     >
       {' '}
       {initials ? (
         <span
-          className={`${size === 'sm' ? 'text-xs' : size === 'md' ? 'text-sm' : 'text-base'} font-medium text-muted-foreground`}
+          className={`${size === 'sm' ? 'text-xs' : size === 'md' ? 'text-sm' : 'text-base'} font-medium text-gray-400`}
         >
           {' '}
           {initials}{' '}
         </span>
       ) : (
         <User
-          className={`${size === 'sm' ? 'w-4 h-4' : size === 'md' ? 'w-5 h-5' : 'w-6 h-6'} text-muted-foreground`}
+          className={`${size === 'sm' ? 'w-4 h-4' : size === 'md' ? 'w-5 h-5' : 'w-6 h-6'} text-gray-400`}
         />
       )}{' '}
     </div>

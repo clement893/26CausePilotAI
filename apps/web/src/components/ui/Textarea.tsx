@@ -91,7 +91,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
 
         {helperText && !error && (
-          <Text variant="small" className="mt-2 text-muted-foreground">
+          <Text variant="small" className="mt-2 text-gray-400">
             {helperText}
           </Text>
         )}

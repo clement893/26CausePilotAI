@@ -43,7 +43,7 @@ export default function CollaborationPanel({
       case 'away':
         return 'bg-warning-500';
       default:
-        return 'bg-muted';
+        return 'bg-[#1C1C26]';
     }
   };
   const getRoleBadge = (role: Collaborator['role']) => {

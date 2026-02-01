@@ -90,7 +90,7 @@ export default function Hero() {
         </h1>
 
         <p
-          className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-2 font-medium animate-fade-in"
+          className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-2 font-medium animate-fade-in"
           style={{ animationDelay: '0.2s' }}
         >
           La plateforme intelligente qui transforme votre manière de collecter des fonds. 
@@ -113,7 +113,7 @@ export default function Hero() {
         </div>
 
         <div
-          className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-muted-foreground px-2"
+          className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-gray-400 px-2"
           role="list"
           aria-label="Caractéristiques principales"
         >

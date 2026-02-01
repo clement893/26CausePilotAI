@@ -36,7 +36,7 @@ export interface PagePreviewProps {
         );
       case 'features':
         return (
-          <div className="py-12 px-4 bg-muted">
+          <div className="py-12 px-4 bg-[#1C1C26]">
             {' '}
             <div className="max-w-6xl mx-auto">
               {' '}
@@ -80,7 +80,7 @@ export interface PagePreviewProps {
         );
       default:
         return (
-          <div className="py-8 px-4 border border-border rounded-lg">
+          <div className="py-8 px-4 border border-gray-800 rounded-lg">
             {' '}
             {section.title && (
               <h3 className="text-xl font-semibold text-white mb-2"> {section.title} </h3>

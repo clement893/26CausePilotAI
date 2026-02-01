@@ -106,7 +106,7 @@ export default function UserSettings({
     <div className={clsx('space-y-6', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Picture */}
-        <Card variant="glass" title="Profile Picture" className="border border-gray-800border-border">
+        <Card variant="glass" title="Profile Picture" className="border border-gray-800">
           <div className="flex items-center gap-6">
             <div className="relative">
               <Avatar src={avatarPreview} name={formData.name} size="xl" />
@@ -125,11 +125,11 @@ export default function UserSettings({
               </label>
             </div>
             <div className="flex-1">
-              <p className="text-sm text-gray-400text-muted-foreground mb-2">
+              <p className="text-sm text-gray-400 mb-2">
                 Upload a new profile picture. JPG, PNG or GIF. No size limit.
               </p>
               {errors.avatar && (
-                <p className="text-sm text-red-400text-danger-400">
+                <p className="text-sm text-red-400">
                   {errors.avatar}
                 </p>
               )}
@@ -138,7 +138,7 @@ export default function UserSettings({
         </Card>
 
         {/* Personal Information */}
-        <Card variant="glass" title="Personal Information" className="border border-gray-800border-border">
+        <Card variant="glass" title="Personal Information" className="border border-gray-800">
           <div className="space-y-4">
             <Input
               label="Full Name"
@@ -185,7 +185,7 @@ export default function UserSettings({
               error={errors.website}
             />
             <div>
-              <label className="block text-sm font-medium text-whitetext-foreground mb-1">
+              <label className="block text-sm font-medium text-white mb-1">
                 Bio
               </label>
               <textarea
@@ -195,11 +195,11 @@ export default function UserSettings({
                 rows={4}
                 className={clsx(
                   'w-full px-4 py-2 border rounded-lg form-input-glow',
-                  'bg-[#1C1C26]bg-background',
-                  'text-whitetext-foreground',
-                  'border-gray-700border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-blue-500focus:ring-primary-400',
-                  errors.bio && 'border-red-500border-danger-400'
+                  'bg-[#1C1C26]',
+                  'text-white',
+                  'border-gray-700',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                  errors.bio && 'border-red-500'
                 )}
               />
             </div>

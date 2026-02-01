@@ -20,7 +20,7 @@ export default function ContactsGallery({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {' '}
       {contacts.length === 0 ? (
-        <div className="col-span-full text-center py-12 text-muted-foreground">
+        <div className="col-span-full text-center py-12 text-gray-400">
           {' '}
           <User className="w-12 h-12 mx-auto mb-4 opacity-50" /> <p>Aucun contact trouvé</p>{' '}
         </div>
@@ -30,7 +30,8 @@ export default function ContactsGallery({
           {contacts.map((contact) => (
             <Card
               key={contact.id}
-              className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+              variant="glass"
+              className="p-4 cursor-pointer hover-lift border border-gray-800 transition-all duration-200"
               onClick={() => onContactClick?.(contact)}
             >
               {' '}
@@ -43,9 +44,9 @@ export default function ContactsGallery({
                     className="w-12 h-12 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-[#1C1C26] flex items-center justify-center">
                     {' '}
-                    <User className="w-6 h-6 text-muted-foreground" />{' '}
+                    <User className="w-6 h-6 text-gray-400" />{' '}
                   </div>
                 )}{' '}
                 <div className="flex-1 min-w-0">
@@ -55,10 +56,10 @@ export default function ContactsGallery({
                     {contact.first_name} {contact.last_name}{' '}
                   </h3>{' '}
                   {contact.email && (
-                    <p className="text-sm text-muted-foreground truncate">{contact.email}</p>
+                    <p className="text-sm text-gray-400 truncate">{contact.email}</p>
                   )}{' '}
                   {contact.company_name && (
-                    <p className="text-xs text-muted-foreground truncate">{contact.company_name}</p>
+                    <p className="text-xs text-gray-400 truncate">{contact.company_name}</p>
                   )}{' '}
                 </div>{' '}
               </div>{' '}

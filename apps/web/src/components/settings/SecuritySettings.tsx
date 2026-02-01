@@ -78,14 +78,14 @@ export default function SecuritySettings({
     <div className={clsx('space-y-6', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Password */}
-        <Card variant="glass" title="Password" className="border border-gray-800border-border">
+        <Card variant="glass" title="Password" className="border border-gray-800">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm font-medium text-whitetext-foreground flex items-center gap-2">
                   <Key className="w-4 h-4 text-blue-400" /> Password
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Last changed 30 days ago
                 </div>
               </div>
@@ -95,12 +95,12 @@ export default function SecuritySettings({
                 </Button>
               )}
             </div>
-            <div className="flex items-center justify-between pt-2 border-t border-gray-800border-border">
+            <div className="flex items-center justify-between pt-2 border-t border-gray-800">
               <div>
                 <div className="text-sm font-medium text-whitetext-foreground">
                   Require Strong Password
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Enforce password complexity requirements
                 </div>
               </div>
@@ -112,7 +112,7 @@ export default function SecuritySettings({
           </div>
         </Card>
         {/* Two-Factor Authentication */}
-        <Card variant="glass" title="Two-Factor Authentication" className="border border-gray-800border-border">
+        <Card variant="glass" title="Two-Factor Authentication" className="border border-gray-800">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -123,7 +123,7 @@ export default function SecuritySettings({
                   </span>
                   {formData.twoFactorEnabled && <Badge variant="success">Enabled</Badge>}
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground">
+                <div className="text-xs text-gray-400">
                   Add an extra layer of security to your account
                 </div>
               </div>
@@ -150,7 +150,7 @@ export default function SecuritySettings({
           </div>
         </Card>
         {/* Session Management */}
-        <Card variant="glass" title="Session Management" className="border border-gray-800border-border">
+        <Card variant="glass" title="Session Management" className="border border-gray-800">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-whitetext-foreground mb-2">
@@ -183,14 +183,14 @@ export default function SecuritySettings({
           </div>
         </Card>
         {/* Security Notifications */}
-        <Card variant="glass" title="Security Notifications" className="border border-gray-800border-border">
+        <Card variant="glass" title="Security Notifications" className="border border-gray-800">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm font-medium text-whitetext-foreground">
                   Login Notifications
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Get notified when someone logs into your account
                 </div>
               </div>
@@ -199,12 +199,12 @@ export default function SecuritySettings({
                 onChange={(e) => handleChange('loginNotifications', e.target.checked)}
               />
             </div>
-            <div className="flex items-center justify-between pt-2 border-t border-gray-800border-border">
+            <div className="flex items-center justify-between pt-2 border-t border-gray-800">
               <div>
                 <div className="text-sm font-medium text-whitetext-foreground">
                   Suspicious Activity Alerts
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Receive alerts for unusual account activity
                 </div>
               </div>

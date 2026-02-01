@@ -22,12 +22,12 @@ export default function CompanyFilterBadges({
     <div className="flex flex-wrap items-center gap-2">
       {' '}
       {filters.country?.map((country) => (
-        <Badge key={country} className="flex items-center gap-1 bg-muted">
+        <Badge key={country} className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Pays: {country}{' '}
           <button
             onClick={() => onRemoveFilter('country', country)}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label={`Retirer le filtre pays ${country}`}
           >
             {' '}
@@ -36,12 +36,12 @@ export default function CompanyFilterBadges({
         </Badge>
       ))}{' '}
       {filters.is_client?.map((client) => (
-        <Badge key={client} className="flex items-center gap-1 bg-muted">
+        <Badge key={client} className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Client: {client === 'yes' ? 'Oui' : 'Non'}{' '}
           <button
             onClick={() => onRemoveFilter('is_client', client)}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label={`Retirer le filtre client ${client}`}
           >
             {' '}
@@ -50,12 +50,12 @@ export default function CompanyFilterBadges({
         </Badge>
       ))}{' '}
       {filters.search && (
-        <Badge className="flex items-center gap-1 bg-muted">
+        <Badge className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Recherche: {filters.search}{' '}
           <button
             onClick={() => onRemoveFilter('search')}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label="Retirer le filtre de recherche"
           >
             {' '}
@@ -65,7 +65,7 @@ export default function CompanyFilterBadges({
       )}{' '}
       <button
         onClick={onClearAll}
-        className="text-xs text-muted-foreground hover:text-foreground underline"
+        className="text-xs text-gray-400 hover:text-white underline"
       >
         {' '}
         Tout effacer{' '}

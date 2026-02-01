@@ -296,10 +296,10 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
   // Show loader during verification
   if (isChecking || !isAuthorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-muted">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0F]">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-          <div className="text-xl text-muted-foreground">Vérification des permissions...</div>
+          <div className="text-xl text-gray-400">Vérification des permissions...</div>
         </div>
       </div>
     );
@@ -308,7 +308,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
   // Show unauthorized message if not superadmin (should not reach here, but safety check)
   if (!isSuperAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-muted p-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0F] p-4">
         <Card className="max-w-md w-full">
           <div className="p-6">
             <div className="flex items-start gap-3">

@@ -264,7 +264,7 @@ export default function MultiSelect({
           {error}
         </p>
       )}
-      {helperText && !error && <p className="mt-1 text-sm text-muted-foreground">{helperText}</p>}
+      {helperText && !error && <p className="mt-1 text-sm text-gray-400">{helperText}</p>}
     </div>
   );
 }

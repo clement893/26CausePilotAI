@@ -30,12 +30,12 @@ export default function ContactFilterBadges({
     <div className="flex flex-wrap items-center gap-2">
       {' '}
       {filters.city?.map((city) => (
-        <Badge key={city} className="flex items-center gap-1 bg-muted">
+        <Badge key={city} className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Ville: {city}{' '}
           <button
             onClick={() => onRemoveFilter('city', city)}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label={`Retirer le filtre ville ${city}`}
           >
             {' '}
@@ -44,12 +44,12 @@ export default function ContactFilterBadges({
         </Badge>
       ))}{' '}
       {filters.phone?.map((phone) => (
-        <Badge key={phone} className="flex items-center gap-1 bg-muted">
+        <Badge key={phone} className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Téléphone: {phone}{' '}
           <button
             onClick={() => onRemoveFilter('phone', phone)}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label={`Retirer le filtre téléphone ${phone}`}
           >
             {' '}
@@ -58,12 +58,12 @@ export default function ContactFilterBadges({
         </Badge>
       ))}{' '}
       {filters.circle?.map((circle) => (
-        <Badge key={circle} className="flex items-center gap-1 bg-muted">
+        <Badge key={circle} className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Cercle: {circle}{' '}
           <button
             onClick={() => onRemoveFilter('circle', circle)}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label={`Retirer le filtre cercle ${circle}`}
           >
             {' '}
@@ -72,12 +72,12 @@ export default function ContactFilterBadges({
         </Badge>
       ))}{' '}
       {filters.company?.map((company) => (
-        <Badge key={company} className="flex items-center gap-1 bg-muted">
+        <Badge key={company} className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Entreprise: {company}{' '}
           <button
             onClick={() => onRemoveFilter('company', company)}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label={`Retirer le filtre entreprise ${company}`}
           >
             {' '}
@@ -86,12 +86,12 @@ export default function ContactFilterBadges({
         </Badge>
       ))}{' '}
       {filters.search && (
-        <Badge className="flex items-center gap-1 bg-muted">
+        <Badge className="flex items-center gap-1 bg-[#1C1C26]">
           {' '}
           Recherche: {filters.search}{' '}
           <button
             onClick={() => onRemoveFilter('search')}
-            className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+            className="ml-1 hover:bg-red-500/20 rounded-full p-0.5"
             aria-label="Retirer le filtre de recherche"
           >
             {' '}
@@ -101,7 +101,7 @@ export default function ContactFilterBadges({
       )}{' '}
       <button
         onClick={onClearAll}
-        className="text-xs text-muted-foreground hover:text-foreground underline"
+        className="text-xs text-gray-400 hover:text-white underline"
       >
         {' '}
         Tout effacer{' '}

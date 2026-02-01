@@ -10,7 +10,7 @@ interface CompanyDetailProps {
 }
 export default function CompanyDetail({ company, onEdit, onDelete }: CompanyDetailProps) {
   return (
-    <Card className="p-6">
+    <Card variant="glass" className="p-6 hover-lift border border-gray-800">
       {' '}
       <div className="flex items-start gap-4">
         {' '}
@@ -19,7 +19,7 @@ export default function CompanyDetail({ company, onEdit, onDelete }: CompanyDeta
           {' '}
           <h3 className="text-xl font-semibold mb-2">{company.name}</h3>{' '}
           {company.description && (
-            <p className="text-muted-foreground mb-4">{company.description}</p>
+            <p className="text-gray-400 mb-4">{company.description}</p>
           )}{' '}
           <div className="grid grid-cols-2 gap-4 text-sm">
             {' '}
@@ -49,7 +49,7 @@ export default function CompanyDetail({ company, onEdit, onDelete }: CompanyDeta
             )}{' '}
           </div>{' '}
           {(onEdit || onDelete) && (
-            <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+            <div className="flex gap-2 mt-4 pt-4 border-t border-gray-800">
               {' '}
               {onEdit && (
                 <Button variant="outline" onClick={onEdit}>
@@ -58,7 +58,7 @@ export default function CompanyDetail({ company, onEdit, onDelete }: CompanyDeta
                 </Button>
               )}{' '}
               {onDelete && (
-                <Button variant="danger" onClick={onDelete}>
+                <Button variant="error" onClick={onDelete}>
                   {' '}
                   <Trash2 className="w-4 h-4 mr-2" /> Supprimer{' '}
                 </Button>

@@ -30,7 +30,7 @@ const statusClasses = {
   online: 'bg-success-500 bg-green-500',
   away: 'bg-warning-500 bg-yellow-500',
   busy: 'bg-error-500 bg-red-500',
-  offline: 'bg-muted-foreground/50 bg-gray-500/60',
+  offline: 'bg-gray-500/60',
 };
 
 const statusSizeClasses = {
