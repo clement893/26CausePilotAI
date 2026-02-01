@@ -48,28 +48,28 @@ export function OverviewSection({
       return {
         color: 'success',
         label: 'Excellent',
-        bgColor: 'bg-success-50 dark:bg-success-900/20',
-        textColor: 'text-success-600 dark:text-success-400',
+        bgColor: 'bg-success-50 bg-green-500/20',
+        textColor: 'text-success-600 text-green-400',
       };
     if (score >= 75)
       return {
         color: 'info',
         label: 'Good',
-        bgColor: 'bg-info-50 dark:bg-info-900/20',
-        textColor: 'text-info-600 dark:text-info-400',
+        bgColor: 'bg-info-50 bg-blue-500/20',
+        textColor: 'text-info-600 text-blue-400',
       };
     if (score >= 50)
       return {
         color: 'warning',
         label: 'Fair',
-        bgColor: 'bg-warning-50 dark:bg-warning-900/20',
-        textColor: 'text-warning-600 dark:text-warning-400',
+        bgColor: 'bg-warning-50 bg-yellow-500/20',
+        textColor: 'text-warning-600 text-yellow-400',
       };
     return {
       color: 'error',
       label: 'Poor',
-      bgColor: 'bg-error-50 dark:bg-error-900/20',
-      textColor: 'text-error-600 dark:text-error-400',
+      bgColor: 'bg-error-50 bg-red-500/20',
+      textColor: 'text-error-600 text-red-400',
     };
   };
 
@@ -141,7 +141,7 @@ export function OverviewSection({
         <div className="p-4 border rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-info-600 dark:text-info-400" />
+              <TrendingUp className="h-5 w-5 text-info-600 text-blue-400" />
               <h4 className="font-semibold">Connection Rate</h4>
             </div>
             <Badge
@@ -168,7 +168,7 @@ export function OverviewSection({
         <div className="p-4 border rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-warning-600 dark:text-warning-400" />
+              <Zap className="h-5 w-5 text-warning-600 text-yellow-400" />
               <h4 className="font-semibold">Performance Rate</h4>
             </div>
             <Badge
@@ -195,7 +195,7 @@ export function OverviewSection({
         <div className="p-4 border rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-success-600 dark:text-success-400" />
+              <Shield className="h-5 w-5 text-success-600 text-green-400" />
               <h4 className="font-semibold">Security Rate</h4>
             </div>
             <Badge
@@ -233,15 +233,15 @@ export function OverviewSection({
               <div className="text-lg font-semibold">{metrics.totalFeatures}</div>
             </div>
             <div>
-              <div className="text-success-600 dark:text-success-400">✅ Active</div>
+              <div className="text-success-600 text-green-400">✅ Active</div>
               <div className="text-lg font-semibold">{metrics.activeFeatures}</div>
             </div>
             <div>
-              <div className="text-warning-600 dark:text-warning-400">⏳ Partial</div>
+              <div className="text-warning-600 text-yellow-400">⏳ Partial</div>
               <div className="text-lg font-semibold">{metrics.partialFeatures}</div>
             </div>
             <div>
-              <div className="text-error-600 dark:text-error-400">❌ Inactive</div>
+              <div className="text-error-600 text-red-400">❌ Inactive</div>
               <div className="text-lg font-semibold">{metrics.inactiveFeatures}</div>
             </div>
             <div>
