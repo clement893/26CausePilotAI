@@ -110,7 +110,7 @@ function CheckMySuperAdminStatusContent() {
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="text-center">
-                  <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-info-600 dark:text-info-400" />
+                  <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-info-600 text-blue-400" />
                   <p className="text-muted-foreground">Vérification en cours...</p>
                 </div>
               </div>
@@ -174,14 +174,14 @@ function CheckMySuperAdminStatusContent() {
               </div>
             ) : error ? (
               <div className="space-y-4">
-                <div className="p-4 bg-error-50 dark:bg-error-900/20 rounded-lg border border-error-200 dark:border-error-800">
+                <div className="p-4 bg-red-500/20 rounded-lg border border-red-500/30">
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-error-600 dark:text-error-400" />
+                    <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-error-600 text-red-400" />
                     <div className="flex-1">
-                      <h4 className="font-semibold mb-1 text-error-900 dark:text-error-100">
+                      <h4 className="font-semibold mb-1 text-red-300">
                         Erreur
                       </h4>
-                      <p className="text-sm text-error-800 dark:text-error-200">{error}</p>
+                      <p className="text-sm text-red-200">{error}</p>
                     </div>
                   </div>
                 </div>

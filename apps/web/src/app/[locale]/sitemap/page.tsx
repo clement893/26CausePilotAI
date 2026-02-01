@@ -110,7 +110,7 @@ function SitemapPageContent() {
                               <span className="text-xs text-muted-foreground font-mono">
                                 {page.path}
                               </span>
-                              <span className="text-xs text-error-600 dark:text-error-400">
+                              <span className="text-xs text-error-600 text-red-400">
                                 (Connexion requise)
                               </span>
                             </div>
@@ -131,7 +131,7 @@ function SitemapPageContent() {
             </p>
             <Link
               href="/sitemap.xml"
-              className="inline-block text-info-600 dark:text-info-400 hover:underline font-mono"
+              className="inline-block text-info-600 text-blue-400 hover:underline font-mono"
             >
               {BASE_URL}/sitemap.xml
             </Link>
@@ -142,7 +142,7 @@ function SitemapPageContent() {
             <h2 className="text-xl font-semibold text-foreground mb-4">
               📋 Note sur l'accès aux pages
             </h2>
-            <div className="bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800 rounded-lg p-6 space-y-4">
+            <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-6 space-y-4">
               <div>
                 <h3 className="font-semibold text-foreground mb-2">
                   Pages publiques (accessibles sans connexion)
@@ -194,7 +194,7 @@ function SitemapPageContent() {
                 </ul>
               </div>
 
-              <div className="pt-4 border-t border-blue-200 dark:border-blue-800">
+              <div className="pt-4 border-t border-blue-500/30">
                 <p className="text-sm text-muted-foreground">
                   <strong className="text-foreground">Indicateurs visuels :</strong> Les pages
                   protégées sont affichées avec des badges colorés. Les pages non accessibles

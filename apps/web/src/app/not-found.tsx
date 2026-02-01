@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 404 Not Found Page
  * Shown when a route doesn't exist
  */
@@ -14,12 +14,12 @@ import { Home, ArrowLeft, Search } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-background to-secondary-50 dark:from-muted dark:via-muted dark:to-muted px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-background to-secondary-50 from-[#1C1C26] via-[#1C1C26] to-[#1C1C26] px-4">
       <Container>
         <Card className="max-w-lg w-full mx-auto text-center">
           <div className="p-8 md:p-12">
             <div className="mb-6">
-              <h1 className="text-8xl md:text-9xl font-bold text-primary-600 dark:text-primary-400 mb-4">
+              <h1 className="text-8xl md:text-9xl font-bold text-primary-600 text-blue-400 mb-4">
                 404
               </h1>
               <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-4">
@@ -60,19 +60,19 @@ export default function NotFound() {
               <div className="flex flex-wrap justify-center gap-4 text-sm">
                 <Link
                   href="/docs"
-                  className="text-primary-600 dark:text-primary-400 hover:underline"
+                  className="text-primary-600 text-blue-400 hover:underline"
                 >
                   Documentation
                 </Link>
                 <Link
                   href="/sitemap"
-                  className="text-primary-600 dark:text-primary-400 hover:underline"
+                  className="text-primary-600 text-blue-400 hover:underline"
                 >
                   Plan du site
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="text-primary-600 dark:text-primary-400 hover:underline"
+                  className="text-primary-600 text-blue-400 hover:underline"
                 >
                   Dashboard
                 </Link>
