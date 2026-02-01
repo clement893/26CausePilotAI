@@ -48,8 +48,8 @@ export function TableBody({
     <tbody
       className={clsx(
         'bg-[#13131A] bg-[#13131A] divide-y divide-gray-800 divide-gray-800',
-        striped && '[&>tr:nth-child(even)]:bg-[#1C1C26] dark:[&>tr:nth-child(even)]:bg-muted',
-        hover && '[&>tr:hover]:bg-[#1C1C26] dark:[&>tr:hover]:bg-muted transition-colors',
+        striped && '[&>tr:nth-child(even)]:bg-[#1C1C26] [&>tr:nth-child(even)]:bg-[#1C1C26]',
+        hover && '[&>tr:hover]:bg-[#1C1C26] [&>tr:hover]:bg-[#1C1C26] transition-colors',
         className
       )}
       style={style}
@@ -137,7 +137,7 @@ export function TableCell({ children, className, colSpan, onClick, style }: Tabl
     <td
       colSpan={colSpan}
       onClick={onClick}
-      className={clsx('px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-foreground', className)}
+      className={clsx('px-6 py-4 whitespace-nowrap text-sm text-gray-300 text-white', className)}
       style={style}
     >
       {children}

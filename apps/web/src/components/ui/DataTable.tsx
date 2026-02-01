@@ -105,7 +105,7 @@ function DataTable<T extends Record<string, unknown>>({
     <div className={clsx('space-y-4', className)}>
       {/* Search and Filters */}
       {(searchable || filterable) && (
-        <div className="bg-[#13131A] bg-[#13131A] p-4 rounded-lg border border-gray-800 border-gray-800">
+        <div className="bg-[#13131A] bg-[#13131A] p-4 rounded-lg border border-gray-800">
           <div className="flex flex-col md:flex-row gap-4">
             {searchable && (
               <div className="flex-1">
@@ -126,7 +126,7 @@ function DataTable<T extends Record<string, unknown>>({
             )}
           </div>
           {hasActiveFilters && filteredData.length !== data.length && (
-            <div className="mt-2 text-sm text-gray-400 text-gray-400">
+            <div className="mt-2 text-sm text-gray-400">
               {filteredData.length} résultat(s) sur {data.length}
             </div>
           )}
@@ -134,9 +134,9 @@ function DataTable<T extends Record<string, unknown>>({
       )}
 
       {/* Table - Responsive wrapper for horizontal scroll on mobile */}
-      <div className="bg-[#13131A] bg-[#13131A] rounded-lg border border-gray-800 border-gray-800 overflow-hidden">
+      <div className="bg-[#13131A] bg-[#13131A] rounded-lg border border-gray-800 overflow-hidden">
         {/* Scroll hint for mobile users */}
-        <div className="px-4 py-2 text-xs text-gray-400 text-gray-400 bg-[#1C1C26] bg-[#1C1C26]/50 border-b border-gray-800 border-gray-800 md:hidden">
+        <div className="px-4 py-2 text-xs text-gray-400 bg-[#1C1C26]/50 border-b border-gray-800 md:hidden">
           <span className="inline-flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -154,7 +154,7 @@ function DataTable<T extends Record<string, unknown>>({
         <div className="overflow-x-auto relative">
           {/* Horizontal scroll indicator - shows on mobile when content overflows */}
           <div
-            className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#13131A] from-[#13131A] to-transparent pointer-events-none z-10 md:hidden"
+            className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#13131A] to-transparent pointer-events-none z-10 md:hidden"
             aria-hidden="true"
           />
 
@@ -220,7 +220,7 @@ function DataTable<T extends Record<string, unknown>>({
                     {actions && (
                       <TableCell
                         onClick={(e) => e.stopPropagation()}
-                        className="sticky right-0 bg-[#13131A] bg-[#13131A] z-10 shadow-md shadow-lg"
+                        className="sticky right-0 bg-[#13131A] z-10 shadow-md shadow-lg"
                       >
                         <Dropdown
                           trigger={

@@ -48,7 +48,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         <div className="relative form-input-glow">
           {leftIcon && (
-            <div className="absolute left-3 top-3 text-gray-400 text-gray-400">{leftIcon}</div>
+            <div className="absolute left-3 top-3 text-gray-400">{leftIcon}</div>
           )}
 
           <textarea
@@ -80,12 +80,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           />
 
           {rightIcon && (
-            <div className="absolute right-3 top-3 text-gray-400 text-gray-400">{rightIcon}</div>
+            <div className="absolute right-3 top-3 text-gray-400">{rightIcon}</div>
           )}
         </div>
 
         {error && (
-          <Text variant="small" className="mt-2 text-error-600 text-red-400" role="alert">
+          <Text variant="small" className="mt-2 text-red-400" role="alert">
             {error}
           </Text>
         )}
