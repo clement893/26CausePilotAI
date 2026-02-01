@@ -1,14 +1,15 @@
 'use client';
 
 /**
- * Liste des rapports - Étape 4.2.1
- * Générateur de rapports : liste, lien vers création et visualisation.
+ * Liste des rapports - Étape 4.2.1 + 4.2.2
+ * Rapports prédéfinis (4.2.2) et mes rapports personnalisés (4.2.1).
  */
 
 import { useState, useEffect } from 'react';
 import { Link } from '@/i18n/routing';
 import { useAuthStore } from '@/lib/store';
 import { listReportsAction, type ReportListItem } from '@/app/actions/reports/listReports';
+import { PredefinedReportsList } from '@/components/reports';
 import { Button, Card } from '@/components/ui';
 import { ChevronRight, FileText, Loader2, Plus } from 'lucide-react';
 
@@ -69,7 +70,7 @@ export default function RapportsListPage() {
           <div>
             <h1 className="text-2xl font-bold text-white">Rapports</h1>
             <p className="text-sm text-[var(--text-secondary,#A0A0B0)] mt-1">
-              Créez et consultez vos rapports personnalisés (métriques, dimensions, période).
+              Rapports prédéfinis et rapports personnalisés (métriques, dimensions, période).
             </p>
           </div>
           <Link href="/dashboard/rapports/new">
@@ -79,6 +80,17 @@ export default function RapportsListPage() {
             </Button>
           </Link>
         </div>
+
+        {/* Rapports prédéfinis - Étape 4.2.2 */}
+        <section className="mb-10">
+          <h2 className="text-lg font-semibold text-white mb-4">Rapports prédéfinis</h2>
+          <PredefinedReportsList />
+        </section>
+
+        {/* Mes rapports - Étape 4.2.1 */}
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-4">Mes rapports</h2>
+        </section>
 
         {error && (
           <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4">

@@ -36,3 +36,34 @@ export interface ReportDataResult {
   summary?: number;
   error?: string;
 }
+
+/** Rapports prédéfinis - Étape 4.2.2 */
+export const PREDEFINED_REPORT_TYPES = [
+  {
+    type: 'annual_donations',
+    label: 'Rapport annuel des dons',
+    description: 'Total des dons par mois pour l\'année en cours.',
+  },
+  {
+    type: 'monthly_performance',
+    label: 'Performance mensuelle',
+    description: 'Dons et nombre de dons par mois sur les 12 derniers mois.',
+  },
+  {
+    type: 'donations_by_form',
+    label: 'Dons par formulaire',
+    description: 'Répartition des dons par formulaire de collecte (année en cours).',
+  },
+  {
+    type: 'donors_by_country',
+    label: 'Donateurs par pays',
+    description: 'Nombre de donateurs et montants par pays pour l\'année en cours.',
+  },
+  {
+    type: 'campaign_summary',
+    label: 'Résumé annuel',
+    description: 'Total des dons, nombre de donateurs et nombre de dons pour l\'année.',
+  },
+] as const;
+
+export type PredefinedReportType = (typeof PREDEFINED_REPORT_TYPES)[number]['type'];
