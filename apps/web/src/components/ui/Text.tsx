@@ -73,8 +73,15 @@ export default function Text({
   // Get the typography class for this variant
   const typographyClass = variantToClass[variant];
 
+  // Default text colors based on variant
+  const variantColors = {
+    body: 'text-gray-300 dark:text-foreground',
+    small: 'text-gray-400 dark:text-muted-foreground',
+    caption: 'text-gray-500 dark:text-muted-foreground',
+  };
+
   return (
-    <Tag className={clsx(typographyClass, className)} {...props}>
+    <Tag className={clsx(typographyClass, variantColors[variant], className)} {...props}>
       {children}
     </Tag>
   );

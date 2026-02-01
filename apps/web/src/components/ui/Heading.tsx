@@ -45,6 +45,8 @@ export interface HeadingProps extends Omit<HTMLAttributes<HTMLHeadingElement>, '
   className?: string;
   /** Custom HTML element (default: h{level}) */
   as?: React.ElementType;
+  /** Use gradient text effect */
+  gradient?: boolean;
 }
 
 /**
@@ -65,7 +67,7 @@ const levelToClass = {
  * Renders a heading with the appropriate HTML tag and typography class
  * based on the level prop. Supports custom element via `as` prop.
  */
-export default function Heading({ level, children, className, as, ...props }: HeadingProps) {
+export default function Heading({ level, children, className, as, gradient = false, ...props }: HeadingProps) {
   // Determine the HTML tag to use
   const Tag = as || (`h${level}` as const);
 
@@ -73,7 +75,15 @@ export default function Heading({ level, children, className, as, ...props }: He
   const typographyClass = levelToClass[level];
 
   return (
-    <Tag className={clsx(typographyClass, className)} {...props}>
+    <Tag 
+      className={clsx(
+        typographyClass,
+        'text-white dark:text-foreground',
+        gradient && 'gradient-text',
+        className
+      )} 
+      {...props}
+    >
       {children}
     </Tag>
   );

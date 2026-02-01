@@ -31,7 +31,7 @@ export default function Divider({
       <hr
         className={clsx(
           'border-0 border-l',
-          'border-border',
+          'border-gray-800 dark:border-border',
           '[border-color:var(--color-border)]',
           variantClasses[variant],
           spacingClasses[spacing],
@@ -51,25 +51,25 @@ export default function Divider({
         <hr
           className={clsx(
             'flex-1 border-0 border-t',
-            'border-border',
+            'border-gray-800 dark:border-border',
             '[border-color:var(--color-border)]',
             variantClasses[variant]
           )}
           role="separator"
           aria-label={label}
-        />{' '}
-        <span className="px-4 text-sm text-muted-foreground [color:var(--color-text-secondary)]">
+        />
+        <span className="px-4 text-sm text-gray-400 dark:text-muted-foreground [color:var(--color-text-secondary)]">
           {label}
-        </span>{' '}
+        </span>
         <hr
           className={clsx(
             'flex-1 border-0 border-t',
-            'border-border',
+            'border-gray-800 dark:border-border',
             '[border-color:var(--color-border)]',
             variantClasses[variant]
           )}
           role="separator"
-        />{' '}
+        />
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function Divider({
     <hr
       className={clsx(
         'border-0 border-t',
-        'border-border',
+        'border-gray-800 dark:border-border',
         '[border-color:var(--color-border)]',
         variantClasses[variant],
         spacingClasses[spacing],

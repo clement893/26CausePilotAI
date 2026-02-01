@@ -68,7 +68,7 @@
 ### Batch 5: Tables et Données (5 composants)
 **Statut:** ✅ COMPLÉTÉ  
 **Priorité:** MOYENNE ⭐  
-**Commit:** `4466de7` - feat(ui): Batch 5 - Alignement des composants de tables et données
+**Commit:** `89e267d` - feat(ui): Batch 5 - Alignement des composants de tables et données
 
 - [x] `DataTable.tsx` - Style dark avec sticky header, hover effects ✅
 - [x] `Table.tsx` - Primitives de table dark ✅
@@ -120,7 +120,7 @@
 
 ### Batch 5 - Commit 5 ✅
 - **Date:** 2026-02-01
-- **Commit:** `4466de7`
+- **Commit:** `89e267d`
 - **Composants:** DataTable, Table, Chart, Timeline, List
 - **Message:** "feat(ui): Batch 5 - Alignement des composants de tables et données avec design system dark"
 - **Statut:** ✅ Committé avec succès
