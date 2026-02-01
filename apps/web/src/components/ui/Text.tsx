@@ -75,9 +75,9 @@ export default function Text({
 
   // Default text colors based on variant
   const variantColors = {
-    body: 'text-gray-300 dark:text-foreground',
-    small: 'text-gray-400 dark:text-muted-foreground',
-    caption: 'text-gray-500 dark:text-muted-foreground',
+    body: 'text-white',
+    small: 'text-gray-400',
+    caption: 'text-gray-400',
   };
 
   return (

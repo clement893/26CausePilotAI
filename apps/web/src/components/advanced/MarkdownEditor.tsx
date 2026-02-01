@@ -201,7 +201,7 @@ export default function MarkdownEditor({
                 className={clsx(
                   'w-full h-96 p-4 border rounded-lg overflow-y-auto custom-scrollbar',
                   'glass-effect bg-[#1C1C26] border-gray-800',
-                  'prose prose-sm dark:prose-invert max-w-none text-gray-300'
+                  'prose prose-sm prose-invert max-w-none text-gray-300'
                 )}
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(markdown) }}
               />

@@ -122,7 +122,7 @@ export default function ExportButton({ data, filename = 'export', onExport }: Ex
   return (
     <Dropdown
       trigger={
-        <Button variant="outline" size="sm" disabled={loading || data.length === 0} className="border-gray-700 dark:border-border">
+        <Button variant="outline" size="sm" disabled={loading || data.length === 0} className="border-gray-700 border-gray-800">
           {loading ? 'Export...' : 'Exporter'}
         </Button>
       }

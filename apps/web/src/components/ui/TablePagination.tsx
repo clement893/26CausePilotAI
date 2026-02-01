@@ -23,7 +23,7 @@ export default function TablePagination({
   const endIndex = Math.min(currentPage * pageSize, totalItems);
   return (
     <div className={`flex items-center justify-between ${className}`}>
-      <div className="text-sm text-gray-400 dark:text-muted-foreground">
+      <div className="text-sm text-gray-400">
         Affichage de {startIndex} à {endIndex} sur {totalItems}
       </div>
       <Pagination

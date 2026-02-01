@@ -78,7 +78,7 @@ export default function Heading({ level, children, className, as, gradient = fal
     <Tag 
       className={clsx(
         typographyClass,
-        'text-white dark:text-foreground',
+        'text-white',
         gradient && 'gradient-text',
         className
       )} 

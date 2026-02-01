@@ -13,7 +13,7 @@ export default function Skeleton({
   height,
   animation = 'pulse',
 }: SkeletonProps) {
-  const baseStyles = 'bg-[#1C1C26] dark:bg-muted';
+  const baseStyles = 'bg-[#1C1C26]';
   const animations = { 
     pulse: 'animate-pulse', 
     wave: 'shimmer', 
