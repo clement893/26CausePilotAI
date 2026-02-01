@@ -35,6 +35,7 @@ export interface Donor {
   first_donation_date?: string; // ISO datetime string
   last_donation_date?: string; // ISO datetime string
   donation_count: number;
+  score?: number; // Score de propension (0-100)
   created_at: string; // ISO datetime string
   updated_at: string; // ISO datetime string
 }

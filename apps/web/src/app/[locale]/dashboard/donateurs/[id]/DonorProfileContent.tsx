@@ -44,7 +44,17 @@ function formatCurrency(amount: string): string {
   );
 }
 
+/**
+ * Récupère le score de propension du donateur
+ * Utilise le score calculé (RFM) s'il existe, sinon calcule un score simple
+ */
 function getScore(donor: DonorWithStats): number {
+  // Utiliser le score de propension calculé (RFM) s'il existe
+  if (donor.score !== undefined && donor.score !== null) {
+    return donor.score;
+  }
+  
+  // Fallback : calcul simple si le score n'a pas encore été calculé
   const count = donor.donation_count ?? 0;
   const total = parseFloat(donor.total_donated ?? '0');
   let score = Math.min(50, count * 5);
