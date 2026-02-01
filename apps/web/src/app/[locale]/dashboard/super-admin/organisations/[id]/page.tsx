@@ -162,8 +162,8 @@ function OrganizationDetailsContent() {
   if (error || !organization) {
     return (
       <Container className="py-8 lg:py-12">
-        <Card className="border-error-200 bg-error-50 dark:bg-error-900/20">
-          <p className="text-error-600 dark:text-error-400">{error || 'Organisation non trouvée'}</p>
+        <Card className="border-error-200 bg-red-500/20">
+          <p className="text-error-600 text-red-400">{error || 'Organisation non trouvée'}</p>
           <Link href="/dashboard/super-admin/organisations">
             <Button variant="ghost" className="mt-4">
               Retour
@@ -281,7 +281,7 @@ function OrganizationDetailsContent() {
                   className="flex items-center justify-between p-3 rounded-lg border border-border"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
                       <Users className="w-5 h-5 text-primary" />
                     </div>
                     <div>
@@ -314,7 +314,7 @@ function OrganizationDetailsContent() {
         <Card className="lg:col-span-2">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
                 <BarChart3 className="w-6 h-6 text-primary" />
               </div>
               <div>
@@ -325,7 +325,7 @@ function OrganizationDetailsContent() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-success-100 dark:bg-success-900/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
                 <Users className="w-6 h-6 text-success-600" />
               </div>
               <div>
@@ -334,7 +334,7 @@ function OrganizationDetailsContent() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-info-100 dark:bg-info-900/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
                 <Building className="w-6 h-6 text-info-600" />
               </div>
               <div>

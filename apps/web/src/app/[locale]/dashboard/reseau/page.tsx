@@ -24,8 +24,8 @@ function ReseauContent() {
           <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-primary-100 dark:bg-primary-900/40 rounded-lg">
-                  <UserCircle className="w-8 h-8 text-primary-600 dark:text-primary-400" />
+                <div className="p-3 bg-blue-500/20 rounded-lg">
+                  <UserCircle className="w-8 h-8 text-blue-400" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-foreground">Contacts</h3>
@@ -41,8 +41,8 @@ function ReseauContent() {
           <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-primary-100 dark:bg-primary-900/40 rounded-lg">
-                  <Building2 className="w-8 h-8 text-primary-600 dark:text-primary-400" />
+                <div className="p-3 bg-blue-500/20 rounded-lg">
+                  <Building2 className="w-8 h-8 text-blue-400" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-foreground">Entreprises</h3>
@@ -58,8 +58,8 @@ function ReseauContent() {
           <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-primary-100 dark:bg-primary-900/40 rounded-lg">
-                  <MessageSquare className="w-8 h-8 text-primary-600 dark:text-primary-400" />
+                <div className="p-3 bg-blue-500/20 rounded-lg">
+                  <MessageSquare className="w-8 h-8 text-blue-400" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-foreground">Témoignages</h3>

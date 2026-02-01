@@ -76,10 +76,10 @@ export function EndpointTestCard({
                     aria-label={`Test progress: ${testProgress.percentage}%`}
                   />
                 </div>
-                <span className="text-success-600 dark:text-success-400">
+                <span className="text-success-600 text-green-400">
                   ✓ {testProgress.success}
                 </span>
-                <span className="text-error-600 dark:text-error-400">✗ {testProgress.error}</span>
+                <span className="text-error-600 text-red-400">✗ {testProgress.error}</span>
                 {testProgress.pending > 0 && (
                   <span className="text-muted-foreground">⏳ {testProgress.pending}</span>
                 )}
@@ -138,9 +138,9 @@ export function EndpointTestCard({
                         key={`${category}-${index}`}
                         className={`p-3 rounded-lg border ${
                           test.status === 'success'
-                            ? 'bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-800'
+                            ? 'bg-green-500/20 border-green-500/30'
                             : test.status === 'error'
-                              ? 'bg-error-50 dark:bg-error-900/20 border-error-200 dark:border-error-800'
+                              ? 'bg-red-500/20 border-red-500/30'
                               : 'bg-muted border-border'
                         }`}
                         role="listitem"
@@ -210,9 +210,9 @@ export function EndpointTestCard({
                       key={`other-${index}`}
                       className={`p-3 rounded-lg border ${
                         test.status === 'success'
-                          ? 'bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-800'
+                          ? 'bg-green-500/20 border-green-500/30'
                           : test.status === 'error'
-                            ? 'bg-error-50 dark:bg-error-900/20 border-error-200 dark:border-error-800'
+                            ? 'bg-red-500/20 border-red-500/30'
                             : 'bg-muted border-border'
                       }`}
                       role="listitem"

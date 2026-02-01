@@ -97,7 +97,7 @@ function DocsContent() {
                 <li key={linkIndex}>
                   <a
                     href={link.href}
-                    className="text-info-600 dark:text-info-400 hover:underline text-sm"
+                    className="text-info-600 text-blue-400 hover:underline text-sm"
                   >
                     {link.title}
                   </a>
@@ -279,20 +279,20 @@ const data = await response.json();`}
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Repository GitHub
                 </a>
               </li>
               <li>
-                <a href="/examples" className="text-info-600 dark:text-info-400 hover:underline">
+                <a href="/examples" className="text-info-600 text-blue-400 hover:underline">
                   Exemples de pages
                 </a>
               </li>
               <li>
                 <Link
                   href="/dashboard"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Tableau de bord
                 </Link>
@@ -307,7 +307,7 @@ const data = await response.json();`}
                   href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/clement893/26CausePilotAI'}/issues`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Signaler un problème
                 </a>
@@ -317,7 +317,7 @@ const data = await response.json();`}
                   href={`${process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/clement893/26CausePilotAI'}/discussions`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-info-600 dark:text-info-400 hover:underline"
+                  className="text-info-600 text-blue-400 hover:underline"
                 >
                   Discussions
                 </a>
