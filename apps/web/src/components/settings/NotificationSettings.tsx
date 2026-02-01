@@ -165,25 +165,20 @@ export default function NotificationSettings({
     const channelData = formData[channel];
     const isEnabled = channelData.enabled;
     return (
-      <Card title={title} className="bg-background">
-        {' '}
+      <Card variant="glass" title={title} className="border border-gray-800 dark:border-border">
         <div className="space-y-4">
-          {' '}
           <div className="flex items-center justify-between">
-            {' '}
             <div className="flex items-center gap-2">
-              {' '}
-              {icon}{' '}
-              <span className="text-sm font-medium text-foreground"> Enable {title} </span>{' '}
-            </div>{' '}
+              <div className="text-blue-400">{icon}</div>
+              <span className="text-sm font-medium text-white dark:text-foreground">Enable {title}</span>
+            </div>
             <Switch
               checked={isEnabled}
               onChange={(e) => handleChange(channel, 'enabled', e.target.checked)}
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           {isEnabled && (
             <>
-              {' '}
               {channel === 'email' && (
                 <Select
                   label="Email Frequency"
@@ -191,68 +186,56 @@ export default function NotificationSettings({
                   value={(channelData as NotificationSettingsData['email']).frequency}
                   onChange={(e) => handleChange(channel, 'frequency', e.target.value)}
                 />
-              )}{' '}
-              <div className="pt-4 border-t border-border">
-                {' '}
-                <div className="text-sm font-medium text-foreground mb-3">
-                  {' '}
-                  Notification Types{' '}
-                </div>{' '}
+              )}
+              <div className="pt-4 border-t border-gray-800 dark:border-border">
+                <div className="text-sm font-medium text-white dark:text-foreground mb-3">
+                  Notification Types
+                </div>
                 <div className="space-y-3">
-                  {' '}
                   {notificationTypes.map((type) => (
                     <div key={type.key} className="flex items-center justify-between py-2">
-                      {' '}
                       <div className="flex-1">
-                        {' '}
-                        <div className="text-sm font-medium text-foreground">
-                          {' '}
-                          {type.label}{' '}
-                        </div>{' '}
-                        <div className="text-xs text-muted-foreground">
-                          {' '}
-                          {type.description}{' '}
-                        </div>{' '}
-                      </div>{' '}
+                        <div className="text-sm font-medium text-white dark:text-foreground">
+                          {type.label}
+                        </div>
+                        <div className="text-xs text-gray-400 dark:text-muted-foreground">
+                          {type.description}
+                        </div>
+                      </div>
                       <Switch
                         checked={channelData.types[type.key]}
                         onChange={(e) => handleTypeChange(channel, type.key, e.target.checked)}
                         disabled={!isEnabled}
-                      />{' '}
+                      />
                     </div>
-                  ))}{' '}
-                </div>{' '}
-              </div>{' '}
+                  ))}
+                </div>
+              </div>
             </>
-          )}{' '}
-        </div>{' '}
+          )}
+        </div>
       </Card>
     );
   };
   return (
     <div className={clsx('space-y-6', className)}>
-      {' '}
       <form onSubmit={handleSubmit} className="space-y-6">
-        {' '}
-        {renderChannelSettings('email', <Mail className="w-5 h-5" />, 'Email Notifications')}{' '}
-        {renderChannelSettings('push', <Smartphone className="w-5 h-5" />, 'Push Notifications')}{' '}
-        {renderChannelSettings('inApp', <Inbox className="w-5 h-5" />, 'In-App Notifications')}{' '}
-        {/* Error Message */}{' '}
+        {renderChannelSettings('email', <Mail className="w-5 h-5" />, 'Email Notifications')}
+        {renderChannelSettings('push', <Smartphone className="w-5 h-5" />, 'Push Notifications')}
+        {renderChannelSettings('inApp', <Inbox className="w-5 h-5" />, 'In-App Notifications')}
+        {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-danger-50 dark:bg-danger-900/20 rounded-lg border border-danger-200 dark:border-danger-800 text-sm text-danger-800 dark:text-danger-200">
-            {' '}
-            {errors.submit}{' '}
+          <div className="p-3 bg-red-500/20 dark:bg-danger-900/20 rounded-lg border border-red-500/30 dark:border-danger-800 text-sm text-red-400 dark:text-danger-200">
+            {errors.submit}
           </div>
-        )}{' '}
-        {/* Save Button */}{' '}
+        )}
+        {/* Save Button */}
         <div className="flex justify-end">
-          {' '}
-          <Button type="submit" variant="primary" loading={loading}>
-            {' '}
-            <Save className="w-4 h-4 mr-2" /> Save Notification Settings{' '}
-          </Button>{' '}
-        </div>{' '}
-      </form>{' '}
+          <Button type="submit" variant="gradient" loading={loading}>
+            <Save className="w-4 h-4 mr-2" /> Save Notification Settings
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

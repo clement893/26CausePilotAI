@@ -125,22 +125,22 @@ export interface SettingsNavigationProps {
             className={`stagger-fade-in opacity-0 stagger-delay-${Math.min(index + 1, 6)}`}
           >
             <Card
+              variant={active ? "gradient-border" : "glass"}
               className={clsx(
-                'h-full transition-all duration-200',
+                'h-full transition-all duration-200 hover-lift',
                 active
-                  ? 'ring-2 ring-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                  : 'hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-700',
+                  ? 'border-blue-500 dark:border-primary-400'
+                  : 'border-gray-800 dark:border-border hover:border-gray-700 dark:hover:border-gray-700',
                 'cursor-pointer'
               )}
-              hover
             >
               <div className="flex items-start space-x-4">
                 <div
                   className={clsx(
                     'flex-shrink-0 p-3 rounded-lg',
                     active
-                      ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400'
-                      : 'bg-muted text-muted-foreground'
+                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 dark:text-primary-400'
+                      : 'bg-[#1C1C26] dark:bg-muted text-gray-400 dark:text-muted-foreground'
                   )}
                 >
                   {item.icon}
@@ -150,18 +150,18 @@ export interface SettingsNavigationProps {
                     <h3
                       className={clsx(
                         'text-lg font-semibold',
-                        active ? 'text-primary-900 dark:text-primary-100' : 'text-foreground'
+                        active ? 'text-white dark:text-primary-100' : 'text-white dark:text-foreground'
                       )}
                     >
                       {item.label}
                     </h3>
                     {item.badge && (
-                      <span className="ml-2 px-2 py-1 text-xs font-medium bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 rounded-full">
+                      <span className="ml-2 px-2 py-1 text-xs font-medium bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:bg-primary-900/40 text-blue-400 dark:text-primary-300 rounded-full">
                         {item.badge}
                       </span>
                     )}
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                  <p className="mt-1 text-sm text-gray-400 dark:text-muted-foreground line-clamp-2">
                     {item.description}
                   </p>
                 </div>

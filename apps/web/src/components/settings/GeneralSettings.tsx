@@ -140,57 +140,46 @@ export interface GeneralSettingsData {
   );
   return (
     <form onSubmit={handleSubmit} className={clsx('space-y-6', className)}>
-      {' '}
-      {/* Language & Localization */}{' '}
-      <Card title="Language & Localization">
-        {' '}
+      {/* Language & Localization */}
+      <Card variant="glass" title="Language & Localization" className="border border-gray-800 dark:border-border">
         <div className="space-y-4">
-          {' '}
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
-              {' '}
-              Language{' '}
-            </label>{' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              Language
+            </label>
             <Select
               value={formData.language}
               onChange={(value) => setFormData({ ...formData, language: String(value) })}
               options={languageOptions}
               placeholder="Select language"
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
-              {' '}
-              Timezone{' '}
-            </label>{' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              Timezone
+            </label>
             <Select
               value={formData.timezone}
               onChange={(value) => setFormData({ ...formData, timezone: String(value) })}
               options={timezoneOptions}
               placeholder="Select timezone"
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
-              {' '}
-              Date Format{' '}
-            </label>{' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              Date Format
+            </label>
             <Select
               value={formData.dateFormat}
               onChange={(value) => setFormData({ ...formData, dateFormat: String(value) })}
               options={dateFormatOptions}
               placeholder="Select date format"
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
-              {' '}
-              Time Format{' '}
-            </label>{' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              Time Format
+            </label>
             <Select
               value={formData.timeFormat}
               onChange={(value) =>
@@ -198,14 +187,12 @@ export interface GeneralSettingsData {
               }
               options={timeFormatOptions}
               placeholder="Select time format"
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
-              {' '}
-              Week Starts On{' '}
-            </label>{' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">
+              Week Starts On
+            </label>
             <Select
               value={formData.weekStartsOn}
               onChange={(value) =>
@@ -213,18 +200,15 @@ export interface GeneralSettingsData {
               }
               options={weekStartsOnOptions}
               placeholder="Select day"
-            />{' '}
-          </div>{' '}
-        </div>{' '}
-      </Card>{' '}
-      {/* Appearance */}{' '}
-      <Card title="Appearance">
-        {' '}
+            />
+          </div>
+        </div>
+      </Card>
+      {/* Appearance */}
+      <Card variant="glass" title="Appearance" className="border border-gray-800 dark:border-border">
         <div className="space-y-4">
-          {' '}
           <div>
-            {' '}
-            <label className="block text-sm font-medium text-foreground mb-2"> Theme </label>{' '}
+            <label className="block text-sm font-medium text-white dark:text-foreground mb-2">Theme</label>
             <Select
               value={formData.theme}
               onChange={(value) =>
@@ -232,62 +216,51 @@ export interface GeneralSettingsData {
               }
               options={themeOptions}
               placeholder="Select theme"
-            />{' '}
-          </div>{' '}
-        </div>{' '}
-      </Card>{' '}
-      {/* Notifications */}{' '}
-      <Card title="Notifications">
-        {' '}
+            />
+          </div>
+        </div>
+      </Card>
+      {/* Notifications */}
+      <Card variant="glass" title="Notifications" className="border border-gray-800 dark:border-border">
         <div className="space-y-4">
-          {' '}
           <div className="flex items-center justify-between">
-            {' '}
             <div>
-              {' '}
-              <label className="block text-sm font-medium text-foreground">
-                {' '}
-                Enable Notifications{' '}
-              </label>{' '}
-              <p className="text-sm text-muted-foreground"> Receive in-app notifications </p>{' '}
-            </div>{' '}
+              <label className="block text-sm font-medium text-white dark:text-foreground">
+                Enable Notifications
+              </label>
+              <p className="text-sm text-gray-400 dark:text-muted-foreground">Receive in-app notifications</p>
+            </div>
             <Switch
               checked={formData.enableNotifications}
               onChange={(checked) =>
                 setFormData({ ...formData, enableNotifications: Boolean(checked) })
               }
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div className="flex items-center justify-between">
-            {' '}
             <div>
-              {' '}
-              <label className="block text-sm font-medium text-foreground">
-                {' '}
-                Email Notifications{' '}
-              </label>{' '}
-              <p className="text-sm text-muted-foreground">
-                {' '}
-                Receive notifications via email{' '}
-              </p>{' '}
-            </div>{' '}
+              <label className="block text-sm font-medium text-white dark:text-foreground">
+                Email Notifications
+              </label>
+              <p className="text-sm text-gray-400 dark:text-muted-foreground">
+                Receive notifications via email
+              </p>
+            </div>
             <Switch
               checked={formData.enableEmailNotifications}
               onChange={(checked) =>
                 setFormData({ ...formData, enableEmailNotifications: Boolean(checked) })
               }
-            />{' '}
-          </div>{' '}
-        </div>{' '}
-      </Card>{' '}
-      {/* Actions */}{' '}
+            />
+          </div>
+        </div>
+      </Card>
+      {/* Actions */}
       <div className="flex justify-end">
-        {' '}
-        <Button type="submit" variant="primary" loading={isSaving}>
-          {' '}
-          <Save className="w-4 h-4 mr-2 inline" /> Save Settings{' '}
-        </Button>{' '}
-      </div>{' '}
+        <Button type="submit" variant="gradient" loading={isSaving}>
+          <Save className="w-4 h-4 mr-2 inline" /> Save Settings
+        </Button>
+      </div>
     </form>
   );
 }

@@ -106,15 +106,15 @@ export default function UserSettings({
     <div className={clsx('space-y-6', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Picture */}
-        <Card title="Profile Picture" className="bg-background">
+        <Card variant="glass" title="Profile Picture" className="border border-gray-800 dark:border-border">
           <div className="flex items-center gap-6">
             <div className="relative">
               <Avatar src={avatarPreview} name={formData.name} size="xl" />
               <label
                 htmlFor="avatar-upload"
-                className="absolute bottom-0 right-0 p-2 bg-primary-600 dark:bg-primary-500 rounded-full cursor-pointer hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors"
+                className="absolute bottom-0 right-0 p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full cursor-pointer hover:from-blue-600 hover:to-purple-600 transition-colors"
               >
-                <Camera className="w-4 h-4 text-background" />
+                <Camera className="w-4 h-4 text-white" />
                 <input
                   id="avatar-upload"
                   type="file"
@@ -125,11 +125,11 @@ export default function UserSettings({
               </label>
             </div>
             <div className="flex-1">
-              <p className="text-sm text-muted-foreground mb-2">
+              <p className="text-sm text-gray-400 dark:text-muted-foreground mb-2">
                 Upload a new profile picture. JPG, PNG or GIF. No size limit.
               </p>
               {errors.avatar && (
-                <p className="text-sm text-danger-600 dark:text-danger-400">
+                <p className="text-sm text-red-400 dark:text-danger-400">
                   {errors.avatar}
                 </p>
               )}
@@ -138,7 +138,7 @@ export default function UserSettings({
         </Card>
 
         {/* Personal Information */}
-        <Card title="Personal Information" className="bg-background">
+        <Card variant="glass" title="Personal Information" className="border border-gray-800 dark:border-border">
           <div className="space-y-4">
             <Input
               label="Full Name"
@@ -185,7 +185,7 @@ export default function UserSettings({
               error={errors.website}
             />
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
+              <label className="block text-sm font-medium text-white dark:text-foreground mb-1">
                 Bio
               </label>
               <textarea
@@ -194,12 +194,12 @@ export default function UserSettings({
                 placeholder="Tell us about yourself..."
                 rows={4}
                 className={clsx(
-                  'w-full px-4 py-2 border rounded-lg',
-                  'bg-background',
-                  'text-foreground',
-                  'border-border',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-                  errors.bio && 'border-danger-500 dark:border-danger-400'
+                  'w-full px-4 py-2 border rounded-lg form-input-glow',
+                  'bg-[#1C1C26] dark:bg-background',
+                  'text-white dark:text-foreground',
+                  'border-gray-700 dark:border-border',
+                  'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400',
+                  errors.bio && 'border-red-500 dark:border-danger-400'
                 )}
               />
             </div>
@@ -208,14 +208,14 @@ export default function UserSettings({
 
         {/* Error Message */}
         {errors.submit && (
-          <div className="p-3 bg-danger-50 dark:bg-danger-900/20 rounded-lg border border-danger-200 dark:border-danger-800 text-sm text-danger-800 dark:text-danger-200">
+          <div className="p-3 bg-red-500/20 dark:bg-danger-900/20 rounded-lg border border-red-500/30 dark:border-danger-800 text-sm text-red-400 dark:text-danger-200">
             {errors.submit}
           </div>
         )}
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <Button type="submit" variant="primary" loading={loading}>
+          <Button type="submit" variant="gradient" loading={loading}>
             <Save className="w-4 h-4 mr-2" />
             Save Changes
           </Button>
