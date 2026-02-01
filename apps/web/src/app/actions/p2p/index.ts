@@ -34,3 +34,6 @@ export type { GetP2PParticipantStatsParams, GetP2PParticipantStatsResult, P2PPar
 
 export { getP2PParticipantByEmail } from './getParticipantByEmail';
 export type { GetP2PParticipantByEmailParams, GetP2PParticipantByEmailResult, P2PParticipantBasic } from './getParticipantByEmail';
+
+export { getP2PLeaderboard } from './getLeaderboard';
+export type { GetP2PLeaderboardParams, GetP2PLeaderboardResult, LeaderboardParticipant, LeaderboardTeam } from './getLeaderboard';
