@@ -234,7 +234,7 @@ export default function DemoComponentsPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-300">Enable notifications</span>
-                    <Switch checked={switchValue} onChange={setSwitchValue} />
+                    <Switch checked={switchValue} onChange={(e) => setSwitchValue(e.target.checked)} />
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-300">Dark mode</span>
@@ -252,7 +252,7 @@ export default function DemoComponentsPage() {
                 <h3 className="text-lg font-semibold mb-4">Checkboxes</h3>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <Checkbox checked={checkboxValue} onChange={setCheckboxValue} />
+                    <Checkbox checked={checkboxValue} onChange={(e) => setCheckboxValue(e.target.checked)} />
                     <span className="text-sm text-gray-300">I agree to the terms</span>
                   </div>
                   <div className="flex items-center gap-3">

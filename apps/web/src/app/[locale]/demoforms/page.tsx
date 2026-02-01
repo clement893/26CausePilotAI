@@ -50,8 +50,6 @@ export default function DemoFormsPage() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Password visibility
-  const [showPassword, setShowPassword] = useState(false);
 
   const steps = [
     { id: 1, name: 'Basic Info', icon: FileText },
@@ -257,7 +255,7 @@ export default function DemoFormsPage() {
                             Visible to all donors
                           </span>
                         </div>
-                        <Switch checked={isPublic} onChange={setIsPublic} />
+                        <Switch checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />
                       </div>
                     </div>
                   </div>
@@ -446,7 +444,7 @@ export default function DemoFormsPage() {
 
                     <div className="p-4 bg-[#1C1C26] rounded-lg border border-gray-700">
                       <div className="flex items-start gap-3">
-                        <Checkbox checked={acceptTerms} onChange={setAcceptTerms} />
+                        <Checkbox checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} />
                         <div className="text-sm text-gray-300">
                           I agree to the <a href="#" className="text-primary-400 hover:text-primary-300">Terms of Service</a> and{' '}
                           <a href="#" className="text-primary-400 hover:text-primary-300">Privacy Policy</a>. I confirm that all information provided is accurate.
