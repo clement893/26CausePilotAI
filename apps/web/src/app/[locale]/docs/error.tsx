@@ -43,7 +43,7 @@ export default function DocsError({
             Une erreur s'est produite lors du chargement de la documentation. Veuillez réessayer.
           </p>
           {error.message && (
-            <p className="text-sm text-error-600 dark:text-error-400 mb-4 font-mono bg-error-50 dark:bg-error-900/20 p-2 rounded">
+            <p className="text-sm text-error-600 text-red-400 mb-4 font-mono bg-error-50 bg-red-500/20 p-2 rounded">
               {error.message}
             </p>
           )}

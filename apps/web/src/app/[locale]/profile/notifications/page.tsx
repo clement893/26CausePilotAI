@@ -266,7 +266,7 @@ export default function ProfileNotificationsPage() {
             <div className="mb-4">
               <a
                 href="/profile/notifications-list"
-                className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
+                className="text-primary-600 text-blue-400 hover:text-primary-700 hover:text-blue-300 text-sm font-medium"
               >
                 View all notifications →
               </a>

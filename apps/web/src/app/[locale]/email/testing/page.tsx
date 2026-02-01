@@ -160,7 +160,7 @@ function EmailTestContent() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-muted dark:to-muted py-8">
+    <main className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 from-[#1C1C26] to-[#1C1C26] py-8">
       <Container maxWidth="xl" className="space-y-6">
         <Card title="Email Test Interface (SendGrid)">
           {/* Health Check */}
