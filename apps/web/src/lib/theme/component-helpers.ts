@@ -227,9 +227,9 @@ export const themePatterns = {
   },
   // Badge patterns
   badge: {
-    primary: 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100',
-    secondary: 'bg-secondary-100 text-secondary-800 dark:bg-secondary-900 dark:text-secondary-100',
-    danger: 'bg-danger-100 text-danger-800 dark:bg-danger-900 dark:text-danger-100',
-    success: 'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-100',
+    primary: 'bg-blue-500/20 text-blue-300',
+    secondary: 'bg-green-500/20 text-green-300',
+    danger: 'bg-red-500/20 text-red-300',
+    success: 'bg-green-500/20 text-green-300',
   },
 } as const;
