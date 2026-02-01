@@ -99,20 +99,22 @@ Les composants de features seront traités par **catégories fonctionnelles** po
 - [x] APIKeys, OrganizationSettings, PrivacySettings, WebhooksSettings, APISettings, IntegrationsSettings - cohérents ✅
 
 ### Batch 25-40: Features Standards (80 composants)
-**Priorité:** MOYENNE ⭐
+**Priorité:** MOYENNE ⭐  
+**Statut:** ✅ Vérifié - aucune classe générique dans components/
 
-#### Catégories à traiter (par ordre de priorité):
-1. **Notifications** (10 composants) - Batch 25-26
-2. **Integrations** (14 composants) - Batch 27-29
-3. **Monitoring** (9 composants) - Batch 30-31
-4. **Performance** (17 composants) - Batch 32-35
-5. **Content** (11 composants) - Batch 36-37
-6. **Collaboration** (13 composants) - Batch 38-40
+#### Catégories vérifiées (par ordre de priorité):
+1. **Notifications** - Batch 25-26 ✅
+2. **Integrations** - Batch 27-29 ✅
+3. **Monitoring** - Batch 30-31 ✅
+4. **Performance** - Batch 32-35 ✅
+5. **Content** - Batch 36-37 ✅
+6. **Collaboration** - Batch 38-40 ✅
 
 ### Batch 41-60: Features Spécialisées (142+ composants)
-**Priorité:** BASSE ⭐
+**Priorité:** BASSE ⭐  
+**Statut:** ✅ Vérifié - aucun theme generique dans activity, admin, ai, blog, cms, donors, help, reseau, theme, ui, etc.
 
-#### Catégories restantes:
+#### Catégories vérifiées:
 - Activity (16 composants)
 - Admin (10 composants)
 - Advanced (10 composants)

@@ -1037,6 +1037,10 @@
 - **Analytics** : aucun theme generique dans analytics/
 - **Settings** : tous alignés (GeneralSettings, NotificationSettings, SecuritySettings, etc.)
 
+### Phase 3 – Batches 25-60 (tous les features)
+- **Scan global** : 0 occurrence de `text-muted-foreground`, `bg-muted`, `border-border`, `bg-background`, `text-foreground` dans `apps/web/src/components` (fichiers .tsx)
+- Batches 25-40 (Notifications, Integrations, Monitoring, Performance, Content, Collaboration) et 41-60 (Activity, Admin, AI, Blog, CMS, Donors, Help, Reseau, Theme, etc.) considérés alignés
+
 ---
 
 ## 📝 Notes
