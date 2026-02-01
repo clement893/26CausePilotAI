@@ -17,6 +17,35 @@ enum Role {
   MANAGER  // Gestionnaire de Campagnes - accès complet aux campagnes
 }
 
+// ============= Étape 2.1.1 - Enums Formulaires de Don =============
+enum FormStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum SubmissionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentStatus {
+  CREATED
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+}
+
 // ============= 2. Modèle Organization =============
 model Organization {
   id          String   @id @default(cuid())
@@ -46,8 +75,13 @@ model Organization {
   isActive    Boolean  @default(true) // Organisation active ou suspendue
 
   // Relations
-  users       User[]   // Utilisateurs de cette organisation
-  donators    Donator[] // Donateurs de cette organisation
+  users             User[]
+  donators          Donator[]
+  donationForms     DonationForm[]
+  formSubmissions   DonationFormSubmission[]
+  paymentIntents    PaymentIntent[]
+  subscriptions     Subscription[]
+  donations         Donation[]
 
   // Timestamps
   createdAt   DateTime @default(now())
@@ -188,6 +222,11 @@ model Donator {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  // Relations formulaires de don
+  formSubmissions DonationFormSubmission[]
+  subscriptions   Subscription[]
+  donations       Donation[]
+
   // Timestamps
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -198,4 +237,302 @@ model Donator {
   @@index([segment])
   @@index([lastDonationDate])
   @@map("donators")
+}
+
+// ============= 5. Modèle Donation (Phase 1 + liens formulaires) =============
+model Donation {
+  id     String @id @default(cuid())
+
+  // Donateur
+  donatorId String
+  donator   Donator  @relation(fields: [donatorId], references: [id], onDelete: Cascade)
+
+  // Montant
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("CAD")
+
+  // Statut
+  status String @default("completed") // pending, completed, failed, refunded
+
+  // Lien vers le formulaire (si don via formulaire)
+  formId      String?
+  form        DonationForm? @relation(fields: [formId], references: [id], onDelete: SetNull)
+
+  // Lien vers la soumission (si don via formulaire)
+  submissionId String?  @unique
+  submission   DonationFormSubmission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+
+  // Lien vers l'abonnement (si don récurrent)
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  donatedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([donatorId])
+  @@index([organizationId])
+  @@index([formId])
+  @@index([subscriptionId])
+  @@index([donatedAt])
+  @@map("donations")
+}
+
+// ============= Étape 2.1.1 - DonationForm =============
+model DonationForm {
+  id          String   @id @default(cuid())
+
+  // Informations de base
+  title       String
+  description String?  @db.Text
+  slug        String   @unique
+
+  // Configuration des montants
+  amountType       String   @default("flexible") // flexible, fixed
+  suggestedAmounts Json     // Array de montants suggérés [25, 50, 100, 250, 500]
+  minAmount        Decimal? @db.Decimal(10, 2)
+  maxAmount        Decimal? @db.Decimal(10, 2)
+  currency         String   @default("CAD")
+
+  // Dons récurrents
+  allowRecurring Boolean @default(false)
+  frequencies    Json?   // Array de fréquences ["monthly", "quarterly", "yearly"]
+
+  // Champs du formulaire
+  requiredFields Json // Array de champs requis ["email", "firstName", "lastName"]
+  optionalFields Json // Array de champs optionnels activés ["phone", "address", "message"]
+  customFields   Json? // Array de champs personnalisés avec config
+
+  // Design et branding
+  primaryColor String  @default("#3B82F6")
+  logo         String?
+  coverImage   String?
+  font         String  @default("Inter")
+  buttonStyle  String  @default("gradient") // solid, outline, gradient
+
+  // Messages
+  welcomeMessage  String? @db.Text
+  thankYouMessage String? @db.Text
+  emailTemplate   String? @db.Text
+  redirectUrl     String?
+
+  // Paramètres avancés
+  enableConsents Boolean @default(true)
+  consentText    String? @db.Text
+  enableCaptcha  Boolean @default(false)
+  maxDonations   Int?
+  startDate      DateTime?
+  endDate        DateTime?
+  goalAmount     Decimal? @db.Decimal(10, 2)
+
+  // Statistiques (calculées)
+  totalCollected   Decimal @default(0) @db.Decimal(10, 2)
+  donationCount    Int     @default(0)
+  viewCount        Int     @default(0)
+  submissionCount  Int     @default(0)
+  conversionRate   Decimal @default(0) @db.Decimal(5, 2)
+
+  // Statut
+  status   FormStatus @default(DRAFT)
+  isActive Boolean    @default(true)
+
+  // Relations
+  submissions   DonationFormSubmission[]
+  subscriptions Subscription[]
+  donations      Donation[]
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([organizationId])
+  @@index([status])
+  @@map("donation_forms")
+}
+
+// ============= Étape 2.1.1 - DonationFormSubmission =============
+model DonationFormSubmission {
+  id     String @id @default(cuid())
+
+  // Formulaire lié
+  formId String
+  form   DonationForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  // Donateur
+  donatorId String?
+  donator   Donator?  @relation(fields: [donatorId], references: [id], onDelete: SetNull)
+
+  // Montant
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("CAD")
+
+  // Récurrence
+  isRecurring Boolean @default(false)
+  frequency   String? // monthly, quarterly, yearly
+
+  // Données du formulaire (JSON)
+  formData Json
+
+  // Informations du donateur (dénormalisées)
+  email      String
+  firstName  String?
+  lastName   String?
+  phone      String?
+  address    String?
+  city       String?
+  province   String?
+  postalCode String?
+  country    String?
+
+  // Message et dédicace
+  message     String?  @db.Text
+  dedication  String?
+  isAnonymous Boolean  @default(false)
+
+  // Consentements
+  consentEmail Boolean @default(false)
+  consentPhone Boolean @default(false)
+  consentSMS   Boolean @default(false)
+  consentMail  Boolean @default(false)
+
+  // Statut
+  status SubmissionStatus @default(PENDING)
+
+  // Relations
+  paymentIntent PaymentIntent?
+  donation      Donation?
+  subscription  Subscription?
+
+  // Métadonnées
+  ipAddress String?
+  userAgent String?
+  referrer  String?
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  submittedAt DateTime  @default(now())
+  completedAt DateTime?
+
+  @@index([formId])
+  @@index([donatorId])
+  @@index([organizationId])
+  @@index([status])
+  @@index([submittedAt])
+  @@map("donation_form_submissions")
+}
+
+// ============= Étape 2.1.1 - PaymentIntent =============
+model PaymentIntent {
+  id     String @id @default(cuid())
+
+  // Soumission liée
+  submissionId String  @unique
+  submission   DonationFormSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  // Passerelle
+  gateway    String
+  externalId String
+
+  // Montant
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("CAD")
+
+  // Statut
+  status PaymentStatus @default(CREATED)
+
+  // Méthode de paiement
+  paymentMethod String?
+  last4         String?
+  brand         String?
+
+  // Erreurs
+  errorCode    String?
+  errorMessage String? @db.Text
+
+  // Métadonnées passerelle
+  metadata Json?
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  succeededAt DateTime?
+  failedAt    DateTime?
+
+  @@index([submissionId])
+  @@index([externalId])
+  @@index([organizationId])
+  @@index([status])
+  @@map("payment_intents")
+}
+
+// ============= Étape 2.1.1 - Subscription =============
+model Subscription {
+  id     String @id @default(cuid())
+
+  // Donateur
+  donatorId String
+  donator   Donator @relation(fields: [donatorId], references: [id], onDelete: Cascade)
+
+  // Formulaire
+  formId String
+  form   DonationForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  // Soumission initiale
+  submissionId String  @unique
+  submission   DonationFormSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  // Configuration
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("CAD")
+  frequency String // monthly, quarterly, yearly
+
+  // Passerelle
+  gateway        String
+  subscriptionId String
+
+  // Statut
+  status SubscriptionStatus @default(ACTIVE)
+
+  // Dates
+  startDate          DateTime  @default(now())
+  nextPaymentDate    DateTime
+  endDate            DateTime?
+  cancelledAt        DateTime?
+  cancellationReason String?
+
+  // Relations
+  donations Donation[]
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([donatorId])
+  @@index([formId])
+  @@index([organizationId])
+  @@index([status])
+  @@index([nextPaymentDate])
+  @@map("subscriptions")
 }
