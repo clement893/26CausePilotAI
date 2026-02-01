@@ -132,7 +132,7 @@ export default function Header() {
                 <Link
                   href="/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-white text-white hover:text-blue-400 hover:text-blue-400-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-[#1C1C26]/50"
+                  className="text-white hover:text-blue-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-[#1C1C26]/50"
                 >
                   Dashboard
                 </Link>

@@ -1015,6 +1015,13 @@
 - **Auth (login, register)** : `text-muted-foreground` → `text-gray-400`
 - **Résultat** : 0 occurrence restante de `text-muted-foreground`, `bg-muted`, `border-border`, `bg-background`, `text-foreground` dans `apps/web/src` (fichiers .tsx)
 
+### Phase 2 – Layout (Batch 16-18)
+- **Header** : typo `hover:text-blue-400-400` → `hover:text-blue-400`, doublons retirés
+- **Footer** : `bg-[#13131A] bg-[#0A0A0F]` → `bg-[#0A0A0F]`, `border-t border-blue-500/30` → `border-t border-gray-800`, doublons `text-white text-white` / `text-gray-400 text-gray-300` / `placeholder-gray-500 placeholder-gray-400` nettoyés
+- **DashboardLayout** : doublons retirés (bg, border, text-white, hover:bg)
+- **InternalLayout** : doublons retirés (bg, border, text-white, hover:bg)
+- **Batch 17-18** : PageHeader, PageContainer, PageNavigation, Section, DashboardFooter, LoadingState, ErrorState, ExampleCard déjà alignés (thème explicite)
+
 ---
 
 ## 📝 Notes

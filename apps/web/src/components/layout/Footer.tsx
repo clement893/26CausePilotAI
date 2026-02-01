@@ -21,14 +21,14 @@ export default function Footer() {
 
   return (
     <footer
-      className="bg-[#13131A] bg-[#0A0A0F] border-t border-blue-500/30 text-white py-12 md:py-16"
+      className="bg-[#0A0A0F] border-t border-gray-800 text-white py-12 md:py-16"
       role="contentinfo"
     >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <h3 className="text-white text-white font-bold text-xl mb-4">ContextPsy</h3>
+            <h3 className="text-white font-bold text-xl mb-4">ContextPsy</h3>
             <p className="text-sm text-gray-300 mb-6 leading-relaxed max-w-md">
               Full-stack template built with Next.js and FastAPI. Production-ready and customizable.
             </p>
@@ -96,14 +96,14 @@ export default function Footer() {
 
             {/* Newsletter Signup */}
             <div>
-              <h4 className="text-white text-white font-semibold mb-3 text-sm">Newsletter</h4>
+              <h4 className="text-white font-semibold mb-3 text-sm">Newsletter</h4>
               <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Votre email"
-                  className="flex-1 px-4 py-2 bg-[#1C1C26] border border-gray-700 border-blue-500/30 rounded-lg text-white placeholder-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="flex-1 px-4 py-2 bg-[#1C1C26] border border-gray-700 border-blue-500/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   aria-label="Adresse email pour la newsletter"
                 />
                 <Button
@@ -126,9 +126,9 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-white text-white font-semibold mb-4 text-base">Contact</h4>
+            <h4 className="text-white font-semibold mb-4 text-base">Contact</h4>
             <ul className="space-y-3 text-sm" role="list">
-              <li className="text-gray-400 text-gray-300">
+              <li className="text-gray-400">
                 <a
                   href="mailto:contact@contextpsy.fr"
                   className="hover:text-blue-400 hover:text-blue-300 transition-colors"
@@ -136,19 +136,19 @@ export default function Footer() {
                   contact@contextpsy.fr
                 </a>
               </li>
-              <li className="text-gray-400 text-gray-300">+33 (0)X XX XX XX XX</li>
-              <li className="text-gray-400 text-gray-300">France</li>
+              <li className="text-gray-400">+33 (0)X XX XX XX XX</li>
+              <li className="text-gray-400">France</li>
             </ul>
           </div>
 
           {/* Navigation */}
           <nav aria-label="Navigation">
-            <h4 className="text-white text-white font-semibold mb-4 text-base">Navigation</h4>
+            <h4 className="text-white font-semibold mb-4 text-base">Navigation</h4>
             <ul className="space-y-3 text-sm" role="list">
               <li>
                 <Link
                   href="/sitemap"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Plan du site
                 </Link>
@@ -156,7 +156,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/dashboard"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Dashboard
                 </Link>
@@ -164,7 +164,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/docs"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Documentation
                 </Link>
@@ -172,7 +172,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Blog
                 </Link>
@@ -180,7 +180,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/components"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Composants
                 </Link>
@@ -188,7 +188,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/theme"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Thème
                 </Link>
@@ -198,14 +198,14 @@ export default function Footer() {
 
           {/* Liens Utiles */}
           <nav aria-label="Liens utiles">
-            <h4 className="text-white text-white font-semibold mb-4 text-base">Liens Utiles</h4>
+            <h4 className="text-white font-semibold mb-4 text-base">Liens Utiles</h4>
             <ul className="space-y-3 text-sm" role="list">
               <li>
                 <a
                   href="https://github.com/clement893"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                   aria-label="GitHub du développeur (ouvre dans un nouvel onglet)"
                 >
                   GitHub
@@ -216,7 +216,7 @@ export default function Footer() {
                   href="https://github.com/clement893/26CausePilotAI/issues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                   aria-label="Signaler un bug sur GitHub (ouvre dans un nouvel onglet)"
                 >
                   Signaler un bug
@@ -225,7 +225,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Confidentialité
                 </Link>
@@ -233,7 +233,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-gray-400 text-gray-300 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
+                  className="text-gray-400 hover:text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0A0F] rounded inline-block"
                 >
                   Conditions d'utilisation
                 </Link>
