@@ -36,6 +36,7 @@ export interface Donor {
   last_donation_date?: string; // ISO datetime string
   donation_count: number;
   score?: number; // Score de propension (0-100)
+  churn_probability?: number; // Probabilité de churn (0-1) - Étape 5.3.1
   created_at: string; // ISO datetime string
   updated_at: string; // ISO datetime string
 }

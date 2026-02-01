@@ -30,6 +30,8 @@ import {
   DonationHistoryTable,
   NotesList,
   ActivityTimeline,
+  ChurnRiskIndicator,
+  ChurnRiskBar,
 } from '@/components/donators';
 import { SubscriptionCard } from '@/components/donation-subscriptions';
 import { listSubscriptionsAction } from '@/app/actions/subscriptions/list';
@@ -271,6 +273,21 @@ export default function DonorProfileContent() {
                   </div>
                 </Card>
               )}
+              <Card>
+                <h2 className="text-lg font-semibold mb-4">Risque de churn</h2>
+                <div className="space-y-4">
+                  {donor.churn_probability !== null && donor.churn_probability !== undefined ? (
+                    <>
+                      <ChurnRiskIndicator churnProbability={donor.churn_probability} />
+                      <ChurnRiskBar churnProbability={donor.churn_probability} />
+                    </>
+                  ) : (
+                    <div className="text-sm text-[var(--text-tertiary,#6B6B7B)]">
+                      Le risque de churn n'a pas encore été calculé pour ce donateur.
+                    </div>
+                  )}
+                </div>
+              </Card>
             </div>
           </TabPanel>
 

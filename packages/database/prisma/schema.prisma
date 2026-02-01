@@ -278,6 +278,9 @@ model Donator {
   // Segmentation automatique (sera calculé par l'IA)
   segment       String?  // VIP, Active, Inactive, New, etc.
   score         Int      @default(0) // Score de propension au don (0-100)
+  
+  // Prédiction de churn (Étape 5.3.1)
+  churnProbability Float? // Probabilité de churn (0-1)
 
   // Métriques de dons (seront calculées)
   totalDonations Decimal @default(0) @db.Decimal(10, 2)
@@ -314,6 +317,7 @@ model Donator {
   @@index([organizationId])
   @@index([segment])
   @@index([lastDonationDate])
+  @@index([churnProbability])
   @@map("donators")
 }
 
