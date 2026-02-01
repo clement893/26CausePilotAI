@@ -72,11 +72,11 @@ export default function UsageMeter({
   const statusConfig = getStatusConfig();
 
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-foreground">{label}</h3>
+          <h3 className="text-sm font-semibold text-white dark:text-foreground">{label}</h3>
           <Badge variant={statusConfig.variant}>
             <span className="flex items-center gap-1">
               {statusConfig.icon}
@@ -88,10 +88,10 @@ export default function UsageMeter({
         {/* Usage Display */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">
+            <span className="text-gray-400 dark:text-muted-foreground">
               {current.toLocaleString()} {unit} used
             </span>
-            <span className="text-muted-foreground">
+            <span className="text-gray-400 dark:text-muted-foreground">
               {limit.toLocaleString()} {unit} limit
             </span>
           </div>
@@ -114,17 +114,17 @@ export default function UsageMeter({
 
         {/* Details */}
         {showDetails && (
-          <div className="pt-4 border-t border-border">
+          <div className="pt-4 border-t border-gray-800 dark:border-border">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <div className="text-muted-foreground">Remaining</div>
-                <div className="text-lg font-semibold text-foreground">
+                <div className="text-gray-400 dark:text-muted-foreground">Remaining</div>
+                <div className="text-lg font-semibold text-white dark:text-foreground">
                   {remaining.toLocaleString()} {unit}
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground">Used</div>
-                <div className="text-lg font-semibold text-foreground">
+                <div className="text-gray-400 dark:text-muted-foreground">Used</div>
+                <div className="text-lg font-semibold text-white dark:text-foreground">
                   {current.toLocaleString()} {unit}
                 </div>
               </div>

@@ -88,23 +88,20 @@ export default function PaymentHistory({
         label: 'Date',
         sortable: true,
         render: (value) => (
-          <div className="text-foreground">
-            {' '}
+          <div className="text-white dark:text-foreground">
             <div className="font-medium">
-              {' '}
-              {new Date(value as string).toLocaleDateString()}{' '}
-            </div>{' '}
-            <div className="text-xs text-muted-foreground">
-              {' '}
-              {new Date(value as string).toLocaleTimeString()}{' '}
-            </div>{' '}
+              {new Date(value as string).toLocaleDateString()}
+            </div>
+            <div className="text-xs text-gray-400 dark:text-muted-foreground">
+              {new Date(value as string).toLocaleTimeString()}
+            </div>
           </div>
         ),
       },
       {
         key: 'description',
         label: 'Description',
-        render: (value) => <span className="text-foreground">{value as string}</span>,
+        render: (value) => <span className="text-white dark:text-foreground">{value as string}</span>,
       },
       {
         key: 'amount',
@@ -115,20 +112,19 @@ export default function PaymentHistory({
             className={clsx(
               'font-semibold',
               payment.status === 'refunded'
-                ? 'text-error-600 dark:text-error-400'
-                : 'text-foreground'
+                ? 'text-red-400 dark:text-error-400'
+                : 'text-white dark:text-foreground'
             )}
           >
-            {' '}
             {payment.status === 'refunded' ? '-' : ''} {payment.currency}{' '}
-            {Math.abs(payment.amount).toFixed(2)}{' '}
+            {Math.abs(payment.amount).toFixed(2)}
           </span>
         ),
       },
       {
         key: 'paymentMethod',
         label: 'Payment Method',
-        render: (value) => <span className="text-foreground">{value as string}</span>,
+        render: (value) => <span className="text-white dark:text-foreground">{value as string}</span>,
       },
       {
         key: 'status',
@@ -151,13 +147,12 @@ export default function PaymentHistory({
             {onDownloadReceipt && payment.status === 'completed' && (
               <button
                 onClick={() => onDownloadReceipt(payment)}
-                className="p-1 text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                className="p-1 text-gray-500 dark:text-muted-foreground hover:text-blue-400 dark:hover:text-primary-400 transition-colors"
                 title="Download Receipt"
               >
-                {' '}
-                <Download className="w-4 h-4" />{' '}
+                <Download className="w-4 h-4" />
               </button>
-            )}{' '}
+            )}
           </div>
         ),
       },
@@ -168,66 +163,61 @@ export default function PaymentHistory({
     .filter((p) => p.status === 'completed')
     .reduce((sum, p) => sum + p.amount, 0);
   return (
-    <Card className={clsx('bg-background', className)}>
-      {' '}
+    <Card variant="glass" className={clsx('border border-gray-800 dark:border-border', className)}>
       <div className="mb-6">
-        {' '}
         <div className="flex items-center justify-between mb-4">
-          {' '}
-          <h3 className="text-lg font-semibold text-foreground"> Payment History </h3>{' '}
-          <div className="text-sm text-muted-foreground">
-            {' '}
+          <h3 className="text-lg font-semibold text-white dark:text-foreground">Payment History</h3>
+          <div className="text-sm text-gray-400 dark:text-muted-foreground">
             Total:{' '}
-            <span className="font-semibold text-foreground"> ${totalAmount.toFixed(2)} </span>{' '}
-          </div>{' '}
-        </div>{' '}
-        {/* Filters */}{' '}
+            <span className="font-semibold text-white dark:text-foreground">${totalAmount.toFixed(2)}</span>
+          </div>
+        </div>
+        {/* Filters */}
         <div className="flex items-center gap-4 flex-wrap">
-          {' '}
           <div className="flex items-center gap-2">
-            {' '}
-            <Filter className="w-4 h-4 text-muted-foreground" />{' '}
+            <Filter className="w-4 h-4 text-gray-500 dark:text-muted-foreground" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               className={clsx(
-                'px-3 py-2 border rounded-lg text-sm',
-                'bg-background',
-                'text-foreground',
-                'border-border',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+                'px-3 py-2 border rounded-lg text-sm form-input-glow',
+                'bg-[#1C1C26] dark:bg-background',
+                'text-white dark:text-foreground',
+                'border-gray-700 dark:border-border',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
               )}
             >
-              {' '}
-              <option value="all">All Status</option> <option value="completed">Completed</option>{' '}
-              <option value="pending">Pending</option> <option value="failed">Failed</option>{' '}
-              <option value="refunded">Refunded</option>{' '}
-            </select>{' '}
-          </div>{' '}
+              <option value="all">All Status</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="failed">Failed</option>
+              <option value="refunded">Refunded</option>
+            </select>
+          </div>
           <select
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
             className={clsx(
-              'px-3 py-2 border rounded-lg text-sm',
-              'bg-background',
-              'text-foreground',
-              'border-border',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
+              'px-3 py-2 border rounded-lg text-sm form-input-glow',
+              'bg-[#1C1C26] dark:bg-background',
+              'text-white dark:text-foreground',
+              'border-gray-700 dark:border-border',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-primary-400'
             )}
           >
-            {' '}
-            <option value="all">All Time</option> <option value="30days">Last 30 Days</option>{' '}
-            <option value="90days">Last 90 Days</option>{' '}
-            <option value="year">Last Year</option>{' '}
-          </select>{' '}
-        </div>{' '}
-      </div>{' '}
+            <option value="all">All Time</option>
+            <option value="30days">Last 30 Days</option>
+            <option value="90days">Last 90 Days</option>
+            <option value="year">Last Year</option>
+          </select>
+        </div>
+      </div>
       <DataTable<Payment>
         data={filteredPayments}
         columns={columns}
         pageSize={10}
         emptyMessage="No payment history found"
-      />{' '}
+      />
     </Card>
   );
 }

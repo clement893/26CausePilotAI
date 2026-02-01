@@ -141,43 +141,43 @@ export default function BillingDashboard({
   return (
     <div className={clsx('space-y-6', className)}>
       {/* Subscription Overview */}
-      <Card title="Subscription Overview" className="bg-background">
+      <Card variant="glass" title="Subscription Overview" className="border border-gray-800 dark:border-border">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-muted rounded-lg">
+          <div className="p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Current Plan</span>
+              <span className="text-sm text-gray-400 dark:text-muted-foreground">Current Plan</span>
               {getStatusBadge(subscription?.status)}
             </div>
-            <div className="text-2xl font-bold text-foreground">
+            <div className="text-2xl font-bold text-white dark:text-foreground">
               {subscription?.plan || 'Free Plan'}
             </div>
-            <div className="text-sm text-muted-foreground mt-1">
+            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
               {subscription?.amount
                 ? `${subscription.currency} ${subscription.amount}/month`
                 : 'No active subscription'}
             </div>
           </div>
-          <div className="p-4 bg-muted rounded-lg">
-            <div className="text-sm text-muted-foreground mb-2">Next Billing Date</div>
-            <div className="text-2xl font-bold text-foreground">
+          <div className="p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
+            <div className="text-sm text-gray-400 dark:text-muted-foreground mb-2">Next Billing Date</div>
+            <div className="text-2xl font-bold text-white dark:text-foreground">
               {subscription?.currentPeriodEnd
                 ? new Date(subscription.currentPeriodEnd).toLocaleDateString()
                 : 'N/A'}
             </div>
-            <div className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
+            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1 flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               Auto-renewal enabled
             </div>
           </div>
-          <div className="p-4 bg-muted rounded-lg">
-            <div className="text-sm text-muted-foreground mb-2">Payment Method</div>
-            <div className="text-lg font-semibold text-foreground flex items-center gap-2">
+          <div className="p-4 glass-effect bg-[#1C1C26] dark:bg-muted rounded-lg border border-gray-800 dark:border-border">
+            <div className="text-sm text-gray-400 dark:text-muted-foreground mb-2">Payment Method</div>
+            <div className="text-lg font-semibold text-white dark:text-foreground flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
               {paymentMethod
                 ? `${paymentMethod.brand} •••• ${paymentMethod.last4}`
                 : 'No payment method'}
             </div>
-            <div className="text-sm text-muted-foreground mt-1">
+            <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
               {paymentMethod?.type || 'Add payment method'}
             </div>
           </div>
@@ -186,31 +186,31 @@ export default function BillingDashboard({
 
       {/* Usage Overview */}
       {usage && (
-        <Card title="Usage This Month" className="bg-background">
+        <Card variant="glass" title="Usage This Month" className="border border-gray-800 dark:border-border">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm font-medium text-white dark:text-foreground">
                 {usage.current} / {usage.limit} {usage.unit}
               </span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-gray-400 dark:text-muted-foreground">
                 {Math.round(usagePercentage)}% used
               </span>
             </div>
-            <div className="w-full bg-muted rounded-full h-3">
+            <div className="w-full bg-[#1C1C26] dark:bg-muted rounded-full h-3">
               <div
                 className={clsx(
                   'h-3 rounded-full transition-all',
                   usagePercentage >= 90
-                    ? 'bg-error-600 dark:bg-error-500'
+                    ? 'bg-gradient-to-r from-red-500 to-orange-500'
                     : usagePercentage >= 70
-                      ? 'bg-warning-600 dark:bg-warning-500'
-                      : 'bg-primary-600 dark:bg-primary-500'
+                      ? 'bg-gradient-to-r from-orange-500 to-yellow-500'
+                      : 'bg-gradient-to-r from-blue-500 to-purple-500'
                 )}
                 style={{ width: `${Math.min(usagePercentage, 100)}%` }}
               />
             </div>
             {usagePercentage >= 90 && (
-              <div className="flex items-center gap-2 text-sm text-warning-600 dark:text-warning-400">
+              <div className="flex items-center gap-2 text-sm text-orange-400 dark:text-warning-400">
                 <AlertCircle className="w-4 h-4" />
                 You're approaching your usage limit
               </div>
@@ -221,40 +221,40 @@ export default function BillingDashboard({
 
       {/* Upcoming Invoice */}
       {upcomingInvoice && (
-        <Card title="Upcoming Invoice" className="bg-background">
+        <Card variant="glass" title="Upcoming Invoice" className="border border-gray-800 dark:border-border">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-2xl font-bold text-foreground">
+              <div className="text-2xl font-bold text-white dark:text-foreground">
                 {upcomingInvoice.currency} {upcomingInvoice.amount}
               </div>
-              <div className="text-sm text-muted-foreground mt-1">
+              <div className="text-sm text-gray-400 dark:text-muted-foreground mt-1">
                 Due on {new Date(upcomingInvoice.date).toLocaleDateString()}
               </div>
             </div>
-            <Button variant="primary">View Invoice</Button>
+            <Button variant="gradient">View Invoice</Button>
           </div>
         </Card>
       )}
 
       {/* Billing History Chart */}
       {billingHistory.length > 0 && (
-        <Card title="Billing History" className="bg-background">
+        <Card variant="glass" title="Billing History" className="border border-gray-800 dark:border-border">
           <Chart type="line" data={billingHistory} title="Monthly Billing" height={200} />
         </Card>
       )}
 
       {/* Quick Actions */}
-      <Card title="Quick Actions" className="bg-background">
+      <Card variant="glass" title="Quick Actions" className="border border-gray-800 dark:border-border">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Button variant="outline" fullWidth>
+          <Button variant="outline" fullWidth className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
             <CreditCard className="w-4 h-4 mr-2" />
             Update Payment Method
           </Button>
-          <Button variant="outline" fullWidth>
+          <Button variant="outline" fullWidth className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
             <TrendingUp className="w-4 h-4 mr-2" />
             Upgrade Plan
           </Button>
-          <Button variant="outline" fullWidth>
+          <Button variant="outline" fullWidth className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
             <DollarSign className="w-4 h-4 mr-2" />
             View Invoices
           </Button>
