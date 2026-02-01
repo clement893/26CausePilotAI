@@ -98,45 +98,43 @@ export default function TreeView({
         <div
           className={clsx(
             'flex items-center py-1 px-2 rounded-md cursor-pointer transition-colors',
-            'hover:bg-muted',
+            'hover:bg-[#1C1C26] dark:hover:bg-muted',
             selected &&
               (selectedClassName ||
-                'bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'),
+                'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 border-l-4 border-l-blue-500'),
             node.disabled && 'opacity-50 cursor-not-allowed',
             nodeClassName
           )}
           style={{ paddingLeft: `${level * indentSize + 8}px` }}
           onClick={() => handleNodeClick(node)}
         >
-          {' '}
-          {/* Expand/Collapse Icon */}{' '}
+          {/* Expand/Collapse Icon */}
           {hasChildren && (
             <button
-              className="mr-1 p-0.5 hover:bg-muted rounded"
+              className="mr-1 p-0.5 hover:bg-[#252532] dark:hover:bg-muted rounded transition-colors text-gray-400 dark:text-foreground"
               onClick={(e) => {
                 e.stopPropagation();
                 toggleExpanded(node);
               }}
               aria-expanded={expanded}
             >
-              {' '}
               <svg
                 className={clsx('w-4 h-4 transition-transform', expanded && 'rotate-90')}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                {' '}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
                   d="M9 5l7 7-7 7"
-                />{' '}
-              </svg>{' '}
+                />
+              </svg>
             </button>
-          )}{' '}
-          {!hasChildren && <div className="w-5" />} {/* Checkbox */}{' '}
+          )}
+          {!hasChildren && <div className="w-5" />}
+          {/* Checkbox */}
           {showCheckboxes && (
             <input
               type="checkbox"
@@ -146,12 +144,12 @@ export default function TreeView({
               className="mr-2"
               disabled={node.disabled}
             />
-          )}{' '}
-          {/* Node Icon */}{' '}
-          {showIcons && node.icon && <span className="mr-2 flex-shrink-0">{node.icon}</span>}{' '}
-          {/* Node Label */}{' '}
-          <span className="flex-1 text-sm text-foreground"> {node.label} </span>{' '}
-        </div>{' '}
+          )}
+          {/* Node Icon */}
+          {showIcons && node.icon && <span className="mr-2 flex-shrink-0 text-gray-400 dark:text-foreground">{node.icon}</span>}
+          {/* Node Label */}
+          <span className="flex-1 text-sm text-gray-300 dark:text-foreground">{node.label}</span>
+        </div>
         {/* Children */}{' '}
         {hasChildren && expanded && (
           <div className="tree-children">
@@ -166,15 +164,14 @@ export default function TreeView({
     <div
       className={clsx(
         'tree-view',
-        'bg-background',
-        'border border-border rounded-lg',
+        'glass-effect bg-[#13131A] dark:bg-background',
+        'border border-gray-800 dark:border-border rounded-lg',
         'p-2',
         className
       )}
       role="tree"
     >
-      {' '}
-      {nodes.map((node) => renderNode(node))}{' '}
+      {nodes.map((node) => renderNode(node))}
     </div>
   );
 }

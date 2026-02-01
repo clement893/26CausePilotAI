@@ -8,11 +8,9 @@ import { useToastStore } from '@/lib/toast';
     return null;
   }
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-3 pointer-events-none">
-      {' '}
+    <div className="fixed top-4 right-4 z-50 space-y-3 pointer-events-none max-w-md w-full px-4">
       {toasts.map((toast) => (
         <div key={toast.id} className="pointer-events-auto">
-          {' '}
           <Toast
             id={toast.id}
             message={toast.message}
@@ -20,9 +18,9 @@ import { useToastStore } from '@/lib/toast';
             duration={toast.duration}
             icon={toast.icon}
             onClose={removeToast}
-          />{' '}
+          />
         </div>
-      ))}{' '}
+      ))}
     </div>
   );
 }
