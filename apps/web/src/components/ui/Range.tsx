@@ -65,28 +65,24 @@ export default function Range({
       {' '}
       {label && (
         <div className="flex items-center justify-between">
-          {' '}
-          <label className="text-sm font-medium text-foreground">{label}</label>{' '}
+          <label className="text-sm font-medium text-gray-300 dark:text-foreground">{label}</label>
           {showValues && (
-            <span className="text-sm text-muted-foreground">
-              {' '}
-              {minValue} - {maxValue}{' '}
+            <span className="text-sm text-gray-400 dark:text-muted-foreground">
+              {minValue} - {maxValue}
             </span>
-          )}{' '}
+          )}
         </div>
-      )}{' '}
+      )}
       <div className="relative">
-        {' '}
-        {/* Track */}{' '}
-        <div className="h-2 bg-muted rounded-lg relative">
-          {' '}
-          {/* Active range */}{' '}
+        {/* Track */}
+        <div className="h-2 bg-[#1C1C26] dark:bg-muted rounded-lg relative">
+          {/* Active range */}
           <div
-            className="absolute h-2 bg-primary-600 rounded-lg"
+            className="absolute h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg"
             style={{ left: `${minPercentage}%`, width: `${maxPercentage - minPercentage}%` }}
-          />{' '}
-        </div>{' '}
-        {/* Min input */}{' '}
+          />
+        </div>
+        {/* Min input */}
         <input
           ref={minInputRef}
           type="range"
@@ -100,15 +96,15 @@ export default function Range({
             'absolute top-0 w-full h-2 bg-transparent appearance-none cursor-pointer z-10',
             'focus:outline-none',
             disabled && 'opacity-50 cursor-not-allowed',
-            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:bg-primary-700',
-            '[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary-600 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:hover:bg-primary-700'
+            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-blue-500 [&::-webkit-slider-thumb]:to-purple-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:from-blue-600 [&::-webkit-slider-thumb]:hover:to-purple-600',
+            '[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gradient-to-r [&::-moz-range-thumb]:from-blue-500 [&::-moz-range-thumb]:to-purple-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:hover:from-blue-600 [&::-moz-range-thumb]:hover:to-purple-600'
           )}
           aria-label={`${label || 'Range'} minimum`}
           aria-valuemin={min}
           aria-valuemax={max}
           aria-valuenow={minValue}
-        />{' '}
-        {/* Max input */}{' '}
+        />
+        {/* Max input */}
         <input
           ref={maxInputRef}
           type="range"
@@ -122,22 +118,21 @@ export default function Range({
             'absolute top-0 w-full h-2 bg-transparent appearance-none cursor-pointer z-10',
             'focus:outline-none',
             disabled && 'opacity-50 cursor-not-allowed',
-            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:bg-primary-700',
-            '[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary-600 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:hover:bg-primary-700'
+            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gradient-to-r [&::-webkit-slider-thumb]:from-blue-500 [&::-webkit-slider-thumb]:to-purple-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:from-blue-600 [&::-webkit-slider-thumb]:hover:to-purple-600',
+            '[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gradient-to-r [&::-moz-range-thumb]:from-blue-500 [&::-moz-range-thumb]:to-purple-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:hover:from-blue-600 [&::-moz-range-thumb]:hover:to-purple-600'
           )}
           aria-label={`${label || 'Range'} maximum`}
           aria-valuemin={min}
           aria-valuemax={max}
           aria-valuenow={maxValue}
           {...props}
-        />{' '}
-      </div>{' '}
+        />
+      </div>
       {showValues && !label && (
-        <div className="flex justify-between text-sm text-muted-foreground">
-          {' '}
-          <span>{minValue}</span> <span>{maxValue}</span>{' '}
+        <div className="flex justify-between text-sm text-gray-400 dark:text-muted-foreground">
+          <span>{minValue}</span> <span>{maxValue}</span>
         </div>
-      )}{' '}
+      )}
     </div>
   );
 }

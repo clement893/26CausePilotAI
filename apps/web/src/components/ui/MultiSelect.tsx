@@ -109,19 +109,19 @@ export default function MultiSelect({
   return (
     <div ref={containerRef} className={clsx('relative', fullWidth && 'w-full', className)}>
       {label && (
-        <label className="block text-sm font-medium text-foreground mb-1">{label}</label>
+        <label className="block text-sm font-medium text-gray-300 dark:text-foreground mb-1">{label}</label>
       )}
 
       <div
         className={clsx(
           'min-h-[42px] w-full px-3 py-2 border rounded-lg',
-          'bg-background',
-          'text-foreground',
+          'bg-[#1C1C26] dark:bg-background',
+          'text-white dark:text-foreground',
           'focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-500 dark:focus-within:ring-primary-400 focus-within:border-transparent',
           error
             ? 'border-error-500 dark:border-error-400 focus-within:ring-error-500 dark:focus-within:ring-error-400'
-            : 'border-border',
-          disabled && 'bg-muted cursor-not-allowed opacity-60',
+            : 'border-gray-700 dark:border-border',
+          disabled && 'bg-[#1C1C26] dark:bg-muted cursor-not-allowed opacity-60',
           'cursor-text'
         )}
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -131,14 +131,14 @@ export default function MultiSelect({
           {selectedOptions.map((option) => (
             <span
               key={option.value}
-              className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 rounded-md text-sm"
+              className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-md text-sm"
             >
               {option.label}
               {!disabled && (
                 <button
                   type="button"
                   onClick={(e) => handleRemove(option.value, e)}
-                  className="hover:text-primary-900 dark:hover:text-primary-100 focus:outline-none"
+                  className="hover:text-gray-200 focus:outline-none"
                   aria-label={`Remove ${option.label}`}
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +159,7 @@ export default function MultiSelect({
               onFocus={() => setIsOpen(true)}
               placeholder={value.length === 0 ? placeholder : ''}
               disabled={disabled}
-              className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm"
+              className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-white dark:text-foreground placeholder:text-gray-500 dark:placeholder:text-muted-foreground"
               aria-label="Search options"
             />
           )}
@@ -169,7 +169,7 @@ export default function MultiSelect({
             <button
               type="button"
               onClick={handleClear}
-              className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground focus:outline-none"
+              className="text-gray-400 dark:text-muted-foreground hover:text-white dark:hover:text-muted-foreground focus:outline-none transition-colors"
               aria-label="Clear selection"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,7 +180,7 @@ export default function MultiSelect({
 
           {/* Dropdown Icon */}
           <svg
-            className={clsx('w-5 h-5 text-muted-foreground transition-transform', isOpen && 'transform rotate-180')}
+            className={clsx('w-5 h-5 text-gray-400 dark:text-muted-foreground transition-transform', isOpen && 'transform rotate-180')}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -194,20 +194,20 @@ export default function MultiSelect({
       {isOpen && (
         <div
           className={clsx(
-            'absolute z-50 w-full mt-1 bg-background',
-            'border border-border rounded-lg shadow-lg',
-            'max-h-60 overflow-y-auto'
+            'absolute z-50 w-full mt-1 glass-effect bg-[#13131A] dark:bg-background',
+            'border border-gray-800 dark:border-border rounded-lg shadow-lg',
+            'max-h-60 overflow-y-auto custom-scrollbar'
           )}
           role="listbox"
         >
           {filteredOptions.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-muted-foreground text-center">Aucune option trouvée</div>
+            <div className="px-4 py-3 text-sm text-gray-400 dark:text-muted-foreground text-center">Aucune option trouvée</div>
           ) : (
             <div className="py-1">
               {Object.entries(groupedOptions).map(([group, groupOptions]) => (
                 <div key={group}>
                   {Object.keys(groupedOptions).length > 1 && (
-                    <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 dark:text-muted-foreground uppercase tracking-wider">
                       {group}
                     </div>
                   )}
@@ -224,8 +224,8 @@ export default function MultiSelect({
                         className={clsx(
                           'w-full text-left px-3 py-2 text-sm transition-colors',
                           isSelected
-                            ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                            : 'text-foreground hover:bg-muted dark:hover:bg-muted',
+                            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 border-l-4 border-l-blue-500'
+                            : 'text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted',
                           isDisabled && 'opacity-50 cursor-not-allowed'
                         )}
                         role="option"
@@ -236,12 +236,12 @@ export default function MultiSelect({
                             className={clsx(
                               'w-4 h-4 border rounded flex items-center justify-center',
                               isSelected
-                                ? 'bg-primary-600 dark:bg-primary-500 border-primary-600 dark:border-primary-500'
-                                : 'border-border'
+                                ? 'bg-gradient-to-r from-blue-500 to-purple-500 border-blue-500'
+                                : 'border-gray-700 dark:border-border'
                             )}
                           >
                             {isSelected && (
-                              <svg className="w-3 h-3 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
                             )}

@@ -27,13 +27,13 @@ export default function CommandPalette({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4 bg-black/50 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
         className={clsx(
-          'bg-background rounded-lg shadow-2xl w-full max-w-2xl',
-          'border border-border',
+          'glass-effect bg-[#13131A] dark:bg-background rounded-lg shadow-2xl w-full max-w-2xl',
+          'border border-gray-800 dark:border-border',
           'max-h-[60vh] flex flex-col overflow-hidden',
           className
         )}
@@ -43,9 +43,9 @@ export default function CommandPalette({
         aria-labelledby="command-palette-title"
       >
         {/* Header */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-800 dark:border-border">
           <svg
-            className="w-5 h-5 text-muted-foreground"
+            className="w-5 h-5 text-gray-400 dark:text-muted-foreground"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -62,11 +62,11 @@ export default function CommandPalette({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={placeholder}
-            className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
+            className="flex-1 bg-transparent border-none outline-none text-white dark:text-foreground placeholder:text-gray-500 dark:placeholder:text-muted-foreground"
             autoFocus
             aria-label="Search commands"
           />
-          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-muted-foreground bg-muted border border-border rounded">
+          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-gray-400 dark:text-muted-foreground bg-[#1C1C26] dark:bg-muted border border-gray-800 dark:border-border rounded">
             ESC
           </kbd>
         </div>
@@ -75,7 +75,7 @@ export default function CommandPalette({
         <div className="flex-1 overflow-y-auto p-2">
           {filteredCommands.length === 0 ? (
             emptyState || (
-              <div className="text-center py-8 text-muted-foreground">
+              <div className="text-center py-8 text-gray-400 dark:text-muted-foreground">
                 <p>Aucun résultat trouvé</p>
               </div>
             )
@@ -84,7 +84,7 @@ export default function CommandPalette({
               {Object.entries(groupedCommands).map(([category, categoryCommands]) => (
                 <div key={category}>
                   {category !== 'Autres' && (
-                    <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <div className="px-3 py-2 text-xs font-semibold text-gray-400 dark:text-muted-foreground uppercase tracking-wider">
                       {category}
                     </div>
                   )}
@@ -102,25 +102,25 @@ export default function CommandPalette({
                         className={clsx(
                           'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors',
                           isSelected
-                            ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                            : 'text-foreground hover:bg-muted'
+                            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 border-l-4 border-l-blue-500'
+                            : 'text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted'
                         )}
                       >
                         {command.icon && (
-                          <span className="flex-shrink-0 text-muted-foreground">
+                          <span className="flex-shrink-0 text-gray-400 dark:text-muted-foreground">
                             {command.icon}
                           </span>
                         )}
                         <div className="flex-1 min-w-0">
                           <div className="font-medium">{command.label}</div>
                           {command.description && (
-                            <div className="text-sm text-muted-foreground truncate">
+                            <div className="text-sm text-gray-400 dark:text-muted-foreground truncate">
                               {command.description}
                             </div>
                           )}
                         </div>
                         {command.shortcut && (
-                          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-muted-foreground bg-muted border border-border rounded">
+                          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-gray-400 dark:text-muted-foreground bg-[#1C1C26] dark:bg-muted border border-gray-800 dark:border-border rounded">
                             {command.shortcut}
                           </kbd>
                         )}
@@ -134,15 +134,15 @@ export default function CommandPalette({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between px-4 py-2 border-t border-border text-xs text-muted-foreground">
+        <div className="flex items-center justify-between px-4 py-2 border-t border-gray-800 dark:border-border text-xs text-gray-400 dark:text-muted-foreground">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded">↑</kbd>
-              <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded">↓</kbd>
+              <kbd className="px-1.5 py-0.5 bg-[#1C1C26] dark:bg-muted border border-gray-800 dark:border-border rounded">↑</kbd>
+              <kbd className="px-1.5 py-0.5 bg-[#1C1C26] dark:bg-muted border border-gray-800 dark:border-border rounded">↓</kbd>
               <span>Naviguer</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded">Enter</kbd>
+              <kbd className="px-1.5 py-0.5 bg-[#1C1C26] dark:bg-muted border border-gray-800 dark:border-border rounded">Enter</kbd>
               <span>Sélectionner</span>
             </div>
           </div>

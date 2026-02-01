@@ -101,12 +101,12 @@ export default function TagInput({
 
   return (
     <div className={clsx('flex flex-col gap-2', fullWidth && 'w-full', className)}>
-      {label && <label className="text-sm font-medium text-foreground">{label}</label>}
+      {label && <label className="text-sm font-medium text-gray-300 dark:text-foreground">{label}</label>}
 
       <div
         className={clsx(
-          'flex flex-wrap gap-2 p-2 border border-border rounded-lg',
-          'bg-background',
+          'flex flex-wrap gap-2 p-2 border border-gray-700 dark:border-border rounded-lg form-input-glow',
+          'bg-[#1C1C26] dark:bg-background',
           'focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent',
           disabled && 'opacity-50 cursor-not-allowed'
         )}
@@ -117,7 +117,7 @@ export default function TagInput({
             key={index}
             className={clsx(
               'inline-flex items-center gap-1 px-2 py-1 text-sm',
-              'bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200',
+              'bg-gradient-to-r from-blue-500 to-purple-500 text-white',
               'rounded-md',
               !disabled && 'cursor-default'
             )}
@@ -130,7 +130,7 @@ export default function TagInput({
                   e.stopPropagation();
                   removeTag(tag);
                 }}
-                className="hover:bg-primary-200 dark:hover:bg-primary-800 rounded p-0.5"
+                className="hover:bg-white/20 rounded p-0.5 transition-colors"
                 aria-label={`Supprimer ${tag}`}
               >
                 <X className="w-3 h-3" />
@@ -150,14 +150,14 @@ export default function TagInput({
           placeholder={tags.length === 0 ? placeholder : ''}
           className={clsx(
             'flex-1 min-w-[120px] outline-none bg-transparent',
-            'text-foreground',
-            'placeholder:text-muted-foreground dark:placeholder:text-muted-foreground'
+            'text-white dark:text-foreground',
+            'placeholder:text-gray-500 dark:placeholder:text-muted-foreground'
           )}
         />
       </div>
 
       {maxTags && (
-        <div className="text-xs text-muted-foreground">
+        <div className="text-xs text-gray-400 dark:text-muted-foreground">
           {tags.length} / {maxTags} tags
         </div>
       )}

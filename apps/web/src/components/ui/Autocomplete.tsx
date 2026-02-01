@@ -179,19 +179,18 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
             )
           }
         />{' '}
-        {/* Dropdown */}{' '}
+        {/* Dropdown */}
         {isOpen && filteredOptions.length > 0 && (
           <div
             ref={dropdownRef}
             className={clsx(
-              'absolute z-50 w-full mt-1 bg-background',
-              'border border-border rounded-lg shadow-strong',
-              'overflow-y-auto',
+              'absolute z-50 w-full mt-1 glass-effect bg-[#13131A] dark:bg-background',
+              'border border-gray-800 dark:border-border rounded-lg shadow-strong',
+              'overflow-y-auto custom-scrollbar',
               maxHeight,
               dropdownClassName
             )}
           >
-            {' '}
             {filteredOptions.map((option, index) => {
               const isHighlighted = index === highlightedIndex;
               const isDisabled = option.disabled;
@@ -202,43 +201,40 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
                   className={clsx(
                     'px-4 py-2 cursor-pointer transition-colors',
                     isHighlighted && !isDisabled
-                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                      : 'text-foreground',
+                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white dark:text-primary-100 border-l-4 border-l-blue-500'
+                      : 'text-gray-300 dark:text-foreground',
                     isDisabled && 'opacity-50 cursor-not-allowed',
-                    !isDisabled && 'hover:bg-muted dark:hover:bg-muted'
+                    !isDisabled && 'hover:bg-[#1C1C26] dark:hover:bg-muted'
                   )}
                   onMouseEnter={() => setHighlightedIndex(index)}
                 >
-                  {' '}
                   {renderOption ? (
                     renderOption(option)
                   ) : (
                     <div className="flex items-center justify-between">
-                      {' '}
-                      <span>{option.label}</span>{' '}
+                      <span>{option.label}</span>
                       {option.group && (
-                        <span className="text-xs text-muted-foreground"> {option.group} </span>
-                      )}{' '}
+                        <span className="text-xs text-gray-400 dark:text-muted-foreground"> {option.group} </span>
+                      )}
                     </div>
-                  )}{' '}
+                  )}
                 </div>
               );
-            })}{' '}
+            })}
           </div>
-        )}{' '}
-        {/* No results */}{' '}
+        )}
+        {/* No results */}
         {isOpen && searchTerm.length >= minChars && filteredOptions.length === 0 && !loading && (
           <div
             className={clsx(
-              'absolute z-50 w-full mt-1 bg-background',
-              'border border-border rounded-lg shadow-strong',
-              'px-4 py-2 text-muted-foreground text-sm'
+              'absolute z-50 w-full mt-1 glass-effect bg-[#13131A] dark:bg-background',
+              'border border-gray-800 dark:border-border rounded-lg shadow-strong',
+              'px-4 py-2 text-gray-400 dark:text-muted-foreground text-sm'
             )}
           >
-            {' '}
-            Aucun résultat trouvé{' '}
+            Aucun résultat trouvé
           </div>
-        )}{' '}
+        )}
       </div>
     );
   }
