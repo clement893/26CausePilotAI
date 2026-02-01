@@ -42,7 +42,8 @@ export async function getSegmentsAction(
       prisma.audience.count({ where }),
     ]);
 
-    const segments: SegmentRow[] = rows.map((r) => ({
+    type RowWithCount = (typeof rows)[number];
+    const segments: SegmentRow[] = rows.map((r: RowWithCount) => ({
       id: r.id,
       name: r.name,
       description: r.description,

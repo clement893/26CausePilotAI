@@ -24,7 +24,8 @@ export async function listAudiencesAction(
       include: { _count: { select: { donators: true } } },
       orderBy: { name: 'asc' },
     });
-    const audiences: AudienceRow[] = rows.map((r) => ({
+    type RowWithCount = (typeof rows)[number];
+    const audiences: AudienceRow[] = rows.map((r: RowWithCount) => ({
       id: r.id,
       name: r.name,
       description: r.description,

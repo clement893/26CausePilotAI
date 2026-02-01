@@ -2,10 +2,12 @@
  * Évaluation des règles de segmentation -> clause Prisma where - Étape 3.2.1
  */
 
-import type { Prisma } from '@prisma/client';
 import type { SegmentCondition, SegmentRuleGroup } from './types';
 
-function conditionToWhere(condition: SegmentCondition): Prisma.DonatorWhereInput | null {
+/** Where clause for Donator (matches Prisma DonatorWhereInput when client is generated) */
+export type DonatorWhereInput = Record<string, unknown>;
+
+function conditionToWhere(condition: SegmentCondition): DonatorWhereInput | null {
   const { field, operator, value } = condition;
   const v = value;
 
@@ -111,8 +113,8 @@ function conditionToWhere(condition: SegmentCondition): Prisma.DonatorWhereInput
 export function ruleGroupToWhere(
   group: SegmentRuleGroup,
   organizationId: string
-): Prisma.DonatorWhereInput {
-  const clauses: Prisma.DonatorWhereInput[] = [];
+): DonatorWhereInput {
+  const clauses: DonatorWhereInput[] = [];
   for (const cond of group.conditions) {
     const w = conditionToWhere(cond);
     if (w) clauses.push(w);

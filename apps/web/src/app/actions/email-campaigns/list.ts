@@ -67,7 +67,8 @@ export async function listEmailCampaignsAction(
       }),
     ]);
 
-    const rows: CampaignRow[] = campaigns.map((c) => {
+    type CampaignWithRelations = (typeof campaigns)[number];
+    const rows: CampaignRow[] = campaigns.map((c: CampaignWithRelations) => {
       const { sent, opened, clicked } = parseStats(c.stats);
       const openRate = sent > 0 ? Math.round((opened / sent) * 100) : 0;
       const clickRate = sent > 0 ? Math.round((clicked / sent) * 100) : 0;
