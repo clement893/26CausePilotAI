@@ -107,7 +107,7 @@ export default function PrivacySettings({
                 <div className="text-sm font-medium text-white flex items-center gap-2">
                   <Eye className="w-4 h-4 text-blue-400" /> Show Email
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Display your email address on your profile
                 </div>
               </div>
@@ -121,7 +121,7 @@ export default function PrivacySettings({
                 <div className="text-sm font-medium text-white flex items-center gap-2">
                   <Eye className="w-4 h-4 text-blue-400" /> Show Phone
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Display your phone number on your profile
                 </div>
               </div>
@@ -140,7 +140,7 @@ export default function PrivacySettings({
                 <div className="text-sm font-medium text-white flex items-center gap-2">
                   <Database className="w-4 h-4 text-blue-400" /> Data Collection
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Allow us to collect usage data to improve our services
                 </div>
               </div>
@@ -154,7 +154,7 @@ export default function PrivacySettings({
                 <div className="text-sm font-medium text-white flex items-center gap-2">
                   <Shield className="w-4 h-4 text-blue-400" /> Analytics
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Help us understand how you use our platform
                 </div>
               </div>
@@ -169,7 +169,7 @@ export default function PrivacySettings({
                 <div className="text-sm font-medium text-white">
                   Marketing Communications
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Receive marketing emails and promotional content
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function PrivacySettings({
                 <div className="text-sm font-medium text-white flex items-center gap-2">
                   <Download className="w-4 h-4 text-blue-400" /> Export Your Data
                 </div>
-                <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   Download a copy of all your data
                 </div>
               </div>
@@ -202,7 +202,7 @@ export default function PrivacySettings({
                   <div className="text-sm font-medium text-red-400text-danger-400 flex items-center gap-2">
                     <Trash2 className="w-4 h-4" /> Delete Account
                   </div>
-                  <div className="text-xs text-gray-400text-muted-foreground mt-1">
+                  <div className="text-xs text-gray-400 mt-1">
                     Permanently delete your account and all associated data
                   </div>
                 </div>
