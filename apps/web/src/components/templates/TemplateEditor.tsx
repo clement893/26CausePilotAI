@@ -69,16 +69,16 @@ export function TemplateEditor({ entityType, onSave, templateId, className = '' 
   };
 
   return (
-    <Card className={className}>
+    <Card variant="glass" className={`${className} border border-gray-800`}>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">{templateId ? 'Edit Template' : 'Create Template'}</h3>
+          <h3 className="text-lg font-semibold text-white">{templateId ? 'Edit Template' : 'Create Template'}</h3>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={() => setPreviewMode(!previewMode)}>
+            <Button variant="outline" size="sm" onClick={() => setPreviewMode(!previewMode)} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
               {previewMode ? <Code className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
               {previewMode ? 'Edit' : 'Preview'}
             </Button>
-            <Button variant="primary" size="sm" onClick={handleSave} loading={isSaving}>
+            <Button variant="gradient" size="sm" onClick={handleSave} loading={isSaving}>
               <Save className="h-4 w-4 mr-2" />
               Save
             </Button>
@@ -86,51 +86,59 @@ export function TemplateEditor({ entityType, onSave, templateId, className = '' 
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Input
-            label="Template Name"
-            value={name}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-            placeholder="e.g., Welcome Email"
-            required
-          />
-          <Input
-            label="Category"
-            value={category}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
-            placeholder="e.g., email, document"
-          />
+          <div className="form-input-glow">
+            <Input
+              label="Template Name"
+              value={name}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+              placeholder="e.g., Welcome Email"
+              required
+            />
+          </div>
+          <div className="form-input-glow">
+            <Input
+              label="Category"
+              value={category}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
+              placeholder="e.g., email, document"
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Description</label>
-          <textarea
-            value={description}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
-            placeholder="Describe what this template is for..."
-            rows={2}
-            className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
-          />
+          <label className="block text-sm font-medium text-white mb-1">Description</label>
+          <div className="form-input-glow">
+            <textarea
+              value={description}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
+              placeholder="Describe what this template is for..."
+              rows={2}
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white"
+            />
+          </div>
         </div>
 
         {previewMode ? (
-          <div className="p-4 bg-muted rounded-lg border border-border">
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
             <div className="prose dark:prose-invert max-w-none">
-              <pre className="whitespace-pre-wrap text-sm">{content}</pre>
+              <pre className="whitespace-pre-wrap text-sm text-gray-300">{content}</pre>
             </div>
           </div>
         ) : (
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
-              Template Content <span className="text-error-500">*</span>
+            <label className="block text-sm font-medium text-white mb-1">
+              Template Content <span className="text-red-400">*</span>
             </label>
-            <textarea
-              value={content}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
-              placeholder="Enter template content. Use {{variable}} for variables..."
-              rows={10}
-              required
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground font-mono text-sm"
-            />
+            <div className="form-input-glow">
+              <textarea
+                value={content}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
+                placeholder="Enter template content. Use {{variable}} for variables..."
+                rows={10}
+                required
+                className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white font-mono text-sm"
+              />
+            </div>
           </div>
         )}
 
@@ -140,19 +148,19 @@ export function TemplateEditor({ entityType, onSave, templateId, className = '' 
             id="isPublic"
             checked={isPublic}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIsPublic(e.target.checked)}
-            className="rounded"
+            className="rounded border-gray-700 bg-[#1C1C26]"
           />
-          <label htmlFor="isPublic" className="text-sm text-foreground">
+          <label htmlFor="isPublic" className="text-sm text-white">
             Make this template public
           </label>
         </div>
 
-        <div className="text-xs text-muted-foreground">
+        <div className="text-xs text-gray-400">
           <p>
-            Use variables in your template with <code>{'{{variable_name}}'}</code> syntax.
+            Use variables in your template with <code className="bg-[#1C1C26] px-1 rounded border border-gray-800">{'{{variable_name}}'}</code> syntax.
           </p>
           <p className="mt-1">
-            Example: <code>Hello {'{{user_name}}'}, welcome to {'{{project_name}}'}!</code>
+            Example: <code className="bg-[#1C1C26] px-1 rounded border border-gray-800">Hello {'{{user_name}}'}, welcome to {'{{project_name}}'}!</code>
           </p>
         </div>
       </div>

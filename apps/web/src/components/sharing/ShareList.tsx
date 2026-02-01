@@ -65,97 +65,82 @@ export function ShareList({ entityType, entityId, className = '' }: ShareListPro
   };
   if (isLoading) {
     return (
-      <Card className={className}>
-        {' '}
-        <div className="text-center py-8 text-muted-foreground">Loading shares...</div>{' '}
+      <Card variant="glass" className={className}>
+        <div className="text-center py-8 text-gray-400">Loading shares...</div>
       </Card>
     );
   }
   return (
-    <Card className={className}>
-      {' '}
+    <Card variant="glass" className={`border border-gray-800 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        {' '}
-        <h3 className="text-lg font-semibold">Shared With</h3>{' '}
-        <span className="text-sm text-muted-foreground">
+        <h3 className="text-lg font-semibold text-white">Shared With</h3>
+        <span className="text-sm text-gray-400">
           {shares.length} share{shares.length !== 1 ? 's' : ''}
-        </span>{' '}
-      </div>{' '}
+        </span>
+      </div>
       {shares.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          {' '}
-          <Share2 className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />{' '}
-          <p>Not shared with anyone</p>{' '}
+        <div className="text-center py-8 text-gray-400">
+          <Share2 className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+          <p className="text-white">Not shared with anyone</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {' '}
           {shares.map((share) => (
             <div
               key={share.id}
-              className="flex items-center justify-between p-3 border border-border rounded-lg"
+              className="flex items-center justify-between p-3 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover-lift"
             >
-              {' '}
               <div className="flex items-center gap-3">
-                {' '}
                 {share.is_public_link ? (
-                  <Share2 className="h-5 w-5 text-primary-500" />
+                  <Share2 className="h-5 w-5 text-blue-400" />
                 ) : share.shared_with_type === 'user' ? (
-                  <User className="h-5 w-5 text-muted-foreground" />
+                  <User className="h-5 w-5 text-gray-400" />
                 ) : (
-                  <Users className="h-5 w-5 text-muted-foreground" />
-                )}{' '}
+                  <Users className="h-5 w-5 text-gray-400" />
+                )}
                 <div>
-                  {' '}
                   <div className="flex items-center gap-2">
-                    {' '}
-                    <span className="font-medium text-sm">
-                      {' '}
+                    <span className="font-medium text-sm text-white">
                       {share.is_public_link
                         ? 'Public Link'
-                        : `${share.shared_with_type} #${share.shared_with_id}`}{' '}
-                    </span>{' '}
-                    <span className="text-xs bg-muted px-2 py-0.5 rounded capitalize">
-                      {' '}
-                      {share.permission_level}{' '}
-                    </span>{' '}
+                        : `${share.shared_with_type} #${share.shared_with_id}`}
+                    </span>
+                    <span className="text-xs glass-effect bg-[#13131A] border border-gray-800 px-2 py-0.5 rounded capitalize text-gray-300">
+                      {share.permission_level}
+                    </span>
                     {share.requires_password && (
-                      <Lock className="h-3 w-3 text-muted-foreground" />
-                    )}{' '}
-                  </div>{' '}
+                      <Lock className="h-3 w-3 text-gray-500" />
+                    )}
+                  </div>
                   {share.expires_at && (
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {' '}
-                      Expires {formatDistanceToNow(new Date(share.expires_at))}{' '}
+                    <p className="text-xs text-gray-400 mt-1">
+                      Expires {formatDistanceToNow(new Date(share.expires_at))}
                     </p>
-                  )}{' '}
-                </div>{' '}
-              </div>{' '}
+                  )}
+                </div>
+              </div>
               <div className="flex items-center gap-2">
-                {' '}
                 {share.is_public_link && share.share_token && (
                   <button
                     onClick={() => copyShareLink(share.share_token!)}
-                    className="p-1 hover:bg-muted dark:hover:bg-muted rounded"
+                    className="p-1 hover:bg-[#252532] rounded text-gray-400 hover:text-white transition-colors"
                     title="Copy share link"
                   >
-                    {' '}
-                    <ExternalLink className="h-4 w-4" />{' '}
+                    <ExternalLink className="h-4 w-4" />
                   </button>
-                )}{' '}
+                )}
                 <button
                   onClick={() => handleDelete(share.id)}
-                  className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                  className="p-1 hover:bg-[#252532] rounded text-red-400 hover:text-red-300 transition-colors"
                   title="Remove share"
                 >
-                  {' '}
-                  <X className="h-4 w-4" />{' '}
-                </button>{' '}
-              </div>{' '}
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </div>
-          ))}{' '}
+          ))}
         </div>
-      )}{' '}
+      )}
     </Card>
   );
 }

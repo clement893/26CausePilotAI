@@ -105,6 +105,7 @@ export function DataExporter({
         disabled={isExporting || !data || data.length === 0}
         variant="outline"
         size="sm"
+        className="border-gray-700 text-gray-300 hover:bg-[#252532]"
       >
         <FileText className="h-4 w-4 mr-2" />
         CSV
@@ -114,6 +115,7 @@ export function DataExporter({
         disabled={isExporting || !data || data.length === 0}
         variant="outline"
         size="sm"
+        className="border-gray-700 text-gray-300 hover:bg-[#252532]"
       >
         <FileSpreadsheet className="h-4 w-4 mr-2" />
         Excel
@@ -123,6 +125,7 @@ export function DataExporter({
         disabled={isExporting || !data || data.length === 0}
         variant="outline"
         size="sm"
+        className="border-gray-700 text-gray-300 hover:bg-[#252532]"
       >
         <FileJson className="h-4 w-4 mr-2" />
         JSON
@@ -132,6 +135,7 @@ export function DataExporter({
         disabled={isExporting || !data || data.length === 0}
         variant="outline"
         size="sm"
+        className="border-gray-700 text-gray-300 hover:bg-[#252532]"
       >
         <FileType className="h-4 w-4 mr-2" />
         PDF

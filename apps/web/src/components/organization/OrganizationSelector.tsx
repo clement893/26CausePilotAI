@@ -31,8 +31,8 @@ export default function OrganizationSelector() {
 
   if (isLoading && (!availableOrganizations || availableOrganizations.length === 0)) {
     return (
-      <div className="px-lg py-md border-b border-border">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <div className="px-lg py-md border-b border-gray-800">
+        <div className="flex items-center gap-2 text-sm text-gray-400">
           <Building className="w-4 h-4 animate-pulse" />
           <span>Chargement...</span>
         </div>
@@ -54,25 +54,25 @@ export default function OrganizationSelector() {
   };
 
   return (
-    <div className="px-lg py-md border-b border-border">
+    <div className="px-lg py-md border-b border-gray-800">
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={clsx(
             'w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-            'bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30',
-            'text-foreground'
+            'glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 hover:from-blue-500/30 hover:to-purple-500/30',
+            'border border-blue-500/50 text-white'
           )}
           aria-expanded={isOpen}
           aria-label="Sélectionner une organisation"
         >
           <div className="flex items-center gap-2 min-w-0 flex-1">
-            <Building className="w-4 h-4 flex-shrink-0 text-primary" />
+            <Building className="w-4 h-4 flex-shrink-0 text-blue-400" />
             <span className="truncate">{activeOrganization.name}</span>
           </div>
           <ChevronDown
             className={clsx(
-              'w-4 h-4 flex-shrink-0 transition-transform',
+              'w-4 h-4 flex-shrink-0 transition-transform text-gray-400',
               isOpen && 'transform rotate-180'
             )}
           />
@@ -89,7 +89,7 @@ export default function OrganizationSelector() {
             />
 
             {/* Menu */}
-            <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 mt-1 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
               {(availableOrganizations || []).map((org) => (
                 <button
                   key={org.id}
@@ -97,16 +97,16 @@ export default function OrganizationSelector() {
                   className={clsx(
                     'w-full flex items-center justify-between gap-2 px-3 py-2 text-sm transition-colors',
                     org.id === activeOrganization.id
-                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary font-medium'
-                      : 'hover:bg-muted text-foreground'
+                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white font-medium border-l-2 border-blue-500'
+                      : 'hover:bg-[#252532] text-gray-300'
                   )}
                 >
                   <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <Building className="w-4 h-4 flex-shrink-0" />
+                    <Building className="w-4 h-4 flex-shrink-0 text-gray-400" />
                     <span className="truncate">{org.name}</span>
                   </div>
                   {org.id === activeOrganization.id && (
-                    <Check className="w-4 h-4 flex-shrink-0 text-primary" />
+                    <Check className="w-4 h-4 flex-shrink-0 text-blue-400" />
                   )}
                 </button>
               ))}
@@ -116,7 +116,7 @@ export default function OrganizationSelector() {
       </div>
 
       {/* Module count badge */}
-      <div className="mt-2 text-xs text-muted-foreground">
+      <div className="mt-2 text-xs text-gray-400">
         {(enabledModules || []).length} module{(enabledModules || []).length !== 1 ? 's' : ''} activé
         {(enabledModules || []).length !== 1 ? 's' : ''}
       </div>

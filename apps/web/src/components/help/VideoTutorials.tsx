@@ -64,17 +64,17 @@ const defaultVideos: VideoTutorial[] = [
       {categories.map((category) => {
         const categoryVideos = videos.filter((video) => video.category === category);
         return (
-          <Card key={category} title={category} className="mb-6">
+          <Card variant="glass" key={category} title={category} className="mb-6 border border-gray-800">
             {' '}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {' '}
               {categoryVideos.map((video) => (
                 <div
                   key={video.id}
-                  className="border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                  className="border border-gray-800 rounded-lg overflow-hidden glass-effect bg-[#1C1C26] hover:bg-[#252532] transition-shadow hover-lift"
                 >
                   {' '}
-                  <div className="relative aspect-video bg-muted">
+                  <div className="relative aspect-video bg-[#0A0A0F]">
                     {' '}
                     {video.thumbnail ? (
                       <img
@@ -85,14 +85,14 @@ const defaultVideos: VideoTutorial[] = [
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         {' '}
-                        <VideoIcon className="w-12 h-12 text-muted-foreground" />{' '}
+                        <VideoIcon className="w-12 h-12 text-gray-500" />{' '}
                       </div>
                     )}{' '}
-                    <div className="absolute inset-0 flex items-center justify-center bg-foreground/30 hover:bg-foreground/40 transition-colors">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors">
                       {' '}
                       <Button
                         onClick={() => handleVideoClick(video)}
-                        variant="primary"
+                        variant="gradient"
                         className="rounded-full p-4"
                       >
                         {' '}
@@ -100,7 +100,7 @@ const defaultVideos: VideoTutorial[] = [
                       </Button>{' '}
                     </div>{' '}
                     {video.duration && (
-                      <div className="absolute bottom-2 right-2 bg-foreground/70 text-background text-xs px-2 py-1 rounded">
+                      <div className="absolute bottom-2 right-2 glass-effect bg-black/70 text-white text-xs px-2 py-1 rounded border border-gray-800">
                         {' '}
                         {video.duration}{' '}
                       </div>
@@ -108,10 +108,10 @@ const defaultVideos: VideoTutorial[] = [
                   </div>{' '}
                   <div className="p-4">
                     {' '}
-                    <h3 className="font-medium text-foreground mb-1"> {video.title} </h3>{' '}
-                    <p className="text-sm text-muted-foreground mb-2"> {video.description} </p>{' '}
+                    <h3 className="font-medium text-white mb-1"> {video.title} </h3>{' '}
+                    <p className="text-sm text-gray-400 mb-2"> {video.description} </p>{' '}
                     {video.external && (
-                      <div className="flex items-center gap-1 text-xs text-primary-600 dark:text-primary-400">
+                      <div className="flex items-center gap-1 text-xs text-blue-400">
                         {' '}
                         <ExternalLink className="w-3 h-3" /> <span>Watch on YouTube</span>{' '}
                       </div>
@@ -125,17 +125,17 @@ const defaultVideos: VideoTutorial[] = [
       })}{' '}
       {/* Video Modal (for embedded videos) */}{' '}
       {selectedVideo && !selectedVideo.external && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
           {' '}
-          <div className="bg-background rounded-lg max-w-4xl w-full p-4">
+          <div className="glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg max-w-4xl w-full p-4">
             {' '}
             <div className="flex justify-between items-center mb-4">
               {' '}
-              <h3 className="text-lg font-semibold text-foreground">
+              <h3 className="text-lg font-semibold text-white">
                 {' '}
                 {selectedVideo.title}{' '}
               </h3>{' '}
-              <Button onClick={() => setSelectedVideo(null)} variant="ghost" size="sm">
+              <Button onClick={() => setSelectedVideo(null)} variant="ghost" size="sm" className="text-gray-400 hover:bg-[#252532] hover:text-white">
                 {' '}
                 ×{' '}
               </Button>{' '}

@@ -53,7 +53,7 @@ export interface ContactSupportProps {
         {/* Contact Form */}{' '}
         <div className="lg:col-span-2">
           {' '}
-          <Card title="Contact Support">
+          <Card variant="glass" title="Contact Support" className="border border-gray-800">
             {' '}
             {success && (
               <div className="mb-4">
@@ -77,21 +77,23 @@ export interface ContactSupportProps {
               {' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Email *{' '}
                 </label>{' '}
-                <Input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="your.email@example.com"
-                  required
-                />{' '}
+                <div className="form-input-glow">
+                  <Input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="your.email@example.com"
+                    required
+                  />
+                </div>
               </div>{' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Category *{' '}
                 </label>{' '}
@@ -107,11 +109,12 @@ export interface ContactSupportProps {
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   required
+                  className="border-gray-700 bg-[#1C1C26] text-white"
                 />{' '}
               </div>{' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Priority{' '}
                 </label>{' '}
@@ -124,38 +127,43 @@ export interface ContactSupportProps {
                   ]}
                   value={formData.priority}
                   onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                  className="border-gray-700 bg-[#1C1C26] text-white"
                 />{' '}
               </div>{' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Subject *{' '}
                 </label>{' '}
-                <Input
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  placeholder="Brief description of your issue"
-                  required
-                />{' '}
+                <div className="form-input-glow">
+                  <Input
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    placeholder="Brief description of your issue"
+                    required
+                  />
+                </div>
               </div>{' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Message *{' '}
                 </label>{' '}
-                <Textarea
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Please provide as much detail as possible..."
-                  rows={8}
-                  required
-                />{' '}
+                <div className="form-input-glow">
+                  <Textarea
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Please provide as much detail as possible..."
+                    rows={8}
+                    required
+                  />
+                </div>
               </div>{' '}
               <div className="flex justify-end">
                 {' '}
-                <Button type="submit" variant="primary" disabled={isSubmitting}>
+                <Button type="submit" variant="gradient" disabled={isSubmitting}>
                   {' '}
                   <Send className="w-4 h-4 mr-2" />{' '}
                   {isSubmitting ? 'Sending...' : 'Send Message'}{' '}
@@ -167,26 +175,26 @@ export interface ContactSupportProps {
         {/* Contact Info Sidebar */}{' '}
         <div className="space-y-6">
           {' '}
-          <Card title="Other Ways to Reach Us">
+          <Card variant="glass" title="Other Ways to Reach Us" className="border border-gray-800">
             {' '}
             <div className="space-y-4">
               {' '}
               <div className="flex items-start gap-3">
                 {' '}
-                <Mail className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5" />{' '}
+                <Mail className="w-5 h-5 text-blue-400 mt-0.5" />{' '}
                 <div>
                   {' '}
-                  <h4 className="font-medium text-foreground">Email</h4>{' '}
-                  <p className="text-sm text-muted-foreground"> support@example.com </p>{' '}
+                  <h4 className="font-medium text-white">Email</h4>{' '}
+                  <p className="text-sm text-gray-400"> support@example.com </p>{' '}
                 </div>{' '}
               </div>{' '}
               <div className="flex items-start gap-3">
                 {' '}
-                <MessageSquare className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5" />{' '}
+                <MessageSquare className="w-5 h-5 text-blue-400 mt-0.5" />{' '}
                 <div>
                   {' '}
-                  <h4 className="font-medium text-foreground">Response Time</h4>{' '}
-                  <p className="text-sm text-muted-foreground">
+                  <h4 className="font-medium text-white">Response Time</h4>{' '}
+                  <p className="text-sm text-gray-400">
                     {' '}
                     We typically respond within 24 hours{' '}
                   </p>{' '}
@@ -194,9 +202,9 @@ export interface ContactSupportProps {
               </div>{' '}
             </div>{' '}
           </Card>{' '}
-          <Card title="Before You Contact Us">
+          <Card variant="glass" title="Before You Contact Us" className="border border-gray-800">
             {' '}
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-sm text-gray-400">
               {' '}
               <li>• Check our FAQ page for common questions</li>{' '}
               <li>• Search our knowledge base</li> <li>• Review our user guides</li>{' '}

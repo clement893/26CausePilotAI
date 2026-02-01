@@ -112,42 +112,44 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
 
   if (isLoading) {
     return (
-      <Card className={className}>
-        <div className="text-center py-8 text-muted-foreground">Loading audit trail...</div>
+      <Card variant="glass" className={className}>
+        <div className="text-center py-8 text-gray-400">Loading audit trail...</div>
       </Card>
     );
   }
 
   return (
-    <Card className={className}>
+    <Card variant="glass" className={`border border-gray-800 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          <Shield className="h-5 w-5" />
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-white">
+          <Shield className="h-5 w-5 text-blue-400" />
           Audit Trail
         </h3>
-        <Button variant="outline" size="sm" onClick={handleExport}>
+        <Button variant="outline" size="sm" onClick={handleExport} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
           <Download className="h-4 w-4 mr-2" />
           Export
         </Button>
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 p-4 bg-muted rounded-lg">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 p-4 glass-effect bg-[#13131A] border border-gray-800 rounded-lg">
         <div>
-          <label className="block text-xs font-medium mb-1">Event Type</label>
-          <Input
-            value={filters.event_type}
-            onChange={(e) => setFilters({ ...filters, event_type: e.target.value })}
-            placeholder="Filter by type"
-            className="text-sm"
-          />
+          <label className="block text-xs font-medium mb-1 text-gray-300">Event Type</label>
+          <div className="form-input-glow">
+            <Input
+              value={filters.event_type}
+              onChange={(e) => setFilters({ ...filters, event_type: e.target.value })}
+              placeholder="Filter by type"
+              className="text-sm"
+            />
+          </div>
         </div>
         <div>
-          <label className="block text-xs font-medium mb-1">Severity</label>
+          <label className="block text-xs font-medium mb-1 text-gray-300">Severity</label>
           <select
             value={filters.severity}
             onChange={(e) => setFilters({ ...filters, severity: e.target.value })}
-            className="w-full px-3 py-2 border border-border rounded-lg bg-background text-sm"
+            className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All</option>
             <option value="info">Info</option>
@@ -157,58 +159,62 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium mb-1">Start Date</label>
-          <Input
-            type="date"
-            value={filters.start_date}
-            onChange={(e) => setFilters({ ...filters, start_date: e.target.value })}
-            className="text-sm"
-          />
+          <label className="block text-xs font-medium mb-1 text-gray-300">Start Date</label>
+          <div className="form-input-glow">
+            <Input
+              type="date"
+              value={filters.start_date}
+              onChange={(e) => setFilters({ ...filters, start_date: e.target.value })}
+              className="text-sm"
+            />
+          </div>
         </div>
         <div>
-          <label className="block text-xs font-medium mb-1">End Date</label>
-          <Input
-            type="date"
-            value={filters.end_date}
-            onChange={(e) => setFilters({ ...filters, end_date: e.target.value })}
-            className="text-sm"
-          />
+          <label className="block text-xs font-medium mb-1 text-gray-300">End Date</label>
+          <div className="form-input-glow">
+            <Input
+              type="date"
+              value={filters.end_date}
+              onChange={(e) => setFilters({ ...filters, end_date: e.target.value })}
+              className="text-sm"
+            />
+          </div>
         </div>
       </div>
 
       {logs.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          <Shield className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <p>No audit logs found</p>
+        <div className="text-center py-8 text-gray-400">
+          <Shield className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+          <p className="text-white">No audit logs found</p>
         </div>
       ) : (
-        <div className="space-y-2 max-h-[600px] overflow-y-auto">
+        <div className="space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar">
           {logs.map((log) => {
             const SeverityIcon = severityIcons[log.severity as keyof typeof severityIcons] || Info;
             const severityColor =
-              severityColors[log.severity as keyof typeof severityColors] || 'text-muted-foreground';
+              severityColors[log.severity as keyof typeof severityColors] || 'text-gray-400';
             const SuccessIcon = successIcons[log.success as keyof typeof successIcons] || Info;
             const successColor =
-              successColors[log.success as keyof typeof successColors] || 'text-muted-foreground';
+              successColors[log.success as keyof typeof successColors] || 'text-gray-400';
 
             return (
               <div
                 key={log.id}
-                className="p-3 border border-border rounded-lg hover:bg-muted dark:hover:bg-muted transition-colors"
+                className="p-3 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover:bg-[#252532] transition-colors hover-lift"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2 flex-1">
                     <SeverityIcon className={`h-4 w-4 ${severityColor}`} />
-                    <span className="font-medium text-sm">{log.event_type}</span>
+                    <span className="font-medium text-sm text-white">{log.event_type}</span>
                     <SuccessIcon className={`h-4 w-4 ${successColor}`} />
                     <span className={`text-xs capitalize ${successColor}`}>{log.success}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-gray-400">
                     {new Date(log.timestamp).toLocaleString()}
                   </span>
                 </div>
-                <p className="text-sm text-foreground mb-2">{log.description}</p>
-                <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+                <p className="text-sm text-gray-300 mb-2">{log.description}</p>
+                <div className="flex flex-wrap gap-4 text-xs text-gray-400">
                   {log.user_email && <span>User: {log.user_email}</span>}
                   {log.ip_address && <span>IP: {log.ip_address}</span>}
                   {log.request_method && log.request_path && (
@@ -219,10 +225,10 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
                 </div>
                 {log.event_metadata && Object.keys(log.event_metadata).length > 0 && (
                   <details className="mt-2">
-                    <summary className="text-xs text-muted-foreground cursor-pointer">
+                    <summary className="text-xs text-gray-400 cursor-pointer hover:text-white">
                       View metadata
                     </summary>
-                    <pre className="mt-1 p-2 bg-muted rounded text-xs overflow-x-auto">
+                    <pre className="mt-1 p-2 glass-effect bg-[#13131A] border border-gray-800 rounded text-xs overflow-x-auto text-gray-300">
                       {JSON.stringify(log.event_metadata, null, 2)}
                     </pre>
                   </details>

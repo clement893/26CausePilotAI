@@ -33,78 +33,65 @@ export interface BlogListingProps {
   if (posts.length === 0) {
     return (
       <div className={className}>
-        {' '}
         <div className="text-center py-12">
-          {' '}
-          <p className="text-muted-foreground text-lg"> No blog posts found. </p>{' '}
-        </div>{' '}
+          <p className="text-gray-400 text-lg"> No blog posts found. </p>
+        </div>
       </div>
     );
   }
   return (
     <div className={className}>
-      {' '}
-      {/* Blog Posts Grid */}{' '}
+      {/* Blog Posts Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {' '}
         {posts.map((post) => (
           <Link key={post.id} href={`/blog/${post.slug}`}>
-            {' '}
-            <Card hover className="h-full flex flex-col">
-              {' '}
-              {/* Featured Image Placeholder */}{' '}
-              <div className="aspect-video bg-muted rounded-t-lg mb-4" /> {/* Post Content */}{' '}
+            <Card variant="glass" hover className="h-full flex flex-col border border-gray-800 hover-lift">
+              {/* Featured Image Placeholder */}
+              <div className="aspect-video glass-effect bg-[#13131A] border border-gray-800 rounded-t-lg mb-4" />
+              {/* Post Content */}
               <div className="flex-1 flex flex-col">
-                {' '}
                 <div className="mb-2">
-                  {' '}
-                  <Badge variant="default">{post.status}</Badge>{' '}
-                </div>{' '}
-                <h3 className="text-xl font-semibold text-foreground mb-2 line-clamp-2">
-                  {' '}
-                  {post.title}{' '}
-                </h3>{' '}
+                  <Badge variant="default">{post.status}</Badge>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2 line-clamp-2">
+                  {post.title}
+                </h3>
                 {post.excerpt && (
-                  <p className="text-muted-foreground mb-4 line-clamp-3 flex-1"> {post.excerpt} </p>
-                )}{' '}
-                {/* Post Meta */}{' '}
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-auto pt-4 border-t border-border">
-                  {' '}
+                  <p className="text-gray-400 mb-4 line-clamp-3 flex-1"> {post.excerpt} </p>
+                )}
+                {/* Post Meta */}
+                <div className="flex items-center gap-4 text-sm text-gray-400 mt-auto pt-4 border-t border-gray-800">
                   {post.author_name && (
                     <div className="flex items-center gap-1">
-                      {' '}
-                      <User className="w-4 h-4" /> <span>{post.author_name}</span>{' '}
+                      <User className="w-4 h-4" /> <span>{post.author_name}</span>
                     </div>
-                  )}{' '}
+                  )}
                   {post.published_at && (
                     <div className="flex items-center gap-1">
-                      {' '}
-                      <Calendar className="w-4 h-4" />{' '}
-                      <span>{new Date(post.published_at).toLocaleDateString()}</span>{' '}
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(post.published_at).toLocaleDateString()}</span>
                     </div>
-                  )}{' '}
-                </div>{' '}
-                {/* Read More */}{' '}
-                <div className="mt-4 flex items-center text-primary-600 dark:text-primary-400 font-medium">
-                  {' '}
-                  Read more <ArrowRight className="w-4 h-4 ml-1" />{' '}
-                </div>{' '}
-              </div>{' '}
-            </Card>{' '}
+                  )}
+                </div>
+                {/* Read More */}
+                <div className="mt-4 flex items-center text-blue-400 font-medium hover:text-blue-300 transition-colors">
+                  Read more <ArrowRight className="w-4 h-4 ml-1" />
+                </div>
+              </div>
+            </Card>
           </Link>
-        ))}{' '}
-      </div>{' '}
-      {/* Pagination */}{' '}
+        ))}
+      </div>
+      {/* Pagination */}
       {totalPages > 1 && onPageChange && (
         <div className="flex justify-center">
-          {' '}
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={onPageChange}
-          />{' '}
+          />
         </div>
-      )}{' '}
+      )}
     </div>
   );
 }

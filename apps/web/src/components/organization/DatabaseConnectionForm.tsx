@@ -830,21 +830,21 @@ export function DatabaseConnectionForm({
   }, [currentConnectionString, connectionString, organizationId]);
 
   return (
-    <Card title="Configuration Base de Données" className="space-y-4">
+    <Card variant="glass" title="Configuration Base de Données" className="space-y-4 border border-gray-800">
       <div className="space-y-4">
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm text-gray-400 mb-4">
             Configurez la connexion à la base de données PostgreSQL pour cette organisation.
             Chaque organisation possède sa propre base de données isolée.
           </p>
 
           {/* Current Status - Always visible when connection exists */}
           {(currentConnectionString || connectionString) && (
-            <div className="mb-4 p-4 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800">
+            <div className="mb-4 p-4 rounded-lg glass-effect bg-green-500/10 border border-green-500/50">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-success-600 dark:text-success-400" />
-                  <span className="text-sm font-medium text-success-700 dark:text-success-300">
+                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <span className="text-sm font-medium text-green-400">
                     Base de données connectée
                   </span>
                 </div>
@@ -856,16 +856,17 @@ export function DatabaseConnectionForm({
                       variant="ghost"
                       size="sm"
                       onClick={() => setShowEditForm(true)}
+                      className="text-gray-400 hover:bg-[#252532] hover:text-white"
                     >
                       Modifier
                     </Button>
                   )}
                 </div>
               </div>
-              <p className="text-xs text-success-600 dark:text-success-400 mt-2 font-mono break-all">
+              <p className="text-xs text-green-400 mt-2 font-mono break-all">
                 {maskConnectionString(currentConnectionString || connectionString)}
               </p>
-              <p className="text-xs text-success-600 dark:text-success-400 mt-2">
+              <p className="text-xs text-green-400 mt-2">
                 La connexion est active. Utilisez le bouton "Mettre à jour la BD" ci-dessous pour créer les tables.
               </p>
             </div>
@@ -876,24 +877,26 @@ export function DatabaseConnectionForm({
             <>
               {/* Mode Toggle */}
           <div className="flex items-center justify-between mb-4">
-            <label className="text-sm font-medium text-foreground">Mode de configuration</label>
+            <label className="text-sm font-medium text-white">Mode de configuration</label>
             <div className="flex gap-2">
               <Button
                 type="button"
-                variant={useSimpleMode ? 'primary' : 'ghost'}
+                variant={useSimpleMode ? 'gradient' : 'ghost'}
                 size="sm"
                 onClick={() => setUseSimpleMode(true)}
                 disabled={isSaving || isTesting || isCreating}
+                className={useSimpleMode ? '' : 'text-gray-400 hover:bg-[#252532] hover:text-white'}
               >
                 <Settings className="w-4 h-4 mr-2" />
                 Simple
               </Button>
               <Button
                 type="button"
-                variant={!useSimpleMode ? 'primary' : 'ghost'}
+                variant={!useSimpleMode ? 'gradient' : 'ghost'}
                 size="sm"
                 onClick={() => setUseSimpleMode(false)}
                 disabled={isSaving || isTesting || isCreating}
+                className={!useSimpleMode ? '' : 'text-gray-400 hover:bg-[#252532] hover:text-white'}
               >
                 <Code className="w-4 h-4 mr-2" />
                 Avancé
@@ -906,28 +909,30 @@ export function DatabaseConnectionForm({
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="db-host" className="text-sm font-medium text-foreground">
-                    Hôte <span className="text-error-600">*</span>
+                  <label htmlFor="db-host" className="text-sm font-medium text-white">
+                    Hôte <span className="text-red-400">*</span>
                   </label>
                   <div className="flex gap-2">
-                    <Input
-                      id="db-host"
-                      type="text"
-                      value={dbHost}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setDbHost(value);
-                        setError(null);
-                        setSuccess(null);
-                        setTestResult(null);
-                        
-                        // Try to parse if it looks like a full URL
-                        parseConnectionString(value);
-                      }}
-                      placeholder="tramway.proxy.rlwy.net"
-                      disabled={isSaving || isTesting || isCreating}
-                      className="flex-1"
-                    />
+                    <div className="form-input-glow flex-1">
+                      <Input
+                        id="db-host"
+                        type="text"
+                        value={dbHost}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setDbHost(value);
+                          setError(null);
+                          setSuccess(null);
+                          setTestResult(null);
+                          
+                          // Try to parse if it looks like a full URL
+                          parseConnectionString(value);
+                        }}
+                        placeholder="tramway.proxy.rlwy.net"
+                        disabled={isSaving || isTesting || isCreating}
+                        className="flex-1"
+                      />
+                    </div>
                     {(() => {
                       // Check if dbHost looks like it might contain a full URL
                       const decodedHost = decodeURIComponent(dbHost).trim();
@@ -959,78 +964,84 @@ export function DatabaseConnectionForm({
                       </Button>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-gray-400">
                     Adresse du serveur PostgreSQL (ou collez l'URL complète pour auto-remplir)
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="db-port" className="text-sm font-medium text-foreground">
+                  <label htmlFor="db-port" className="text-sm font-medium text-white">
                     Port
                   </label>
-                  <Input
-                    id="db-port"
-                    type="number"
-                    value={dbPort}
-                    onChange={(e) => {
-                      setDbPort(e.target.value);
-                      setError(null);
-                      setSuccess(null);
-                      setTestResult(null);
-                    }}
-                    placeholder="5432"
-                    disabled={isSaving || isTesting || isCreating}
-                  />
-                  <p className="text-xs text-muted-foreground">Port PostgreSQL (défaut: 5432)</p>
+                  <div className="form-input-glow">
+                    <Input
+                      id="db-port"
+                      type="number"
+                      value={dbPort}
+                      onChange={(e) => {
+                        setDbPort(e.target.value);
+                        setError(null);
+                        setSuccess(null);
+                        setTestResult(null);
+                      }}
+                      placeholder="5432"
+                      disabled={isSaving || isTesting || isCreating}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400">Port PostgreSQL (défaut: 5432)</p>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="db-name" className="text-sm font-medium text-foreground">
-                  Nom de la base de données <span className="text-error-600">*</span>
+                <label htmlFor="db-name" className="text-sm font-medium text-white">
+                  Nom de la base de données <span className="text-red-400">*</span>
                 </label>
-                <Input
-                  id="db-name"
-                  type="text"
-                  value={dbName}
-                  onChange={(e) => {
-                    setDbName(e.target.value);
-                    setError(null);
-                    setSuccess(null);
-                    setTestResult(null);
-                  }}
-                  placeholder="railway"
-                  disabled={isSaving || isTesting || isCreating}
-                />
-                <p className="text-xs text-muted-foreground">Nom de la base de données PostgreSQL</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="db-user" className="text-sm font-medium text-foreground">
-                    Utilisateur <span className="text-error-600">*</span>
-                  </label>
+                <div className="form-input-glow">
                   <Input
-                    id="db-user"
+                    id="db-name"
                     type="text"
-                    value={dbUser}
+                    value={dbName}
                     onChange={(e) => {
-                      setDbUser(e.target.value);
+                      setDbName(e.target.value);
                       setError(null);
                       setSuccess(null);
                       setTestResult(null);
                     }}
-                    placeholder="postgres"
+                    placeholder="railway"
                     disabled={isSaving || isTesting || isCreating}
                   />
-                  <p className="text-xs text-muted-foreground">Nom d'utilisateur PostgreSQL</p>
+                </div>
+                <p className="text-xs text-gray-400">Nom de la base de données PostgreSQL</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="db-user" className="text-sm font-medium text-white">
+                    Utilisateur <span className="text-red-400">*</span>
+                  </label>
+                  <div className="form-input-glow">
+                    <Input
+                      id="db-user"
+                      type="text"
+                      value={dbUser}
+                      onChange={(e) => {
+                        setDbUser(e.target.value);
+                        setError(null);
+                        setSuccess(null);
+                        setTestResult(null);
+                      }}
+                      placeholder="postgres"
+                      disabled={isSaving || isTesting || isCreating}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400">Nom d'utilisateur PostgreSQL</p>
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="db-password" className="text-sm font-medium text-foreground">
-                    Mot de passe <span className="text-error-600">*</span>
+                  <label htmlFor="db-password" className="text-sm font-medium text-white">
+                    Mot de passe <span className="text-red-400">*</span>
                   </label>
-                  <div className="relative">
+                  <div className="relative form-input-glow">
                     <Input
                       id="db-password"
                       type={showPassword ? 'text' : 'password'}
@@ -1048,7 +1059,7 @@ export function DatabaseConnectionForm({
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
                       disabled={isSaving || isTesting || isCreating}
                     >
                       {showPassword ? (
@@ -1058,15 +1069,15 @@ export function DatabaseConnectionForm({
                       )}
                     </button>
                   </div>
-                  <p className="text-xs text-muted-foreground">Mot de passe PostgreSQL</p>
+                  <p className="text-xs text-gray-400">Mot de passe PostgreSQL</p>
                 </div>
               </div>
 
               {/* Preview of generated connection string */}
               {buildConnectionString() && (
-                <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Chaîne générée automatiquement :</p>
-                  <code className="text-xs font-mono text-foreground break-all">
+                <div className="p-3 rounded-lg glass-effect bg-[#1C1C26] border border-gray-800">
+                  <p className="text-xs font-medium text-gray-400 mb-1">Chaîne générée automatiquement :</p>
+                  <code className="text-xs font-mono text-white break-all">
                     {maskConnectionString(buildConnectionString())}
                   </code>
                 </div>
@@ -1075,10 +1086,10 @@ export function DatabaseConnectionForm({
           ) : (
             /* Advanced Mode - Direct Connection String */
             <div className="space-y-2">
-              <label htmlFor="db-connection" className="text-sm font-medium text-foreground">
+              <label htmlFor="db-connection" className="text-sm font-medium text-white">
                 Chaîne de connexion PostgreSQL
               </label>
-              <div className="relative">
+              <div className="relative form-input-glow">
                 <Input
                   id="db-connection"
                   type={showPassword ? 'text' : 'password'}
@@ -1096,7 +1107,7 @@ export function DatabaseConnectionForm({
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
                   disabled={isSaving || isTesting || isCreating}
                 >
                   {showPassword ? (
@@ -1106,10 +1117,10 @@ export function DatabaseConnectionForm({
                   )}
                 </button>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Format: <code className="bg-muted px-1 rounded">postgresql+asyncpg://user:password@host:5432/database</code>
+              <p className="text-xs text-gray-400">
+                Format: <code className="bg-[#1C1C26] px-1 rounded border border-gray-800">postgresql+asyncpg://user:password@host:5432/database</code>
                 <br />
-                Le système convertit automatiquement <code className="bg-muted px-1 rounded">postgresql://</code> en <code className="bg-muted px-1 rounded">postgresql+asyncpg://</code>
+                Le système convertit automatiquement <code className="bg-[#1C1C26] px-1 rounded border border-gray-800">postgresql://</code> en <code className="bg-[#1C1C26] px-1 rounded border border-gray-800">postgresql+asyncpg://</code>
               </p>
             </div>
           )}
@@ -1177,7 +1188,7 @@ export function DatabaseConnectionForm({
             {showEditForm || !(currentConnectionString || connectionString) ? (
               <>
                 <Button
-                  variant="primary"
+                  variant="gradient"
                   onClick={handleTestConnection}
                   disabled={isTesting || isSaving || isCreating || !connectionString.trim()}
                 >
@@ -1195,7 +1206,7 @@ export function DatabaseConnectionForm({
                 </Button>
 
                 <Button
-                  variant="primary"
+                  variant="gradient"
                   onClick={handleSave}
                   disabled={isTesting || isSaving || isCreating || isMigrating || !connectionString.trim()}
                 >
@@ -1217,6 +1228,7 @@ export function DatabaseConnectionForm({
                     variant="ghost"
                     onClick={handleCreateDatabase}
                     disabled={isTesting || isSaving || isCreating || isMigrating}
+                    className="text-gray-400 hover:bg-[#252532] hover:text-white"
                   >
                     {isCreating ? (
                       <>
@@ -1254,7 +1266,7 @@ export function DatabaseConnectionForm({
                   handleMigrateDatabase();
                 }}
                 disabled={isTesting || isSaving || isCreating || isMigrating || !(currentConnectionString || connectionString)}
-                className="border border-primary/20"
+                className="border border-blue-500/20 text-gray-400 hover:bg-[#252532] hover:text-white"
                 type="button"
               >
                 {isMigrating ? (
@@ -1270,7 +1282,7 @@ export function DatabaseConnectionForm({
                 )}
               </Button>
             ) : (
-              <div className="text-xs text-muted-foreground p-2">
+              <div className="text-xs text-gray-400 p-2">
                 ⚠️ Configurez d'abord la connexion à la base de données pour activer la migration
               </div>
             )}

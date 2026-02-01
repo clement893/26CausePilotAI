@@ -26,15 +26,15 @@ const typeIcons = {
   promotion: Gift,
 };
 const typeStyles = {
-  info: 'bg-primary-50 dark:bg-primary-900 border-primary-200 dark:border-primary-800 text-primary-800 dark:text-primary-200',
+  info: 'glass-effect bg-blue-500/10 border-blue-500/50 text-blue-300',
   success:
-    'bg-success-50 dark:bg-success-900 border-success-200 dark:border-success-800 text-success-800 dark:text-success-200',
+    'glass-effect bg-green-500/10 border-green-500/50 text-green-300',
   warning:
-    'bg-warning-50 dark:bg-warning-900 border-warning-200 dark:border-warning-800 text-warning-800 dark:text-warning-200',
+    'glass-effect bg-yellow-500/10 border-yellow-500/50 text-yellow-300',
   error:
-    'bg-error-50 dark:bg-error-900 border-error-200 dark:border-error-800 text-error-800 dark:text-error-200',
+    'glass-effect bg-red-500/10 border-red-500/50 text-red-300',
   promotion:
-    'bg-primary-50 dark:bg-primary-900 border-primary-200 dark:border-primary-800 text-primary-800 dark:text-primary-200',
+    'glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500/50 text-blue-300',
 };
 export function AnnouncementBanner({
   className = '',
@@ -71,7 +71,6 @@ export function AnnouncementBanner({
   }
   return (
     <div className={`space-y-2 ${className}`}>
-      {' '}
       {visibleAnnouncements.map((announcement) => {
         const Icon = typeIcons[announcement.type];
         const styles = typeStyles[announcement.type];
@@ -80,15 +79,12 @@ export function AnnouncementBanner({
             key={announcement.id}
             className={`flex items-start gap-3 p-4 rounded-lg border ${styles}`}
           >
-            {' '}
-            <Icon className="h-5 w-5 flex-shrink-0 mt-0.5" />{' '}
+            <Icon className="h-5 w-5 flex-shrink-0 mt-0.5" />
             <div className="flex-1 min-w-0">
-              {' '}
-              <h4 className="font-semibold text-sm mb-1">{announcement.title}</h4>{' '}
-              <p className="text-sm">{announcement.message}</p>{' '}
+              <h4 className="font-semibold text-sm mb-1 text-white">{announcement.title}</h4>
+              <p className="text-sm text-gray-300">{announcement.message}</p>
               {announcement.action_label && announcement.action_url && (
                 <div className="mt-2">
-                  {' '}
                   <Button
                     variant="outline"
                     size="sm"
@@ -99,26 +95,25 @@ export function AnnouncementBanner({
                         window.location.href = announcement.action_url || '#';
                       }
                     }}
+                    className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
                   >
-                    {' '}
-                    {announcement.action_label}{' '}
-                  </Button>{' '}
+                    {announcement.action_label}
+                  </Button>
                 </div>
-              )}{' '}
-            </div>{' '}
+              )}
+            </div>
             {announcement.is_dismissible && (
               <button
                 onClick={() => handleDismiss(announcement.id)}
-                className="flex-shrink-0 p-1 hover:bg-foreground/10 dark:hover:bg-background/10 rounded"
+                className="flex-shrink-0 p-1 hover:bg-[#252532] rounded text-gray-400 hover:text-white transition-colors"
                 aria-label="Dismiss"
               >
-                {' '}
-                <X className="h-4 w-4" />{' '}
+                <X className="h-4 w-4" />
               </button>
-            )}{' '}
+            )}
           </div>
         );
-      })}{' '}
+      })}
     </div>
   );
 }

@@ -5,13 +5,11 @@ export interface RBACDemoProps {
 }
 export default function RBACDemo({ className }: RBACDemoProps) {
   return (
-    <Card className={className}>
-      {' '}
+    <Card variant="glass" className={`border border-gray-800 ${className}`}>
       <div className="p-6">
-        {' '}
-        <h2 className="text-xl font-semibold mb-4">RBAC Demo</h2>{' '}
-        <p className="text-muted-foreground">RBAC demo functionality coming soon.</p>{' '}
-      </div>{' '}
+        <h2 className="text-xl font-semibold mb-4 text-white">RBAC Demo</h2>
+        <p className="text-gray-400">RBAC demo functionality coming soon.</p>
+      </div>
     </Card>
   );
 }

@@ -135,7 +135,7 @@ export function TemplateAIChat({ className = '', defaultOpen = false }: Template
         <Button
           onClick={() => setIsOpen(true)}
           className="rounded-full shadow-lg h-14 w-14 p-0"
-          variant="primary"
+          variant="gradient"
         >
           <Bot className="h-6 w-6" />
         </Button>
@@ -146,12 +146,12 @@ export function TemplateAIChat({ className = '', defaultOpen = false }: Template
   // Full chat interface when open
   return (
     <div className={`fixed bottom-6 right-6 z-50 w-96 h-[600px] ${className}`}>
-      <Card className="flex flex-col h-full shadow-2xl">
+      <Card variant="glass" className="flex flex-col h-full shadow-2xl border border-gray-800">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b bg-primary-50 dark:bg-primary-900/20">
+        <div className="flex items-center justify-between p-4 border-b border-gray-800 glass-effect bg-[#13131A]">
           <div className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-primary-500" />
-            <h3 className="font-semibold text-foreground">{t('title')}</h3>
+            <BookOpen className="h-5 w-5 text-blue-400" />
+            <h3 className="font-semibold text-white">{t('title')}</h3>
           </div>
           <div className="flex items-center gap-2">
             {messages.length > 0 && (
@@ -160,28 +160,28 @@ export function TemplateAIChat({ className = '', defaultOpen = false }: Template
                 size="sm"
                 onClick={clearChat}
                 disabled={isLoading}
-                className="text-xs"
+                className="text-xs text-gray-400 hover:bg-[#252532] hover:text-white"
               >
                 {t('clear')}
               </Button>
             )}
-            <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} disabled={isLoading}>
+            <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} disabled={isLoading} className="text-gray-400 hover:bg-[#252532] hover:text-white">
               <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#0A0A0F] custom-scrollbar">
           {messages.length === 0 && (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
+            <div className="flex items-center justify-center h-full text-gray-400">
               <div className="text-center">
-                <BookOpen className="h-12 w-12 mx-auto mb-4 text-primary-400" />
-                <p className="font-medium">{t('welcome.title')}</p>
-                <p className="text-sm mt-2">{t('welcome.description')}</p>
+                <BookOpen className="h-12 w-12 mx-auto mb-4 text-blue-400" />
+                <p className="font-medium text-white">{t('welcome.title')}</p>
+                <p className="text-sm mt-2 text-gray-400">{t('welcome.description')}</p>
                 <div className="mt-4 text-left space-y-2">
-                  <p className="text-xs font-semibold">{t('welcome.examples')}:</p>
-                  <ul className="text-xs space-y-1 text-muted-foreground">
+                  <p className="text-xs font-semibold text-white">{t('welcome.examples')}:</p>
+                  <ul className="text-xs space-y-1 text-gray-400">
                     <li>• {t('welcome.example1')}</li>
                     <li>• {t('welcome.example2')}</li>
                     <li>• {t('welcome.example3')}</li>
@@ -197,29 +197,29 @@ export function TemplateAIChat({ className = '', defaultOpen = false }: Template
               className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {message.role === 'assistant' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                  <Bot className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center border border-blue-500/50">
+                  <Bot className="h-4 w-4 text-blue-400" />
                 </div>
               )}
               <div
                 className={`max-w-[85%] rounded-lg p-3 ${
                   message.role === 'user'
-                    ? 'bg-primary-500 text-background'
-                    : 'bg-background text-foreground border border-border'
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                    : 'glass-effect bg-[#1C1C26] border border-gray-800 text-gray-300'
                 }`}
               >
-                <div className="prose prose-sm dark:prose-invert max-w-none">
+                <div className="prose prose-sm dark:prose-invert max-w-none text-gray-300">
                   <p className="whitespace-pre-wrap break-words m-0">{message.content}</p>
                 </div>
                 {message.provider && message.role === 'assistant' && (
-                  <p className="text-xs mt-2 opacity-70 capitalize">
+                  <p className="text-xs mt-2 text-gray-400 capitalize">
                     {t('via')} {message.provider}
                   </p>
                 )}
               </div>
               {message.role === 'user' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                  <User className="h-4 w-4 text-muted-foreground" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full glass-effect bg-[#1C1C26] border border-gray-800 flex items-center justify-center">
+                  <User className="h-4 w-4 text-gray-400" />
                 </div>
               )}
             </div>
@@ -227,11 +227,11 @@ export function TemplateAIChat({ className = '', defaultOpen = false }: Template
 
           {isLoading && (
             <div className="flex gap-3 justify-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                <Bot className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+              <div className="flex-shrink-0 w-8 h-8 rounded-full glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center border border-blue-500/50">
+                <Bot className="h-4 w-4 text-blue-400" />
               </div>
-              <div className="bg-background rounded-lg p-3 border border-border">
-                <Loader2 className="h-4 w-4 animate-spin text-primary-500" />
+              <div className="glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg p-3">
+                <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
               </div>
             </div>
           )}
@@ -240,23 +240,25 @@ export function TemplateAIChat({ className = '', defaultOpen = false }: Template
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t bg-background">
+        <div className="p-4 border-t border-gray-800 glass-effect bg-[#13131A]">
           {error && (
-            <div className="mb-2 p-2 bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded text-sm text-error-600 dark:text-error-400">
+            <div className="mb-2 p-2 glass-effect bg-red-500/10 border border-red-500/50 rounded text-sm text-red-400">
               {error}
             </div>
           )}
           <div className="flex gap-2">
-            <Input
-              ref={inputRef}
-              value={input}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={t('inputPlaceholder')}
-              disabled={isLoading}
-              className="flex-1"
-            />
-            <Button onClick={sendMessage} disabled={!input.trim() || isLoading} variant="primary">
+            <div className="form-input-glow flex-1">
+              <Input
+                ref={inputRef}
+                value={input}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder={t('inputPlaceholder')}
+                disabled={isLoading}
+                className="flex-1"
+              />
+            </div>
+            <Button onClick={sendMessage} disabled={!input.trim() || isLoading} variant="gradient">
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (

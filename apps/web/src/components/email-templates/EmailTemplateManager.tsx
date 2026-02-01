@@ -95,41 +95,33 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
   };
   if (isLoading) {
     return (
-      <Card className={className}>
-        {' '}
-        <div className="text-center py-8 text-muted-foreground">Loading templates...</div>{' '}
+      <Card variant="glass" className={className}>
+        <div className="text-center py-8 text-gray-400">Loading templates...</div>
       </Card>
     );
   }
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 ${className}`}>
-      {' '}
-      <Card>
-        {' '}
+      <Card variant="glass" className="border border-gray-800">
         <div className="flex items-center justify-between mb-4">
-          {' '}
-          <h3 className="text-lg font-semibold flex items-center gap-2">
-            {' '}
-            <Mail className="h-5 w-5" /> Email Templates{' '}
-          </h3>{' '}
-          <Button variant="primary" size="sm">
-            {' '}
-            New Template{' '}
-          </Button>{' '}
-        </div>{' '}
+          <h3 className="text-lg font-semibold flex items-center gap-2 text-white">
+            <Mail className="h-5 w-5 text-blue-400" /> Email Templates
+          </h3>
+          <Button variant="gradient" size="sm">
+            New Template
+          </Button>
+        </div>
         {templates.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            {' '}
-            <Mail className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />{' '}
-            <p>No templates found</p>{' '}
+          <div className="text-center py-8 text-gray-400">
+            <Mail className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+            <p className="text-white">No templates found</p>
           </div>
         ) : (
           <div className="space-y-2">
-            {' '}
             {templates.map((template) => (
               <div
                 key={template.id}
-                className={`p-3 border rounded-lg cursor-pointer transition-colors ${selectedTemplate?.id === template.id ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-border hover:border-border dark:hover:border-border'}`}
+                className={`p-3 border rounded-lg cursor-pointer transition-colors hover-lift ${selectedTemplate?.id === template.id ? 'border-blue-500 bg-gradient-to-r from-blue-500/20 to-purple-500/20' : 'border-gray-800 glass-effect bg-[#1C1C26] hover:bg-[#252532]'}`}
                 onClick={() => {
                   setSelectedTemplate(template);
                   setIsEditing(false);
@@ -137,163 +129,144 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
               >
                 {' '}
                 <div className="flex items-center justify-between">
-                  {' '}
                   <div>
-                    {' '}
                     <div className="flex items-center gap-2 mb-1">
-                      {' '}
-                      <span className="font-medium">{template.name}</span>{' '}
+                      <span className="font-medium text-white">{template.name}</span>
                       {template.is_system && (
-                        <span className="text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-0.5 rounded">
-                          {' '}
-                          System{' '}
+                        <span className="text-xs glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/50 text-blue-300 px-2 py-0.5 rounded">
+                          System
                         </span>
-                      )}{' '}
+                      )}
                       {!template.is_active && (
-                        <span className="text-xs bg-muted px-2 py-0.5 rounded"> Inactive </span>
-                      )}{' '}
-                    </div>{' '}
-                    <p className="text-xs text-muted-foreground">{template.key}</p>{' '}
+                        <span className="text-xs glass-effect bg-[#13131A] border border-gray-800 px-2 py-0.5 rounded text-gray-400"> Inactive </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-400">{template.key}</p>
                     {template.category && (
-                      <span className="text-xs text-muted-foreground">{template.category}</span>
-                    )}{' '}
-                  </div>{' '}
+                      <span className="text-xs text-gray-400">{template.category}</span>
+                    )}
+                  </div>
                   <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
-                    {' '}
                     <button
                       onClick={() => handleEdit(template)}
-                      className="p-1 hover:bg-muted dark:hover:bg-muted rounded"
+                      className="p-1 hover:bg-[#252532] rounded text-gray-400 hover:text-white transition-colors"
                       title="Edit"
                     >
-                      {' '}
-                      <Edit2 className="h-4 w-4" />{' '}
-                    </button>{' '}
+                      <Edit2 className="h-4 w-4" />
+                    </button>
                     {!template.is_system && (
                       <button
                         onClick={() => handleDelete(template.id, template.is_system)}
-                        className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                        className="p-1 hover:bg-[#252532] rounded text-red-400 hover:text-red-300 transition-colors"
                         title="Delete"
                       >
-                        {' '}
-                        <Trash2 className="h-4 w-4" />{' '}
+                        <Trash2 className="h-4 w-4" />
                       </button>
-                    )}{' '}
-                  </div>{' '}
-                </div>{' '}
+                    )}
+                  </div>
+                </div>
               </div>
-            ))}{' '}
+            ))}
           </div>
-        )}{' '}
-      </Card>{' '}
+        )}
+      </Card>
       {selectedTemplate && (
-        <Card>
-          {' '}
+        <Card variant="glass" className="border border-gray-800">
           <div className="flex items-center justify-between mb-4">
-            {' '}
-            <h3 className="text-lg font-semibold">Template Details</h3>{' '}
+            <h3 className="text-lg font-semibold text-white">Template Details</h3>
             {!isEditing && (
-              <Button variant="outline" size="sm" onClick={() => handleEdit(selectedTemplate)}>
-                {' '}
-                <Edit2 className="h-4 w-4 mr-2" /> Edit{' '}
+              <Button variant="outline" size="sm" onClick={() => handleEdit(selectedTemplate)} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
+                <Edit2 className="h-4 w-4 mr-2" /> Edit
               </Button>
-            )}{' '}
-          </div>{' '}
+            )}
+          </div>
           {isEditing ? (
             <div className="space-y-4">
-              {' '}
               <div>
-                {' '}
-                <label className="block text-sm font-medium mb-2">Name</label>{' '}
-                <Input
-                  value={editForm.name || ''}
-                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                />{' '}
-              </div>{' '}
+                <label className="block text-sm font-medium mb-2 text-gray-300">Name</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={editForm.name || ''}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  />
+                </div>
+              </div>
               <div>
-                {' '}
-                <label className="block text-sm font-medium mb-2">Subject</label>{' '}
-                <Input
-                  value={editForm.subject || ''}
-                  onChange={(e) => setEditForm({ ...editForm, subject: e.target.value })}
-                />{' '}
-              </div>{' '}
+                <label className="block text-sm font-medium mb-2 text-gray-300">Subject</label>
+                <div className="form-input-glow">
+                  <Input
+                    value={editForm.subject || ''}
+                    onChange={(e) => setEditForm({ ...editForm, subject: e.target.value })}
+                  />
+                </div>
+              </div>
               <div>
-                {' '}
-                <label className="block text-sm font-medium mb-2">HTML Body</label>{' '}
-                <textarea
-                  value={editForm.html_body || ''}
-                  onChange={(e) => setEditForm({ ...editForm, html_body: e.target.value })}
-                  rows={10}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background font-mono text-sm"
-                />{' '}
-              </div>{' '}
+                <label className="block text-sm font-medium mb-2 text-gray-300">HTML Body</label>
+                <div className="form-input-glow">
+                  <textarea
+                    value={editForm.html_body || ''}
+                    onChange={(e) => setEditForm({ ...editForm, html_body: e.target.value })}
+                    rows={10}
+                    className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] font-mono text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
               <div>
-                {' '}
-                <label className="block text-sm font-medium mb-2">Text Body</label>{' '}
-                <textarea
-                  value={editForm.text_body || ''}
-                  onChange={(e) => setEditForm({ ...editForm, text_body: e.target.value })}
-                  rows={5}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
-                />{' '}
-              </div>{' '}
+                <label className="block text-sm font-medium mb-2 text-gray-300">Text Body</label>
+                <div className="form-input-glow">
+                  <textarea
+                    value={editForm.text_body || ''}
+                    onChange={(e) => setEditForm({ ...editForm, text_body: e.target.value })}
+                    rows={5}
+                    className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
               <div className="flex gap-2">
-                {' '}
-                <Button variant="primary" onClick={handleSave}>
-                  {' '}
-                  <Save className="h-4 w-4 mr-2" /> Save{' '}
-                </Button>{' '}
-                <Button variant="outline" onClick={() => setIsEditing(false)}>
-                  {' '}
-                  Cancel{' '}
-                </Button>{' '}
-              </div>{' '}
+                <Button variant="gradient" onClick={handleSave}>
+                  <Save className="h-4 w-4 mr-2" /> Save
+                </Button>
+                <Button variant="outline" onClick={() => setIsEditing(false)} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
+                  Cancel
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="space-y-4">
-              {' '}
               <div>
-                {' '}
-                <label className="text-sm font-medium text-muted-foreground">Key</label>{' '}
-                <p className="font-mono text-sm">{selectedTemplate.key}</p>{' '}
-              </div>{' '}
+                <label className="text-sm font-medium text-gray-400">Key</label>
+                <p className="font-mono text-sm text-gray-300">{selectedTemplate.key}</p>
+              </div>
               <div>
-                {' '}
-                <label className="text-sm font-medium text-muted-foreground">Subject</label>{' '}
-                <p>{selectedTemplate.subject}</p>{' '}
-              </div>{' '}
+                <label className="text-sm font-medium text-gray-400">Subject</label>
+                <p className="text-white">{selectedTemplate.subject}</p>
+              </div>
               <div>
-                {' '}
-                <label className="text-sm font-medium text-muted-foreground">HTML Body</label>{' '}
-                <div className="p-3 bg-muted rounded border max-h-64 overflow-y-auto">
-                  {' '}
-                  <pre className="text-xs whitespace-pre-wrap font-mono">
-                    {' '}
-                    {selectedTemplate.html_body}{' '}
-                  </pre>{' '}
-                </div>{' '}
-              </div>{' '}
+                <label className="text-sm font-medium text-gray-400">HTML Body</label>
+                <div className="p-3 glass-effect bg-[#13131A] border border-gray-800 rounded max-h-64 overflow-y-auto custom-scrollbar">
+                  <pre className="text-xs whitespace-pre-wrap font-mono text-gray-300">
+                    {selectedTemplate.html_body}
+                  </pre>
+                </div>
+              </div>
               {selectedTemplate.variables && selectedTemplate.variables.length > 0 && (
                 <div>
-                  {' '}
-                  <label className="text-sm font-medium text-muted-foreground">
+                  <label className="text-sm font-medium text-gray-400">
                     Variables
-                  </label>{' '}
+                  </label>
                   <div className="flex flex-wrap gap-2 mt-1">
-                    {' '}
                     {selectedTemplate.variables.map((varName) => (
-                      <span key={varName} className="px-2 py-1 bg-muted rounded text-sm font-mono">
-                        {' '}
-                        {`{{${varName}}}`}{' '}
+                      <span key={varName} className="px-2 py-1 glass-effect bg-[#13131A] border border-gray-800 rounded text-sm font-mono text-gray-300">
+                        {`{{${varName}}}`}
                       </span>
-                    ))}{' '}
-                  </div>{' '}
+                    ))}
+                  </div>
                 </div>
-              )}{' '}
+              )}
             </div>
-          )}{' '}
+          )}
         </Card>
-      )}{' '}
+      )}
     </div>
   );
 }

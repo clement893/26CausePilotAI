@@ -107,21 +107,21 @@ export function VersionHistory({ entityType, entityId, className = '', onRestore
 
   if (isLoading) {
     return (
-      <Card className={className}>
-        <div className="text-center py-8 text-muted-foreground">Loading version history...</div>
+      <Card variant="glass" className={className}>
+        <div className="text-center py-8 text-gray-400">Loading version history...</div>
       </Card>
     );
   }
 
   return (
-    <Card className={className}>
+    <Card variant="glass" className={`border border-gray-800 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <History className="h-5 w-5 text-muted-foreground" />
-          <h3 className="text-lg font-semibold">Version History</h3>
+          <History className="h-5 w-5 text-gray-400" />
+          <h3 className="text-lg font-semibold text-white">Version History</h3>
         </div>
         {selectedVersions.length === 2 && (
-          <Button variant="outline" size="sm" onClick={handleCompare}>
+          <Button variant="outline" size="sm" onClick={handleCompare} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
             <GitCompare className="h-4 w-4 mr-2" />
             Compare
           </Button>
@@ -129,21 +129,21 @@ export function VersionHistory({ entityType, entityId, className = '', onRestore
       </div>
 
       {versions.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          <History className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <p>No version history</p>
+        <div className="text-center py-8 text-gray-400">
+          <History className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+          <p className="text-white">No version history</p>
         </div>
       ) : (
         <div className="space-y-3">
           {versions.map((version) => (
             <div
               key={version.id}
-              className={`p-3 border rounded-lg ${
+              className={`p-3 border rounded-lg hover-lift ${
                 version.is_current
-                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                  : 'border-border'
+                  ? 'border-blue-500 bg-gradient-to-r from-blue-500/20 to-purple-500/20'
+                  : 'border-gray-800 glass-effect bg-[#1C1C26] hover:bg-[#252532]'
               } ${
-                selectedVersions.includes(version.version_number) ? 'ring-2 ring-primary-500' : ''
+                selectedVersions.includes(version.version_number) ? 'ring-2 ring-blue-500' : ''
               }`}
             >
               <div className="flex items-start justify-between">
@@ -152,30 +152,30 @@ export function VersionHistory({ entityType, entityId, className = '', onRestore
                     type="checkbox"
                     checked={selectedVersions.includes(version.version_number)}
                     onChange={() => toggleVersionSelection(version.version_number)}
-                    className="mt-1"
+                    className="mt-1 border-gray-700 bg-[#1C1C26] text-blue-500 focus:ring-blue-500"
                     disabled={version.is_current}
                   />
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-semibold text-sm">
+                      <span className="font-semibold text-sm text-white">
                         Version {version.version_number}
                         {version.is_current && (
-                          <span className="ml-2 text-xs bg-primary-500 text-background px-2 py-0.5 rounded">
+                          <span className="ml-2 text-xs glass-effect bg-gradient-to-r from-blue-500 to-purple-500 text-white px-2 py-0.5 rounded">
                             Current
                           </span>
                         )}
                       </span>
                       {version.change_type && (
-                        <span className="text-xs text-muted-foreground capitalize">{version.change_type}</span>
+                        <span className="text-xs text-gray-400 capitalize">{version.change_type}</span>
                       )}
                     </div>
                     {version.title && (
-                      <p className="text-sm font-medium text-foreground mb-1">{version.title}</p>
+                      <p className="text-sm font-medium text-white mb-1">{version.title}</p>
                     )}
                     {version.description && (
-                      <p className="text-xs text-muted-foreground mb-2">{version.description}</p>
+                      <p className="text-xs text-gray-400 mb-2">{version.description}</p>
                     )}
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-500">
                       {formatDistanceToNow(new Date(version.created_at))}
                     </p>
                   </div>
@@ -184,7 +184,7 @@ export function VersionHistory({ entityType, entityId, className = '', onRestore
                   {!version.is_current && (
                     <button
                       onClick={() => handleRestore(version)}
-                      className="p-1 hover:bg-muted dark:hover:bg-muted rounded text-primary-600 dark:text-primary-400"
+                      className="p-1 hover:bg-[#252532] rounded text-blue-400 hover:text-blue-300 transition-colors"
                       title="Restore this version"
                     >
                       <RotateCcw className="h-4 w-4" />

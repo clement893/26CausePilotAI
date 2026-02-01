@@ -150,16 +150,16 @@ export default function AutomationRules({
 
   return (
     <>
-      <Card className={clsx('bg-background', className)}>
+      <Card variant="glass" className={clsx('border border-gray-800', className)}>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Zap className="w-5 h-5" />
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <Zap className="w-5 h-5 text-blue-400" />
               Automation Rules
             </h3>
-            <p className="text-sm text-muted-foreground mt-1">Configure rules to automate your workflows</p>
+            <p className="text-sm text-gray-400 mt-1">Configure rules to automate your workflows</p>
           </div>
-          <Button variant="primary" onClick={() => setShowCreateModal(true)}>
+          <Button variant="gradient" onClick={() => setShowCreateModal(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Create Rule
           </Button>
@@ -167,17 +167,17 @@ export default function AutomationRules({
 
         {rules.length === 0 ? (
           <div className="text-center py-12">
-            <Zap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No automation rules configured</p>
+            <Zap className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+            <p className="text-gray-400 text-white">No automation rules configured</p>
           </div>
         ) : (
           <div className="space-y-4">
             {rules.map((rule) => (
-              <div key={rule.id} className="p-4 border border-border rounded-lg bg-muted">
+              <div key={rule.id} className="p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover-lift">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h4 className="font-semibold text-foreground">{rule.name}</h4>
+                      <h4 className="font-semibold text-white">{rule.name}</h4>
                       {rule.enabled ? (
                         <Badge variant="success">Enabled</Badge>
                       ) : (
@@ -185,33 +185,33 @@ export default function AutomationRules({
                       )}
                     </div>
                     {rule.description && (
-                      <p className="text-sm text-muted-foreground mb-2">{rule.description}</p>
+                      <p className="text-sm text-gray-400 mb-2">{rule.description}</p>
                     )}
-                    <div className="space-y-1 text-sm text-muted-foreground">
+                    <div className="space-y-1 text-sm text-gray-400">
                       <div>
-                        <span className="font-medium">Trigger:</span> {rule.trigger.event}
+                        <span className="font-medium text-white">Trigger:</span> {rule.trigger.event}
                       </div>
                       <div>
-                        <span className="font-medium">Actions:</span> {rule.actions.map((a) => a.type).join(', ')}
+                        <span className="font-medium text-white">Actions:</span> {rule.actions.map((a) => a.type).join(', ')}
                       </div>
                       {rule.lastTriggered && (
                         <div>
-                          <span className="font-medium">Last Triggered:</span>{' '}
+                          <span className="font-medium text-white">Last Triggered:</span>{' '}
                           {new Date(rule.lastTriggered).toLocaleString()}
                         </div>
                       )}
                       <div>
-                        <span className="font-medium">Triggered:</span> {rule.triggerCount} times
+                        <span className="font-medium text-white">Triggered:</span> {rule.triggerCount} times
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Switch checked={rule.enabled} onChange={(e) => handleToggle(rule.id, e.target.checked)} />
-                    <Button variant="ghost" size="sm" onClick={() => setEditingRule(rule)}>
+                    <Button variant="ghost" size="sm" onClick={() => setEditingRule(rule)} className="text-gray-400 hover:bg-[#252532] hover:text-white">
                       <Settings className="w-4 h-4 mr-2" />
                       Edit
                     </Button>
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(rule.id)}>
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(rule.id)} className="text-gray-400 hover:bg-[#252532] hover:text-red-400">
                       <Trash2 className="w-4 h-4 mr-2" />
                       Delete
                     </Button>
@@ -225,11 +225,11 @@ export default function AutomationRules({
 
       {/* Create/Edit Modal */}
       {(showCreateModal || editingRule) && (
-        <div className="fixed inset-0 bg-foreground/50 flex items-center justify-center z-50 p-4">
-          <Card className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-background">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card variant="glass" className="max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-800">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-lg font-semibold text-white">
                   {editingRule ? 'Edit Rule' : 'Create Automation Rule'}
                 </h3>
                 <Button
@@ -239,33 +239,38 @@ export default function AutomationRules({
                     setShowCreateModal(false);
                     setEditingRule(null);
                   }}
+                  className="text-gray-400 hover:bg-[#252532] hover:text-white"
                 >
                   Close
                 </Button>
               </div>
 
-              <Input
-                label="Rule Name"
-                value={editingRule?.name || formData.name}
-                onChange={(e) =>
-                  editingRule
-                    ? setEditingRule({ ...editingRule, name: e.target.value })
-                    : setFormData({ ...formData, name: e.target.value })
-                }
-                placeholder="My Automation Rule"
-                required
-              />
+              <div className="form-input-glow">
+                <Input
+                  label="Rule Name"
+                  value={editingRule?.name || formData.name}
+                  onChange={(e) =>
+                    editingRule
+                      ? setEditingRule({ ...editingRule, name: e.target.value })
+                      : setFormData({ ...formData, name: e.target.value })
+                  }
+                  placeholder="My Automation Rule"
+                  required
+                />
+              </div>
 
-              <Input
-                label="Description (Optional)"
-                value={editingRule?.description || formData.description || ''}
-                onChange={(e) =>
-                  editingRule
-                    ? setEditingRule({ ...editingRule, description: e.target.value })
-                    : setFormData({ ...formData, description: e.target.value })
-                }
-                placeholder="Describe what this rule does"
-              />
+              <div className="form-input-glow">
+                <Input
+                  label="Description (Optional)"
+                  value={editingRule?.description || formData.description || ''}
+                  onChange={(e) =>
+                    editingRule
+                      ? setEditingRule({ ...editingRule, description: e.target.value })
+                      : setFormData({ ...formData, description: e.target.value })
+                  }
+                  placeholder="Describe what this rule does"
+                />
+              </div>
 
               <Select
                 label="Trigger Event"
@@ -285,18 +290,19 @@ export default function AutomationRules({
                 required
               />
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
                 <Button
                   variant="ghost"
                   onClick={() => {
                     setShowCreateModal(false);
                     setEditingRule(null);
                   }}
+                  className="text-gray-400 hover:bg-[#252532] hover:text-white"
                 >
                   Cancel
                 </Button>
                 <Button
-                  variant="primary"
+                  variant="gradient"
                   onClick={async () => {
                     if (editingRule) {
                       await onUpdate?.(editingRule.id, editingRule);

@@ -154,46 +154,48 @@ export function SearchBar({
     <div ref={searchRef} className={`relative ${className}`} role="search">
       <div className="relative">
         <Search
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground"
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"
           aria-hidden="true"
         />
-        <Input
-          type="text"
-          role="searchbox"
-          aria-label={`Search ${entityType}`}
-          aria-autocomplete="list"
-          aria-expanded={showSuggestions && suggestions.length > 0}
-          aria-controls={
-            showSuggestions && suggestions.length > 0
-              ? 'search-suggestions'
-              : undefined
-          }
-          placeholder={placeholder || `Search ${entityType}...`}
-          value={query}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setQuery(e.target.value);
-            setSelectedIndex(-1);
-          }}
-          onKeyDown={handleKeyDown}
-          onFocus={() => {
-            if (suggestions.length > 0) {
-              setShowSuggestions(true);
+        <div className="form-input-glow">
+          <Input
+            type="text"
+            role="searchbox"
+            aria-label={`Search ${entityType}`}
+            aria-autocomplete="list"
+            aria-expanded={showSuggestions && suggestions.length > 0}
+            aria-controls={
+              showSuggestions && suggestions.length > 0
+                ? 'search-suggestions'
+                : undefined
             }
-          }}
-          className="pl-10 pr-10"
-        />
+            placeholder={placeholder || `Search ${entityType}...`}
+            value={query}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setQuery(e.target.value);
+              setSelectedIndex(-1);
+            }}
+            onKeyDown={handleKeyDown}
+            onFocus={() => {
+              if (suggestions.length > 0) {
+                setShowSuggestions(true);
+              }
+            }}
+            className="pl-10 pr-10"
+          />
+        </div>
         {query && (
           <button
             onClick={handleClear}
             aria-label="Clear search"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-muted-foreground"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
         )}
         {isSearching && (
           <div className="absolute right-10 top-1/2 transform -translate-y-1/2">
-            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+            <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
           </div>
         )}
       </div>
@@ -203,7 +205,7 @@ export function SearchBar({
           id="search-suggestions"
           role="listbox"
           aria-label={`${suggestions.length} search suggestions`}
-          className="absolute z-50 w-full mt-1 bg-background border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className="absolute z-50 w-full mt-1 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto"
         >
           {suggestions.map((suggestion, index) => (
             <button
@@ -211,8 +213,8 @@ export function SearchBar({
               role="option"
               aria-selected={index === selectedIndex}
               onClick={() => handleSelect(suggestion)}
-              className={`w-full text-left px-4 py-2 hover:bg-muted dark:hover:bg-muted ${
-                index === selectedIndex ? 'bg-muted' : ''
+              className={`w-full text-left px-4 py-2 hover:bg-[#252532] text-gray-300 ${
+                index === selectedIndex ? 'bg-[#252532]' : ''
               }`}
             >
               {suggestion.label}

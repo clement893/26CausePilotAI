@@ -166,54 +166,55 @@ export default function WorkflowBuilder({
   };
 
   return (
-    <Card className={clsx('bg-background', className)}>
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Workflow className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-            <h3 className="text-lg font-semibold text-foreground"> Workflow Builder </h3>
+            <Workflow className="w-5 h-5 text-blue-400" />
+            <h3 className="text-lg font-semibold text-white"> Workflow Builder </h3>
           </div>
           <div className="flex items-center gap-2">
             {onTest && (
-              <Button variant="outline" onClick={() => onTest(formData)}>
-                {' '}
-                <Play className="w-4 h-4 mr-2" /> Test{' '}
+              <Button variant="outline" onClick={() => onTest(formData)} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
+                <Play className="w-4 h-4 mr-2" /> Test
               </Button>
             )}
-            <Button variant="primary" onClick={handleSave} loading={loading}>
-              {' '}
-              <Save className="w-4 h-4 mr-2" /> Save Workflow{' '}
+            <Button variant="gradient" onClick={handleSave} loading={loading}>
+              <Save className="w-4 h-4 mr-2" /> Save Workflow
             </Button>
           </div>
         </div>
 
         {/* Workflow Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input
-            label="Workflow Name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="My Workflow"
-            required
-          />
-          <Input
-            label="Description (Optional)"
-            value={formData.description || ''}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            placeholder="Describe what this workflow does"
-          />
+          <div className="form-input-glow">
+            <Input
+              label="Workflow Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="My Workflow"
+              required
+            />
+          </div>
+          <div className="form-input-glow">
+            <Input
+              label="Description (Optional)"
+              value={formData.description || ''}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Describe what this workflow does"
+            />
+          </div>
         </div>
 
         {/* Workflow Canvas */}
-        <div className="border-2 border-dashed border-border rounded-lg p-6 min-h-[400px] bg-muted/50">
+        <div className="border-2 border-dashed border-gray-800 rounded-lg p-6 min-h-[400px] glass-effect bg-[#13131A]">
           {formData.nodes.length === 0 ? (
             <div className="text-center py-12">
-              <Workflow className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground mb-4">No nodes in workflow</p>
-              <Button variant="primary" onClick={() => handleAddNode('trigger')}>
-                {' '}
-                <Plus className="w-4 h-4 mr-2" /> Add Trigger{' '}
+              <Workflow className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+              <p className="text-gray-400 mb-4 text-white">No nodes in workflow</p>
+              <Button variant="gradient" onClick={() => handleAddNode('trigger')}>
+                <Plus className="w-4 h-4 mr-2" /> Add Trigger
               </Button>
             </div>
           ) : (
@@ -222,20 +223,19 @@ export default function WorkflowBuilder({
                 <div
                   key={node.id}
                   className={clsx(
-                    'p-4 border-2 rounded-lg cursor-pointer transition-all',
+                    'p-4 border-2 rounded-lg cursor-pointer transition-all hover-lift',
                     getNodeColor(node.type),
                     selectedNode?.id === node.id &&
-                      'ring-2 ring-primary-500 dark:ring-primary-400'
+                      'ring-2 ring-blue-500'
                   )}
                   onClick={() => setSelectedNode(node)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {getNodeIcon(node.type)}
-                      <span className="font-medium text-foreground"> {node.label} </span>
+                      <span className="font-medium text-white"> {node.label} </span>
                       <Badge variant="default" className="text-xs px-2 py-0.5">
-                        {' '}
-                        {node.type}{' '}
+                        {node.type}
                       </Badge>
                     </div>
                     <Button
@@ -245,9 +245,9 @@ export default function WorkflowBuilder({
                         e.stopPropagation();
                         handleDeleteNode(node.id);
                       }}
+                      className="text-gray-400 hover:bg-[#252532] hover:text-red-400"
                     >
-                      {' '}
-                      <Trash2 className="w-4 h-4" />{' '}
+                      <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
@@ -258,45 +258,43 @@ export default function WorkflowBuilder({
 
         {/* Add Node Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-muted-foreground">Add:</span>
-          <Button variant="outline" size="sm" onClick={() => handleAddNode('trigger')}>
-            {' '}
-            <Plus className="w-4 h-4 mr-2" /> Trigger{' '}
+          <span className="text-sm text-gray-400">Add:</span>
+          <Button variant="outline" size="sm" onClick={() => handleAddNode('trigger')} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
+            <Plus className="w-4 h-4 mr-2" /> Trigger
           </Button>
-          <Button variant="outline" size="sm" onClick={() => handleAddNode('action')}>
-            {' '}
-            <Plus className="w-4 h-4 mr-2" /> Action{' '}
+          <Button variant="outline" size="sm" onClick={() => handleAddNode('action')} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
+            <Plus className="w-4 h-4 mr-2" /> Action
           </Button>
-          <Button variant="outline" size="sm" onClick={() => handleAddNode('condition')}>
-            {' '}
-            <Plus className="w-4 h-4 mr-2" /> Condition{' '}
+          <Button variant="outline" size="sm" onClick={() => handleAddNode('condition')} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
+            <Plus className="w-4 h-4 mr-2" /> Condition
           </Button>
         </div>
 
         {/* Node Configuration */}
         {selectedNode && (
-          <div className="p-4 bg-muted rounded-lg border border-border">
+          <div className="p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold text-foreground"> Configure {selectedNode.type} </h4>
-              <Button variant="ghost" size="sm" onClick={() => setSelectedNode(null)}>
-                {' '}
-                Close{' '}
+              <h4 className="font-semibold text-white"> Configure {selectedNode.type} </h4>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedNode(null)} className="text-gray-400 hover:bg-[#252532] hover:text-white">
+                Close
               </Button>
             </div>
             <div className="space-y-4">
-              <Input
-                label="Label"
-                value={selectedNode.label}
-                onChange={(e) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    nodes: prev.nodes.map((n) =>
-                      n.id === selectedNode.id ? { ...n, label: e.target.value } : n
-                    ),
-                  }));
-                  setSelectedNode({ ...selectedNode, label: e.target.value });
-                }}
-              />
+              <div className="form-input-glow">
+                <Input
+                  label="Label"
+                  value={selectedNode.label}
+                  onChange={(e) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      nodes: prev.nodes.map((n) =>
+                        n.id === selectedNode.id ? { ...n, label: e.target.value } : n
+                      ),
+                    }));
+                    setSelectedNode({ ...selectedNode, label: e.target.value });
+                  }}
+                />
+              </div>
               {selectedNode.type === 'trigger' && (
                 <Select
                   label="Trigger Event"

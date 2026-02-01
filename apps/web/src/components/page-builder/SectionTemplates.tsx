@@ -79,33 +79,33 @@ const defaultTemplates: SectionTemplate[] = [
   return (
     <div className={className}>
       {' '}
-      <Card title="Section Templates">
+      <Card variant="glass" title="Section Templates" className="border border-gray-800">
         {' '}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {' '}
           {defaultTemplates.map((template) => (
             <div
               key={template.id}
-              className="border border-border rounded-lg p-4 hover:border-primary-500 dark:hover:border-primary-400 transition-colors cursor-pointer"
+              className="border border-gray-800 rounded-lg p-4 glass-effect bg-[#1C1C26] hover:bg-[#252532] hover:border-blue-500 transition-colors cursor-pointer hover-lift"
               onClick={() => handleSelect(template)}
             >
               {' '}
               <div className="flex items-start gap-3 mb-2">
                 {' '}
-                <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0 border border-blue-500/50">
                   {' '}
-                  <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />{' '}
+                  <Sparkles className="w-5 h-5 text-blue-400" />{' '}
                 </div>{' '}
                 <div className="flex-1 min-w-0">
                   {' '}
-                  <h3 className="font-medium text-foreground mb-1"> {template.name} </h3>{' '}
-                  <p className="text-sm text-muted-foreground"> {template.description} </p>{' '}
+                  <h3 className="font-medium text-white mb-1"> {template.name} </h3>{' '}
+                  <p className="text-sm text-gray-400"> {template.description} </p>{' '}
                 </div>{' '}
               </div>{' '}
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full mt-3"
+                className="w-full mt-3 border-gray-700 text-gray-300 hover:bg-[#252532]"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSelect(template);

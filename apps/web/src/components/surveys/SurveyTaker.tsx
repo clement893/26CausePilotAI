@@ -540,10 +540,10 @@ export default function SurveyTaker({
 
   return (
     <PageContainer className="py-8">
-      <Card>
+      <Card variant="glass" className="border border-gray-800">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-2">{survey.name}</h1>
-          {survey.description && <p className="text-muted-foreground">{survey.description}</p>}
+          <h1 className="text-2xl font-bold mb-2 text-white">{survey.name}</h1>
+          {survey.description && <p className="text-gray-400">{survey.description}</p>}
         </div>
 
         {survey.settings.showProgressBar && totalPages > 1 && (
@@ -569,6 +569,7 @@ export default function SurveyTaker({
                 variant="outline"
                 onClick={handleSaveDraft}
                 disabled={loading || isSubmitting || isSavingDraft}
+                className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
               >
                 <Save className="h-4 w-4 mr-2" />
                 {isSavingDraft ? t('saving') || 'Saving...' : t('save_draft') || 'Save Draft'}
@@ -577,18 +578,18 @@ export default function SurveyTaker({
           </div>
           <div className="flex gap-2">
             {currentPage > 1 && (
-              <Button variant="outline" onClick={handlePrevious} disabled={loading || isSubmitting}>
+              <Button variant="outline" onClick={handlePrevious} disabled={loading || isSubmitting} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
                 <ChevronLeft className="h-4 w-4 mr-2" />
                 {t('previous') || 'Previous'}
               </Button>
             )}
             {currentPage < totalPages ? (
-              <Button variant="primary" onClick={handleNext} disabled={loading || isSubmitting}>
+              <Button variant="gradient" onClick={handleNext} disabled={loading || isSubmitting}>
                 {t('next') || 'Next'}
                 <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
             ) : (
-              <Button variant="primary" onClick={handleSubmit} disabled={loading || isSubmitting}>
+              <Button variant="gradient" onClick={handleSubmit} disabled={loading || isSubmitting}>
                 <Send className="h-4 w-4 mr-2" />
                 {isSubmitting
                   ? t('submitting') || 'Submitting...'

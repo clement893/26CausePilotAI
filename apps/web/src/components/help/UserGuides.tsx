@@ -55,7 +55,7 @@ const defaultGuides: UserGuide[] = [
       {categories.map((category) => {
         const categoryGuides = guides.filter((guide) => guide.category === category);
         return (
-          <Card key={category} title={category} className="mb-6">
+          <Card variant="glass" key={category} title={category} className="mb-6 border border-gray-800">
             {' '}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {' '}
@@ -67,17 +67,17 @@ const defaultGuides: UserGuide[] = [
                   rel={guide.external ? 'noopener noreferrer' : undefined}
                 >
                   {' '}
-                  <div className="p-4 border border-border rounded-lg hover:bg-muted dark:hover:bg-muted transition-colors h-full">
+                  <div className="p-4 border border-gray-800 rounded-lg glass-effect bg-[#1C1C26] hover:bg-[#252532] transition-colors h-full hover-lift">
                     {' '}
                     <div className="flex items-start gap-3">
                       {' '}
-                      <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5 flex-shrink-0" />{' '}
+                      <FileText className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />{' '}
                       <div className="flex-1 min-w-0">
                         {' '}
-                        <h3 className="font-medium text-foreground mb-1"> {guide.title} </h3>{' '}
-                        <p className="text-sm text-muted-foreground"> {guide.description} </p>{' '}
+                        <h3 className="font-medium text-white mb-1"> {guide.title} </h3>{' '}
+                        <p className="text-sm text-gray-400"> {guide.description} </p>{' '}
                         {guide.external && (
-                          <div className="mt-2 flex items-center gap-1 text-xs text-primary-600 dark:text-primary-400">
+                          <div className="mt-2 flex items-center gap-1 text-xs text-blue-400">
                             {' '}
                             <ExternalLink className="w-3 h-3" /> <span>External Link</span>{' '}
                           </div>

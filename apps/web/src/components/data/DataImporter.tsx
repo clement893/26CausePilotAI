@@ -137,6 +137,7 @@ export function DataImporter({
             variant="outline"
             disabled={isImporting}
             onClick={() => fileInputRef.current?.click()}
+            className="border-gray-700 text-gray-300 hover:bg-[#252532]"
           >
             <Upload className="h-4 w-4 mr-2" />
             {isImporting ? 'Importing...' : 'Import Data'}
@@ -145,31 +146,31 @@ export function DataImporter({
       </div>
 
       {importResult && (
-        <div className="mt-4 p-4 bg-muted rounded-lg">
+        <div className="mt-4 p-4 glass-effect bg-[#1C1C26] rounded-lg border border-gray-800">
           <div className="flex items-start gap-3">
             {importResult.invalid_rows === 0 ? (
-              <CheckCircle className="h-5 w-5 text-success-500 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-green-400 mt-0.5" />
             ) : (
-              <AlertCircle className="h-5 w-5 text-warning-500 mt-0.5" />
+              <AlertCircle className="h-5 w-5 text-yellow-400 mt-0.5" />
             )}
             <div className="flex-1">
-              <p className="font-medium">
+              <p className="font-medium text-white">
                 Imported {importResult.valid_rows} of {importResult.total_rows} rows
               </p>
               {importResult.invalid_rows > 0 && (
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-gray-400 mt-1">
                   {importResult.invalid_rows} rows had errors
                 </p>
               )}
               {importResult.errors.length > 0 && (
                 <div className="mt-2 max-h-32 overflow-y-auto">
                   {importResult.errors.slice(0, 5).map((error, idx) => (
-                    <div key={idx} className="text-xs text-error-600 dark:text-error-400">
+                    <div key={idx} className="text-xs text-red-400">
                       Row {error.row}: {error.error}
                     </div>
                   ))}
                   {importResult.errors.length > 5 && (
-                    <div className="text-xs text-muted-foreground mt-1">
+                    <div className="text-xs text-gray-400 mt-1">
                       ... and {importResult.errors.length - 5} more errors
                     </div>
                   )}

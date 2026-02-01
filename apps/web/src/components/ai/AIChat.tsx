@@ -123,21 +123,21 @@ export function AIChat({ systemPrompt, provider = 'auto', model, className = '' 
   };
 
   return (
-    <Card className={`flex flex-col h-full ${className}`}>
+    <Card variant="glass" className={`flex flex-col h-full border border-gray-800 ${className}`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center justify-between p-4 border-b border-gray-800">
         <div className="flex items-center gap-2">
-          <Bot className="h-5 w-5 text-primary-500" />
-          <h3 className="font-semibold">AI Assistant</h3>
+          <Bot className="h-5 w-5 text-blue-400" />
+          <h3 className="font-semibold text-white">AI Assistant</h3>
           {currentProvider !== 'auto' && (
-            <span className="text-xs text-muted-foreground capitalize">({currentProvider})</span>
+            <span className="text-xs text-gray-400 capitalize">({currentProvider})</span>
           )}
         </div>
         <div className="flex items-center gap-2">
           <select
             value={currentProvider}
             onChange={(e) => setCurrentProvider(e.target.value)}
-            className="text-xs px-2 py-1 border border-border rounded bg-background text-foreground"
+            className="text-xs px-2 py-1 border border-gray-700 rounded bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={isLoading}
           >
             <option value="auto">Auto</option>
@@ -145,7 +145,7 @@ export function AIChat({ systemPrompt, provider = 'auto', model, className = '' 
             <option value="anthropic">Anthropic</option>
           </select>
           {messages.length > 0 && (
-            <Button variant="ghost" size="sm" onClick={clearChat} disabled={isLoading}>
+            <Button variant="ghost" size="sm" onClick={clearChat} disabled={isLoading} className="text-gray-400 hover:bg-[#252532] hover:text-white">
               Clear
             </Button>
           )}
@@ -153,13 +153,13 @@ export function AIChat({ systemPrompt, provider = 'auto', model, className = '' 
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#0A0A0F] custom-scrollbar">
         {messages.length === 0 && (
-          <div className="flex items-center justify-center h-full text-muted-foreground">
+          <div className="flex items-center justify-center h-full text-gray-400">
             <div className="text-center">
-              <Bot className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <p>Start a conversation with AI</p>
-              <p className="text-sm mt-2">Ask anything and get intelligent responses</p>
+              <Bot className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+              <p className="text-white">Start a conversation with AI</p>
+              <p className="text-sm mt-2 text-gray-400">Ask anything and get intelligent responses</p>
             </div>
           </div>
         )}
@@ -170,25 +170,25 @@ export function AIChat({ systemPrompt, provider = 'auto', model, className = '' 
             className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {message.role === 'assistant' && (
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                <Bot className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+              <div className="flex-shrink-0 w-8 h-8 rounded-full glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center border border-blue-500/50">
+                <Bot className="h-4 w-4 text-blue-400" />
               </div>
             )}
             <div
               className={`max-w-[80%] rounded-lg p-3 ${
                 message.role === 'user'
-                  ? 'bg-primary-500 text-background'
-                  : 'bg-muted text-foreground'
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                  : 'glass-effect bg-[#1C1C26] border border-gray-800 text-gray-300'
               }`}
             >
               <p className="whitespace-pre-wrap break-words">{message.content}</p>
               {message.provider && message.role === 'assistant' && (
-                <p className="text-xs mt-1 opacity-70 capitalize">via {message.provider}</p>
+                <p className="text-xs mt-1 text-gray-400 capitalize">via {message.provider}</p>
               )}
             </div>
             {message.role === 'user' && (
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                <User className="h-4 w-4 text-muted-foreground" />
+              <div className="flex-shrink-0 w-8 h-8 rounded-full glass-effect bg-[#1C1C26] border border-gray-800 flex items-center justify-center">
+                <User className="h-4 w-4 text-gray-400" />
               </div>
             )}
           </div>
@@ -196,11 +196,11 @@ export function AIChat({ systemPrompt, provider = 'auto', model, className = '' 
 
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-              <Bot className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+            <div className="flex-shrink-0 w-8 h-8 rounded-full glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 flex items-center justify-center border border-blue-500/50">
+              <Bot className="h-4 w-4 text-blue-400" />
             </div>
-            <div className="bg-muted rounded-lg p-3">
-              <Loader2 className="h-4 w-4 animate-spin" />
+            <div className="glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg p-3">
+              <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
             </div>
           </div>
         )}
@@ -208,23 +208,25 @@ export function AIChat({ systemPrompt, provider = 'auto', model, className = '' 
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t">
+      <div className="p-4 border-t border-gray-800">
         {error && (
-          <div className="mb-2 p-2 bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded text-sm text-error-600 dark:text-error-400">
+          <div className="mb-2 p-2 glass-effect bg-red-500/10 border border-red-500/50 rounded text-sm text-red-400">
             {error}
           </div>
         )}
         <div className="flex gap-2">
-          <Input
-            ref={inputRef}
-            value={input}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
-            disabled={isLoading}
-            className="flex-1"
-          />
-          <Button onClick={sendMessage} disabled={!input.trim() || isLoading}>
+          <div className="form-input-glow flex-1">
+            <Input
+              ref={inputRef}
+              value={input}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Type your message..."
+              disabled={isLoading}
+              className="flex-1"
+            />
+          </div>
+          <Button onClick={sendMessage} disabled={!input.trim() || isLoading} variant="gradient">
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (

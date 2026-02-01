@@ -31,8 +31,8 @@ export interface SupportTicketsProps {
       render: (_value: unknown, ticket: SupportTicket) => (
         <div className="flex items-center gap-2">
           {' '}
-          <MessageSquare className="w-4 h-4 text-muted-foreground" />{' '}
-          <span className="font-medium text-foreground">{ticket.subject}</span>{' '}
+          <MessageSquare className="w-4 h-4 text-gray-400" />{' '}
+          <span className="font-medium text-white">{ticket.subject}</span>{' '}
         </div>
       ),
     },
@@ -77,7 +77,7 @@ export interface SupportTicketsProps {
       label: 'Created',
       sortable: true,
       render: (_value: unknown, ticket: SupportTicket) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {' '}
           {new Date(ticket.created_at).toLocaleDateString()}{' '}
         </span>
@@ -100,12 +100,12 @@ export interface SupportTicketsProps {
   return (
     <div className={className}>
       {' '}
-      <Card title="Support Tickets">
+      <Card variant="glass" title="Support Tickets" className="border border-gray-800">
         {' '}
         {onCreateTicket && (
           <div className="mb-4 flex justify-end">
             {' '}
-            <Button onClick={onCreateTicket} variant="primary">
+            <Button onClick={onCreateTicket} variant="gradient">
               {' '}
               <Plus className="w-4 h-4 mr-2" /> New Ticket{' '}
             </Button>{' '}

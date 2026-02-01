@@ -76,32 +76,24 @@ export default function TriggerManager({
     }
   };
   return (
-    <Card className={clsx('bg-background', className)}>
-      {' '}
+    <Card variant="glass" className={clsx('border border-gray-800', className)}>
       <div className="mb-6">
-        {' '}
         <div className="flex items-center justify-between mb-4">
-          {' '}
           <div>
-            {' '}
-            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              {' '}
-              <Zap className="w-5 h-5" /> Trigger Manager{' '}
-            </h3>{' '}
-            <p className="text-sm text-muted-foreground mt-1">
-              {' '}
-              Manage workflow triggers and events{' '}
-            </p>{' '}
-          </div>{' '}
-          <Button variant="primary">
-            {' '}
-            <Plus className="w-4 h-4 mr-2" /> Create Trigger{' '}
-          </Button>{' '}
-        </div>{' '}
-        {/* Filter */}{' '}
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <Zap className="w-5 h-5 text-blue-400" /> Trigger Manager
+            </h3>
+            <p className="text-sm text-gray-400 mt-1">
+              Manage workflow triggers and events
+            </p>
+          </div>
+          <Button variant="gradient">
+            <Plus className="w-4 h-4 mr-2" /> Create Trigger
+          </Button>
+        </div>
+        {/* Filter */}
         <div className="flex items-center gap-2">
-          {' '}
-          <span className="text-sm text-muted-foreground">Filter:</span>{' '}
+          <span className="text-sm text-gray-400">Filter:</span>
           {(['all', 'event', 'schedule', 'webhook', 'manual'] as const).map((type) => (
             <button
               key={type}
@@ -109,113 +101,95 @@ export default function TriggerManager({
               className={clsx(
                 'px-3 py-1 rounded-lg text-sm transition-colors',
                 filter === type
-                  ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
-                  : 'bg-muted text-foreground hover:bg-muted/80'
+                  ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/50 text-white'
+                  : 'glass-effect bg-[#1C1C26] border border-gray-800 text-gray-400 hover:bg-[#252532] hover:text-white'
               )}
             >
-              {' '}
-              {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}{' '}
+              {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}
             </button>
-          ))}{' '}
-        </div>{' '}
-      </div>{' '}
+          ))}
+        </div>
+      </div>
       {filteredTriggers.length === 0 ? (
         <div className="text-center py-12">
-          {' '}
-          <Zap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />{' '}
-          <p className="text-muted-foreground">No triggers found</p>{' '}
+          <Zap className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-400 text-white">No triggers found</p>
         </div>
       ) : (
         <div className="space-y-4">
-          {' '}
           {filteredTriggers.map((trigger) => (
-            <div key={trigger.id} className="p-4 border border-border rounded-lg bg-muted">
-              {' '}
+            <div key={trigger.id} className="p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover-lift">
               <div className="flex items-start justify-between">
-                {' '}
                 <div className="flex-1">
-                  {' '}
                   <div className="flex items-center gap-2 mb-2">
-                    {' '}
-                    <div className="text-primary-600 dark:text-primary-400">
-                      {' '}
-                      {triggerTypeIcons[trigger.type]}{' '}
-                    </div>{' '}
-                    <h4 className="font-semibold text-foreground"> {trigger.name} </h4>{' '}
-                    <Badge variant={triggerTypeColors[trigger.type]}> {trigger.type} </Badge>{' '}
+                    <div className="text-blue-400">
+                      {triggerTypeIcons[trigger.type]}
+                    </div>
+                    <h4 className="font-semibold text-white"> {trigger.name} </h4>
+                    <Badge variant={triggerTypeColors[trigger.type]}> {trigger.type} </Badge>
                     {trigger.enabled ? (
                       <Badge variant="success">
-                        {' '}
-                        <CheckCircle className="w-3 h-3 mr-1" /> Enabled{' '}
+                        <CheckCircle className="w-3 h-3 mr-1" /> Enabled
                       </Badge>
                     ) : (
                       <Badge variant="default">Disabled</Badge>
-                    )}{' '}
-                  </div>{' '}
-                  <div className="space-y-1 text-sm text-muted-foreground">
-                    {' '}
+                    )}
+                  </div>
+                  <div className="space-y-1 text-sm text-gray-400">
                     {trigger.event && (
                       <div>
-                        {' '}
-                        <span className="font-medium">Event:</span> {trigger.event}{' '}
+                        <span className="font-medium text-white">Event:</span> {trigger.event}
                       </div>
-                    )}{' '}
+                    )}
                     {trigger.schedule && (
                       <div>
-                        {' '}
-                        <span className="font-medium">Schedule:</span> {trigger.schedule}{' '}
+                        <span className="font-medium text-white">Schedule:</span> {trigger.schedule}
                       </div>
-                    )}{' '}
+                    )}
                     {trigger.webhookUrl && (
                       <div>
-                        {' '}
-                        <span className="font-medium">Webhook:</span>
-                        {''} <code className="text-xs">{trigger.webhookUrl}</code>{' '}
+                        <span className="font-medium text-white">Webhook:</span>
+                        {''} <code className="text-xs text-gray-300">{trigger.webhookUrl}</code>
                       </div>
-                    )}{' '}
+                    )}
                     <div>
-                      {' '}
-                      <span className="font-medium">Workflows:</span>{' '}
-                      {trigger.workflows.length}{' '}
-                    </div>{' '}
+                      <span className="font-medium text-white">Workflows:</span>{' '}
+                      {trigger.workflows.length}
+                    </div>
                     {trigger.lastTriggered && (
                       <div>
-                        {' '}
-                        <span className="font-medium">Last Triggered:</span>
-                        {''} {new Date(trigger.lastTriggered).toLocaleString()}{' '}
+                        <span className="font-medium text-white">Last Triggered:</span>
+                        {''} {new Date(trigger.lastTriggered).toLocaleString()}
                       </div>
-                    )}{' '}
+                    )}
                     <div>
-                      {' '}
-                      <span className="font-medium">Total Triggers:</span>{' '}
-                      {trigger.triggerCount}{' '}
-                    </div>{' '}
-                  </div>{' '}
-                </div>{' '}
+                      <span className="font-medium text-white">Total Triggers:</span>{' '}
+                      {trigger.triggerCount}
+                    </div>
+                  </div>
+                </div>
                 <div className="flex items-center gap-2">
-                  {' '}
                   <Switch
                     checked={trigger.enabled}
                     onChange={(e) => handleToggle(trigger.id, e.target.checked)}
-                  />{' '}
+                  />
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => logger.info('Edit trigger:', { id: trigger.id })}
+                    className="text-gray-400 hover:bg-[#252532] hover:text-white"
                   >
-                    {' '}
-                    <Edit className="w-4 h-4 mr-2" /> Edit{' '}
-                  </Button>{' '}
-                  <Button variant="ghost" size="sm" onClick={() => handleDelete(trigger.id)}>
-                    {' '}
-                    <Trash2 className="w-4 h-4 mr-2" /> Delete{' '}
-                  </Button>{' '}
-                </div>{' '}
-              </div>{' '}
+                    <Edit className="w-4 h-4 mr-2" /> Edit
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => handleDelete(trigger.id)} className="text-gray-400 hover:bg-[#252532] hover:text-red-400">
+                    <Trash2 className="w-4 h-4 mr-2" /> Delete
+                  </Button>
+                </div>
+              </div>
             </div>
-          ))}{' '}
+          ))}
         </div>
-      )}{' '}
+      )}
     </Card>
   );
 }

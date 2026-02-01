@@ -118,8 +118,8 @@ export function TemplateManager({
 
   if (isLoading) {
     return (
-      <Card className={className}>
-        <div className="text-center py-8 text-muted-foreground">Loading templates...</div>
+      <Card variant="glass" className={`${className} border border-gray-800`}>
+        <div className="text-center py-8 text-gray-400">Loading templates...</div>
       </Card>
     );
   }
@@ -127,18 +127,18 @@ export function TemplateManager({
   return (
     <div className={className}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Templates</h3>
-        <Button variant="primary" size="sm">
+        <h3 className="text-lg font-semibold text-white">Templates</h3>
+        <Button variant="gradient" size="sm">
           <Plus className="h-4 w-4 mr-2" />
           New Template
         </Button>
       </div>
 
       {templates.length === 0 ? (
-        <Card>
-          <div className="text-center py-8 text-muted-foreground">
-            <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <p>No templates found</p>
+        <Card variant="glass" className="border border-gray-800">
+          <div className="text-center py-8 text-gray-400">
+            <FileText className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+            <p className="text-white">No templates found</p>
           </div>
         </Card>
       ) : (
@@ -146,27 +146,28 @@ export function TemplateManager({
           {templates.map((template) => (
             <Card
               key={template.id}
-              className="p-4 hover:shadow-lg transition-shadow cursor-pointer"
+              variant="glass"
+              className="p-4 hover:shadow-lg transition-shadow cursor-pointer border border-gray-800 hover-lift"
               onClick={() => onSelect?.(template)}
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary-500" />
-                  <h4 className="font-semibold text-foreground">{template.name}</h4>
+                  <FileText className="h-5 w-5 text-blue-400" />
+                  <h4 className="font-semibold text-white">{template.name}</h4>
                 </div>
                 {template.is_public && (
-                  <span className="text-xs bg-success-100 dark:bg-success-900 text-success-800 dark:text-success-200 px-2 py-1 rounded">
+                  <span className="text-xs glass-effect bg-green-500/20 text-green-400 px-2 py-1 rounded border border-green-500/50">
                     Public
                   </span>
                 )}
               </div>
 
               {template.description && (
-                <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{template.description}</p>
+                <p className="text-sm text-gray-400 mb-2 line-clamp-2">{template.description}</p>
               )}
 
               <div className="flex items-center justify-between mt-4">
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-4 text-xs text-gray-400">
                   {template.category && <span className="capitalize">{template.category}</span>}
                   <span>Used {template.usage_count} times</span>
                 </div>
@@ -176,7 +177,7 @@ export function TemplateManager({
                       e.stopPropagation();
                       handleDuplicate(template);
                     }}
-                    className="p-1 hover:bg-muted dark:hover:bg-muted rounded"
+                    className="p-1 hover:bg-[#252532] rounded text-gray-400 hover:text-white"
                     title="Duplicate"
                   >
                     <Copy className="h-3 w-3" />
@@ -186,7 +187,7 @@ export function TemplateManager({
                       e.stopPropagation();
                       handleDelete(template.id);
                     }}
-                    className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                    className="p-1 hover:bg-red-500/20 rounded text-red-400"
                     title="Delete"
                   >
                     <Trash2 className="h-3 w-3" />

@@ -104,44 +104,47 @@ export function TagManager({ entityType, className = '' }: TagManagerProps) {
   return (
     <div className={className}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Manage Tags</h3>
-        <Button variant="outline" size="sm" onClick={fetchPopularTags}>
+        <h3 className="text-lg font-semibold text-white">Manage Tags</h3>
+        <Button variant="outline" size="sm" onClick={fetchPopularTags} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
           Refresh
         </Button>
       </div>
 
       {isLoading ? (
-        <div className="text-center py-8 text-muted-foreground">
+        <div className="text-center py-8 text-gray-400">
           Loading tags...
         </div>
       ) : tags.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          No tags found
+        <div className="text-center py-8 text-gray-400">
+          <p className="text-white">No tags found</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {tags.map((tag) => (
             <div
               key={tag.id}
-              className="p-3 border border-border rounded-lg bg-background"
+              className="p-3 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover-lift"
             >
               {editingTag === tag.id ? (
                 <div className="space-y-2">
-                  <Input
-                    value={editName}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setEditName(e.target.value)
-                    }
-                    className="text-sm"
-                  />
+                  <div className="form-input-glow">
+                    <Input
+                      value={editName}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setEditName(e.target.value)
+                      }
+                      className="text-sm"
+                    />
+                  </div>
                   <div className="flex gap-2">
-                    <Button size="sm" variant="primary" onClick={handleSaveEdit}>
+                    <Button size="sm" variant="gradient" onClick={handleSaveEdit}>
                       Save
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={handleCancelEdit}
+                      className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
                     >
                       Cancel
                     </Button>
@@ -154,32 +157,32 @@ export function TagManager({ entityType, className = '' }: TagManagerProps) {
                       <TagIcon
                         className="h-4 w-4"
                         style={{
-                          color: tag.color || 'var(--color-muted-foreground)',
+                          color: tag.color || '#9CA3AF',
                         }}
                       />
-                      <span className="font-medium">{tag.name}</span>
+                      <span className="font-medium text-white">{tag.name}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleStartEdit(tag)}
-                        className="p-1 hover:bg-muted dark:hover:bg-muted rounded"
+                        className="p-1 hover:bg-[#252532] rounded text-gray-400 hover:text-white transition-colors"
                       >
                         <Edit2 className="h-3 w-3" />
                       </button>
                       <button
                         onClick={() => handleDeleteTag(tag.id)}
-                        className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                        className="p-1 hover:bg-[#252532] rounded text-red-400 hover:text-red-300 transition-colors"
                       >
                         <Trash2 className="h-3 w-3" />
                       </button>
                     </div>
                   </div>
                   {tag.description && (
-                    <p className="text-xs text-muted-foreground mb-2">
+                    <p className="text-xs text-gray-400 mb-2">
                       {tag.description}
                     </p>
                   )}
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
                     <TrendingUp className="h-3 w-3" />
                     <span>Used {tag.usage_count} times</span>
                   </div>

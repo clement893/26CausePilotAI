@@ -80,15 +80,14 @@ export function FavoriteButton({
   };
   return (
     <Button
-      variant={isFavorited ? 'primary' : 'outline'}
+      variant={isFavorited ? 'gradient' : 'outline'}
       size={size}
       onClick={handleToggle}
       disabled={isLoading}
-      className={className}
+      className={`${isFavorited ? '' : 'border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white'} ${className}`}
     >
-      {' '}
-      <Heart className={`h-4 w-4 ${isFavorited ? 'fill-current' : ''}`} />{' '}
-      {showCount && favoritesCount > 0 && <span className="ml-1">{favoritesCount}</span>}{' '}
+      <Heart className={`h-4 w-4 ${isFavorited ? 'fill-current' : ''}`} />
+      {showCount && favoritesCount > 0 && <span className="ml-1">{favoritesCount}</span>}
     </Button>
   );
 }

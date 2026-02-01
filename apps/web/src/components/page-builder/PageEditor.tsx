@@ -69,30 +69,30 @@ export interface PageEditorProps {
   };
   const dragDropItems: DragDropListItem[] = sections.map((section) => ({
     id: section.id,
-    content: (
-      <div className="flex items-center justify-between w-full">
-        {' '}
-        <div className="flex items-center gap-3">
+      content: (
+        <div className="flex items-center justify-between w-full">
           {' '}
-          <Badge variant="default">{section.type}</Badge>{' '}
-          <span className="text-sm text-foreground">
+          <div className="flex items-center gap-3">
             {' '}
-            {section.title || `Section ${section.type}`}{' '}
-          </span>{' '}
-        </div>{' '}
-        <div className="flex items-center gap-2">
-          {' '}
-          <Button variant="ghost" size="sm" onClick={() => setSelectedSection(section)}>
+            <Badge variant="default">{section.type}</Badge>{' '}
+            <span className="text-sm text-white">
+              {' '}
+              {section.title || `Section ${section.type}`}{' '}
+            </span>{' '}
+          </div>{' '}
+          <div className="flex items-center gap-2">
             {' '}
-            <Settings className="w-4 h-4" />{' '}
-          </Button>{' '}
-          <Button variant="ghost" size="sm" onClick={() => handleDeleteSection(section.id)}>
-            {' '}
-            <Trash2 className="w-4 h-4" />{' '}
-          </Button>{' '}
-        </div>{' '}
-      </div>
-    ),
+            <Button variant="ghost" size="sm" onClick={() => setSelectedSection(section)} className="text-gray-400 hover:bg-[#252532] hover:text-white">
+              {' '}
+              <Settings className="w-4 h-4" />{' '}
+            </Button>{' '}
+            <Button variant="ghost" size="sm" onClick={() => handleDeleteSection(section.id)} className="text-gray-400 hover:bg-[#252532] hover:text-white">
+              {' '}
+              <Trash2 className="w-4 h-4" />{' '}
+            </Button>{' '}
+          </div>{' '}
+        </div>
+      ),
   }));
   return (
     <div className={className}>
@@ -102,7 +102,7 @@ export interface PageEditorProps {
         {/* Main Editor */}{' '}
         <div className="lg:col-span-2 space-y-4">
           {' '}
-          <Card title="Page Sections">
+          <Card variant="glass" title="Page Sections" className="border border-gray-800">
             {' '}
             {error && (
               <div className="mb-4">
@@ -117,15 +117,15 @@ export interface PageEditorProps {
               {' '}
               <div className="flex gap-2 flex-wrap">
                 {' '}
-                <Button variant="outline" size="sm" onClick={() => handleAddSection('hero')}>
+                <Button variant="outline" size="sm" onClick={() => handleAddSection('hero')} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
                   {' '}
                   <Plus className="w-4 h-4 mr-2" /> Hero{' '}
                 </Button>{' '}
-                <Button variant="outline" size="sm" onClick={() => handleAddSection('content')}>
+                <Button variant="outline" size="sm" onClick={() => handleAddSection('content')} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
                   {' '}
                   <Plus className="w-4 h-4 mr-2" /> Content{' '}
                 </Button>{' '}
-                <Button variant="outline" size="sm" onClick={() => handleAddSection('features')}>
+                <Button variant="outline" size="sm" onClick={() => handleAddSection('features')} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
                   {' '}
                   <Plus className="w-4 h-4 mr-2" /> Features{' '}
                 </Button>{' '}
@@ -133,18 +133,19 @@ export interface PageEditorProps {
                   variant="outline"
                   size="sm"
                   onClick={() => handleAddSection('testimonials')}
+                  className="border-gray-700 text-gray-300 hover:bg-[#252532]"
                 >
                   {' '}
                   <Plus className="w-4 h-4 mr-2" /> Testimonials{' '}
                 </Button>{' '}
-                <Button variant="outline" size="sm" onClick={() => handleAddSection('cta')}>
+                <Button variant="outline" size="sm" onClick={() => handleAddSection('cta')} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
                   {' '}
                   <Plus className="w-4 h-4 mr-2" /> CTA{' '}
                 </Button>{' '}
               </div>{' '}
             </div>{' '}
             {sections.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
+              <div className="text-center py-12 text-gray-400">
                 {' '}
                 <p>No sections yet. Add a section to get started.</p>{' '}
               </div>
@@ -154,39 +155,43 @@ export interface PageEditorProps {
           </Card>{' '}
           {/* Section Preview */}{' '}
           {selectedSection && (
-            <Card title={`Edit ${selectedSection.type} Section`}>
+            <Card variant="glass" title={`Edit ${selectedSection.type} Section`} className="border border-gray-800">
               {' '}
               <div className="space-y-4">
                 {' '}
                 <div>
                   {' '}
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     {' '}
                     Title{' '}
                   </label>{' '}
-                  <Input
-                    value={selectedSection.title || ''}
-                    onChange={(e) =>
-                      handleUpdateSection(selectedSection.id, { title: e.target.value })
-                    }
-                    placeholder="Section title"
-                  />{' '}
+                  <div className="form-input-glow">
+                    <Input
+                      value={selectedSection.title || ''}
+                      onChange={(e) =>
+                        handleUpdateSection(selectedSection.id, { title: e.target.value })
+                      }
+                      placeholder="Section title"
+                    />
+                  </div>
                 </div>{' '}
                 <div>
                   {' '}
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     {' '}
                     Content{' '}
                   </label>{' '}
-                  <textarea
-                    value={selectedSection.content || ''}
-                    onChange={(e) =>
-                      handleUpdateSection(selectedSection.id, { content: e.target.value })
-                    }
-                    placeholder="Section content"
-                    rows={6}
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  />{' '}
+                  <div className="form-input-glow">
+                    <textarea
+                      value={selectedSection.content || ''}
+                      onChange={(e) =>
+                        handleUpdateSection(selectedSection.id, { content: e.target.value })
+                      }
+                      placeholder="Section content"
+                      rows={6}
+                      className="w-full px-4 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
                 </div>{' '}
               </div>{' '}
             </Card>
@@ -195,45 +200,49 @@ export interface PageEditorProps {
         {/* Sidebar */}{' '}
         <div className="space-y-4">
           {' '}
-          <Card title="Actions">
+          <Card variant="glass" title="Actions" className="border border-gray-800">
             {' '}
             <div className="space-y-2">
               {' '}
-              <Button variant="primary" onClick={handleSave} disabled={isSaving} className="w-full">
+              <Button variant="gradient" onClick={handleSave} disabled={isSaving} className="w-full">
                 {' '}
                 <Save className="w-4 h-4 mr-2" /> {isSaving ? 'Saving...' : 'Save Page'}{' '}
               </Button>{' '}
               {onPreview && (
-                <Button variant="outline" onClick={onPreview} className="w-full">
+                <Button variant="outline" onClick={onPreview} className="w-full border-gray-700 text-gray-300 hover:bg-[#252532]">
                   {' '}
                   <Eye className="w-4 h-4 mr-2" /> Preview{' '}
                 </Button>
               )}{' '}
             </div>{' '}
           </Card>{' '}
-          <Card title="Page Info">
+          <Card variant="glass" title="Page Info" className="border border-gray-800">
             {' '}
             <div className="space-y-4">
               {' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Page Title{' '}
                 </label>{' '}
-                <Input placeholder="Page title" />{' '}
+                <div className="form-input-glow">
+                  <Input placeholder="Page title" />
+                </div>
               </div>{' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Slug{' '}
                 </label>{' '}
-                <Input placeholder="page-slug" />{' '}
+                <div className="form-input-glow">
+                  <Input placeholder="page-slug" />
+                </div>
               </div>{' '}
               <div>
                 {' '}
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   {' '}
                   Status{' '}
                 </label>{' '}
@@ -244,6 +253,7 @@ export interface PageEditorProps {
                     { label: 'Archived', value: 'archived' },
                   ]}
                   value="draft"
+                  className="border-gray-700 bg-[#1C1C26] text-white"
                 />{' '}
               </div>{' '}
             </div>{' '}

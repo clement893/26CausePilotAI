@@ -382,6 +382,7 @@ export default function SurveyBuilder({
               variant="outline"
               onClick={() => setIsSettingsModalOpen(true)}
               disabled={loading || isSaving || isPublishing}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               <Settings className="h-4 w-4 mr-2" /> {t('settings') || 'Settings'}
             </Button>
@@ -389,6 +390,7 @@ export default function SurveyBuilder({
               variant="outline"
               onClick={() => onPreview?.(currentSurvey)}
               disabled={loading || isSaving || isPublishing}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               <Eye className="h-4 w-4 mr-2" /> {t('preview') || 'Preview'}
             </Button>
@@ -396,12 +398,13 @@ export default function SurveyBuilder({
               variant="secondary"
               onClick={handleSave}
               disabled={loading || isSaving || isPublishing}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               <Save className="h-4 w-4 mr-2" />{' '}
               {isSaving ? t('saving') || 'Saving...' : t('save_draft') || 'Save Draft'}
             </Button>
             <Button
-              variant="primary"
+              variant="gradient"
               onClick={handlePublish}
               disabled={loading || isSaving || isPublishing || currentSurvey.status === 'published'}
             >
@@ -419,34 +422,39 @@ export default function SurveyBuilder({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
         <div className="lg:col-span-2 space-y-6">
-          <Card title={t('survey_details') || 'Survey Details'}>
-            <Input
-              label={t('survey_name') || 'Survey Name'}
-              value={currentSurvey.name}
-              onChange={(e) => setCurrentSurvey({ ...currentSurvey, name: e.target.value })}
-              placeholder={t('enter_survey_name') || 'Enter survey name'}
-              className="mb-4"
-            />
-            <Textarea
-              label={t('description') || 'Description'}
-              value={currentSurvey.description || ''}
-              onChange={(e) => setCurrentSurvey({ ...currentSurvey, description: e.target.value })}
-              placeholder={t('enter_description') || 'Enter survey description'}
-            />
+          <Card variant="glass" title={t('survey_details') || 'Survey Details'} className="border border-gray-800">
+            <div className="form-input-glow mb-4">
+              <Input
+                label={t('survey_name') || 'Survey Name'}
+                value={currentSurvey.name}
+                onChange={(e) => setCurrentSurvey({ ...currentSurvey, name: e.target.value })}
+                placeholder={t('enter_survey_name') || 'Enter survey name'}
+              />
+            </div>
+            <div className="form-input-glow">
+              <Textarea
+                label={t('description') || 'Description'}
+                value={currentSurvey.description || ''}
+                onChange={(e) => setCurrentSurvey({ ...currentSurvey, description: e.target.value })}
+                placeholder={t('enter_description') || 'Enter survey description'}
+              />
+            </div>
           </Card>
 
           <Card
+            variant="glass"
             title={t('questions') || 'Questions'}
+            className="border border-gray-800"
             actions={
-              <Button onClick={handleAddQuestion}>
+              <Button onClick={handleAddQuestion} variant="gradient">
                 <Plus className="h-4 w-4 mr-2" /> {t('add_question') || 'Add Question'}
               </Button>
             }
           >
             {currentSurvey.questions.length === 0 ? (
-              <div className="text-center text-muted-foreground py-8">
-                <p>{t('no_questions_yet') || 'No questions yet'}</p>
-                <Button onClick={handleAddQuestion} className="mt-4">
+              <div className="text-center text-gray-400 py-8">
+                <p className="text-white">{t('no_questions_yet') || 'No questions yet'}</p>
+                <Button onClick={handleAddQuestion} className="mt-4" variant="gradient">
                   <Plus className="h-4 w-4 mr-2" /> {t('add_first_question') || 'Add First Question'}
                 </Button>
               </div>
@@ -496,7 +504,7 @@ export default function SurveyBuilder({
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <Card title={t('survey_status') || 'Survey Status'}>
+          <Card variant="glass" title={t('survey_status') || 'Survey Status'} className="border border-gray-800">
             <Select
               label={t('status') || 'Status'}
               value={currentSurvey.status}
@@ -510,17 +518,19 @@ export default function SurveyBuilder({
               ]}
               className="mb-4"
             />
-            <div className="text-sm text-muted-foreground">
-              <p>
+            <div className="text-sm text-gray-400">
+              <p className="text-white">
                 {t('questions_count') || 'Questions'}: {currentSurvey.questions.length}
               </p>
             </div>
           </Card>
 
           {currentSurvey.settings.publicLinkEnabled && currentSurvey.settings.publicLink && (
-            <Card title={t('public_link') || 'Public Link'}>
+            <Card variant="glass" title={t('public_link') || 'Public Link'} className="border border-gray-800">
               <div className="flex items-center gap-2 mb-2">
-                <Input value={currentSurvey.settings.publicLink} readOnly className="flex-1" />
+                <div className="form-input-glow flex-1">
+                  <Input value={currentSurvey.settings.publicLink} readOnly />
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
@@ -531,6 +541,7 @@ export default function SurveyBuilder({
                       type: 'success',
                     });
                   }}
+                  className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
                 >
                   <Copy className="h-4 w-4" />
                 </Button>
@@ -781,10 +792,11 @@ export default function SurveyBuilder({
               setIsQuestionModalOpen(false);
               setEditingQuestion(null);
             }}
+            className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
           >
             {t('cancel') || 'Cancel'}
           </Button>
-          <Button onClick={handleSaveQuestion}>{t('save_question') || 'Save Question'}</Button>
+          <Button onClick={handleSaveQuestion} variant="gradient">{t('save_question') || 'Save Question'}</Button>
         </div>
       </Modal>
 
@@ -948,7 +960,7 @@ export default function SurveyBuilder({
         </div>
 
         <div className="flex justify-end gap-2 mt-4">
-          <Button variant="outline" onClick={() => setIsSettingsModalOpen(false)}>
+          <Button variant="outline" onClick={() => setIsSettingsModalOpen(false)} className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white">
             {t('close') || 'Close'}
           </Button>
         </div>

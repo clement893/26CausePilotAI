@@ -386,42 +386,42 @@ export default function SurveyResults({
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
-        <Card>
+        <Card variant="glass" className="border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">{t('total_responses') || 'Total Responses'}</p>
-              <p className="text-2xl font-bold">{stats.totalResponses}</p>
+              <p className="text-sm text-gray-400">{t('total_responses') || 'Total Responses'}</p>
+              <p className="text-2xl font-bold text-white">{stats.totalResponses}</p>
             </div>
-            <Users className="h-8 w-8 text-primary-500 dark:text-primary-400" />
+            <Users className="h-8 w-8 text-blue-400" />
           </div>
         </Card>
-        <Card>
+        <Card variant="glass" className="border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-400">
                 {t('filtered_responses') || 'Filtered Responses'}
               </p>
-              <p className="text-2xl font-bold">{stats.filteredResponses}</p>
+              <p className="text-2xl font-bold text-white">{stats.filteredResponses}</p>
             </div>
-            <CheckCircle className="h-8 w-8 text-success-500 dark:text-success-400" />
+            <CheckCircle className="h-8 w-8 text-green-400" />
           </div>
         </Card>
-        <Card>
+        <Card variant="glass" className="border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">{t('completion_rate') || 'Completion Rate'}</p>
-              <p className="text-2xl font-bold">{stats.completionRate}%</p>
+              <p className="text-sm text-gray-400">{t('completion_rate') || 'Completion Rate'}</p>
+              <p className="text-2xl font-bold text-white">{stats.completionRate}%</p>
             </div>
-            <TrendingUp className="h-8 w-8 text-primary-500 dark:text-primary-400" />
+            <TrendingUp className="h-8 w-8 text-blue-400" />
           </div>
         </Card>
-        <Card>
+        <Card variant="glass" className="border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">{t('questions') || 'Questions'}</p>
-              <p className="text-2xl font-bold">{survey.questions.length}</p>
+              <p className="text-sm text-gray-400">{t('questions') || 'Questions'}</p>
+              <p className="text-2xl font-bold text-white">{survey.questions.length}</p>
             </div>
-            <Calendar className="h-8 w-8 text-orange-500 dark:text-orange-400" />
+            <Calendar className="h-8 w-8 text-orange-400" />
           </div>
         </Card>
       </div>
@@ -433,9 +433,9 @@ export default function SurveyResults({
           if (!chartData || !chartData.data || chartData.data.length === 0) return null;
 
           return (
-            <Card key={question.id} title={question.label}>
+            <Card key={question.id} variant="glass" title={question.label} className="border border-gray-800">
               {question.description && (
-                <p className="text-sm text-muted-foreground mb-4">{question.description}</p>
+                <p className="text-sm text-gray-400 mb-4">{question.description}</p>
               )}
 
               {chartData.type === 'bar' && !chartData.isRanking && (
@@ -650,17 +650,17 @@ export default function SurveyResults({
       </div>
 
       {survey.questions.length === 0 && (
-        <Card className="mt-8">
-          <div className="text-center py-8 text-muted-foreground">
-            <p>{t('no_questions') || 'No questions in this survey'}</p>
+        <Card variant="glass" className="mt-8 border border-gray-800">
+          <div className="text-center py-8 text-gray-400">
+            <p className="text-white">{t('no_questions') || 'No questions in this survey'}</p>
           </div>
         </Card>
       )}
 
       {filteredSubmissions.length === 0 && survey.questions.length > 0 && (
-        <Card className="mt-8">
-          <div className="text-center py-8 text-muted-foreground">
-            <p>{t('no_responses') || 'No responses yet'}</p>
+        <Card variant="glass" className="mt-8 border border-gray-800">
+          <div className="text-center py-8 text-gray-400">
+            <p className="text-white">{t('no_responses') || 'No responses yet'}</p>
           </div>
         </Card>
       )}

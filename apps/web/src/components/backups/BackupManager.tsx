@@ -99,114 +99,96 @@ export function BackupManager({ className = '' }: BackupManagerProps) {
   };
   if (isLoading) {
     return (
-      <Card className={className}>
-        {' '}
-        <div className="text-center py-8 text-muted-foreground">Loading backups...</div>{' '}
+      <Card variant="glass" className={className}>
+        <div className="text-center py-8 text-gray-400">Loading backups...</div>
       </Card>
     );
   }
   return (
-    <Card className={className}>
-      {' '}
+    <Card variant="glass" className={`border border-gray-800 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        {' '}
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          {' '}
-          <Archive className="h-5 w-5" /> Backups{' '}
-        </h3>{' '}
-        <Button variant="primary" size="sm">
-          {' '}
-          Create Backup{' '}
-        </Button>{' '}
-      </div>{' '}
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-white">
+          <Archive className="h-5 w-5 text-blue-400" /> Backups
+        </h3>
+        <Button variant="gradient" size="sm">
+          Create Backup
+        </Button>
+      </div>
       {backups.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          {' '}
-          <Archive className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />{' '}
-          <p>No backups found</p>{' '}
+        <div className="text-center py-8 text-gray-400">
+          <Archive className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+          <p className="text-white">No backups found</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {' '}
           {backups.map((backup) => {
             const TypeIcon = typeIcons[backup.backup_type as keyof typeof typeIcons] || Archive;
             const StatusIcon = statusIcons[backup.status as keyof typeof statusIcons] || Clock;
             const statusColor =
-              statusColors[backup.status as keyof typeof statusColors] || 'text-muted-foreground';
+              statusColors[backup.status as keyof typeof statusColors] || 'text-gray-400';
             return (
-              <div key={backup.id} className="p-4 border border-border rounded-lg">
-                {' '}
+              <div key={backup.id} className="p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover-lift">
                 <div className="flex items-start justify-between mb-2">
-                  {' '}
                   <div className="flex-1">
-                    {' '}
                     <div className="flex items-center gap-2 mb-1">
-                      {' '}
-                      <TypeIcon className="h-4 w-4 text-muted-foreground" />{' '}
-                      <span className="font-medium">{backup.name}</span>{' '}
-                      <StatusIcon className={`h-4 w-4 ${statusColor}`} />{' '}
-                      <span className={`text-xs capitalize ${statusColor}`}>{backup.status}</span>{' '}
+                      <TypeIcon className="h-4 w-4 text-gray-400" />
+                      <span className="font-medium text-white">{backup.name}</span>
+                      <StatusIcon className={`h-4 w-4 ${statusColor}`} />
+                      <span className={`text-xs capitalize ${statusColor}`}>{backup.status}</span>
                       {backup.is_automatic && (
-                        <span className="text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-0.5 rounded">
-                          {' '}
-                          Auto{' '}
+                        <span className="text-xs glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/50 text-blue-300 px-2 py-0.5 rounded">
+                          Auto
                         </span>
-                      )}{' '}
-                    </div>{' '}
+                      )}
+                    </div>
                     {backup.description && (
-                      <p className="text-sm text-muted-foreground mb-2"> {backup.description} </p>
-                    )}{' '}
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      {' '}
-                      <span>Type: {backup.backup_type}</span>{' '}
-                      {backup.file_size && <span>Size: {formatFileSize(backup.file_size)}</span>}{' '}
+                      <p className="text-sm text-gray-400 mb-2"> {backup.description} </p>
+                    )}
+                    <div className="flex items-center gap-4 text-xs text-gray-400">
+                      <span>Type: {backup.backup_type}</span>
+                      {backup.file_size && <span>Size: {formatFileSize(backup.file_size)}</span>}
                       {backup.completed_at && (
                         <span>Completed: {new Date(backup.completed_at).toLocaleString()}</span>
-                      )}{' '}
+                      )}
                       {backup.expires_at && (
                         <span>Expires: {new Date(backup.expires_at).toLocaleString()}</span>
-                      )}{' '}
-                    </div>{' '}
-                  </div>{' '}
+                      )}
+                    </div>
+                  </div>
                   <div className="flex gap-1">
-                    {' '}
                     {backup.status === 'completed' && (
                       <>
-                        {' '}
                         <button
                           onClick={() => handleRestore(backup.id)}
-                          className="p-1 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded text-primary-500"
+                          className="p-1 hover:bg-[#252532] rounded text-blue-400 hover:text-blue-300 transition-colors"
                           title="Restore"
                         >
-                          {' '}
-                          <RotateCcw className="h-4 w-4" />{' '}
-                        </button>{' '}
+                          <RotateCcw className="h-4 w-4" />
+                        </button>
                         {backup.file_path && (
                           <button
-                            className="p-1 hover:bg-success-50 dark:hover:bg-success-900/20 rounded text-success-500"
+                            className="p-1 hover:bg-[#252532] rounded text-green-400 hover:text-green-300 transition-colors"
                             title="Download"
                           >
-                            {' '}
-                            <Download className="h-4 w-4" />{' '}
+                            <Download className="h-4 w-4" />
                           </button>
-                        )}{' '}
+                        )}
                       </>
-                    )}{' '}
+                    )}
                     <button
                       onClick={() => handleDelete(backup.id)}
-                      className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                      className="p-1 hover:bg-[#252532] rounded text-red-400 hover:text-red-300 transition-colors"
                       title="Delete"
                     >
-                      {' '}
-                      <Trash2 className="h-4 w-4" />{' '}
-                    </button>{' '}
-                  </div>{' '}
-                </div>{' '}
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             );
-          })}{' '}
+          })}
         </div>
-      )}{' '}
+      )}
     </Card>
   );
 }

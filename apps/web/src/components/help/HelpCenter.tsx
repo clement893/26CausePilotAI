@@ -69,17 +69,19 @@ const defaultCategories: HelpCategory[] = [
     <div className={className}>
       {' '}
       {/* Search Bar */}{' '}
-      <Card className="mb-8">
+      <Card variant="glass" className="mb-8 border border-gray-800">
         {' '}
         <div className="flex items-center gap-4">
           {' '}
-          <Search className="w-5 h-5 text-[var(--color-muted-foreground)]" />{' '}
-          <input
-            type="text"
-            placeholder="Search for help..."
-            className="flex-1 px-4 py-2 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)] text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)]"
-          />{' '}
-          <Button variant="primary">Search</Button>{' '}
+          <Search className="w-5 h-5 text-gray-400" />{' '}
+          <div className="form-input-glow flex-1">
+            <input
+              type="text"
+              placeholder="Search for help..."
+              className="flex-1 px-4 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <Button variant="gradient">Search</Button>{' '}
         </div>{' '}
       </Card>{' '}
       {/* Help Categories */}{' '}
@@ -88,19 +90,19 @@ const defaultCategories: HelpCategory[] = [
         {categories.map((category) => (
           <Link key={category.id} href={category.link}>
             {' '}
-            <Card hover className={`h-full ${category.color} border-2 transition-all`}>
+            <Card variant="glass" hover className="h-full border-2 border-gray-800 hover:border-blue-500 transition-all hover-lift">
               {' '}
               <div className="flex flex-col items-center text-center p-6">
                 {' '}
-                <div className="mb-4 text-[var(--color-primary-600)] dark:text-[var(--color-primary-400)]">
+                <div className="mb-4 text-blue-400">
                   {' '}
                   {category.icon}{' '}
                 </div>{' '}
-                <h3 className="text-xl font-semibold text-[var(--color-foreground)] mb-2">
+                <h3 className="text-xl font-semibold text-white mb-2">
                   {' '}
                   {category.title}{' '}
                 </h3>{' '}
-                <p className="text-sm text-[var(--color-muted-foreground)]">
+                <p className="text-sm text-gray-400">
                   {' '}
                   {category.description}{' '}
                 </p>{' '}
@@ -110,26 +112,26 @@ const defaultCategories: HelpCategory[] = [
         ))}{' '}
       </div>{' '}
       {/* Quick Links */}{' '}
-      <Card title="Quick Links" className="mt-8">
+      <Card variant="glass" title="Quick Links" className="mt-8 border border-gray-800">
         {' '}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {' '}
           <Link href="/help/faq">
             {' '}
-            <div className="p-4 border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-muted)] transition-colors">
+            <div className="p-4 border border-gray-800 rounded-lg glass-effect bg-[#1C1C26] hover:bg-[#252532] transition-colors hover-lift">
               {' '}
-              <h4 className="font-medium text-[var(--color-foreground)]">Common Questions</h4>{' '}
-              <p className="text-sm text-[var(--color-muted-foreground)] mt-1">
+              <h4 className="font-medium text-white">Common Questions</h4>{' '}
+              <p className="text-sm text-gray-400 mt-1">
                 Find answers to common questions
               </p>{' '}
             </div>{' '}
           </Link>{' '}
           <Link href="/help/contact">
             {' '}
-            <div className="p-4 border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-muted)] transition-colors">
+            <div className="p-4 border border-gray-800 rounded-lg glass-effect bg-[#1C1C26] hover:bg-[#252532] transition-colors hover-lift">
               {' '}
-              <h4 className="font-medium text-[var(--color-foreground)]">Need More Help?</h4>{' '}
-              <p className="text-sm text-[var(--color-muted-foreground)] mt-1">
+              <h4 className="font-medium text-white">Need More Help?</h4>{' '}
+              <p className="text-sm text-gray-400 mt-1">
                 Contact our support team
               </p>{' '}
             </div>{' '}

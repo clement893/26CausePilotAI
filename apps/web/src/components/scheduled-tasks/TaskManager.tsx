@@ -83,105 +83,87 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
   };
   if (isLoading) {
     return (
-      <Card className={className}>
-        {' '}
-        <div className="text-center py-8 text-muted-foreground">Loading tasks...</div>{' '}
+      <Card variant="glass" className={className}>
+        <div className="text-center py-8 text-gray-400">Loading tasks...</div>
       </Card>
     );
   }
   return (
-    <Card className={className}>
-      {' '}
+    <Card variant="glass" className={`border border-gray-800 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        {' '}
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          {' '}
-          <Clock className="h-5 w-5" /> Scheduled Tasks{' '}
-        </h3>{' '}
-        <Button variant="primary" size="sm">
-          {' '}
-          New Task{' '}
-        </Button>{' '}
-      </div>{' '}
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-white">
+          <Clock className="h-5 w-5 text-blue-400" /> Scheduled Tasks
+        </h3>
+        <Button variant="gradient" size="sm">
+          New Task
+        </Button>
+      </div>
       {tasks.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          {' '}
-          <Clock className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />{' '}
-          <p>No scheduled tasks</p>{' '}
+        <div className="text-center py-8 text-gray-400">
+          <Clock className="h-12 w-12 mx-auto mb-4 text-gray-500" />
+          <p className="text-white">No scheduled tasks</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {' '}
           {tasks.map((task) => {
             const StatusIcon = statusIcons[task.status as keyof typeof statusIcons] || Clock;
             const statusColor =
-              statusColors[task.status as keyof typeof statusColors] || 'text-muted-foreground';
+              statusColors[task.status as keyof typeof statusColors] || 'text-gray-400';
             return (
-              <div key={task.id} className="p-4 border border-border rounded-lg">
-                {' '}
+              <div key={task.id} className="p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg hover-lift">
                 <div className="flex items-start justify-between mb-2">
-                  {' '}
                   <div className="flex-1">
-                    {' '}
                     <div className="flex items-center gap-2 mb-1">
-                      {' '}
-                      <StatusIcon className={`h-4 w-4 ${statusColor}`} />{' '}
-                      <span className="font-medium">{task.name}</span>{' '}
-                      <span className="text-xs bg-muted px-2 py-0.5 rounded capitalize">
-                        {' '}
-                        {task.task_type.replace('_', '')}{' '}
-                      </span>{' '}
+                      <StatusIcon className={`h-4 w-4 ${statusColor}`} />
+                      <span className="font-medium text-white">{task.name}</span>
+                      <span className="text-xs glass-effect bg-[#13131A] border border-gray-800 px-2 py-0.5 rounded capitalize text-gray-300">
+                        {task.task_type.replace('_', '')}
+                      </span>
                       {task.recurrence && (
-                        <span className="text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-0.5 rounded">
-                          {' '}
-                          {task.recurrence}{' '}
+                        <span className="text-xs glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/50 text-blue-300 px-2 py-0.5 rounded">
+                          {task.recurrence}
                         </span>
-                      )}{' '}
-                    </div>{' '}
+                      )}
+                    </div>
                     {task.description && (
-                      <p className="text-sm text-muted-foreground mb-2"> {task.description} </p>
-                    )}{' '}
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      {' '}
-                      <span>Scheduled: {new Date(task.scheduled_at).toLocaleString()}</span>{' '}
+                      <p className="text-sm text-gray-400 mb-2"> {task.description} </p>
+                    )}
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <span>Scheduled: {new Date(task.scheduled_at).toLocaleString()}</span>
                       {task.completed_at && (
                         <span>Completed: {new Date(task.completed_at).toLocaleString()}</span>
-                      )}{' '}
-                    </div>{' '}
+                      )}
+                    </div>
                     {task.error_message && (
-                      <div className="mt-2 p-2 bg-error-50 dark:bg-error-900/20 rounded text-sm text-error-600 dark:text-error-400">
-                        {' '}
-                        {task.error_message}{' '}
+                      <div className="mt-2 p-2 glass-effect bg-red-500/10 border border-red-500/50 rounded text-sm text-red-400">
+                        {task.error_message}
                       </div>
-                    )}{' '}
-                  </div>{' '}
+                    )}
+                  </div>
                   <div className="flex gap-1">
-                    {' '}
                     {task.status === 'pending' && (
                       <button
                         onClick={() => handleCancel(task.id)}
-                        className="p-1 hover:bg-warning-50 dark:hover:bg-warning-900/20 rounded text-warning-500"
+                        className="p-1 hover:bg-[#252532] rounded text-yellow-400 hover:text-yellow-300 transition-colors"
                         title="Cancel"
                       >
-                        {' '}
-                        <Pause className="h-4 w-4" />{' '}
+                        <Pause className="h-4 w-4" />
                       </button>
-                    )}{' '}
+                    )}
                     <button
                       onClick={() => handleDelete(task.id)}
-                      className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
+                      className="p-1 hover:bg-[#252532] rounded text-red-400 hover:text-red-300 transition-colors"
                       title="Delete"
                     >
-                      {' '}
-                      <Trash2 className="h-4 w-4" />{' '}
-                    </button>{' '}
-                  </div>{' '}
-                </div>{' '}
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             );
-          })}{' '}
+          })}
         </div>
-      )}{' '}
+      )}
     </Card>
   );
 }

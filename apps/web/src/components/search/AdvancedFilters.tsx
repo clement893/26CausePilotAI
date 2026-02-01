@@ -42,13 +42,13 @@ export function AdvancedFilters({
   return (
     <div className={className}>
       {' '}
-      <Button variant="outline" size="sm" onClick={() => setIsOpen(!isOpen)}>
+      <Button variant="outline" size="sm" onClick={() => setIsOpen(!isOpen)} className="border-gray-700 text-gray-300 hover:bg-[#252532]">
         {' '}
         <Filter className="h-4 w-4 mr-2" /> Filters{' '}
         {filters.length > 0 && `(${filters.length})`}{' '}
       </Button>{' '}
       {isOpen && (
-        <div className="mt-2 p-4 bg-background border border-border rounded-lg shadow-lg">
+        <div className="mt-2 p-4 glass-effect bg-[#1C1C26] border border-gray-800 rounded-lg shadow-lg">
           {' '}
           <div className="space-y-4">
             {' '}
@@ -56,17 +56,17 @@ export function AdvancedFilters({
             {filters.length > 0 && (
               <div className="space-y-2">
                 {' '}
-                <h4 className="text-sm font-semibold">Active Filters</h4>{' '}
+                <h4 className="text-sm font-semibold text-white">Active Filters</h4>{' '}
                 {filters.map((filter, index) => (
-                  <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
+                  <div key={index} className="flex items-center gap-2 p-2 glass-effect bg-[#252532] rounded border border-gray-800">
                     {' '}
-                    <span className="text-sm flex-1">
+                    <span className="text-sm flex-1 text-gray-300">
                       {' '}
                       {filter.label || filter.field} {filter.operator} {String(filter.value)}{' '}
                     </span>{' '}
                     <button
                       onClick={() => removeFilter(index)}
-                      className="text-error-500 hover:text-error-700"
+                      className="text-red-400 hover:text-red-300"
                     >
                       {' '}
                       <X className="h-4 w-4" />{' '}
@@ -78,13 +78,13 @@ export function AdvancedFilters({
             {/* Add New Filter */}{' '}
             <div className="space-y-2">
               {' '}
-              <h4 className="text-sm font-semibold">Add Filter</h4>{' '}
+              <h4 className="text-sm font-semibold text-white">Add Filter</h4>{' '}
               <div className="grid grid-cols-3 gap-2">
                 {' '}
                 <select
                   value={newFilter.field || ''}
                   onChange={(e) => setNewFilter({ ...newFilter, field: e.target.value })}
-                  className="px-3 py-2 border border-border rounded-lg bg-background"
+                  className="px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white"
                 >
                   {' '}
                   <option value="">Select field</option>{' '}
@@ -103,7 +103,7 @@ export function AdvancedFilters({
                       operator: e.target.value as FilterConfig['operator'],
                     })
                   }
-                  className="px-3 py-2 border border-border rounded-lg bg-background"
+                  className="px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white"
                 >
                   {' '}
                   <option value="equals">Equals</option> <option value="contains">Contains</option>{' '}
@@ -114,21 +114,23 @@ export function AdvancedFilters({
                 </select>{' '}
                 <div className="flex gap-2">
                   {' '}
-                  <Input
-                    type="text"
-                    placeholder="Value"
-                    value={String(newFilter.value || '')}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      const fieldConfig = availableFields.find((f) => f.value === newFilter.field);
-                      const value =
-                        fieldConfig?.type === 'number'
-                          ? parseFloat(e.target.value) || 0
-                          : e.target.value;
-                      setNewFilter({ ...newFilter, value });
-                    }}
-                    className="flex-1"
-                  />{' '}
-                  <Button onClick={addFilter} size="sm" variant="primary">
+                  <div className="form-input-glow flex-1">
+                    <Input
+                      type="text"
+                      placeholder="Value"
+                      value={String(newFilter.value || '')}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const fieldConfig = availableFields.find((f) => f.value === newFilter.field);
+                        const value =
+                          fieldConfig?.type === 'number'
+                            ? parseFloat(e.target.value) || 0
+                            : e.target.value;
+                        setNewFilter({ ...newFilter, value });
+                      }}
+                      className="flex-1"
+                    />
+                  </div>
+                  <Button onClick={addFilter} size="sm" variant="gradient">
                     {' '}
                     Add{' '}
                   </Button>{' '}

@@ -138,47 +138,49 @@ export function TagInput({
 
   return (
     <div className={`relative ${className}`}>
-      <div className="flex flex-wrap gap-2 p-2 border border-border rounded-lg bg-background min-h-[42px]">
-        {selectedTags.map((tag) => (
-          <span
-            key={tag.id}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200"
-            style={tag.color ? { backgroundColor: tag.color + '20', color: tag.color } : undefined}
-          >
-            <TagIcon className="h-3 w-3" />
-            {tag.name}
-            <button
-              onClick={() => handleRemoveTag(tag.id)}
-              className="hover:text-error-500 dark:hover:text-error-400"
-              type="button"
+      <div className="form-input-glow">
+        <div className="flex flex-wrap gap-2 p-2 border border-gray-700 rounded-lg bg-[#1C1C26] min-h-[42px]">
+          {selectedTags.map((tag) => (
+            <span
+              key={tag.id}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded text-sm glass-effect bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/50 text-blue-300"
+              style={tag.color ? { backgroundColor: tag.color + '20', color: tag.color, borderColor: tag.color + '50' } : undefined}
             >
-              <X className="h-3 w-3" />
-            </button>
-          </span>
-        ))}
-        <input
-          ref={inputRef}
-          type="text"
-          value={inputValue}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onFocus={() => {
-            if (suggestions.length > 0) {
-              setShowSuggestions(true);
-            }
-          }}
-          placeholder={selectedTags.length === 0 ? placeholder : ''}
-          className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm"
-        />
+              <TagIcon className="h-3 w-3" />
+              {tag.name}
+              <button
+                onClick={() => handleRemoveTag(tag.id)}
+                className="hover:text-red-400 transition-colors"
+                type="button"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </span>
+          ))}
+          <input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onFocus={() => {
+              if (suggestions.length > 0) {
+                setShowSuggestions(true);
+              }
+            }}
+            placeholder={selectedTags.length === 0 ? placeholder : ''}
+            className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-white placeholder-gray-500"
+          />
+        </div>
       </div>
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-background border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-1 glass-effect bg-[#13131A] border border-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
           {suggestions.map((tag) => (
             <button
               key={tag.id}
               onClick={() => handleAddTag(tag)}
-              className="w-full text-left px-4 py-2 hover:bg-muted dark:hover:bg-muted flex items-center gap-2"
+              className="w-full text-left px-4 py-2 hover:bg-[#1C1C26] flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
             >
               <TagIcon className="h-4 w-4" style={{ color: tag.color }} />
               {tag.name}
@@ -189,7 +191,7 @@ export function TagInput({
             !suggestions.some((t) => t.name.toLowerCase() === inputValue.toLowerCase()) && (
               <button
                 onClick={handleCreateTag}
-                className="w-full text-left px-4 py-2 hover:bg-muted dark:hover:bg-muted flex items-center gap-2 text-primary-600 dark:text-primary-400"
+                className="w-full text-left px-4 py-2 hover:bg-[#1C1C26] flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
               >
                 <Plus className="h-4 w-4" />
                 Create "{inputValue.trim()}"
