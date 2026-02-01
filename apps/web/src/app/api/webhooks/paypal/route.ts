@@ -5,8 +5,13 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import type { PrismaClient } from '@prisma/client';
 import { prisma } from '@/lib/db';
-import { PaymentStatus } from '@prisma/client';
+
+/** Match Prisma PaymentStatus enum (schema in packages/database/prisma) */
+const PAYMENT_SUCCEEDED = 'SUCCEEDED' as const;
+const PAYMENT_FAILED = 'FAILED' as const;
+import { issueReceiptAction } from '@/app/actions/receipts/issue-receipt';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -160,11 +165,14 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
 
   if (!pi || !pi.submission) return;
 
-  await prisma.$transaction(async (tx) => {
+  let createdDonationId: string | null = null;
+
+  type Tx = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>;
+  await prisma.$transaction(async (tx: Tx) => {
     await tx.paymentIntent.update({
       where: { id: pi.id },
       data: {
-        status: PaymentStatus.SUCCEEDED,
+        status: PAYMENT_SUCCEEDED,
         succeededAt: new Date(),
         errorCode: null,
         errorMessage: null,
@@ -180,7 +188,7 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
     });
     if (existingDonation) return;
 
-    await tx.donation.create({
+    const donation = await tx.donation.create({
       data: {
         donatorId,
         amount: sub.amount,
@@ -191,6 +199,7 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
         organizationId: sub.organizationId,
       },
     });
+    createdDonationId = donation.id;
 
     const donator = sub.donator;
     if (donator) {
@@ -219,6 +228,14 @@ async function handlePaymentCaptureCompleted(resource: Record<string, unknown> |
       });
     }
   });
+
+  if (createdDonationId) {
+    try {
+      await issueReceiptAction(createdDonationId);
+    } catch (receiptError) {
+      console.error('[webhooks/paypal] issueReceiptAction failed:', receiptError);
+    }
+  }
 }
 
 async function handlePaymentCaptureDenied(resource: Record<string, unknown> | undefined) {
@@ -234,7 +251,7 @@ async function handlePaymentCaptureDenied(resource: Record<string, unknown> | un
   await prisma.paymentIntent.update({
     where: { id: pi.id },
     data: {
-      status: PaymentStatus.FAILED,
+      status: PAYMENT_FAILED,
       failedAt: new Date(),
       errorMessage: reason,
     },

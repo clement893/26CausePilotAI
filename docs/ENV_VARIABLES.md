@@ -110,6 +110,18 @@ Les routes API `/api/webhooks/stripe` et `/api/webhooks/paypal` mettent à jour 
 | --------------- | ----------------------------------- | --------------------- | -------------------------------- |
 | `DATABASE_URL`  | URL PostgreSQL (schéma Prisma don) | Oui si webhooks actifs | `postgresql://user:pass@host:5432/db` |
 
+### AWS S3 (Reçus fiscaux Étape 2.2.3)
+
+Pour stocker les PDF de reçus fiscaux et envoyer un lien de téléchargement par email.
+
+| Variable                 | Description                              | Requis | Défaut     | Exemple                    |
+| ------------------------ | ---------------------------------------- | ------ | ---------- | -------------------------- |
+| `AWS_ACCESS_KEY_ID`      | Clé d’accès AWS (côté serveur uniquement) | Non    | -          | `AKIA...`                  |
+| `AWS_SECRET_ACCESS_KEY`  | Secret AWS (côté serveur uniquement)     | Non    | -          | `xxx`                      |
+| `AWS_S3_BUCKET`         | Nom du bucket S3 pour les reçus          | Non    | -          | `my-app-receipts`          |
+| `AWS_REGION`            | Région du bucket                         | Non    | `us-east-1`| `us-east-1`                |
+| `AWS_S3_PUBLIC_BASE_URL`| URL de base publique du bucket (optionnel) | Non  | -          | `https://cdn.example.com`  |
+
 ### GitHub (Optionnel)
 
 | Variable                 | Description         | Requis | Défaut | Exemple                        |

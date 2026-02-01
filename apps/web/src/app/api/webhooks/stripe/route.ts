@@ -6,9 +6,14 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import type { PrismaClient } from '@prisma/client';
 import { getStripeClient } from '@/lib/payment/stripe';
 import { prisma } from '@/lib/db';
-import { PaymentStatus } from '@prisma/client';
+
+/** Match Prisma PaymentStatus enum (schema in packages/database/prisma) */
+const PAYMENT_SUCCEEDED = 'SUCCEEDED' as const;
+const PAYMENT_FAILED = 'FAILED' as const;
+import { issueReceiptAction } from '@/app/actions/receipts/issue-receipt';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -95,11 +100,14 @@ async function handlePaymentIntentSucceeded(obj: Record<string, unknown> | undef
 
   if (!pi || !pi.submission) return;
 
-  await prisma.$transaction(async (tx) => {
+  let createdDonationId: string | null = null;
+
+  type Tx = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>;
+  await prisma.$transaction(async (tx: Tx) => {
     await tx.paymentIntent.update({
       where: { id: pi.id },
       data: {
-        status: PaymentStatus.SUCCEEDED,
+        status: PAYMENT_SUCCEEDED,
         succeededAt: new Date(),
         errorCode: null,
         errorMessage: null,
@@ -115,7 +123,7 @@ async function handlePaymentIntentSucceeded(obj: Record<string, unknown> | undef
     });
     if (existingDonation) return;
 
-    await tx.donation.create({
+    const donation = await tx.donation.create({
       data: {
         donatorId,
         amount: sub.amount,
@@ -126,6 +134,7 @@ async function handlePaymentIntentSucceeded(obj: Record<string, unknown> | undef
         organizationId: sub.organizationId,
       },
     });
+    createdDonationId = donation.id;
 
     const donator = sub.donator;
     if (donator) {
@@ -154,6 +163,14 @@ async function handlePaymentIntentSucceeded(obj: Record<string, unknown> | undef
       });
     }
   });
+
+  if (createdDonationId) {
+    try {
+      await issueReceiptAction(createdDonationId);
+    } catch (receiptError) {
+      console.error('[webhooks/stripe] issueReceiptAction failed:', receiptError);
+    }
+  }
 }
 
 async function handlePaymentIntentFailed(obj: Record<string, unknown> | undefined) {
@@ -169,7 +186,7 @@ async function handlePaymentIntentFailed(obj: Record<string, unknown> | undefine
   await prisma.paymentIntent.update({
     where: { id: pi.id },
     data: {
-      status: PaymentStatus.FAILED,
+      status: PAYMENT_FAILED,
       failedAt: new Date(),
       errorMessage: lastError,
     },
