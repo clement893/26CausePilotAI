@@ -39,11 +39,11 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <header className="sticky top-0 z-50 glass-effect bg-[#13131A]/80 dark:bg-background/80 backdrop-blur-md border-b border-gray-800 dark:border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl sm:text-2xl font-bold text-foreground">
-            MODELE<span className="text-primary">FULLSTACK</span>
+          <Link href="/" className="text-xl sm:text-2xl font-bold text-white dark:text-foreground">
+            MODELE<span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">FULLSTACK</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -59,27 +59,27 @@ export default function Header() {
             {isAuthenticated() ? (
               <>
                 <NotificationBellConnected />
-                <span className="text-sm text-muted-foreground hidden lg:block">
+                <span className="text-sm text-gray-400 dark:text-muted-foreground hidden lg:block">
                   {user?.name || user?.email}
                 </span>
                 <Link href="/dashboard">
-                  <Button size="sm" variant="ghost">
+                  <Button size="sm" variant="ghost" className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
                     Dashboard
                   </Button>
                 </Link>
-                <Button size="sm" variant="outline" onClick={logout}>
+                <Button size="sm" variant="outline" onClick={logout} className="border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
                   Déconnexion
                 </Button>
               </>
             ) : (
               <>
                 <Link href="/auth/login">
-                  <Button size="sm" variant="ghost">
+                  <Button size="sm" variant="ghost" className="text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
                     Connexion
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button size="sm" variant="primary">
+                  <Button size="sm" variant="gradient">
                     Inscription
                   </Button>
                 </Link>
@@ -93,7 +93,7 @@ export default function Header() {
             <button
               ref={menuButtonRef}
               type="button"
-              className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-foreground hover:bg-muted focus:ring-primary min-h-[44px]"
+              className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-white dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted focus:ring-primary min-h-[44px]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={mobileMenuOpen}
@@ -109,7 +109,7 @@ export default function Header() {
           ref={mobileMenuRef}
           id="mobile-menu"
           className={clsx(
-            'md:hidden border-t border-border overflow-hidden transition-all duration-300 ease-in-out',
+            'md:hidden border-t border-gray-800 dark:border-border overflow-hidden transition-all duration-300 ease-in-out bg-[#13131A] dark:bg-background',
             mobileMenuOpen ? 'max-h-[800px] opacity-100 py-4' : 'max-h-0 opacity-0 py-0'
           )}
           role="menu"
@@ -120,7 +120,7 @@ export default function Header() {
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-foreground hover:text-primary transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
+              className="text-white dark:text-foreground hover:text-blue-400 dark:hover:text-primary transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-[#1C1C26] dark:hover:bg-muted/50"
             >
               Accueil
             </Link>
@@ -132,37 +132,37 @@ export default function Header() {
                 <Link
                   href="/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
+                  className="text-white dark:text-foreground hover:text-blue-400 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-[#1C1C26] dark:hover:bg-muted/50"
                 >
                   Dashboard
                 </Link>
               </>
             )}
-            <div className="border-t border-border pt-4 mt-2">
+            <div className="border-t border-gray-800 dark:border-border pt-4 mt-2">
               <div className="px-2 mb-4">
                 <LanguageSwitcher />
               </div>
               {isAuthenticated() ? (
                 <div className="flex flex-col gap-2 px-2">
-                  <span className="text-sm text-muted-foreground">{user?.name || user?.email}</span>
+                  <span className="text-sm text-gray-400 dark:text-muted-foreground">{user?.name || user?.email}</span>
                   <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" variant="ghost" className="w-full justify-start">
+                    <Button size="sm" variant="ghost" className="w-full justify-start text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
                       Dashboard
                     </Button>
                   </Link>
-                  <Button size="sm" variant="outline" onClick={logout} className="w-full">
+                  <Button size="sm" variant="outline" onClick={logout} className="w-full border-gray-700 dark:border-primary-500 text-gray-300 dark:text-primary-400 hover:bg-[#1C1C26] dark:hover:bg-primary-900/20">
                     Déconnexion
                   </Button>
                 </div>
               ) : (
                 <div className="flex flex-col gap-2 px-2">
                   <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" variant="ghost" className="w-full">
+                    <Button size="sm" variant="ghost" className="w-full text-gray-300 dark:text-foreground hover:bg-[#1C1C26] dark:hover:bg-muted">
                       Connexion
                     </Button>
                   </Link>
                   <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" variant="primary" className="w-full">
+                    <Button size="sm" variant="gradient" className="w-full">
                       Inscription
                     </Button>
                   </Link>

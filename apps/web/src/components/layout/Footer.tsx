@@ -21,30 +21,30 @@ export default function Footer() {
 
   return (
     <footer
-      className="bg-primary-900 dark:bg-primary-950 text-primary-50 dark:text-primary-100 py-12 md:py-16"
+      className="bg-[#13131A] dark:bg-primary-950 border-t border-gray-800 dark:border-primary-800 text-white dark:text-primary-100 py-12 md:py-16"
       role="contentinfo"
     >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <h3 className="text-primary-50 font-bold text-xl mb-4">ContextPsy</h3>
-            <p className="text-sm text-primary-200 mb-6 leading-relaxed max-w-md">
+            <h3 className="text-white dark:text-primary-50 font-bold text-xl mb-4">ContextPsy</h3>
+            <p className="text-sm text-gray-400 dark:text-primary-200 mb-6 leading-relaxed max-w-md">
               Full-stack template built with Next.js and FastAPI. Production-ready and customizable.
             </p>
-            <div className="text-sm text-primary-200 mb-4">
+            <div className="text-sm text-gray-400 dark:text-primary-200 mb-4">
               <p>Email: contact@contextpsy.fr</p>
               <p>Téléphone: +33 (0)X XX XX XX XX</p>
             </div>
 
             {/* Social Media Links */}
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-sm text-primary-200">Suivez-nous:</span>
+              <span className="text-sm text-gray-400 dark:text-primary-200">Suivez-nous:</span>
               <div className="flex items-center gap-3" role="list" aria-label="Réseaux sociaux">
                 {/* Placeholder social links - can be replaced with actual links */}
                 <a
                   href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-primary-800 hover:bg-primary-600 dark:bg-primary-800 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-[#1C1C26] dark:bg-primary-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 dark:hover:bg-primary-600 transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900"
                   aria-label="Twitter (placeholder)"
                   role="listitem"
                 >
@@ -59,7 +59,7 @@ export default function Footer() {
                 </a>
                 <a
                   href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-primary-800 hover:bg-primary-600 dark:bg-primary-800 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-[#1C1C26] dark:bg-primary-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 dark:hover:bg-primary-600 transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900"
                   aria-label="GitHub (placeholder)"
                   role="listitem"
                 >
@@ -78,7 +78,7 @@ export default function Footer() {
                 </a>
                 <a
                   href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-primary-800 hover:bg-primary-600 dark:bg-primary-800 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-[#1C1C26] dark:bg-primary-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 dark:hover:bg-primary-600 transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900"
                   aria-label="LinkedIn (placeholder)"
                   role="listitem"
                 >
@@ -96,19 +96,19 @@ export default function Footer() {
 
             {/* Newsletter Signup */}
             <div>
-              <h4 className="text-primary-50 font-semibold mb-3 text-sm">Newsletter</h4>
+              <h4 className="text-white dark:text-primary-50 font-semibold mb-3 text-sm">Newsletter</h4>
               <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Votre email"
-                  className="flex-1 px-4 py-2 bg-primary-800 border border-primary-700 rounded-lg text-primary-50 placeholder-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-sm"
+                  className="flex-1 px-4 py-2 bg-[#1C1C26] dark:bg-primary-800 border border-gray-700 dark:border-primary-700 rounded-lg text-white dark:text-primary-50 placeholder-gray-500 dark:placeholder-primary-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   aria-label="Adresse email pour la newsletter"
                 />
                 <Button
                   type="submit"
-                  variant="primary"
+                  variant="gradient"
                   size="sm"
                   className="whitespace-nowrap"
                   disabled={!email || subscribed}
@@ -117,7 +117,7 @@ export default function Footer() {
                 </Button>
               </form>
               {subscribed && (
-                <p className="mt-2 text-xs text-primary-400" role="status" aria-live="polite">
+                <p className="mt-2 text-xs text-gray-400 dark:text-primary-400" role="status" aria-live="polite">
                   Merci pour votre inscription!
                 </p>
               )}
@@ -126,29 +126,29 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-primary-50 font-semibold mb-4 text-base">Contact</h4>
+            <h4 className="text-white dark:text-primary-50 font-semibold mb-4 text-base">Contact</h4>
             <ul className="space-y-3 text-sm" role="list">
-              <li className="text-primary-200">
+              <li className="text-gray-400 dark:text-primary-200">
                 <a
                   href="mailto:contact@contextpsy.fr"
-                  className="hover:text-primary-300 transition-colors"
+                  className="hover:text-blue-400 dark:hover:text-primary-300 transition-colors"
                 >
                   contact@contextpsy.fr
                 </a>
               </li>
-              <li className="text-primary-200">+33 (0)X XX XX XX XX</li>
-              <li className="text-primary-200">France</li>
+              <li className="text-gray-400 dark:text-primary-200">+33 (0)X XX XX XX XX</li>
+              <li className="text-gray-400 dark:text-primary-200">France</li>
             </ul>
           </div>
 
           {/* Navigation */}
           <nav aria-label="Navigation">
-            <h4 className="text-primary-50 font-semibold mb-4 text-base">Navigation</h4>
+            <h4 className="text-white dark:text-primary-50 font-semibold mb-4 text-base">Navigation</h4>
             <ul className="space-y-3 text-sm" role="list">
               <li>
                 <Link
                   href="/sitemap"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Plan du site
                 </Link>
@@ -156,7 +156,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/dashboard"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Dashboard
                 </Link>
@@ -164,7 +164,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/docs"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Documentation
                 </Link>
@@ -172,7 +172,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Blog
                 </Link>
@@ -180,7 +180,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/components"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Composants
                 </Link>
@@ -188,7 +188,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/theme"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Thème
                 </Link>
@@ -198,14 +198,14 @@ export default function Footer() {
 
           {/* Liens Utiles */}
           <nav aria-label="Liens utiles">
-            <h4 className="text-primary-50 font-semibold mb-4 text-base">Liens Utiles</h4>
+            <h4 className="text-white dark:text-primary-50 font-semibold mb-4 text-base">Liens Utiles</h4>
             <ul className="space-y-3 text-sm" role="list">
               <li>
                 <a
                   href="https://github.com/clement893"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                   aria-label="GitHub du développeur (ouvre dans un nouvel onglet)"
                 >
                   GitHub
@@ -216,7 +216,7 @@ export default function Footer() {
                   href="https://github.com/clement893/26CausePilotAI/issues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                   aria-label="Signaler un bug sur GitHub (ouvre dans un nouvel onglet)"
                 >
                   Signaler un bug
@@ -225,7 +225,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Confidentialité
                 </Link>
@@ -233,7 +233,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-primary-200 hover:text-primary-300 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded inline-block"
+                  className="text-gray-400 dark:text-primary-200 hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded inline-block"
                 >
                   Conditions d'utilisation
                 </Link>
@@ -243,25 +243,25 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-primary-800 dark:border-primary-700 mt-10 pt-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-primary-200">
+        <div className="border-t border-gray-800 dark:border-primary-700 mt-10 pt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-400 dark:text-primary-200">
             <p>© {currentYear} Nukleo. Tous droits réservés.</p>
             <div className="flex items-center gap-6 flex-wrap">
               <Link
                 href="/sitemap"
-                className="hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded"
+                className="hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded"
               >
                 Plan du site
               </Link>
               <Link
                 href="/privacy"
-                className="hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded"
+                className="hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded"
               >
                 Confidentialité
               </Link>
               <Link
                 href="/terms"
-                className="hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-primary-900 rounded"
+                className="hover:text-blue-400 dark:hover:text-primary-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#13131A] dark:focus:ring-offset-primary-900 rounded"
               >
                 Conditions
               </Link>
