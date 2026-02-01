@@ -107,7 +107,7 @@
 ### Batch 8: Autres Composants de Formulaire et Utilitaires (5 composants)
 **Statut:** ✅ COMPLÉTÉ  
 **Priorité:** MOYENNE ⭐  
-**Commit:** `b024876` - feat(ui): Batch 8 - Alignement des autres composants
+**Commit:** `17b2099` - feat(ui): Batch 8 - Alignement des autres composants
 
 - [x] `Slider.tsx` - Style moderne avec gradients ✅
 - [x] `Popover.tsx` - Glassmorphism backdrop ✅
