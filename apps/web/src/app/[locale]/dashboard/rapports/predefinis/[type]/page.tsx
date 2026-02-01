@@ -1,18 +1,20 @@
 'use client';
 
 /**
- * Visualisation d'un rapport prédéfini - Étape 4.2.2
+ * Visualisation d'un rapport prédéfini - Étape 4.2.2 + 4.2.3 (export, planification)
  */
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Link } from '@/i18n/routing';
+import { useAuthStore } from '@/lib/store';
 import { useOrganization } from '@/hooks/useOrganization';
 import { getPredefinedReportData } from '@/app/actions/reports/getPredefinedReportData';
 import { PREDEFINED_REPORT_TYPES, REPORT_METRICS } from '@/app/actions/reports/types';
 import type { PredefinedReportType } from '@/app/actions/reports/types';
-import { ReportView } from '@/components/reports';
-import { ChevronRight, Loader2 } from 'lucide-react';
+import { ReportView, ExportButtons, ScheduleReportModal } from '@/components/reports';
+import { Button } from '@/components/ui';
+import { ChevronRight, Loader2, CalendarClock } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
@@ -33,11 +35,13 @@ const PREDEFINED_METRICS: Record<PredefinedReportType, string> = {
 export default function PredefinedReportViewPage() {
   const params = useParams();
   const type = params?.type as string;
+  const { user } = useAuthStore();
   const { activeOrganization, isLoading: orgLoading } = useOrganization();
   const [rows, setRows] = useState<{ label: string; value: number }[]>([]);
   const [summary, setSummary] = useState<number | undefined>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 
   const definition = PREDEFINED_REPORT_TYPES.find((r) => r.type === type);
   const metricLabel = definition ? PREDEFINED_METRICS[definition.type as PredefinedReportType] : 'total_donations';
@@ -109,6 +113,36 @@ export default function PredefinedReportViewPage() {
           <ChevronRight className="h-4 w-4" />
           <span className="text-white truncate">{definition.label}</span>
         </nav>
+
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <ExportButtons
+            title={definition.label}
+            description={definition.description}
+            rows={rows}
+            summary={summary}
+            metricLabel={metricLabel}
+          />
+          {user?.id && (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                className="inline-flex items-center gap-2"
+                onClick={() => setScheduleModalOpen(true)}
+              >
+                <CalendarClock className="h-4 w-4" />
+                Planifier
+              </Button>
+              <ScheduleReportModal
+                isOpen={scheduleModalOpen}
+                onClose={() => setScheduleModalOpen(false)}
+                predefinedReportType={type}
+                reportName={definition.label}
+                userId={user.id}
+              />
+            </>
+          )}
+        </div>
 
         <ReportView
           title={definition.label}

@@ -1,8 +1,7 @@
 'use client';
 
 /**
- * Visualisation d'un rapport - Étape 4.2.1
- * Affiche le rapport (tableau + graphique) selon la config sauvegardée.
+ * Visualisation d'un rapport - Étape 4.2.1 + 4.2.3 (export, planification)
  */
 
 import { useState, useEffect } from 'react';
@@ -12,9 +11,10 @@ import { useAuthStore } from '@/lib/store';
 import { useOrganization } from '@/hooks/useOrganization';
 import { getReportAction } from '@/app/actions/reports/getReport';
 import { getReportData } from '@/app/actions/reports/getReportData';
-import { ReportView } from '@/components/reports';
+import { ReportView, ExportButtons, ScheduleReportModal } from '@/components/reports';
 import { REPORT_METRICS } from '@/app/actions/reports/types';
-import { ChevronRight, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui';
+import { ChevronRight, Loader2, CalendarClock } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
@@ -38,6 +38,7 @@ export default function ReportViewPage() {
   const [dataError, setDataError] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 
   useEffect(() => {
     if (!reportId || reportId === 'new' || !user?.id) {
@@ -147,6 +148,33 @@ export default function ReportViewPage() {
           <ChevronRight className="h-4 w-4" />
           <span className="text-white truncate">{title || 'Rapport'}</span>
         </nav>
+
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <ExportButtons
+            title={title}
+            description={description}
+            rows={rows}
+            summary={summary}
+            metricLabel={metricLabel}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            className="inline-flex items-center gap-2"
+            onClick={() => setScheduleModalOpen(true)}
+          >
+            <CalendarClock className="h-4 w-4" />
+            Planifier
+          </Button>
+        </div>
+
+        <ScheduleReportModal
+          isOpen={scheduleModalOpen}
+          onClose={() => setScheduleModalOpen(false)}
+          reportId={reportId}
+          reportName={title || 'Rapport'}
+          userId={user.id}
+        />
 
         <ReportView
           title={title}
