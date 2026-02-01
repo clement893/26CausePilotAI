@@ -40,28 +40,28 @@ export interface AlertProps extends BaseComponentProps, ClosableProps, IconProps
 
 const variantClasses = {
   info: {
-    container: 'bg-primary-100 dark:bg-primary-900 border-primary-200 dark:border-primary-800',
-    text: 'text-primary-900 dark:text-primary-100',
-    title: 'text-primary-900 dark:text-primary-50 font-semibold',
-    icon: 'text-primary-600 dark:text-primary-400',
+    container: 'bg-[#13131A] dark:bg-primary-900 border-l-4 border-l-blue-500 dark:border-primary-800 border-gray-800 dark:border-primary-800',
+    text: 'text-gray-300 dark:text-primary-100',
+    title: 'text-white dark:text-primary-50 font-semibold',
+    icon: 'text-blue-500 dark:text-primary-400',
   },
   success: {
-    container: 'bg-secondary-100 dark:bg-secondary-900 border-secondary-200 dark:border-secondary-800',
-    text: 'text-secondary-900 dark:text-secondary-100',
-    title: 'text-secondary-900 dark:text-secondary-50 font-semibold',
-    icon: 'text-secondary-600 dark:text-secondary-400',
+    container: 'bg-[#13131A] dark:bg-secondary-900 border-l-4 border-l-green-500 dark:border-secondary-800 border-gray-800 dark:border-secondary-800',
+    text: 'text-gray-300 dark:text-secondary-100',
+    title: 'text-white dark:text-secondary-50 font-semibold',
+    icon: 'text-green-500 dark:text-secondary-400',
   },
   warning: {
-    container: 'bg-warning-100 dark:bg-warning-900 border-warning-200 dark:border-warning-800',
-    text: 'text-warning-900 dark:text-warning-100',
-    title: 'text-warning-900 dark:text-warning-50 font-semibold',
-    icon: 'text-warning-600 dark:text-warning-400',
+    container: 'bg-[#13131A] dark:bg-warning-900 border-l-4 border-l-yellow-500 dark:border-warning-800 border-gray-800 dark:border-warning-800',
+    text: 'text-gray-300 dark:text-warning-100',
+    title: 'text-white dark:text-warning-50 font-semibold',
+    icon: 'text-yellow-500 dark:text-warning-400',
   },
   error: {
-    container: 'bg-error-100 dark:bg-error-900 border-error-200 dark:border-error-800',
-    text: 'text-error-900 dark:text-error-100',
-    title: 'text-error-900 dark:text-error-50 font-semibold',
-    icon: 'text-error-600 dark:text-error-400',
+    container: 'bg-[#13131A] dark:bg-error-900 border-l-4 border-l-red-500 dark:border-error-800 border-gray-800 dark:border-error-800',
+    text: 'text-gray-300 dark:text-error-100',
+    title: 'text-white dark:text-error-50 font-semibold',
+    icon: 'text-red-500 dark:text-error-400',
   },
 };
 
@@ -114,7 +114,7 @@ function Alert({ variant = 'info', title, children, onClose, className, icon }: 
   const variantStyles = variantConfig ? applyVariantConfigAsStyles(variantConfig) : {};
 
   return (
-    <div className={clsx('rounded-lg border p-lg', classes.container, className)} style={variantStyles}>
+    <div className={clsx('rounded-lg p-lg', classes.container, className)} style={variantStyles}>
       <div className="flex">
         <div className="flex-shrink-0">{displayIcon}</div>
         <div className="ml-4 flex-1">

@@ -108,6 +108,17 @@ const variants = {
     ['focus:ring-error-500', 'dark:focus:ring-error-400'],
     'color-error-500'
   ),
+  // Gradient variant for modern dark UI
+  gradient: [
+    'bg-gradient-to-r',
+    'from-blue-500',
+    'to-purple-500',
+    'text-white',
+    'hover:from-blue-600',
+    'hover:to-purple-600',
+    'focus:ring-primary-500',
+    'dark:focus:ring-primary-400',
+  ].join(' '),
 };
 
 // Default sizes (fallback if theme config not available)

@@ -19,6 +19,11 @@ function Badge({ children, variant = 'default', className }: BadgeProps) {
     warning: 'bg-warning-50 dark:bg-warning-900 text-warning-900 dark:text-warning-300',
     error: 'bg-error-50 dark:bg-error-900 text-error-900 dark:text-error-300',
     info: 'bg-info-50 dark:bg-info-900 text-info-900 dark:text-info-300',
+    // Gradient variants for modern dark UI
+    'gradient-primary': 'bg-gradient-to-r from-blue-500 to-purple-500 text-white',
+    'gradient-success': 'bg-gradient-to-r from-green-500 to-cyan-500 text-white',
+    'gradient-warning': 'bg-gradient-to-r from-orange-500 to-red-500 text-white',
+    'gradient-info': 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white',
   };
 
   // Merge theme variant with default variant

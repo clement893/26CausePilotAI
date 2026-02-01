@@ -98,6 +98,8 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick
   hover?: boolean;
   /** Elevated variant: stronger shadow, rounded-2xl */
   elevated?: boolean;
+  /** Card variant: 'default' | 'glass' | 'gradient-border' */
+  variant?: 'default' | 'glass' | 'gradient-border';
   /** Click handler */
   onClick?: () => void;
   /** Add padding to card content */
@@ -114,6 +116,7 @@ export default function Card({
   className,
   hover = false,
   elevated = false,
+  variant = 'default',
   onClick,
   padding = true,
   ...props
@@ -145,30 +148,158 @@ export default function Card({
   const cardPadding = getCardPadding();
   const useThemePadding = typeof cardPadding === 'string' && cardPadding !== 'p-lg';
 
-  return (
-    <div
-      className={clsx(
-        'border transition-all duration-300',
-        elevated ? 'rounded-2xl shadow-lg' : 'rounded-xl shadow-md',
-        // Normal background (will be overridden by glassmorphism if enabled)
-        'bg-[var(--color-background)]',
-        'border-[var(--color-border)]',
-        hover && 'hover:-translate-y-0.5',
-        hover && (elevated ? 'hover:shadow-xl' : 'hover:shadow-lg'),
+  // Handle different card variants
+  const getCardClasses = () => {
+    if (variant === 'glass') {
+      return clsx(
+        'glass-effect transition-all duration-300',
+        elevated ? 'rounded-2xl' : 'rounded-xl',
+        hover && 'hover-lift',
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
         className
-      )}
-      style={
-        {
-          // Glassmorphism support: use CSS variables with fallbacks
-          backgroundColor: 'var(--glassmorphism-card-background, var(--color-background))',
-          backdropFilter: 'var(--glassmorphism-card-backdrop-blur, var(--glassmorphism-backdrop, none))',
-          WebkitBackdropFilter: 'var(--glassmorphism-card-backdrop-blur, var(--glassmorphism-backdrop, none))',
-          borderColor: 'var(--glassmorphism-card-border, var(--color-border))',
-          // Enhanced shadow for glassmorphism (will use normal shadow if glassmorphism not enabled)
-          boxShadow: 'var(--glassmorphism-shadow, var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)))',
-        } as React.CSSProperties
-      }
+      );
+    }
+    
+    if (variant === 'gradient-border') {
+      return clsx(
+        'relative transition-all duration-300',
+        elevated ? 'rounded-2xl' : 'rounded-xl',
+        hover && 'hover-lift',
+        onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
+        className
+      );
+    }
+
+    // Default variant
+    return clsx(
+      'border transition-all duration-300',
+      elevated ? 'rounded-2xl shadow-lg' : 'rounded-xl shadow-md',
+      'bg-[#13131A] dark:bg-[var(--color-background)]',
+      'border-gray-800 dark:border-[var(--color-border)]',
+      hover && 'hover-lift',
+      hover && (elevated ? 'hover:shadow-xl' : 'hover:shadow-lg'),
+      onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
+      className
+    );
+  };
+
+  const getCardStyle = (): React.CSSProperties => {
+    if (variant === 'glass') {
+      return {
+        backgroundColor: 'rgba(28, 28, 38, 0.6)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+      } as React.CSSProperties;
+    }
+
+    if (variant === 'gradient-border') {
+      return {} as React.CSSProperties;
+    }
+
+    // Default variant
+    return {
+      backgroundColor: 'var(--glassmorphism-card-background, #13131A)',
+      backdropFilter: 'var(--glassmorphism-card-backdrop-blur, var(--glassmorphism-backdrop, none))',
+      WebkitBackdropFilter: 'var(--glassmorphism-card-backdrop-blur, var(--glassmorphism-backdrop, none))',
+      borderColor: 'var(--glassmorphism-card-border, #1f2937)',
+      boxShadow: 'var(--glassmorphism-shadow, var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)))',
+    } as React.CSSProperties;
+  };
+
+  // For gradient-border variant, wrap content
+  if (variant === 'gradient-border') {
+    return (
+      <div
+        className={clsx(
+          'relative p-[1px] rounded-xl bg-gradient-to-r from-pink-500 to-purple-500',
+          hover && 'hover-lift',
+          className
+        )}
+        onClick={onClick}
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
+        aria-label={onClick && !title ? 'Clickable card' : undefined}
+        onKeyDown={
+          onClick
+            ? (e: React.KeyboardEvent<HTMLDivElement>) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onClick();
+                }
+              }
+            : undefined
+        }
+      >
+        <div
+          className={clsx(
+            'bg-[#13131A] rounded-[7px]',
+            elevated ? 'rounded-2xl' : 'rounded-xl'
+          )}
+          style={getCardStyle()}
+        >
+          {(title || subtitle || header) && (
+            <div
+              className={clsx('border-b border-gray-800', !useThemePadding && 'px-lg py-md')}
+              style={
+                useThemePadding
+                  ? {
+                      paddingLeft: cardPadding,
+                      paddingRight: cardPadding,
+                      paddingTop: cardPadding,
+                      paddingBottom: cardPadding,
+                    }
+                  : undefined
+              }
+            >
+              {header || (
+                <>
+                  {title && <h3 className="text-lg font-semibold text-white">{title}</h3>}
+                  {subtitle && <p className="mt-1 text-sm text-gray-400">{subtitle}</p>}
+                </>
+              )}
+            </div>
+          )}
+
+          <div
+            className={clsx(padding && !useThemePadding && cardPadding)}
+            style={
+              padding && useThemePadding
+                ? {
+                    padding: cardPadding,
+                  }
+                : undefined
+            }
+          >
+            {children}
+          </div>
+
+          {cardFooter && (
+            <div
+              className={clsx('border-t border-gray-800 bg-[#1C1C26]', !useThemePadding && 'px-lg py-md')}
+              style={
+                useThemePadding
+                  ? {
+                      paddingLeft: cardPadding,
+                      paddingRight: cardPadding,
+                      paddingTop: cardPadding,
+                      paddingBottom: cardPadding,
+                    }
+                  : undefined
+              }
+            >
+              {cardFooter}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={getCardClasses()}
+      style={getCardStyle()}
       onClick={
         onClick
           ? (e: React.MouseEvent<HTMLDivElement>) => {
@@ -217,8 +348,8 @@ export default function Card({
         >
           {header || (
             <>
-              {title && <h3 className="text-lg font-semibold text-[var(--color-foreground)]">{title}</h3>}
-              {subtitle && <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">{subtitle}</p>}
+              {title && <h3 className="text-lg font-semibold text-white dark:text-[var(--color-foreground)]">{title}</h3>}
+              {subtitle && <p className="mt-1 text-sm text-gray-400 dark:text-[var(--color-muted-foreground)]">{subtitle}</p>}
             </>
           )}
         </div>
@@ -239,7 +370,7 @@ export default function Card({
 
       {cardFooter && (
         <div
-          className={clsx('border-t border-[var(--color-border)] bg-[var(--color-muted)]', !useThemePadding && 'px-lg py-md')}
+          className={clsx('border-t border-gray-800 dark:border-[var(--color-border)] bg-[#1C1C26] dark:bg-[var(--color-muted)]', !useThemePadding && 'px-lg py-md')}
           style={
             useThemePadding
               ? {

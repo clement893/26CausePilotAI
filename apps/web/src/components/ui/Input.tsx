@@ -81,7 +81,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor={inputId} className="block text-sm font-medium text-gray-300 dark:text-foreground mb-2">
             {label}
             {props.required && (
               <span className="text-error-500 dark:text-error-400 ml-1" aria-label="required">
@@ -91,7 +91,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
 
-        <div className="relative">
+        <div className="relative form-input-glow">
           {leftIcon && (
             <div
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none"
@@ -107,13 +107,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={clsx(
               'w-full border rounded-lg transition-all duration-200',
               paddingClasses,
-              'bg-[var(--color-input)] text-foreground',
+              'bg-[#1C1C26] dark:bg-[var(--color-input)] text-white dark:text-foreground',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'placeholder:text-muted-foreground',
+              'placeholder:text-gray-500 dark:placeholder:text-muted-foreground',
               error
                 ? 'border-error-500 dark:border-error-400 focus:ring-error-500/20'
-                : 'border-border focus:ring-primary/20',
+                : 'border-gray-700 dark:border-border focus:ring-primary/20',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className
