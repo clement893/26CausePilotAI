@@ -57,7 +57,8 @@ export async function listComments(
     ]);
 
     // Convertir en format Comment
-    const formattedComments: Comment[] = comments.map((comment) => ({
+    type CommentRow = { id: string; content: string; sentiment: string | null; donatorId: string; createdAt: Date };
+    const formattedComments: Comment[] = comments.map((comment: CommentRow) => ({
       id: comment.id,
       content: comment.content,
       sentiment: comment.sentiment as 'positive' | 'negative' | 'neutral' | undefined,
