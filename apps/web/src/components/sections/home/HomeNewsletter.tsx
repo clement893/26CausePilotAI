@@ -30,7 +30,7 @@ export function HomeNewsletter() {
   };
 
   return (
-    <section className="py-32 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50from-blue-950/20via-purple-950/20to-pink-950/20 relative overflow-hidden">
+    <section className="py-32 bg-gradient-to-br from-blue-50/20 via-purple-50/20 to-pink-50/20 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       
@@ -115,7 +115,7 @@ export function HomeNewsletter() {
                     </div>
                   </form>
                 ) : (
-                  <div className="max-w-2xl mx-auto p-8 bg-gradient-to-br from-green-50 to-emerald-50from-green-950/30to-emerald-950/30 rounded-2xl border-2 border-green-500/30 animate-scale-in">
+                  <div className="max-w-2xl mx-auto p-8 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-2xl border-2 border-green-500/30 animate-scale-in">
                     <div className="flex items-center justify-center gap-4 mb-4">
                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-xl">
                         <CheckCircle2 className="w-8 h-8 text-white" />

@@ -108,7 +108,7 @@ export function HomeDemo() {
                       onClick={() => handleSelectMessage(msg.id)}
                       className={`group relative w-full text-left p-6 rounded-2xl border-2 transition-all duration-300 ${
                         selectedMessage === msg.id
-                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50from-blue-950/50to-purple-950/50 shadow-xl scale-[1.02]'
+                          ? 'border-blue-500 bg-gradient-to-br from-blue-500/20 to-purple-500/20 shadow-xl scale-[1.02]'
                           : 'border-gray-800 hover:border-blue-500 hover:shadow-lg hover:scale-[1.01]'
                       }`}
                     >
@@ -173,7 +173,7 @@ export function HomeDemo() {
 
                 {/* Loading state */}
                 {isEnhancing && selectedMsg && (
-                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-blue-300border-blue-700 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50from-blue-950/30to-purple-950/30">
+                  <div className="h-full min-h-[300px] flex items-center justify-center border-2 border-dashed border-blue-500/30 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20">
                     <div className="text-center p-8">
                       <div className="relative w-16 h-16 mx-auto mb-6">
                         <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${selectedMsg.color} animate-ping opacity-20`} />
@@ -210,7 +210,7 @@ export function HomeDemo() {
                     <div className={`absolute -inset-1 bg-gradient-to-r ${selectedMsg.color} rounded-2xl blur-xl opacity-30`} />
                     
                     {/* Content */}
-                    <div className="relative p-8 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50from-green-950/30via-blue-950/30to-purple-950/30 rounded-2xl border-2 border-green-500/30 shadow-2xl">
+                    <div className="relative p-8 bg-gradient-to-br from-green-500/20 via-blue-500/20 to-purple-500/20 rounded-2xl border-2 border-green-500/30 shadow-2xl">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
                           <Sparkles className="w-6 h-6 text-white" />
