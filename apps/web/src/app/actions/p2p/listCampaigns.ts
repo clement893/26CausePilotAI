@@ -104,9 +104,24 @@ export async function listP2PCampaigns(
       total,
     });
 
+    type CampaignRow = {
+      id: string;
+      name: string;
+      slug: string;
+      description: string | null;
+      status: string;
+      startDate: Date | null;
+      endDate: Date | null;
+      goalAmount: unknown;
+      totalRaised: unknown;
+      participantCount: number;
+      teamCount: number;
+      createdAt: Date;
+      updatedAt: Date;
+    };
     return {
       success: true,
-      campaigns: campaigns.map(c => ({
+      campaigns: campaigns.map((c: CampaignRow) => ({
         ...c,
         goalAmount: c.goalAmount ? Number(c.goalAmount) : null,
         totalRaised: Number(c.totalRaised),
