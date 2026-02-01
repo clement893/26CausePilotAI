@@ -10,26 +10,27 @@ export default function ErrorState({
   onRetry,
 }: ErrorStateProps) {
   return (
-    <EmptyState
-      title={title}
-      description={description}
-      icon={
-        <svg
-          className="w-16 h-16 text-error-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          {' '}
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />{' '}
-        </svg>
-      }
-      action={onRetry ? { label: 'Réessayer', onClick: onRetry } : undefined}
-    />
+    <div className="glass-effect bg-[#13131A] dark:bg-background border border-red-500/30 dark:border-error-500 rounded-lg p-8">
+      <EmptyState
+        title={title}
+        description={description}
+        icon={
+          <svg
+            className="w-16 h-16 text-red-400 dark:text-error-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        }
+        action={onRetry ? { label: 'Réessayer', onClick: onRetry } : undefined}
+      />
+    </div>
   );
 }
