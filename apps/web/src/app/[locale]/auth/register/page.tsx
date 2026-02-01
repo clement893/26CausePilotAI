@@ -1,260 +1,215 @@
 'use client';
 
+/**
+ * Page d'inscription - Étape 1.1.3
+ * React Hook Form + Zod, AuthCard, AuthInput, AuthButton, PasswordStrengthIndicator, registerAction
+ */
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { AxiosError } from 'axios';
-import { authAPI } from '@/lib/api';
-import { useAuthStore } from '@/lib/store';
-import { transformApiUserToStoreUser } from '@/lib/auth/userTransform';
-import { handleApiError } from '@/lib/errors/api';
-import { Input, Button, Alert, Card, Container } from '@/components/ui';
+import { signIn } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema, type RegisterInput } from '@/lib/validations/auth';
+import { registerAction } from '@/app/actions/auth/register';
+import {
+  AuthCard,
+  AuthInput,
+  AuthButton,
+  PasswordStrengthIndicator,
+} from '@/components/auth';
 
-interface ApiErrorResponse {
-  detail?: string;
-  message?: string;
-  retry_after?: number;
-  error?: {
-    retry_after?: number;
-  };
-}
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'Nucleus Cause';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { login, setError } = useAuthStore();
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setLocalError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState(false);
 
-  const getPasswordStrength = (pwd: string): 'weak' | 'medium' | 'strong' => {
-    if (!pwd || pwd.length < 8) return 'weak';
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    setError,
+  } = useForm<RegisterInput>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      organizationName: '',
+      acceptTerms: false,
+    },
+  });
 
-    let score = 0;
-    const hasLower = /[a-z]/.test(pwd);
-    const hasUpper = /[A-Z]/.test(pwd);
-    const hasDigit = /[0-9]/.test(pwd);
-    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(pwd);
+  const password = watch('password');
 
-    // Length scoring
-    if (pwd.length >= 12) score += 2;
-    else if (pwd.length >= 8) score += 1;
-
-    // Character type scoring
-    if (hasLower) score += 1;
-    if (hasUpper) score += 1;
-    if (hasDigit) score += 1;
-    if (hasSpecial) score += 2;
-
-    // Check for weak patterns
-    const weakPatterns = ['123', 'abc', 'qwe', 'password', 'admin', 'letmein'];
-    const pwdLower = pwd.toLowerCase();
-    if (weakPatterns.some((pattern) => pwdLower.includes(pattern))) {
-      score -= 1;
-    }
-
-    // Sequential characters penalty
-    const sequential = ['12345', 'abcde', 'qwerty'];
-    if (sequential.some((seq) => pwdLower.includes(seq))) {
-      score -= 2;
-    }
-
-    if (score < 4) return 'weak';
-    if (score < 6) return 'medium';
-    return 'strong';
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLocalError('');
-
-    if (password !== confirmPassword) {
-      setLocalError('Passwords do not match');
-      return;
-    }
-
-    // Check password strength
-    const strength = getPasswordStrength(password);
-    if (strength === 'weak') {
-      setLocalError(
-        'Password is too weak. Please use a stronger password with at least 12 characters, ' +
-          'uppercase, lowercase, numbers, and special characters.'
-      );
-      return;
-    }
-    if (strength === 'medium') {
-      setLocalError(
-        'Password strength is medium. Please use a stronger password with at least 12 characters, ' +
-          'uppercase, lowercase, numbers, and special characters for better security.'
-      );
-      return;
-    }
-
-    // Basic validation (backend will also validate)
-    if (password.length < 8) {
-      setLocalError('Password must be at least 8 characters');
-      return;
-    }
-    if (password.length > 128) {
-      setLocalError('Password cannot exceed 128 characters');
-      return;
-    }
-    if (!/[A-Z]/.test(password)) {
-      setLocalError('Password must contain at least one uppercase letter');
-      return;
-    }
-    if (!/[a-z]/.test(password)) {
-      setLocalError('Password must contain at least one lowercase letter');
-      return;
-    }
-    if (!/[0-9]/.test(password)) {
-      setLocalError('Password must contain at least one digit');
-      return;
-    }
-
-    setIsLoading(true);
-
+  const onSubmit = async (data: RegisterInput) => {
+    setLoading(true);
     try {
-      await authAPI.register(email, password, name);
-      const loginResponse = await authAPI.login(email, password);
-      const { access_token, refresh_token, user } = loginResponse.data;
-
-      // Transform user data to store format
-      const userForStore = transformApiUserToStoreUser(user);
-
-      // CRITICAL: Wait for token storage to complete before redirecting
-      await login(userForStore, access_token, refresh_token);
-
-      // Small delay to ensure token is available in sessionStorage for ProtectedRoute
-      await new Promise((resolve) => setTimeout(resolve, 50));
-
-      router.push('/dashboard');
-    } catch (err) {
-      const axiosError = err as AxiosError<ApiErrorResponse>;
-      const statusCode = axiosError.response?.status;
-
-      // Handle rate limit error (429) with specific message
-      if (statusCode === 429) {
-        const responseData = axiosError.response?.data;
-        // Try multiple possible locations for retry_after
-        const retryAfter =
-          responseData?.retry_after ||
-          responseData?.error?.retry_after ||
-          axiosError.response?.headers?.['retry-after'];
-
-        let errorMessage = 'Too many registration attempts. ';
-        if (retryAfter) {
-          const seconds = parseInt(String(retryAfter), 10);
-          if (!isNaN(seconds) && seconds > 0) {
-            const minutes = Math.ceil(seconds / 60);
-            if (minutes > 1) {
-              errorMessage += `Please wait ${minutes} minutes before trying again.`;
-            } else {
-              errorMessage += `Please wait ${seconds} seconds before trying again.`;
-            }
-          } else {
-            errorMessage += 'Please wait a minute before trying again.';
-          }
-        } else {
-          errorMessage += 'Please wait a minute before trying again.';
-        }
-        setLocalError(errorMessage);
-        setError(errorMessage);
-      } else {
-        const appError = handleApiError(err);
-        setLocalError(appError.message);
-        setError(appError.message);
+      const result = await registerAction(data);
+      if (result?.error) {
+        setError('root', { message: result.error });
+        return;
       }
+      router.push('/auth/welcome');
+      router.refresh();
+    } catch {
+      setError('root', { message: 'Une erreur est survenue. Veuillez réessayer.' });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 from-[#1C1C26] to-[#1C1C26]">
-      <Container className="w-full max-w-md">
-        <Card>
-          <h1 className="text-3xl font-bold text-center text-white mb-8">Register</h1>
+    <main
+      className="flex min-h-screen items-center justify-center px-4 py-8"
+      style={{ backgroundColor: 'var(--background-primary, #0A0A0F)' }}
+    >
+      <AuthCard
+        logo={
+          <span className="text-xl font-bold text-[var(--text-primary,#FFF)]">
+            {APP_NAME}
+          </span>
+        }
+      >
+        <h1 className="mb-6 text-center text-2xl font-bold text-[var(--text-primary,#FFF)]">
+          Créer un compte
+        </h1>
 
-          {error && (
-            <Alert variant="error" title="Erreur" className="mb-4">
-              {error}
-            </Alert>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              type="text"
-              label="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="John Doe"
-              fullWidth
-            />
-
-            <Input
-              type="email"
-              label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="you@example.com"
-              fullWidth
-            />
-
-            <Input
-              type="password"
-              label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="••••••••"
-              maxLength={128}
-              helperText="Must be at least 8 characters with uppercase, lowercase, and a number"
-              fullWidth
-            />
-
-            <Input
-              type="password"
-              label="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              placeholder="••••••••"
-              maxLength={128}
-              error={
-                password !== confirmPassword && confirmPassword
-                  ? 'Passwords do not match'
-                  : undefined
-              }
-              fullWidth
-            />
-
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={isLoading}
-              loading={isLoading}
-              fullWidth
-            >
-              {isLoading ? 'Registering...' : 'Register'}
-            </Button>
-          </form>
-
-          <p className="text-center text-gray-400 mt-6">
-            Already have an account?{' '}
-            <Link
-              href="/auth/login"
-              className="text-primary-600 text-blue-400 hover:underline"
-            >
-              Login
-            </Link>
+        {errors.root && (
+          <p className="mb-4 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500" role="alert">
+            {errors.root.message}
           </p>
-        </Card>
-      </Container>
+        )}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AuthInput
+              label="Prénom"
+              placeholder="Jean"
+              fullWidth
+              error={errors.firstName?.message}
+              {...register('firstName')}
+            />
+            <AuthInput
+              label="Nom"
+              placeholder="Dupont"
+              fullWidth
+              error={errors.lastName?.message}
+              {...register('lastName')}
+            />
+          </div>
+          <AuthInput
+            label="Email"
+            type="email"
+            placeholder="vous@exemple.com"
+            fullWidth
+            error={errors.email?.message}
+            {...register('email')}
+          />
+          <div>
+            <AuthInput
+              label="Mot de passe"
+              type="password"
+              placeholder="••••••••"
+              fullWidth
+              error={errors.password?.message}
+              {...register('password')}
+            />
+            <PasswordStrengthIndicator password={password} className="mt-2" />
+          </div>
+          <AuthInput
+            label="Confirmer le mot de passe"
+            type="password"
+            placeholder="••••••••"
+            fullWidth
+            error={errors.confirmPassword?.message}
+            {...register('confirmPassword')}
+          />
+          <AuthInput
+            label="Nom de l'organisation"
+            placeholder="Mon association"
+            fullWidth
+            error={errors.organizationName?.message}
+            {...register('organizationName')}
+          />
+          <label className="flex items-start gap-2 text-sm text-[var(--text-secondary,#A0A0B0)]">
+            <input type="checkbox" className="mt-1 rounded" {...register('acceptTerms')} />
+            <span>
+              J&apos;accepte les{' '}
+              <Link href="/terms" className="text-[var(--color-info,#3B82F6)] hover:underline">
+                conditions d&apos;utilisation
+              </Link>
+            </span>
+          </label>
+          {errors.acceptTerms && (
+            <p className="text-sm text-red-500">{errors.acceptTerms.message}</p>
+          )}
+          <AuthButton type="submit" variant="primary" fullWidth loading={loading}>
+            Créer mon compte
+          </AuthButton>
+        </form>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-white/10" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-[rgba(28,28,38,0.9)] px-2 text-[var(--text-secondary,#A0A0B0)]">
+              Ou continuer avec
+            </span>
+          </div>
+        </div>
+
+        <AuthButton
+          type="button"
+          variant="google"
+          fullWidth
+          loading={oauthLoading}
+          onClick={async () => {
+            setOauthLoading(true);
+            try {
+              await signIn('google', { callbackUrl: '/auth/welcome' });
+            } finally {
+              setOauthLoading(false);
+            }
+          }}
+          icon={
+            <svg className="h-5 w-5" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+          }
+        >
+          Google
+        </AuthButton>
+
+        <p className="mt-6 text-center text-sm text-[var(--text-secondary,#A0A0B0)]">
+          Déjà un compte ?{' '}
+          <Link href="/auth/login" className="text-[var(--color-info,#3B82F6)] hover:underline">
+            Se connecter
+          </Link>
+        </p>
+      </AuthCard>
     </main>
   );
 }

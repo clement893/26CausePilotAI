@@ -8,6 +8,7 @@ export { usePreferences } from './usePreferences';
 export { useFeatureFlag } from './useFeatureFlag';
 export { useApi } from './useApi';
 export { useConfirm, useConfirmAction } from './useConfirm';
+export { useSession, useUser, useOrganization } from './use-session';
 
 // Re-export types
 export type { UseApiOptions, UseApiResult } from './useApi';

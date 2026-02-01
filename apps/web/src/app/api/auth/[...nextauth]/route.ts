@@ -1,21 +1,13 @@
 /**
- * NextAuth API Route Handler
- * Handles all authentication requests
- *
- * Note: Handlers are created inline to prevent Turbopack from analyzing vendored Next.js modules
- * during the "Collecting page data" phase
+ * NextAuth API Route Handler - Étape 1.1.2
+ * Handles all authentication requests (signin, signout, callback, etc.)
  */
 
-// Force dynamic rendering - must be before any imports
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 export const runtime = 'nodejs';
 export const revalidate = 0;
 
-// Import NextAuth and config dynamically to avoid static analysis issues
-import NextAuth from 'next-auth';
-import { authConfig } from '@/lib/auth/config';
+import { handlers } from '@/lib/auth';
 
-// Create NextAuth instance and handlers inline to prevent Turbopack from analyzing vendored modules
-const nextAuth = NextAuth(authConfig);
-export const { GET, POST } = nextAuth.handlers;
+export const { GET, POST } = handlers;

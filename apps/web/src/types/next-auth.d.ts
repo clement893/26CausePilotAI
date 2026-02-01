@@ -1,10 +1,13 @@
 /**
  * NextAuth Type Extensions
- * Extends NextAuth types to include custom session properties
+ * Étape 1.1.2 - Extends NextAuth types for multi-tenant session (organizationId, role, firstName, lastName)
  */
 
 import 'next-auth';
 import 'next-auth/jwt';
+
+/** Rôles cahier des charges Section 2.4 - Matrice des Permissions */
+export type Role = 'ADMIN' | 'DIRECTOR' | 'MANAGER';
 
 declare module 'next-auth' {
   interface Session {
@@ -13,7 +16,10 @@ declare module 'next-auth' {
       email: string;
       name?: string | null;
       image?: string | null;
-      role?: string;
+      role?: Role;
+      organizationId?: string;
+      firstName?: string | null;
+      lastName?: string | null;
     };
     accessToken?: string;
     error?: string;
@@ -24,12 +30,20 @@ declare module 'next-auth' {
     email: string;
     name?: string | null;
     image?: string | null;
-    role?: string;
+    role?: Role;
+    organizationId?: string;
+    firstName?: string | null;
+    lastName?: string | null;
   }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT {
+    userId?: string;
+    role?: Role;
+    organizationId?: string;
+    firstName?: string | null;
+    lastName?: string | null;
     accessToken?: string;
     refreshToken?: string;
     accessTokenExpires?: number;

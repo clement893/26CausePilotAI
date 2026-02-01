@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
+import { getToken } from 'next-auth/jwt';
 import { verifyToken, extractTokenFromHeader } from '@/lib/auth/jwt';
 import { routing } from './i18n/routing';
 
@@ -60,15 +61,19 @@ export async function middleware(request: NextRequest) {
   // Extract locale from pathname for route checking
   const pathnameWithoutLocale = pathname.replace(/^\/(en|fr)/, '') || '/';
 
-  // Public routes that don't require authentication
+  // Public routes that don't require authentication (Étape 1.1.2)
   const publicRoutes = [
     '/',
     '/auth/login',
     '/auth/register',
+    '/auth/signin',
     '/auth/callback', // OAuth callback - needs to be public to receive token
     '/auth/google/testing', // Google OAuth test page
     '/auth/forgot-password',
     '/auth/reset-password',
+    '/auth/error',
+    '/auth/verify-request',
+    '/auth/welcome',
     '/pricing',
     '/sitemap',
     '/sitemap.xml',
@@ -83,6 +88,29 @@ export async function middleware(request: NextRequest) {
   // Allow access to public routes
   if (isPublicRoute) {
     return response;
+  }
+
+  // NextAuth: protect page routes (Étape 1.1.2) - redirect if no session
+  if (!pathname.startsWith('/api/')) {
+    const nextAuthToken = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET ?? '',
+      salt: 'next-auth.session-token',
+    });
+    if (!nextAuthToken) {
+      const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
+      const loginUrl = new URL(`/${locale}/auth/login`, request.url);
+      loginUrl.searchParams.set('callbackUrl', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    // Routes /admin/* require role ADMIN
+    if (pathnameWithoutLocale.startsWith('/admin')) {
+      const role = (nextAuthToken as { role?: string }).role;
+      if (role !== 'ADMIN') {
+        const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
+        return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));
+      }
+    }
   }
 
   // API routes - check Authorization header

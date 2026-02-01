@@ -1,0 +1,19 @@
+/**
+ * Password hashing utilities - Étape 1.1.2
+ * bcrypt rounds: 10 (cahier des charges)
+ */
+
+import bcrypt from 'bcryptjs';
+
+const SALT_ROUNDS = 10;
+
+export async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, SALT_ROUNDS);
+}
+
+export async function verifyPassword(
+  password: string,
+  hashedPassword: string
+): Promise<boolean> {
+  return bcrypt.compare(password, hashedPassword);
+}

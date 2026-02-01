@@ -1,0 +1,201 @@
+// Étape 1.1.1 - Modèle de données Utilisateurs, Organisations & Rôles
+// Référence: Cahier des charges - Section 2.4 Matrice des Permissions, 13.1 Architecture multi-tenant
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============= 1. Enum Role =============
+enum Role {
+  ADMIN    // Administrateur système - accès complet
+  DIRECTOR // Gestionnaire Philanthropique (Directeur) - lecture seule sur campagnes
+  MANAGER  // Gestionnaire de Campagnes - accès complet aux campagnes
+}
+
+// ============= 2. Modèle Organization =============
+model Organization {
+  id          String   @id @default(cuid())
+  name        String   // Nom de l'organisation (ex: "Croix-Rouge Québec")
+  slug        String   @unique // URL-friendly identifier (ex: "croix-rouge-quebec")
+
+  // Informations de branding
+  logo        String?  // URL du logo de l'organisation
+  website     String?  // Site web officiel
+  description String?  @db.Text // Description de la mission
+
+  // Coordonnées
+  email       String?  // Email de contact principal
+  phone       String?  // Téléphone principal
+  address     String?  // Adresse physique complète
+  city        String?
+  province    String?
+  postalCode  String?
+  country     String   @default("CA") // Code pays ISO (CA, US, FR, etc.)
+
+  // Paramètres système
+  timezone    String   @default("America/Toronto") // Fuseau horaire
+  currency    String   @default("CAD") // Devise par défaut (CAD, USD, EUR)
+  language    String   @default("fr") // Langue par défaut (fr, en)
+
+  // Statut
+  isActive    Boolean  @default(true) // Organisation active ou suspendue
+
+  // Relations
+  users       User[]   // Utilisateurs de cette organisation
+  donators    Donator[] // Donateurs de cette organisation
+
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+  @@map("organizations")
+}
+
+// ============= 3. Modèle User =============
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+
+  // Informations personnelles
+  firstName     String?
+  lastName      String?
+  phone         String?
+  avatar        String?   // URL de l'avatar
+
+  // Authentification
+  password      String?   // Hash du mot de passe (si auth locale)
+
+  // Organisation et rôle
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role           Role      @default(MANAGER)
+
+  // Statut
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+
+  // Relations existantes (à conserver)
+  accounts      Account[]
+  sessions      Session[]
+
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([email])
+  @@index([organizationId])
+  @@index([role])
+  @@map("users")
+}
+
+// Modèles requis pour les relations User.accounts et User.sessions
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+// ============= 4. Modèle Donator =============
+model Donator {
+  id            String   @id @default(cuid())
+
+  // Informations personnelles
+  email         String   // Email principal du donateur
+  firstName     String?
+  lastName      String?
+  phone         String?
+
+  // Adresse
+  address       String?
+  city          String?
+  province      String?
+  postalCode    String?
+  country       String?
+
+  // Informations professionnelles
+  profession    String?
+  employer      String?
+  sector        String?  // Secteur d'activité
+
+  // Préférences de communication
+  preferredChannel String? // email, phone, sms, mail
+  preferredLanguage String @default("fr") // fr, en
+  communicationFrequency String? // weekly, monthly, quarterly
+
+  // Intérêts et causes
+  interests     String[] // Array de causes d'intérêt
+
+  // Champs personnalisés (JSON pour flexibilité)
+  customFields  Json?    // Champs additionnels spécifiques à l'organisation
+
+  // Consentements RGPD/PIPEDA
+  consentEmail  Boolean  @default(false)
+  consentPhone  Boolean  @default(false)
+  consentSMS    Boolean  @default(false)
+  consentMail   Boolean  @default(false)
+  consentDate   DateTime?
+
+  // Segmentation automatique (sera calculé par l'IA)
+  segment       String?  // VIP, Active, Inactive, New, etc.
+  score         Int      @default(0) // Score de propension au don (0-100)
+
+  // Métriques de dons (seront calculées)
+  totalDonations Decimal @default(0) @db.Decimal(10, 2)
+  donationCount  Int     @default(0)
+  averageDonation Decimal @default(0) @db.Decimal(10, 2)
+  lastDonationDate DateTime?
+  firstDonationDate DateTime?
+
+  // Statut
+  isActive      Boolean  @default(true)
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([email, organizationId]) // Un email unique par organisation
+  @@index([email])
+  @@index([organizationId])
+  @@index([segment])
+  @@index([lastDonationDate])
+  @@map("donators")
+}
