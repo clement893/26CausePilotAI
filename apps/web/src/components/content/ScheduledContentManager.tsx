@@ -54,8 +54,8 @@ export interface ScheduledContentManagerProps {
       render: (_value: unknown, schedule: ScheduledContent) => (
         <div className="flex items-center gap-2">
           {' '}
-          <Calendar className="w-4 h-4 text-muted-foreground" />{' '}
-          <span className="font-medium text-foreground">{schedule.name}</span>{' '}
+          <Calendar className="w-4 h-4 text-gray-400" />{' '}
+          <span className="font-medium text-white">{schedule.name}</span>{' '}
         </div>
       ),
     },
@@ -72,7 +72,7 @@ export interface ScheduledContentManagerProps {
       label: 'Scheduled At',
       sortable: true,
       render: (_value: unknown, schedule: ScheduledContent) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {' '}
           {new Date(schedule.scheduled_at).toLocaleString()}{' '}
         </span>
@@ -138,9 +138,10 @@ export interface ScheduledContentManagerProps {
             size="sm"
             onClick={() => handleDelete(schedule.id)}
             title="Delete"
+            className="text-gray-400 hover:bg-[#252532] hover:text-red-400"
           >
             {' '}
-            <Trash2 className="w-4 h-4 text-danger-600 dark:text-danger-400" />{' '}
+            <Trash2 className="w-4 h-4" />{' '}
           </Button>{' '}
         </div>
       ),
@@ -220,11 +221,11 @@ export interface ScheduledContentManagerProps {
   return (
     <div className={className}>
       {' '}
-      <Card title="Scheduled Content">
+      <Card variant="glass" title="Scheduled Content" className="border border-gray-800">
         {' '}
         <div className="mb-4 flex justify-end">
           {' '}
-          <Button onClick={handleCreate} variant="primary">
+          <Button onClick={handleCreate} variant="gradient">
             {' '}
             <Plus className="w-4 h-4 mr-2" /> Schedule Content{' '}
           </Button>{' '}
@@ -259,11 +260,12 @@ export interface ScheduledContentManagerProps {
               variant="outline"
               onClick={() => setIsCreateModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               {' '}
               Cancel{' '}
             </Button>{' '}
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {' '}
               {isSubmitting ? 'Scheduling...' : 'Schedule'}{' '}
             </Button>{' '}
@@ -275,17 +277,18 @@ export interface ScheduledContentManagerProps {
           {' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2"> Name * </label>{' '}
+            <label className="block text-sm font-medium text-white mb-2"> Name * </label>{' '}
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Schedule name"
               required
+              className="form-input-glow"
             />{' '}
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Task Type *{' '}
             </label>{' '}
@@ -297,7 +300,7 @@ export interface ScheduledContentManagerProps {
                   task_type: e.target.value as ScheduledContent['task_type'],
                 })
               }
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
               required
             >
               {' '}
@@ -309,7 +312,7 @@ export interface ScheduledContentManagerProps {
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Scheduled At *{' '}
             </label>{' '}
@@ -318,18 +321,19 @@ export interface ScheduledContentManagerProps {
               value={formData.scheduled_at}
               onChange={(e) => setFormData({ ...formData, scheduled_at: e.target.value })}
               required
+              className="form-input-glow"
             />{' '}
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Recurrence (optional){' '}
             </label>{' '}
             <select
               value={formData.recurrence}
               onChange={(e) => setFormData({ ...formData, recurrence: e.target.value })}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
             >
               {' '}
               <option value="">None (One-time)</option> <option value="daily">Daily</option>{' '}
@@ -339,7 +343,7 @@ export interface ScheduledContentManagerProps {
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Description{' '}
             </label>{' '}
@@ -348,6 +352,7 @@ export interface ScheduledContentManagerProps {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Schedule description..."
               rows={3}
+              className="form-input-glow"
             />{' '}
           </div>{' '}
         </form>{' '}
@@ -365,11 +370,12 @@ export interface ScheduledContentManagerProps {
               variant="outline"
               onClick={() => setIsEditModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               {' '}
               Cancel{' '}
             </Button>{' '}
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {' '}
               {isSubmitting ? 'Saving...' : 'Save Changes'}{' '}
             </Button>{' '}
@@ -381,17 +387,18 @@ export interface ScheduledContentManagerProps {
           {' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2"> Name * </label>{' '}
+            <label className="block text-sm font-medium text-white mb-2"> Name * </label>{' '}
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Schedule name"
               required
+              className="form-input-glow"
             />{' '}
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Task Type *{' '}
             </label>{' '}
@@ -403,7 +410,7 @@ export interface ScheduledContentManagerProps {
                   task_type: e.target.value as ScheduledContent['task_type'],
                 })
               }
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
               required
             >
               {' '}
@@ -415,7 +422,7 @@ export interface ScheduledContentManagerProps {
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Scheduled At *{' '}
             </label>{' '}
@@ -424,18 +431,19 @@ export interface ScheduledContentManagerProps {
               value={formData.scheduled_at}
               onChange={(e) => setFormData({ ...formData, scheduled_at: e.target.value })}
               required
+              className="form-input-glow"
             />{' '}
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Recurrence (optional){' '}
             </label>{' '}
             <select
               value={formData.recurrence}
               onChange={(e) => setFormData({ ...formData, recurrence: e.target.value })}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
             >
               {' '}
               <option value="">None (One-time)</option> <option value="daily">Daily</option>{' '}
@@ -445,7 +453,7 @@ export interface ScheduledContentManagerProps {
           </div>{' '}
           <div>
             {' '}
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               {' '}
               Description{' '}
             </label>{' '}
@@ -454,6 +462,7 @@ export interface ScheduledContentManagerProps {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Schedule description..."
               rows={3}
+              className="form-input-glow"
             />{' '}
           </div>{' '}
         </form>{' '}

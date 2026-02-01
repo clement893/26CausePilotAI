@@ -69,8 +69,8 @@ export default function CategoriesManager({
       sortable: true,
       render: (_value: unknown, category: Category) => (
         <div className="flex items-center gap-2">
-          <Folder className="w-4 h-4 text-muted-foreground" />
-          <span className="font-medium text-foreground">{category.name}</span>
+          <Folder className="w-4 h-4 text-gray-400" />
+          <span className="font-medium text-white">{category.name}</span>
           {category.color && (
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
           )}
@@ -82,7 +82,7 @@ export default function CategoriesManager({
       label: 'Slug',
       sortable: true,
       render: (_value: unknown, category: Category) => (
-        <code className="text-sm text-muted-foreground">{category.slug}</code>
+        <code className="text-sm text-gray-400">{category.slug}</code>
       ),
     },
     {
@@ -98,7 +98,7 @@ export default function CategoriesManager({
       label: 'Parent',
       sortable: true,
       render: (_value: unknown, category: Category) => (
-        <span className="text-sm text-muted-foreground">{category.parent_name || '—'}</span>
+        <span className="text-sm text-gray-400">{category.parent_name || '—'}</span>
       ),
     },
     {
@@ -114,8 +114,9 @@ export default function CategoriesManager({
             size="sm"
             onClick={() => handleDelete(category.id)}
             title="Delete"
+            className="text-gray-400 hover:bg-[#252532] hover:text-red-400"
           >
-            <Trash2 className="w-4 h-4 text-danger-600 dark:text-danger-400" />
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       ),
@@ -195,9 +196,9 @@ export default function CategoriesManager({
 
   return (
     <div className={className}>
-      <Card title="Categories">
+      <Card variant="glass" title="Categories" className="border border-gray-800">
         <div className="mb-4 flex justify-end">
-          <Button onClick={handleCreate} variant="primary">
+          <Button onClick={handleCreate} variant="gradient">
             <Plus className="w-4 h-4 mr-2" />
             New Category
           </Button>
@@ -232,10 +233,11 @@ export default function CategoriesManager({
               variant="outline"
               onClick={() => setIsCreateModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Creating...' : 'Create Category'}
             </Button>
           </div>
@@ -243,21 +245,22 @@ export default function CategoriesManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
+            <label className="block text-sm font-medium text-white mb-2">Name *</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Category name"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Entity Type *</label>
+            <label className="block text-sm font-medium text-white mb-2">Entity Type *</label>
             <select
               value={formData.entity_type}
               onChange={(e) => setFormData({ ...formData, entity_type: e.target.value })}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
               required
             >
               <option value="post">Post</option>
@@ -268,7 +271,7 @@ export default function CategoriesManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Parent Category
             </label>
             <select
@@ -279,7 +282,7 @@ export default function CategoriesManager({
                   parent_id: e.target.value ? parseInt(e.target.value, 10) : undefined,
                 })
               }
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
             >
               <option value="">None (Top Level)</option>
               {parentCategories.map((cat) => (
@@ -291,26 +294,28 @@ export default function CategoriesManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+            <label className="block text-sm font-medium text-white mb-2">Description</label>
             <Textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Category description..."
               rows={3}
+              className="form-input-glow"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Icon</label>
+              <label className="block text-sm font-medium text-white mb-2">Icon</label>
               <Input
                 value={formData.icon}
                 onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
                 placeholder="Icon name or emoji"
+                className="form-input-glow"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Color</label>
+              <label className="block text-sm font-medium text-white mb-2">Color</label>
               <Input
                 type="color"
                 value={formData.color || '#3b82f6'}
@@ -334,10 +339,11 @@ export default function CategoriesManager({
               variant="outline"
               onClick={() => setIsEditModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
@@ -345,21 +351,22 @@ export default function CategoriesManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
+            <label className="block text-sm font-medium text-white mb-2">Name *</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Category name"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Entity Type *</label>
+            <label className="block text-sm font-medium text-white mb-2">Entity Type *</label>
             <select
               value={formData.entity_type}
               onChange={(e) => setFormData({ ...formData, entity_type: e.target.value })}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
               required
             >
               <option value="post">Post</option>
@@ -370,7 +377,7 @@ export default function CategoriesManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Parent Category
             </label>
             <select
@@ -381,7 +388,7 @@ export default function CategoriesManager({
                   parent_id: e.target.value ? parseInt(e.target.value, 10) : undefined,
                 })
               }
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
             >
               <option value="">None (Top Level)</option>
               {parentCategories
@@ -395,26 +402,28 @@ export default function CategoriesManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+            <label className="block text-sm font-medium text-white mb-2">Description</label>
             <Textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Category description..."
               rows={3}
+              className="form-input-glow"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Icon</label>
+              <label className="block text-sm font-medium text-white mb-2">Icon</label>
               <Input
                 value={formData.icon}
                 onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
                 placeholder="Icon name or emoji"
+                className="form-input-glow"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Color</label>
+              <label className="block text-sm font-medium text-white mb-2">Color</label>
               <Input
                 type="color"
                 value={formData.color || '#3b82f6'}

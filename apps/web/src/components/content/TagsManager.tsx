@@ -62,7 +62,7 @@ export default function TagsManager({
       sortable: true,
       render: (_value: unknown, tag: TagItem) => (
         <div className="flex items-center gap-2">
-          <TagIcon className="w-4 h-4 text-muted-foreground" />
+          <TagIcon className="w-4 h-4 text-gray-400" />
           <Badge variant="default" style={tag.color ? { backgroundColor: tag.color } : undefined}>
             {tag.name}
           </Badge>
@@ -74,7 +74,7 @@ export default function TagsManager({
       label: 'Slug',
       sortable: true,
       render: (_value: unknown, tag: TagItem) => (
-        <code className="text-sm text-muted-foreground">{tag.slug}</code>
+        <code className="text-sm text-gray-400">{tag.slug}</code>
       ),
     },
     {
@@ -88,7 +88,7 @@ export default function TagsManager({
       label: 'Usage',
       sortable: true,
       render: (_value: unknown, tag: TagItem) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {tag.usage_count} {tag.usage_count === 1 ? 'time' : 'times'}
         </span>
       ),
@@ -101,8 +101,8 @@ export default function TagsManager({
           <Button variant="ghost" size="sm" onClick={() => handleEdit(tag)} title="Edit">
             <Edit className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => handleDelete(tag.id)} title="Delete">
-            <Trash2 className="w-4 h-4 text-danger-600 dark:text-danger-400" />
+          <Button variant="ghost" size="sm" onClick={() => handleDelete(tag.id)} title="Delete" className="text-gray-400 hover:bg-[#252532] hover:text-red-400">
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       ),
@@ -174,9 +174,9 @@ export default function TagsManager({
 
   return (
     <div className={className}>
-      <Card title="Tags">
+      <Card variant="glass" title="Tags" className="border border-gray-800">
         <div className="mb-4 flex justify-end">
-          <Button onClick={handleCreate} variant="primary">
+          <Button onClick={handleCreate} variant="gradient">
             <Plus className="w-4 h-4 mr-2" />
             New Tag
           </Button>
@@ -211,10 +211,11 @@ export default function TagsManager({
               variant="outline"
               onClick={() => setIsCreateModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Creating...' : 'Create Tag'}
             </Button>
           </div>
@@ -222,21 +223,22 @@ export default function TagsManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
+            <label className="block text-sm font-medium text-white mb-2">Name *</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Tag name"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Entity Type *</label>
+            <label className="block text-sm font-medium text-white mb-2">Entity Type *</label>
             <select
               value={formData.entity_type}
               onChange={(e) => setFormData({ ...formData, entity_type: e.target.value })}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
               required
             >
               <option value="post">Post</option>
@@ -247,17 +249,18 @@ export default function TagsManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+            <label className="block text-sm font-medium text-white mb-2">Description</label>
             <Textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Tag description..."
               rows={3}
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Color</label>
+            <label className="block text-sm font-medium text-white mb-2">Color</label>
             <Input
               type="color"
               value={formData.color || '#3b82f6'}
@@ -280,10 +283,11 @@ export default function TagsManager({
               variant="outline"
               onClick={() => setIsEditModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
@@ -291,21 +295,22 @@ export default function TagsManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
+            <label className="block text-sm font-medium text-white mb-2">Name *</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Tag name"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Entity Type *</label>
+            <label className="block text-sm font-medium text-white mb-2">Entity Type *</label>
             <select
               value={formData.entity_type}
               onChange={(e) => setFormData({ ...formData, entity_type: e.target.value })}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+              className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
               required
             >
               <option value="post">Post</option>
@@ -316,17 +321,18 @@ export default function TagsManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+            <label className="block text-sm font-medium text-white mb-2">Description</label>
             <Textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Tag description..."
               rows={3}
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Color</label>
+            <label className="block text-sm font-medium text-white mb-2">Color</label>
             <Input
               type="color"
               value={formData.color || '#3b82f6'}

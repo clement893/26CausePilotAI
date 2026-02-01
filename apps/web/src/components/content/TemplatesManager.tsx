@@ -71,8 +71,8 @@ export default function TemplatesManager({
       sortable: true,
       render: (_value: unknown, template: ContentTemplate) => (
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-muted-foreground" />
-          <span className="font-medium text-foreground">{template.name}</span>
+          <FileText className="w-4 h-4 text-gray-400" />
+          <span className="font-medium text-white">{template.name}</span>
         </div>
       ),
     },
@@ -89,7 +89,7 @@ export default function TemplatesManager({
       label: 'Category',
       sortable: true,
       render: (_value: unknown, template: ContentTemplate) => (
-        <span className="text-sm text-muted-foreground">{template.category || '—'}</span>
+        <span className="text-sm text-gray-400">{template.category || '—'}</span>
       ),
     },
     {
@@ -107,7 +107,7 @@ export default function TemplatesManager({
       label: 'Last Updated',
       sortable: true,
       render: (_value: unknown, template: ContentTemplate) => (
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-gray-400">
           {new Date(template.updated_at).toLocaleDateString()}
         </span>
       ),
@@ -128,8 +128,9 @@ export default function TemplatesManager({
             size="sm"
             onClick={() => handleDelete(template.id)}
             title="Delete"
+            className="text-gray-400 hover:bg-[#252532] hover:text-red-400"
           >
-            <Trash2 className="w-4 h-4 text-danger-600 dark:text-danger-400" />
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       ),
@@ -215,9 +216,9 @@ export default function TemplatesManager({
 
   return (
     <div className={className}>
-      <Card title="Templates">
+      <Card variant="glass" title="Templates" className="border border-gray-800">
         <div className="mb-4 flex justify-end">
-          <Button onClick={handleCreate} variant="primary">
+          <Button onClick={handleCreate} variant="gradient">
             <Plus className="w-4 h-4 mr-2" />
             New Template
           </Button>
@@ -252,10 +253,11 @@ export default function TemplatesManager({
               variant="outline"
               onClick={() => setIsCreateModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Creating...' : 'Create Template'}
             </Button>
           </div>
@@ -263,24 +265,25 @@ export default function TemplatesManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
+            <label className="block text-sm font-medium text-white mb-2">Name *</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Template name"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Entity Type *
               </label>
               <select
                 value={formData.entity_type}
                 onChange={(e) => setFormData({ ...formData, entity_type: e.target.value })}
-                className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+                className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
                 required
               >
                 <option value="post">Post</option>
@@ -290,43 +293,47 @@ export default function TemplatesManager({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Category</label>
+              <label className="block text-sm font-medium text-white mb-2">Category</label>
               <Input
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 placeholder="Category"
+                className="form-input-glow"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+            <label className="block text-sm font-medium text-white mb-2">Description</label>
             <Textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Template description..."
               rows={2}
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Content *</label>
+            <label className="block text-sm font-medium text-white mb-2">Content *</label>
             <Textarea
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               placeholder="Template content..."
               rows={10}
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">HTML Content</label>
+            <label className="block text-sm font-medium text-white mb-2">HTML Content</label>
             <Textarea
               value={formData.content_html}
               onChange={(e) => setFormData({ ...formData, content_html: e.target.value })}
               placeholder="HTML content (optional)..."
               rows={5}
+              className="form-input-glow"
             />
           </div>
 
@@ -336,9 +343,9 @@ export default function TemplatesManager({
                 type="checkbox"
                 checked={formData.is_public}
                 onChange={(e) => setFormData({ ...formData, is_public: e.target.checked })}
-                className="rounded border-border"
+                className="rounded border-gray-700 bg-[#1C1C26]"
               />
-              <span className="text-sm text-foreground">Make template publicly available</span>
+              <span className="text-sm text-white">Make template publicly available</span>
             </label>
           </div>
         </form>
@@ -356,10 +363,11 @@ export default function TemplatesManager({
               variant="outline"
               onClick={() => setIsEditModalOpen(false)}
               disabled={isSubmitting}
+              className="border-gray-700 text-gray-300 hover:bg-[#252532] hover:text-white"
             >
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+            <Button variant="gradient" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
@@ -367,24 +375,25 @@ export default function TemplatesManager({
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
+            <label className="block text-sm font-medium text-white mb-2">Name *</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Template name"
               required
+              className="form-input-glow"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Entity Type *
               </label>
               <select
                 value={formData.entity_type}
                 onChange={(e) => setFormData({ ...formData, entity_type: e.target.value })}
-                className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+                className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-[#1C1C26] text-white form-input-glow"
                 required
               >
                 <option value="post">Post</option>
@@ -394,43 +403,47 @@ export default function TemplatesManager({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Category</label>
+              <label className="block text-sm font-medium text-white mb-2">Category</label>
               <Input
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 placeholder="Category"
+                className="form-input-glow"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+            <label className="block text-sm font-medium text-white mb-2">Description</label>
             <Textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Template description..."
               rows={2}
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Content *</label>
+            <label className="block text-sm font-medium text-white mb-2">Content *</label>
             <Textarea
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               placeholder="Template content..."
               rows={10}
               required
+              className="form-input-glow"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">HTML Content</label>
+            <label className="block text-sm font-medium text-white mb-2">HTML Content</label>
             <Textarea
               value={formData.content_html}
               onChange={(e) => setFormData({ ...formData, content_html: e.target.value })}
               placeholder="HTML content (optional)..."
               rows={5}
+              className="form-input-glow"
             />
           </div>
 
@@ -440,9 +453,9 @@ export default function TemplatesManager({
                 type="checkbox"
                 checked={formData.is_public}
                 onChange={(e) => setFormData({ ...formData, is_public: e.target.checked })}
-                className="rounded border-border"
+                className="rounded border-gray-700 bg-[#1C1C26]"
               />
-              <span className="text-sm text-foreground">Make template publicly available</span>
+              <span className="text-sm text-white">Make template publicly available</span>
             </label>
           </div>
         </form>
