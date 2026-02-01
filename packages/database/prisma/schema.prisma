@@ -46,6 +46,20 @@ enum SubscriptionStatus {
   EXPIRED
 }
 
+// ============= Étape 3.1.1 - Enums Marketing =============
+enum EmailCampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  CANCELED
+}
+
+enum AudienceType {
+  STATIC
+  DYNAMIC
+}
+
 // ============= 2. Modèle Organization =============
 model Organization {
   id          String   @id @default(cuid())
@@ -82,6 +96,10 @@ model Organization {
   paymentIntents    PaymentIntent[]
   subscriptions     Subscription[]
   donations         Donation[]
+  emailCampaigns    EmailCampaign[]
+  emailTemplates    EmailTemplate[]
+  audiences         Audience[]
+  workflows         Workflow[]
 
   // Timestamps
   createdAt   DateTime @default(now())
@@ -204,6 +222,9 @@ model Donator {
   consentMail   Boolean  @default(false)
   consentDate   DateTime?
 
+  // Désinscription email marketing (Étape 3.1.1)
+  unsubscribedAt DateTime?
+
   // Segmentation automatique (sera calculé par l'IA)
   segment       String?  // VIP, Active, Inactive, New, etc.
   score         Int      @default(0) // Score de propension au don (0-100)
@@ -226,6 +247,10 @@ model Donator {
   formSubmissions DonationFormSubmission[]
   subscriptions   Subscription[]
   donations       Donation[]
+
+  // Relations marketing (Étape 3.1.1)
+  emailCampaigns EmailCampaign[]
+  audiences      Audience[]
 
   // Timestamps
   createdAt     DateTime @default(now())
@@ -535,4 +560,127 @@ model Subscription {
   @@index([status])
   @@index([nextPaymentDate])
   @@map("subscriptions")
+}
+
+// ============= Étape 3.1.1 - EmailTemplate =============
+model EmailTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+
+  // Contenu (éditeur drag & drop)
+  content   Json     // Structure pour l'éditeur
+  html      String   @db.Text // HTML généré à partir du content
+  thumbnail String?  // URL de l'image d'aperçu
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Relations
+  campaigns EmailCampaign[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("email_templates")
+}
+
+// ============= Étape 3.1.1 - Audience =============
+model Audience {
+  id          String       @id @default(cuid())
+  name        String
+  description String?      @db.Text
+  type        AudienceType // STATIC = liste fixe, DYNAMIC = segments par règles
+
+  // STATIC: liste de donateurs via relation; DYNAMIC: règles de segmentation
+  rules Json? // Règles pour segments dynamiques (ex: segment, lastDonationDate, etc.)
+  // DYNAMIC: nombre de donateurs (mis à jour par "Rafraîchir" - Étape 3.2.2)
+  cachedDonatorCount Int?
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // STATIC: donators liés; DYNAMIC: calculé à l'envoi via rules
+  donators Donator[]
+
+  // Relations
+  campaigns EmailCampaign[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([type])
+  @@map("audiences")
+}
+
+// ============= Étape 3.1.1 - EmailCampaign =============
+model EmailCampaign {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  fromName  String
+  fromEmail String
+
+  // Statut
+  status      EmailCampaignStatus @default(DRAFT)
+  scheduledAt DateTime?
+  sentAt      DateTime?
+
+  // Template et audience
+  templateId String
+  template   EmailTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  audienceId String
+  audience   Audience     @relation(fields: [audienceId], references: [id], onDelete: Restrict)
+
+  // Stats (sent, delivered, opened, clicked, bounced, unsubscribed)
+  stats Json?
+
+  // Organisation (multi-tenant)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Destinataires (donateurs ayant reçu / ciblés par la campagne)
+  donators Donator[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([templateId])
+  @@index([audienceId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("email_campaigns")
+}
+
+// ============= Étape 3.3.2 - Workflow (Automatisation) =============
+enum WorkflowStatus {
+  DRAFT
+  ACTIVE
+}
+
+model Workflow {
+  id             String         @id @default(cuid())
+  name           String
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  status         WorkflowStatus @default(DRAFT)
+
+  // Graphe (nœuds et connexions au format React Flow / XYFlow)
+  nodes Json? // Array de { id, type, position, data }
+  edges Json? // Array de { id, source, target }
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+  @@map("workflows")
 }
