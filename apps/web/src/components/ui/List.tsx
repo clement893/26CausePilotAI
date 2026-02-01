@@ -36,8 +36,8 @@ export default function List({
 }: ListProps) {
   const variantClasses = {
     default: '',
-    bordered: 'border border-gray-800 border-gray-800 rounded-lg',
-    divided: 'divide-y divide-gray-800 divide-gray-800',
+    bordered: 'border border-gray-800 rounded-lg',
+    divided: 'divide-y divide-gray-800',
   };
 
   return (
@@ -64,15 +64,15 @@ export default function List({
               'flex items-center gap-3 px-4',
               sizeClasses[size],
               'text-gray-300 text-white',
-              isClickable && 'cursor-pointer hover:bg-[#1C1C26] hover:bg-[#1C1C26] transition-colors',
+              isClickable && 'cursor-pointer hover:bg-[#1C1C26] transition-colors',
               item.disabled && 'opacity-50 cursor-not-allowed',
-              variant === 'bordered' && index > 0 && 'border-t border-gray-800 border-gray-800',
-              variant === 'divided' && index < items.length - 1 && 'border-b border-gray-800 border-gray-800'
+              variant === 'bordered' && index > 0 && 'border-t border-gray-800',
+              variant === 'divided' && index < items.length - 1 && 'border-b border-gray-800'
             )}
             role={isClickable ? 'button' : 'listitem'}
             tabIndex={isClickable ? 0 : undefined}
           >
-            {item.icon && <div className="flex-shrink-0 text-gray-400 text-gray-400">{item.icon}</div>}
+            {item.icon && <div className="flex-shrink-0 text-gray-400">{item.icon}</div>}
             <div className="flex-1 min-w-0">{item.content}</div>
             {item.action && <div className="flex-shrink-0">{item.action}</div>}
           </Component>
