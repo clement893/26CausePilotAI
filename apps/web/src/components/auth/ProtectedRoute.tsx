@@ -8,6 +8,7 @@ import { checkMySuperAdminStatus } from '@/lib/api/admin';
 import { logger } from '@/lib/logger';
 import { getErrorStatus } from '@/lib/errors';
 import { useHydrated } from '@/hooks/useHydrated';
+import { routing } from '@/i18n/routing';
 
 /**
  * Protected Route Component
@@ -102,6 +103,10 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
       checkingRef.current = true;
       setIsChecking(true);
 
+      // Wait a bit for AuthInitializer to sync tokens between TokenStorage and Zustand store
+      // This prevents redirect loops when tokens exist but store isn't hydrated yet
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
       // Check authentication - prioritize sessionStorage if store not hydrated yet
       const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
       const currentToken = token || tokenFromStorage;
@@ -113,6 +118,61 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
       // If we have a token but no user, try to fetch user from API
       // This handles the case where Zustand persist hasn't hydrated yet but token exists
       let fetchedUser = currentUser;
+
+      // Also check if cookie exists (via API) - middleware might have passed but store not synced yet
+      // This prevents redirect loops when cookie exists but Zustand store isn't hydrated yet
+      if (!hasToken && typeof window !== 'undefined') {
+        try {
+          const cookieCheck = await TokenStorage.hasTokensInCookies();
+          if (cookieCheck) {
+            // Cookie exists, wait a bit more for AuthInitializer to sync tokens to store
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            // Re-check token after waiting - AuthInitializer should have synced by now
+            const tokenAfterWait = TokenStorage.getToken();
+            const storeState = useAuthStore.getState();
+            const storeToken = storeState.token;
+            const storeUser = storeState.user;
+            
+            if (tokenAfterWait || storeToken) {
+              // Token is now available, update refs and continue with auth check
+              const finalToken = storeToken || tokenAfterWait;
+              lastTokenRef.current = finalToken;
+              
+              // If we have token but no user, fetch user
+              if (finalToken && (!storeUser && !hasUser)) {
+                try {
+                  const { usersAPI } = await import('@/lib/api');
+                  const { transformApiUserToStoreUser } = await import('@/lib/auth/userTransform');
+                  const response = await usersAPI.getMe();
+                  if (response.data) {
+                    const userForStore = transformApiUserToStoreUser(response.data);
+                    setUser(userForStore);
+                    fetchedUser = userForStore;
+                    lastUserRef.current = userForStore;
+                  }
+                } catch (err) {
+                  // If fetch fails, continue with normal flow - might be network issue
+                  logger.warn('Failed to fetch user after cookie check', err);
+                }
+              } else if (storeUser) {
+                fetchedUser = storeUser;
+                lastUserRef.current = storeUser;
+              }
+              
+              // If we now have both token and user, authorize
+              if (finalToken && fetchedUser) {
+                checkingRef.current = false;
+                setIsChecking(false);
+                setIsAuthorized(true);
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          // Cookie check failed, continue with normal flow
+          logger.debug('Cookie check failed in ProtectedRoute', err);
+        }
+      }
 
       if (hasToken && !hasUser && typeof window !== 'undefined') {
         try {
@@ -150,7 +210,9 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
             checkingRef.current = false;
             setIsChecking(false);
             setIsAuthorized(false);
-            router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+            // Extract locale from pathname or use default
+            const locale = pathname.match(/^\/(en|fr)/)?.[1] || routing.defaultLocale;
+            router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}`);
             return;
           }
 
@@ -193,7 +255,9 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
         checkingRef.current = false;
         setIsChecking(false);
         setIsAuthorized(false);
-        router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+        // Extract locale from pathname or use default
+        const locale = pathname.match(/^\/(en|fr)/)?.[1] || routing.defaultLocale;
+        router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}`);
         return;
       }
 

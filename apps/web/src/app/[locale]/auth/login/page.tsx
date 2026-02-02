@@ -115,8 +115,21 @@ export default function LoginPage() {
         const { login } = useAuthStore.getState();
         await login(userForStore, access_token, refresh_token);
 
-        // Wait a bit to ensure cookie is set before redirecting
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        // Wait a bit to ensure cookie is set and verified before redirecting
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        
+        // Verify cookie is set before redirecting
+        try {
+          const cookieVerified = await TokenStorage.hasTokensInCookies();
+          if (!cookieVerified) {
+            // Retry setting token if cookie not verified
+            await TokenStorage.setToken(access_token, refresh_token);
+            await new Promise((resolve) => setTimeout(resolve, 200));
+          }
+        } catch (err) {
+          // Continue even if cookie verification fails - token is in storage
+          console.warn('Cookie verification failed, proceeding anyway', err);
+        }
       } catch (tokenError) {
         // If token fetch fails, log but continue - NextAuth session might be enough
         console.warn('Failed to get JWT token after NextAuth login:', tokenError);
