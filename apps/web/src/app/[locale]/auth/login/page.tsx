@@ -5,16 +5,13 @@
  * React Hook Form + Zod, AuthCard/AuthInput/AuthButton, callbackUrl, design system
  */
 
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { loginSchema, type LoginInput } from '@/lib/validations/auth';
 import { AuthCard, AuthInput, AuthButton } from '@/components/auth';
-import { useAuthStore } from '@/lib/store';
-import { useHydrated } from '@/hooks/useHydrated';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { authAPI } from '@/lib/api';
 import { routing } from '@/i18n/routing';
@@ -22,12 +19,8 @@ import { routing } from '@/i18n/routing';
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'CausePilotAI';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
-  const { user, token, isAuthenticated, isAuthInitialized } = useAuthStore();
-  const isHydrated = useHydrated();
-  const redirectingRef = useRef(false);
 
   const {
     register,
@@ -50,11 +43,6 @@ export default function LoginPage() {
   // DISABLED: Auto-redirect on page load causes redirect loops
   // The middleware and ProtectedRoute handle authentication checks
   // Only redirect after successful login via onSubmit
-  // useEffect(() => {
-  //   // Removed auto-redirect logic to prevent redirect loops
-  //   // Middleware will handle redirecting authenticated users away from login page
-  //   // ProtectedRoute will handle redirecting unauthenticated users to login
-  // }, []);
 
   const onSubmit = async (data: LoginInput) => {
     setLoading(true);
