@@ -16,6 +16,8 @@ import { AuthCard, AuthInput, AuthButton } from '@/components/auth';
 import { useAuthStore } from '@/lib/store';
 import { useHydrated } from '@/hooks/useHydrated';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
+import { authAPI } from '@/lib/api';
+import { routing } from '@/i18n/routing';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'Nucleus Cause';
 
@@ -88,11 +90,32 @@ export default function LoginPage() {
   const onGoogle = async () => {
     setOauthLoading(true);
     try {
-      // Pass absolute URL so NextAuth redirects correctly after OAuth
+      // Store callbackUrl in sessionStorage so callback can retrieve it
+      // The backend will redirect to /auth/callback, and we'll use the stored callbackUrl
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('oauth_callback_url', callbackUrl);
+      }
+      
+      // Use backend custom OAuth instead of NextAuth to ensure proper token handling
       const base = typeof window !== 'undefined' ? window.location.origin : '';
-      const url = callbackUrl.startsWith('http') ? callbackUrl : `${base}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
-      await signIn('google', { callbackUrl: url });
-    } finally {
+      const locale = routing.defaultLocale;
+      const callbackPath = `/${locale}/auth/callback`;
+      const fullCallbackUrl = `${base}${callbackPath}`;
+      
+      // Get Google OAuth URL from backend with callback URL
+      const response = await authAPI.getGoogleAuthUrl(fullCallbackUrl);
+      const authUrl = response.data?.auth_url;
+      
+      if (!authUrl) {
+        setError('root', { message: 'Impossible de générer l\'URL d\'authentification Google' });
+        setOauthLoading(false);
+        return;
+      }
+      
+      // Redirect to Google OAuth
+      window.location.href = authUrl;
+    } catch (err) {
+      setError('root', { message: 'Une erreur est survenue lors de la connexion avec Google' });
       setOauthLoading(false);
     }
   };

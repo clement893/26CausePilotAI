@@ -11,6 +11,7 @@ import { handleApiError } from '@/lib/errors/api';
 import Container from '@/components/ui/Container';
 import Loading from '@/components/ui/Loading';
 import Card from '@/components/ui/Card';
+import { routing } from '@/i18n/routing';
 
 // Note: Client Components are already dynamic by nature.
 // Route segment config (export const dynamic) only works in Server Components.
@@ -27,16 +28,31 @@ function CallbackContent() {
     // This handles cases where next-intl middleware might interfere
     let accessToken: string | null = null;
     let refreshToken: string | undefined = undefined;
+    let callbackUrl: string | null = null;
 
     // Method 1: Try useSearchParams (works in most cases)
     accessToken = searchParams.get('token') || searchParams.get('access_token');
     refreshToken = searchParams.get('refresh_token') ?? undefined;
+    callbackUrl = searchParams.get('callbackUrl') || searchParams.get('redirect') || searchParams.get('state');
 
     // Method 2: Fallback to window.location.search if useSearchParams didn't work
     if (!accessToken && typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       accessToken = urlParams.get('token') || urlParams.get('access_token');
       refreshToken = urlParams.get('refresh_token') ?? undefined;
+      if (!callbackUrl) {
+        callbackUrl = urlParams.get('callbackUrl') || urlParams.get('redirect') || urlParams.get('state');
+      }
+    }
+
+    // Method 3: Try to get callbackUrl from sessionStorage (stored before OAuth redirect)
+    if (!callbackUrl && typeof window !== 'undefined') {
+      const storedCallbackUrl = sessionStorage.getItem('oauth_callback_url');
+      if (storedCallbackUrl) {
+        callbackUrl = storedCallbackUrl;
+        // Clean up after retrieving
+        sessionStorage.removeItem('oauth_callback_url');
+      }
     }
 
     logger.info('Auth callback started', {
@@ -121,12 +137,28 @@ function CallbackContent() {
           tokenMatches: storedToken === accessToken,
         });
 
-        logger.info('Redirecting to dashboard');
+        // Determine redirect URL - use callbackUrl from params, or default to dashboard
+        const defaultLocale = routing.defaultLocale;
+        const defaultDashboard = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
+        const redirectUrl = callbackUrl || defaultDashboard;
+
+        logger.info('Redirecting after authentication', {
+          redirectUrl,
+          callbackUrl,
+          defaultDashboard,
+        });
 
         // Small delay to ensure store is updated
         await new Promise((resolve) => setTimeout(resolve, 200));
 
-        router.push('/dashboard');
+        // Ensure redirect URL is absolute or properly formatted
+        if (redirectUrl.startsWith('http')) {
+          // Full URL - redirect directly
+          window.location.href = redirectUrl;
+        } else {
+          // Relative path - use router
+          router.push(redirectUrl);
+        }
       } else {
         throw new Error('No user data received');
       }
