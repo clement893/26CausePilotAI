@@ -39,18 +39,22 @@ function CallbackContent() {
 
     accessToken = searchParams.get('token') || searchParams.get('access_token');
     refreshToken = searchParams.get('refresh_token') ?? undefined;
-    callbackUrl = searchParams.get('callbackUrl') || searchParams.get('redirect') || searchParams.get('state');
+    
+    // Try to get callbackUrl from URL params (but not from 'state' which contains the callback URL itself)
+    callbackUrl = searchParams.get('callbackUrl') || searchParams.get('redirect');
 
     if (!accessToken && typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       accessToken = urlParams.get('token') || urlParams.get('access_token');
       refreshToken = urlParams.get('refresh_token') ?? undefined;
       if (!callbackUrl) {
-        callbackUrl = urlParams.get('callbackUrl') || urlParams.get('redirect') || urlParams.get('state');
+        callbackUrl = urlParams.get('callbackUrl') || urlParams.get('redirect');
       }
     }
 
-    if (!callbackUrl && typeof window !== 'undefined') {
+    // Priority: sessionStorage (stored before OAuth redirect) > URL params
+    // The 'state' param contains the callback URL, not the destination, so we ignore it
+    if (typeof window !== 'undefined') {
       const storedCallbackUrl = sessionStorage.getItem('oauth_callback_url');
       if (storedCallbackUrl) {
         callbackUrl = storedCallbackUrl;
@@ -61,9 +65,11 @@ function CallbackContent() {
     logger.info('Auth callback started', {
       hasToken: !!accessToken,
       hasRefreshToken: !!refreshToken,
+      callbackUrl,
       urlParams: Object.fromEntries(searchParams.entries()),
       windowSearch: typeof window !== 'undefined' ? window.location.search : 'N/A',
       windowHref: typeof window !== 'undefined' ? window.location.href : 'N/A',
+      sessionStorageCallbackUrl: typeof window !== 'undefined' ? sessionStorage.getItem('oauth_callback_url') : 'N/A',
     });
 
     if (!accessToken) {
@@ -123,10 +129,45 @@ function CallbackContent() {
           tokenMatches: storedToken === accessToken,
         });
 
-        const defaultLocale = routing.defaultLocale;
-        const defaultDashboard = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
+        // Detect current locale from URL (e.g., /fr/auth/callback -> 'fr', /auth/callback -> 'en')
+        let currentLocale = routing.defaultLocale;
+        if (typeof window !== 'undefined') {
+          const pathMatch = window.location.pathname.match(/^\/(en|fr)\//);
+          if (pathMatch) {
+            currentLocale = pathMatch[1] as 'en' | 'fr';
+          }
+        }
+        
+        logger.debug('Locale detection', {
+          pathname: typeof window !== 'undefined' ? window.location.pathname : 'N/A',
+          detectedLocale: currentLocale,
+          defaultLocale: routing.defaultLocale,
+        });
+        
+        // Build default dashboard URL with current locale
+        const defaultDashboard = currentLocale === 'en' ? '/dashboard' : `/${currentLocale}/dashboard`;
 
         let redirectUrl = callbackUrl || defaultDashboard;
+        
+        // If callbackUrl is a full URL, extract just the path
+        if (redirectUrl.startsWith('http')) {
+          try {
+            const url = new URL(redirectUrl);
+            redirectUrl = url.pathname + url.search;
+          } catch {
+            // If URL parsing fails, use default dashboard
+            redirectUrl = defaultDashboard;
+          }
+        }
+        
+        // Ensure redirectUrl uses the correct locale if it's a relative path without locale prefix
+        if (redirectUrl.startsWith('/') && !redirectUrl.startsWith('/en/') && !redirectUrl.startsWith('/fr/')) {
+          // If redirectUrl doesn't have locale prefix, add current locale (unless it's default 'en')
+          if (currentLocale !== 'en') {
+            redirectUrl = `/${currentLocale}${redirectUrl}`;
+          }
+        }
+        
         if (redirectUrl.includes('/auth/callback') || redirectUrl.includes('/auth/login')) {
           logger.warn('Preventing redirect loop - callbackUrl points to auth page, using default dashboard', {
             callbackUrl,
