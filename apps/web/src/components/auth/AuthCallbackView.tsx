@@ -129,6 +129,37 @@ function CallbackContent() {
           tokenMatches: storedToken === accessToken,
         });
 
+        // Verify that cookie is set before redirecting (important for middleware)
+        // The cookie is set via /api/auth/token, so we verify it's present
+        let cookieVerified = false;
+        if (typeof window !== 'undefined') {
+          try {
+            // Wait a bit more to ensure cookie is set
+            await new Promise((resolve) => setTimeout(resolve, 200));
+            
+            // Verify cookie is set via API
+            const cookieCheck = await TokenStorage.hasTokensInCookies();
+            cookieVerified = cookieCheck;
+            
+            if (!cookieVerified) {
+              logger.warn('Cookie not verified, retrying token storage...');
+              // Retry setting token
+              await TokenStorage.setToken(accessToken, refreshToken);
+              await new Promise((resolve) => setTimeout(resolve, 200));
+              cookieVerified = await TokenStorage.hasTokensInCookies();
+            }
+            
+            logger.debug('Cookie verification', {
+              cookieVerified,
+              hasTokenInStorage: !!storedToken,
+            });
+          } catch (error) {
+            logger.warn('Failed to verify cookie, proceeding anyway', error);
+            // Continue even if cookie verification fails - token is in storage
+            cookieVerified = true;
+          }
+        }
+
         // Detect current locale from URL (e.g., /fr/auth/callback -> 'fr', /auth/callback -> 'en')
         let currentLocale = routing.defaultLocale;
         if (typeof window !== 'undefined') {

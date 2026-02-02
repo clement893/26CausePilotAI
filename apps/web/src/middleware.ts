@@ -96,8 +96,27 @@ async function middlewareWithAuth(request: NextRequest) {
 
   // NextAuth v5: session from auth() wrapper (same cookie as after Google OAuth)
   const session = (request as NextRequest & { auth?: { user?: { role?: string } } }).auth;
+  
+  // Also check for JWT token in cookie (for OAuth flow)
+  // This is needed because OAuth callback stores token in access_token cookie via /api/auth/token
+  let hasValidToken = false;
+  if (!session) {
+    const accessTokenCookie = request.cookies.get('access_token')?.value;
+    if (accessTokenCookie) {
+      try {
+        const payload = await verifyToken(accessTokenCookie);
+        if (payload && payload.exp && Date.now() < (payload.exp as number) * 1000) {
+          hasValidToken = true;
+        }
+      } catch {
+        // Token invalid or expired, ignore
+      }
+    }
+  }
+  
   if (!pathname.startsWith('/api/')) {
-    if (!session) {
+    // User is authenticated if they have either NextAuth session OR valid JWT token cookie
+    if (!session && !hasValidToken) {
       const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
       const loginUrl = new URL(`/${locale}/auth/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
