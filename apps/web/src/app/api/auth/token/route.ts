@@ -14,13 +14,21 @@ const REFRESH_TOKEN_COOKIE = 'refresh_token';
 const CSRF_TOKEN_COOKIE = 'csrf_token';
 
 // Cookie options for production
-const getCookieOptions = (isProduction: boolean) => ({
-  httpOnly: true, // Not accessible to JavaScript (XSS protection)
-  secure: isProduction, // HTTPS only in production
-  sameSite: 'lax' as const, // CSRF protection, but allows cookie on same-site redirects
-  path: '/',
-  maxAge: 60 * 60 * 24 * 7, // 7 days
-});
+const getCookieOptions = (isProduction: boolean) => {
+  // In production, check if we're behind a proxy (Railway, etc.)
+  // If so, secure should be true but we need to ensure the cookie is set correctly
+  const isBehindProxy = process.env.VERCEL || process.env.RAILWAY_ENVIRONMENT;
+  
+  return {
+    httpOnly: true, // Not accessible to JavaScript (XSS protection)
+    secure: isProduction || !!isBehindProxy, // HTTPS only in production or when behind proxy
+    sameSite: 'lax' as const, // CSRF protection, but allows cookie on same-site redirects
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    // Don't set domain - let browser use default (current domain)
+    // This ensures cookie works across subdomains if needed
+  };
+};
 
 /**
  * POST /api/auth/token

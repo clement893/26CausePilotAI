@@ -104,14 +104,37 @@ async function middlewareWithAuth(request: NextRequest) {
   // Check cookie even if session exists, as session might not be immediately available after login
   let hasValidToken = false;
   const accessTokenCookie = request.cookies.get('access_token')?.value;
+  
+  // Debug: log cookie presence (but not value for security)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Middleware] Cookie check:', {
+      hasCookie: !!accessTokenCookie,
+      cookieLength: accessTokenCookie?.length,
+      pathname,
+      hasSession: !!session,
+    });
+  }
+  
   if (accessTokenCookie) {
     try {
       const payload = await verifyToken(accessTokenCookie);
       if (payload && payload.exp && Date.now() < (payload.exp as number) * 1000) {
         hasValidToken = true;
+      } else if (payload && payload.exp) {
+        // Token expired
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[Middleware] Token expired:', {
+            exp: payload.exp,
+            now: Date.now(),
+            expired: Date.now() >= (payload.exp as number) * 1000,
+          });
+        }
       }
-    } catch {
+    } catch (error) {
       // Token invalid or expired, ignore
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Middleware] Token verification failed:', error);
+      }
     }
   }
   

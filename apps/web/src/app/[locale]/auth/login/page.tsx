@@ -47,73 +47,14 @@ export default function LoginPage() {
         '/dashboard'
       : '/dashboard';
 
-  // If already signed in, redirect to target once (avoid loop)
-  // Check Zustand store (source of truth) instead of NextAuth session
-  useEffect(() => {
-    // Wait for hydration to complete before checking auth
-    if (!isHydrated) {
-      return;
-    }
-
-    const checkAndRedirect = async () => {
-      // Prevent multiple simultaneous redirects
-      if (redirectingRef.current) {
-        return;
-      }
-
-      // Wait for AuthInitializer to finish initializing
-      if (!isAuthInitialized) {
-        // Wait a bit more and check again
-        await new Promise((resolve) => setTimeout(resolve, 300));
-        // Re-check after waiting
-        const stillNotInitialized = !useAuthStore.getState().isAuthInitialized;
-        if (stillNotInitialized) {
-          return; // Still not initialized, wait for next effect run
-        }
-      }
-
-      // Wait a bit more for AuthInitializer to sync tokens between TokenStorage and Zustand store
-      await new Promise((resolve) => setTimeout(resolve, 200));
-
-      // Check multiple sources of authentication - require BOTH token AND user to be present
-      // This prevents redirect loops when only one is available
-      const hasTokenInStore = !!token;
-      const hasUserInStore = !!user;
-      
-      // Only redirect if we have BOTH token AND user in the store
-      // This ensures the store is fully hydrated and synchronized
-      const hasCompleteAuth = hasTokenInStore && hasUserInStore && isAuthenticated();
-
-      if (hasCompleteAuth && !redirectingRef.current) {
-        redirectingRef.current = true;
-        
-        // Prevent redirect loops: never redirect to auth pages
-        let finalCallbackUrl = callbackUrl;
-        if (
-          finalCallbackUrl.includes('/auth/login') ||
-          finalCallbackUrl.includes('/auth/callback') ||
-          finalCallbackUrl.includes('/auth/register')
-        ) {
-          // Default to dashboard if callbackUrl points to auth page
-          const defaultLocale = routing.defaultLocale;
-          finalCallbackUrl = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
-        }
-
-        // Use window.location.href for full page reload to ensure middleware sees the cookie
-        // This is important because router.replace() is client-side navigation and middleware
-        // might not see the cookie set by the OAuth callback
-        if (typeof window !== 'undefined') {
-          const base = window.location.origin;
-          const finalUrl = finalCallbackUrl.startsWith('http')
-            ? finalCallbackUrl
-            : `${base}${finalCallbackUrl.startsWith('/') ? finalCallbackUrl : `/${finalCallbackUrl}`}`;
-          window.location.href = finalUrl;
-        }
-      }
-    };
-
-    checkAndRedirect();
-  }, [callbackUrl, router, isHydrated, isAuthInitialized, user, token, isAuthenticated]);
+  // DISABLED: Auto-redirect on page load causes redirect loops
+  // The middleware and ProtectedRoute handle authentication checks
+  // Only redirect after successful login via onSubmit
+  // useEffect(() => {
+  //   // Removed auto-redirect logic to prevent redirect loops
+  //   // Middleware will handle redirecting authenticated users away from login page
+  //   // ProtectedRoute will handle redirecting unauthenticated users to login
+  // }, []);
 
   const onSubmit = async (data: LoginInput) => {
     setLoading(true);
@@ -146,19 +87,40 @@ export default function LoginPage() {
         await login(userForStore, access_token, refresh_token);
 
         // Wait a bit to ensure cookie is set and verified before redirecting
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 500));
         
-        // Verify cookie is set before redirecting
-        try {
-          const cookieVerified = await TokenStorage.hasTokensInCookies();
-          if (!cookieVerified) {
-            // Retry setting token if cookie not verified
-            await TokenStorage.setToken(access_token, refresh_token);
-            await new Promise((resolve) => setTimeout(resolve, 200));
+        // Verify cookie is set before redirecting - retry up to 3 times
+        let cookieVerified = false;
+        let retries = 0;
+        const maxRetries = 3;
+        
+        while (!cookieVerified && retries < maxRetries) {
+          try {
+            cookieVerified = await TokenStorage.hasTokensInCookies();
+            if (!cookieVerified && retries < maxRetries - 1) {
+              // Retry setting token if cookie not verified
+              await TokenStorage.setToken(access_token, refresh_token);
+              await new Promise((resolve) => setTimeout(resolve, 300));
+              retries++;
+            } else {
+              break;
+            }
+          } catch (err) {
+            console.warn(`Cookie verification attempt ${retries + 1} failed:`, err);
+            if (retries < maxRetries - 1) {
+              await TokenStorage.setToken(access_token, refresh_token);
+              await new Promise((resolve) => setTimeout(resolve, 300));
+              retries++;
+            } else {
+              // Last retry failed, but proceed anyway - token is in storage
+              console.warn('Cookie verification failed after all retries, proceeding anyway');
+              cookieVerified = true; // Proceed to avoid blocking user
+            }
           }
-        } catch (err) {
-          // Continue even if cookie verification fails - token is in storage
-          console.warn('Cookie verification failed, proceeding anyway', err);
+        }
+        
+        if (!cookieVerified) {
+          console.error('Failed to verify cookie after all retries - this may cause redirect loops');
         }
       } catch (tokenError) {
         // If token fetch fails, log but continue - NextAuth session might be enough
@@ -166,16 +128,27 @@ export default function LoginPage() {
       }
 
       // Use window.location.href for full page reload to ensure middleware sees the cookie
-      const base = typeof window !== 'undefined' ? window.location.origin : '';
-      const finalUrl = callbackUrl.startsWith('http')
-        ? callbackUrl
-        : `${base}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
-      
+      // This is critical - router.push() is client-side navigation and middleware won't see the cookie
       if (typeof window !== 'undefined') {
+        const base = window.location.origin;
+        let finalCallbackUrl = callbackUrl;
+        
+        // Prevent redirect loops: never redirect to auth pages
+        if (
+          finalCallbackUrl.includes('/auth/login') ||
+          finalCallbackUrl.includes('/auth/callback') ||
+          finalCallbackUrl.includes('/auth/register')
+        ) {
+          // Default to dashboard if callbackUrl points to auth page
+          const defaultLocale = routing.defaultLocale;
+          finalCallbackUrl = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
+        }
+        
+        const finalUrl = finalCallbackUrl.startsWith('http')
+          ? finalCallbackUrl
+          : `${base}${finalCallbackUrl.startsWith('/') ? finalCallbackUrl : `/${finalCallbackUrl}`}`;
+        
         window.location.href = finalUrl;
-      } else {
-        router.push(callbackUrl);
-        router.refresh();
       }
     } catch {
       setError('root', { message: 'Une erreur est survenue. Veuillez réessayer.' });

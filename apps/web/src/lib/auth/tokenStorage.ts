@@ -47,7 +47,7 @@ export class TokenStorage {
 
     try {
       // Set tokens via API route (httpOnly cookies) - this is async but token is already in sessionStorage
-      await fetch(TOKEN_API_ENDPOINT, {
+      const response = await fetch(TOKEN_API_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,14 +55,28 @@ export class TokenStorage {
         body: JSON.stringify({ accessToken: token, refreshToken }),
         credentials: 'include', // Important: include cookies
       });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to set token cookie: ${response.status} ${errorText}`);
+      }
+      
+      // Verify cookie was set by checking response
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error('Token API returned success: false');
+      }
     } catch (error) {
       // Token is already in sessionStorage, so API call failure is not critical
-      // Log error but don't throw - token is still available for immediate use
-      if (process.env.NODE_ENV === 'development') {
-        logger.warn(
-          'Failed to set token via API route, but token is stored in sessionStorage:',
-          error
-        );
+      // But log error in both dev and prod to help debug cookie issues
+      logger.warn(
+        'Failed to set token via API route, but token is stored in sessionStorage:',
+        error instanceof Error ? error : new Error(String(error))
+      );
+      
+      // In production, this could cause redirect loops, so log prominently
+      if (process.env.NODE_ENV === 'production') {
+        console.error('[TokenStorage] CRITICAL: Failed to set cookie - this may cause auth issues:', error);
       }
     }
   }
