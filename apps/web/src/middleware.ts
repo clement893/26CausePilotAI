@@ -123,7 +123,13 @@ async function middlewareWithAuth(request: NextRequest) {
     // - NextAuth session expires but cookie is still valid
     const isAuthenticated = !!session || hasValidToken;
     
-    if (!isAuthenticated) {
+    // Don't redirect if already on login page - prevents redirect loops
+    const isOnLoginPage = pathnameWithoutLocale === '/auth/login' || 
+                          pathname === '/auth/login' ||
+                          pathname.startsWith('/en/auth/login') ||
+                          pathname.startsWith('/fr/auth/login');
+    
+    if (!isAuthenticated && !isOnLoginPage) {
       const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
       const loginUrl = new URL(`/${locale}/auth/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);

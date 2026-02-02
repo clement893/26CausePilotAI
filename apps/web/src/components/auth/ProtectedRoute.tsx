@@ -105,8 +105,8 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
 
       // Wait a bit for AuthInitializer to sync tokens between TokenStorage and Zustand store
       // This prevents redirect loops when tokens exist but store isn't hydrated yet
-      // Increased wait time to ensure AuthInitializer has time to sync
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // Reduced wait time - AuthInitializer should be done by now since we check isAuthInitialized
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Check authentication - prioritize sessionStorage if store not hydrated yet
       const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
@@ -127,8 +127,8 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
           const cookieCheck = await TokenStorage.hasTokensInCookies();
           if (cookieCheck) {
             // Cookie exists, wait a bit more for AuthInitializer to sync tokens to store
-            // Increased wait time to ensure synchronization completes
-            await new Promise((resolve) => setTimeout(resolve, 800));
+            // Reduced wait time since we already checked isAuthInitialized
+            await new Promise((resolve) => setTimeout(resolve, 200));
             // Re-check token after waiting - AuthInitializer should have synced by now
             const tokenAfterWait = TokenStorage.getToken();
             const storeState = useAuthStore.getState();
@@ -253,6 +253,16 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
       }
 
       if (!isAuth) {
+        // Don't redirect if we're already on the login page - prevents loops
+        const isOnLoginPage = pathname.includes('/auth/login');
+        if (isOnLoginPage) {
+          logger.debug('Already on login page, not redirecting', { pathname });
+          checkingRef.current = false;
+          setIsChecking(false);
+          setIsAuthorized(false);
+          return;
+        }
+
         logger.debug('Not authenticated, redirecting to login', { pathname });
         checkingRef.current = false;
         setIsChecking(false);

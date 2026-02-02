@@ -61,38 +61,32 @@ export default function LoginPage() {
         return;
       }
 
-      // Wait a bit for AuthInitializer to sync tokens between TokenStorage and Zustand store
-      // This prevents redirect loops when tokens exist but store isn't hydrated yet
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Wait for AuthInitializer to finish initializing
+      if (!isAuthInitialized) {
+        // Wait a bit more and check again
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        // Re-check after waiting
+        const stillNotInitialized = !useAuthStore.getState().isAuthInitialized;
+        if (stillNotInitialized) {
+          return; // Still not initialized, wait for next effect run
+        }
+      }
 
-      // Check multiple sources of authentication
+      // Wait a bit more for AuthInitializer to sync tokens between TokenStorage and Zustand store
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      // Check multiple sources of authentication - require BOTH token AND user to be present
+      // This prevents redirect loops when only one is available
       const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
       const hasTokenInStore = !!token;
       const hasTokenInStorage = !!tokenFromStorage;
       const hasUserInStore = !!user;
       
-      // Check if cookie exists (via API) - middleware might have passed but store not synced yet
-      let hasCookie = false;
-      if (typeof window !== 'undefined') {
-        try {
-          hasCookie = await TokenStorage.hasTokensInCookies();
-        } catch (err) {
-          // Cookie check failed, continue with other checks
-        }
-      }
+      // Only redirect if we have BOTH token AND user in the store
+      // This ensures the store is fully hydrated and synchronized
+      const hasCompleteAuth = hasTokenInStore && hasUserInStore && isAuthenticated();
 
-      // User is authenticated if:
-      // 1. Both token and user exist in store, OR
-      // 2. Token exists in storage AND (user exists in store OR cookie exists)
-      // The cookie check ensures we don't redirect if middleware passed but store isn't synced
-      const hasAuth = 
-        (hasTokenInStore && hasUserInStore) || 
-        (hasTokenInStorage && (hasUserInStore || hasCookie));
-
-      // Also check isAuthenticated() for additional validation
-      const isAuthValid = hasAuth && (isAuthenticated() || hasCookie);
-
-      if (isAuthValid && !redirectingRef.current) {
+      if (hasCompleteAuth && !redirectingRef.current) {
         redirectingRef.current = true;
         
         // Prevent redirect loops: never redirect to auth pages
