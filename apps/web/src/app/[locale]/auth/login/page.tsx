@@ -77,9 +77,7 @@ export default function LoginPage() {
 
       // Check multiple sources of authentication - require BOTH token AND user to be present
       // This prevents redirect loops when only one is available
-      const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
       const hasTokenInStore = !!token;
-      const hasTokenInStorage = !!tokenFromStorage;
       const hasUserInStore = !!user;
       
       // Only redirect if we have BOTH token AND user in the store
