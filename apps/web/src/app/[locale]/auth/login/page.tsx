@@ -5,7 +5,7 @@
  * React Hook Form + Zod, AuthCard/AuthInput/AuthButton, callbackUrl, design system
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -25,8 +25,9 @@ export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
-  const { user, token, isAuthenticated } = useAuthStore();
+  const { user, token, isAuthenticated, isAuthInitialized } = useAuthStore();
   const isHydrated = useHydrated();
+  const redirectingRef = useRef(false);
 
   const {
     register,
@@ -54,36 +55,73 @@ export default function LoginPage() {
       return;
     }
 
-    // Check if user is authenticated via Zustand store (not NextAuth)
-    // This prevents redirect loops when NextAuth has a session but Zustand doesn't
-    const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
-    const hasAuth = (user && token) || (tokenFromStorage && user);
-
-    if (hasAuth && isAuthenticated()) {
-      // Prevent redirect loops: never redirect to auth pages
-      let finalCallbackUrl = callbackUrl;
-      if (
-        finalCallbackUrl.includes('/auth/login') ||
-        finalCallbackUrl.includes('/auth/callback') ||
-        finalCallbackUrl.includes('/auth/register')
-      ) {
-        // Default to dashboard if callbackUrl points to auth page
-        const defaultLocale = routing.defaultLocale;
-        finalCallbackUrl = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
+    const checkAndRedirect = async () => {
+      // Prevent multiple simultaneous redirects
+      if (redirectingRef.current) {
+        return;
       }
 
-      // Use window.location.href for full page reload to ensure middleware sees the cookie
-      // This is important because router.replace() is client-side navigation and middleware
-      // might not see the cookie set by the OAuth callback
+      // Wait a bit for AuthInitializer to sync tokens between TokenStorage and Zustand store
+      // This prevents redirect loops when tokens exist but store isn't hydrated yet
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Check multiple sources of authentication
+      const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
+      const hasTokenInStore = !!token;
+      const hasTokenInStorage = !!tokenFromStorage;
+      const hasUserInStore = !!user;
+      
+      // Check if cookie exists (via API) - middleware might have passed but store not synced yet
+      let hasCookie = false;
       if (typeof window !== 'undefined') {
-        const base = window.location.origin;
-        const finalUrl = finalCallbackUrl.startsWith('http')
-          ? finalCallbackUrl
-          : `${base}${finalCallbackUrl.startsWith('/') ? finalCallbackUrl : `/${finalCallbackUrl}`}`;
-        window.location.href = finalUrl;
+        try {
+          hasCookie = await TokenStorage.hasTokensInCookies();
+        } catch (err) {
+          // Cookie check failed, continue with other checks
+        }
       }
-    }
-  }, [callbackUrl, router, isHydrated, user, token, isAuthenticated]);
+
+      // User is authenticated if:
+      // 1. Both token and user exist in store, OR
+      // 2. Token exists in storage AND (user exists in store OR cookie exists)
+      // The cookie check ensures we don't redirect if middleware passed but store isn't synced
+      const hasAuth = 
+        (hasTokenInStore && hasUserInStore) || 
+        (hasTokenInStorage && (hasUserInStore || hasCookie));
+
+      // Also check isAuthenticated() for additional validation
+      const isAuthValid = hasAuth && (isAuthenticated() || hasCookie);
+
+      if (isAuthValid && !redirectingRef.current) {
+        redirectingRef.current = true;
+        
+        // Prevent redirect loops: never redirect to auth pages
+        let finalCallbackUrl = callbackUrl;
+        if (
+          finalCallbackUrl.includes('/auth/login') ||
+          finalCallbackUrl.includes('/auth/callback') ||
+          finalCallbackUrl.includes('/auth/register')
+        ) {
+          // Default to dashboard if callbackUrl points to auth page
+          const defaultLocale = routing.defaultLocale;
+          finalCallbackUrl = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
+        }
+
+        // Use window.location.href for full page reload to ensure middleware sees the cookie
+        // This is important because router.replace() is client-side navigation and middleware
+        // might not see the cookie set by the OAuth callback
+        if (typeof window !== 'undefined') {
+          const base = window.location.origin;
+          const finalUrl = finalCallbackUrl.startsWith('http')
+            ? finalCallbackUrl
+            : `${base}${finalCallbackUrl.startsWith('/') ? finalCallbackUrl : `/${finalCallbackUrl}`}`;
+          window.location.href = finalUrl;
+        }
+      }
+    };
+
+    checkAndRedirect();
+  }, [callbackUrl, router, isHydrated, isAuthInitialized, user, token, isAuthenticated]);
 
   const onSubmit = async (data: LoginInput) => {
     setLoading(true);

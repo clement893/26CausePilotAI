@@ -23,7 +23,7 @@ import { useHydrated } from '@/hooks/useHydrated';
 
 export function AuthInitializer() {
   const isHydrated = useHydrated();
-  const { user, token, refreshToken: storeRefreshToken, setUser, setToken, setRefreshToken, logout } = useAuthStore();
+  const { user, token, refreshToken: storeRefreshToken, setUser, setToken, setRefreshToken, logout, setAuthInitialized } = useAuthStore();
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -229,14 +229,16 @@ export function AuthInitializer() {
         }
 
         setIsInitialized(true);
+        setAuthInitialized(true);
       } catch (err) {
         logger.error('Auth initialization error', err instanceof Error ? err : new Error(String(err)));
         setIsInitialized(true);
+        setAuthInitialized(true);
       }
     };
 
     initializeAuth();
-  }, [isHydrated, isInitialized, user, token, storeRefreshToken, setUser, setToken, setRefreshToken, logout]);
+  }, [isHydrated, isInitialized, user, token, storeRefreshToken, setUser, setToken, setRefreshToken, logout, setAuthInitialized]);
 
   // This component doesn't render anything
   return null;

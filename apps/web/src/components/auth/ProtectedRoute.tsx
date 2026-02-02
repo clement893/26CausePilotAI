@@ -40,7 +40,7 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, token, setUser } = useAuthStore();
+  const { user, token, setUser, isAuthInitialized } = useAuthStore();
   const isHydrated = useHydrated();
 
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -51,8 +51,8 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   const lastPathnameRef = useRef<string>(pathname);
 
   useEffect(() => {
-    // Wait for hydration to complete before checking auth
-    if (!isHydrated) {
+    // Wait for hydration and auth initialization to complete before checking auth
+    if (!isHydrated || !isAuthInitialized) {
       return;
     }
 
@@ -105,7 +105,8 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
 
       // Wait a bit for AuthInitializer to sync tokens between TokenStorage and Zustand store
       // This prevents redirect loops when tokens exist but store isn't hydrated yet
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      // Increased wait time to ensure AuthInitializer has time to sync
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       // Check authentication - prioritize sessionStorage if store not hydrated yet
       const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
@@ -126,7 +127,8 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
           const cookieCheck = await TokenStorage.hasTokensInCookies();
           if (cookieCheck) {
             // Cookie exists, wait a bit more for AuthInitializer to sync tokens to store
-            await new Promise((resolve) => setTimeout(resolve, 500));
+            // Increased wait time to ensure synchronization completes
+            await new Promise((resolve) => setTimeout(resolve, 800));
             // Re-check token after waiting - AuthInitializer should have synced by now
             const tokenAfterWait = TokenStorage.getToken();
             const storeState = useAuthStore.getState();
@@ -405,7 +407,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
 
     // Check immediately
     checkAuth();
-  }, [isHydrated, user, token, requireAdmin, isAuthorized]);
+  }, [isHydrated, isAuthInitialized, user, token, requireAdmin, isAuthorized]);
 
   // Show loader during verification
   if (isChecking || !isAuthorized) {

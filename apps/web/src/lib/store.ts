@@ -46,6 +46,13 @@ interface AuthState {
   token: string | null;
   /** JWT refresh token or null if not available */
   refreshToken: string | null;
+  /** Whether AuthInitializer has finished initializing */
+  isAuthInitialized: boolean;
+  /**
+   * Sets the auth initialization state
+   * @param initialized - Whether auth initialization is complete
+   */
+  setAuthInitialized: (initialized: boolean) => void;
   /**
    * Checks if user is currently authenticated
    * @returns True if both token and user are present
@@ -91,6 +98,11 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       refreshToken: null,
       error: null,
+      isAuthInitialized: false,
+
+      setAuthInitialized: (initialized: boolean) => {
+        set({ isAuthInitialized: initialized });
+      },
 
       isAuthenticated: () => {
         const state = get();
@@ -132,6 +144,7 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         token: state.token,
         refreshToken: state.refreshToken,
+        // Don't persist isAuthInitialized - it should be false on every page load
       }),
     }
   )
