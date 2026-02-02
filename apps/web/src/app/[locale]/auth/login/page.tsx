@@ -15,6 +15,7 @@ import { AuthCard, AuthInput, AuthButton } from '@/components/auth';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { authAPI } from '@/lib/api';
 import { routing } from '@/i18n/routing';
+import { useAuthStore } from '@/lib/store';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'CausePilotAI';
 

@@ -106,14 +106,15 @@ async function middlewareWithAuth(request: NextRequest) {
   const accessTokenCookie = request.cookies.get('access_token')?.value;
   
   // Debug: log cookie presence (but not value for security)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Middleware] Cookie check:', {
-      hasCookie: !!accessTokenCookie,
-      cookieLength: accessTokenCookie?.length,
-      pathname,
-      hasSession: !!session,
-    });
-  }
+  // Enable in production too for debugging redirect loop issue
+  console.log('[Middleware] Cookie check:', {
+    hasCookie: !!accessTokenCookie,
+    cookieLength: accessTokenCookie?.length,
+    pathname,
+    hasSession: !!session,
+    allCookies: Array.from(request.cookies.getAll()).map(c => c.name),
+    nodeEnv: process.env.NODE_ENV,
+  });
   
   if (accessTokenCookie) {
     try {
@@ -122,19 +123,15 @@ async function middlewareWithAuth(request: NextRequest) {
         hasValidToken = true;
       } else if (payload && payload.exp) {
         // Token expired
-        if (process.env.NODE_ENV === 'development') {
-          console.log('[Middleware] Token expired:', {
-            exp: payload.exp,
-            now: Date.now(),
-            expired: Date.now() >= (payload.exp as number) * 1000,
-          });
-        }
+        console.log('[Middleware] Token expired:', {
+          exp: payload.exp,
+          now: Date.now(),
+          expired: Date.now() >= (payload.exp as number) * 1000,
+        });
       }
     } catch (error) {
       // Token invalid or expired, ignore
-      if (process.env.NODE_ENV === 'development') {
-        console.log('[Middleware] Token verification failed:', error);
-      }
+      console.log('[Middleware] Token verification failed:', error instanceof Error ? error.message : String(error));
     }
   }
   
@@ -152,10 +149,22 @@ async function middlewareWithAuth(request: NextRequest) {
                           pathname.startsWith('/en/auth/login') ||
                           pathname.startsWith('/fr/auth/login');
     
+    // Debug logging for authentication decision
+    console.log('[Middleware] Auth decision:', {
+      pathname,
+      pathnameWithoutLocale,
+      isAuthenticated,
+      hasSession: !!session,
+      hasValidToken,
+      isOnLoginPage,
+      willRedirect: !isAuthenticated && !isOnLoginPage,
+    });
+    
     if (!isAuthenticated && !isOnLoginPage) {
       const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
       const loginUrl = new URL(`/${locale}/auth/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
+      console.log('[Middleware] Redirecting to login:', loginUrl.toString());
       return NextResponse.redirect(loginUrl);
     }
     if (pathnameWithoutLocale.startsWith('/admin')) {

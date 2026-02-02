@@ -14,14 +14,37 @@ const REFRESH_TOKEN_COOKIE = 'refresh_token';
 const CSRF_TOKEN_COOKIE = 'csrf_token';
 
 // Cookie options for production
-const getCookieOptions = (isProduction: boolean) => {
-  // In production, check if we're behind a proxy (Railway, etc.)
-  // If so, secure should be true but we need to ensure the cookie is set correctly
+const getCookieOptions = (isProduction: boolean, request?: NextRequest) => {
+  // In production, check if we're behind a proxy (Railway, Vercel, etc.)
+  // Railway/Vercel use HTTPS externally but may proxy internally via HTTP
+  // Check X-Forwarded-Proto header to determine if original request was HTTPS
   const isBehindProxy = process.env.VERCEL || process.env.RAILWAY_ENVIRONMENT;
+  const isHttps = request 
+    ? request.headers.get('x-forwarded-proto') === 'https' || 
+      request.url.startsWith('https://')
+    : false;
+  
+  // Set secure to true if:
+  // 1. We're in production, OR
+  // 2. We're behind a proxy (Railway/Vercel), OR  
+  // 3. The request is HTTPS (even in dev, if using HTTPS)
+  // BUT: If we're behind Railway proxy and request is HTTP internally, 
+  // we still set secure=true because Railway terminates SSL externally
+  const shouldBeSecure = isProduction || !!isBehindProxy || isHttps;
+  
+  // Log cookie options for debugging (in production too, to diagnose redirect loop)
+  console.log('[Token API] Cookie options:', {
+    isProduction,
+    isBehindProxy: !!isBehindProxy,
+    isHttps,
+    shouldBeSecure,
+    xForwardedProto: request?.headers.get('x-forwarded-proto'),
+    url: request?.url,
+  });
   
   return {
     httpOnly: true, // Not accessible to JavaScript (XSS protection)
-    secure: isProduction || !!isBehindProxy, // HTTPS only in production or when behind proxy
+    secure: shouldBeSecure, // HTTPS only when appropriate
     sameSite: 'lax' as const, // CSRF protection, but allows cookie on same-site redirects
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7 days
@@ -44,7 +67,7 @@ export async function POST(request: NextRequest) {
     }
 
     const isProduction = process.env.NODE_ENV === 'production';
-    const cookieOptions = getCookieOptions(isProduction);
+    const cookieOptions = getCookieOptions(isProduction, request);
 
     const response = NextResponse.json({ success: true });
 
@@ -52,10 +75,12 @@ export async function POST(request: NextRequest) {
     // Use expiresIn if provided (in seconds), otherwise default to 7 days for better UX
     // This prevents users from being logged out too frequently
     const accessTokenMaxAge = expiresIn || 60 * 60 * 24 * 7; // Default 7 days
-    response.cookies.set(ACCESS_TOKEN_COOKIE, accessToken, {
+    const finalCookieOptions = {
       ...cookieOptions,
       maxAge: accessTokenMaxAge,
-    });
+    };
+    
+    response.cookies.set(ACCESS_TOKEN_COOKIE, accessToken, finalCookieOptions);
 
     // Set refresh token cookie if provided
     if (refreshToken) {
@@ -64,6 +89,14 @@ export async function POST(request: NextRequest) {
         maxAge: 60 * 60 * 24 * 30, // 30 days
       });
     }
+
+    // Log cookie setting for debugging (including production to diagnose redirect loop)
+    console.log('[Token API] Cookie set:', {
+      cookieName: ACCESS_TOKEN_COOKIE,
+      cookieValueLength: accessToken.length,
+      cookieOptions: finalCookieOptions,
+      responseHeaders: Object.fromEntries(response.headers.entries()),
+    });
 
     return response;
   } catch (error) {
