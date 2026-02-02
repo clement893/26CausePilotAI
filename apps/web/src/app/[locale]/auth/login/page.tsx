@@ -10,9 +10,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn, getSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { loginSchema, type LoginInput } from '@/lib/validations/auth';
 import { AuthCard, AuthInput, AuthButton } from '@/components/auth';
+import { useAuthStore } from '@/lib/store';
+import { useHydrated } from '@/hooks/useHydrated';
+import { TokenStorage } from '@/lib/auth/tokenStorage';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'Nucleus Cause';
 
@@ -20,6 +23,8 @@ export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
+  const { user, token, isAuthenticated } = useAuthStore();
+  const isHydrated = useHydrated();
 
   const {
     register,
@@ -39,17 +44,25 @@ export default function LoginPage() {
         '/dashboard'
       : '/dashboard';
 
-  // If already signed in (e.g. after OAuth callback), redirect to target once (avoid loop)
+  // If already signed in, redirect to target once (avoid loop)
+  // Check Zustand store (source of truth) instead of NextAuth session
   useEffect(() => {
-    let cancelled = false;
-    getSession().then((session) => {
-      if (cancelled || !session?.user) return;
+    // Wait for hydration to complete before checking auth
+    if (!isHydrated) {
+      return;
+    }
+
+    // Check if user is authenticated via Zustand store (not NextAuth)
+    // This prevents redirect loops when NextAuth has a session but Zustand doesn't
+    const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
+    const hasAuth = (user && token) || (tokenFromStorage && user);
+
+    if (hasAuth && isAuthenticated()) {
+      // User is authenticated, redirect to callback URL
+      // Use replace to avoid adding to history
       router.replace(callbackUrl);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [callbackUrl, router]);
+    }
+  }, [callbackUrl, router, isHydrated, user, token, isAuthenticated]);
 
   const onSubmit = async (data: LoginInput) => {
     setLoading(true);
