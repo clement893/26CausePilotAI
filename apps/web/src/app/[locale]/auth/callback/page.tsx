@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useCallback } from 'react';
+import { Suspense, useEffect, useCallback, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
@@ -22,8 +22,16 @@ function CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuthStore();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleAuthCallback = useCallback(async () => {
+    // Prevent multiple simultaneous executions
+    if (isProcessing) {
+      logger.debug('Callback already processing, skipping');
+      return;
+    }
+    
+    setIsProcessing(true);
     // Get token from URL params - try multiple methods to ensure we get it
     // This handles cases where next-intl middleware might interfere
     let accessToken: string | null = null;
@@ -140,7 +148,16 @@ function CallbackContent() {
         // Determine redirect URL - use callbackUrl from params, or default to dashboard
         const defaultLocale = routing.defaultLocale;
         const defaultDashboard = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
-        const redirectUrl = callbackUrl || defaultDashboard;
+        
+        // Prevent redirect loops: never redirect to auth/callback pages
+        let redirectUrl = callbackUrl || defaultDashboard;
+        if (redirectUrl.includes('/auth/callback') || redirectUrl.includes('/auth/login')) {
+          logger.warn('Preventing redirect loop - callbackUrl points to auth page, using default dashboard', {
+            callbackUrl,
+            redirectUrl: defaultDashboard,
+          });
+          redirectUrl = defaultDashboard;
+        }
 
         logger.info('Redirecting after authentication', {
           redirectUrl,
@@ -149,16 +166,17 @@ function CallbackContent() {
         });
 
         // Small delay to ensure store is updated
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 300));
 
-        // Ensure redirect URL is absolute or properly formatted
-        if (redirectUrl.startsWith('http')) {
-          // Full URL - redirect directly
-          window.location.href = redirectUrl;
-        } else {
-          // Relative path - use router
-          router.push(redirectUrl);
-        }
+        // Always use window.location.href for redirect to ensure full page reload
+        // This ensures Zustand store is properly hydrated and prevents redirect loops
+        const base = typeof window !== 'undefined' ? window.location.origin : '';
+        const finalRedirectUrl = redirectUrl.startsWith('http') 
+          ? redirectUrl 
+          : `${base}${redirectUrl.startsWith('/') ? redirectUrl : `/${redirectUrl}`}`;
+        
+        logger.info('Performing final redirect', { finalRedirectUrl });
+        window.location.href = finalRedirectUrl;
       } else {
         throw new Error('No user data received');
       }
@@ -177,8 +195,10 @@ function CallbackContent() {
       router.push(
         `/auth/login?error=${encodeURIComponent(appError.message || 'Failed to get user info')}`
       );
+    } finally {
+      setIsProcessing(false);
     }
-  }, [searchParams, router, login]);
+  }, [searchParams, router, login, isProcessing]);
 
   useEffect(() => {
     handleAuthCallback();
