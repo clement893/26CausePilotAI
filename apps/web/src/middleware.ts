@@ -95,6 +95,7 @@ async function middlewareWithAuth(request: NextRequest) {
   }
 
   // NextAuth v5: session from auth() wrapper (same cookie as after Google OAuth)
+  // In NextAuth v5, auth() wraps the middleware and sets request.auth
   const session = (request as NextRequest & { auth?: { user?: { role?: string } } }).auth;
   
   // Also check for JWT token in cookie (for OAuth flow and direct login)
@@ -105,13 +106,22 @@ async function middlewareWithAuth(request: NextRequest) {
   let hasValidToken = false;
   const accessTokenCookie = request.cookies.get('access_token')?.value;
   
+  // Also check for NextAuth session cookie (authjs.session-token or next-auth.session-token)
+  const nextAuthSessionCookie = 
+    request.cookies.get('authjs.session-token')?.value ||
+    request.cookies.get('next-auth.session-token')?.value ||
+    request.cookies.get('__Secure-authjs.session-token')?.value ||
+    request.cookies.get('__Secure-next-auth.session-token')?.value;
+  
   // Debug: log cookie presence (but not value for security)
   // Enable in production too for debugging redirect loop issue
   console.log('[Middleware] Cookie check:', {
-    hasCookie: !!accessTokenCookie,
-    cookieLength: accessTokenCookie?.length,
+    hasAccessTokenCookie: !!accessTokenCookie,
+    accessTokenCookieLength: accessTokenCookie?.length,
+    hasNextAuthSessionCookie: !!nextAuthSessionCookie,
     pathname,
     hasSession: !!session,
+    sessionUser: session?.user ? { id: session.user.id, email: session.user.email } : null,
     allCookies: Array.from(request.cookies.getAll()).map(c => c.name),
     nodeEnv: process.env.NODE_ENV,
   });
@@ -135,13 +145,21 @@ async function middlewareWithAuth(request: NextRequest) {
     }
   }
   
+  // If we have a NextAuth session cookie but no session object, it might be a timing issue
+  // Allow access if we have the session cookie (NextAuth will validate it)
+  const hasNextAuthCookie = !!nextAuthSessionCookie;
+  
   if (!pathname.startsWith('/api/')) {
-    // User is authenticated if they have either NextAuth session OR valid JWT token cookie
-    // Check both to handle cases where:
+    // User is authenticated if they have:
+    // 1. NextAuth session object (from auth() wrapper)
+    // 2. Valid JWT token cookie (access_token)
+    // 3. NextAuth session cookie (even if session object not available yet - timing issue)
+    // Check all to handle cases where:
     // - OAuth sets cookie but NextAuth session isn't ready yet
     // - Direct login sets cookie but NextAuth session isn't immediately available
     // - NextAuth session expires but cookie is still valid
-    const isAuthenticated = !!session || hasValidToken;
+    // - Session cookie exists but session object not populated (timing/race condition)
+    const isAuthenticated = !!session || hasValidToken || hasNextAuthCookie;
     
     // Don't redirect if already on login page - prevents redirect loops
     const isOnLoginPage = pathnameWithoutLocale === '/auth/login' || 
@@ -156,6 +174,7 @@ async function middlewareWithAuth(request: NextRequest) {
       isAuthenticated,
       hasSession: !!session,
       hasValidToken,
+      hasNextAuthCookie,
       isOnLoginPage,
       willRedirect: !isAuthenticated && !isOnLoginPage,
     });
