@@ -60,9 +60,28 @@ export default function LoginPage() {
     const hasAuth = (user && token) || (tokenFromStorage && user);
 
     if (hasAuth && isAuthenticated()) {
-      // User is authenticated, redirect to callback URL
-      // Use replace to avoid adding to history
-      router.replace(callbackUrl);
+      // Prevent redirect loops: never redirect to auth pages
+      let finalCallbackUrl = callbackUrl;
+      if (
+        finalCallbackUrl.includes('/auth/login') ||
+        finalCallbackUrl.includes('/auth/callback') ||
+        finalCallbackUrl.includes('/auth/register')
+      ) {
+        // Default to dashboard if callbackUrl points to auth page
+        const defaultLocale = routing.defaultLocale;
+        finalCallbackUrl = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
+      }
+
+      // Use window.location.href for full page reload to ensure middleware sees the cookie
+      // This is important because router.replace() is client-side navigation and middleware
+      // might not see the cookie set by the OAuth callback
+      if (typeof window !== 'undefined') {
+        const base = window.location.origin;
+        const finalUrl = finalCallbackUrl.startsWith('http')
+          ? finalCallbackUrl
+          : `${base}${finalCallbackUrl.startsWith('/') ? finalCallbackUrl : `/${finalCallbackUrl}`}`;
+        window.location.href = finalUrl;
+      }
     }
   }, [callbackUrl, router, isHydrated, user, token, isAuthenticated]);
 

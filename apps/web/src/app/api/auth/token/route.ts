@@ -17,7 +17,7 @@ const CSRF_TOKEN_COOKIE = 'csrf_token';
 const getCookieOptions = (isProduction: boolean) => ({
   httpOnly: true, // Not accessible to JavaScript (XSS protection)
   secure: isProduction, // HTTPS only in production
-  sameSite: 'strict' as const, // CSRF protection
+  sameSite: 'lax' as const, // CSRF protection, but allows cookie on same-site redirects
   path: '/',
   maxAge: 60 * 60 * 24 * 7, // 7 days
 });
