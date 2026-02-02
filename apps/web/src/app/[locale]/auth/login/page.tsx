@@ -31,18 +31,24 @@ export default function LoginPage() {
     defaultValues: { email: '', password: '', remember: false },
   });
 
+  // Support both callbackUrl (our middleware) and redirect (NextAuth) query params
   const callbackUrl =
     typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('callbackUrl') ?? '/dashboard'
+      ? new URLSearchParams(window.location.search).get('callbackUrl') ??
+        new URLSearchParams(window.location.search).get('redirect') ??
+        '/dashboard'
       : '/dashboard';
 
-  // If already signed in (e.g. after OAuth callback), redirect to callbackUrl
+  // If already signed in (e.g. after OAuth callback), redirect to target once (avoid loop)
   useEffect(() => {
+    let cancelled = false;
     getSession().then((session) => {
-      if (session?.user) {
-        router.replace(callbackUrl);
-      }
+      if (cancelled || !session?.user) return;
+      router.replace(callbackUrl);
     });
+    return () => {
+      cancelled = true;
+    };
   }, [callbackUrl, router]);
 
   const onSubmit = async (data: LoginInput) => {

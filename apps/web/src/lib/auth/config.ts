@@ -91,6 +91,8 @@ export const authConfig: NextAuthConfig = {
     newUser: '/auth/welcome',
   },
   callbacks: {
+    // Prevent NextAuth from redirecting on its own (avoids redirect param + loop). Our middleware handles redirects with callbackUrl.
+    authorized: async () => true,
     async jwt({ token, user, account }) {
       if (account && user) {
         const u = user as {
