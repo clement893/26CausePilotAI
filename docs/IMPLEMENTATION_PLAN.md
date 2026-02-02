@@ -1,11 +1,11 @@
-# Plan d'Implémentation - Nucleus Cause
+# Plan d'Implémentation - CausePilotAI
 
 **Date:** 1er février 2026  
 **Basé sur:** Cahier de Charges Fonctionnel v1.0
 
 ## Introduction
 
-Ce document définit l'ordre logique d'implémentation des fonctionnalités de la plateforme **Nucleus Cause**. Il s'inspire directement du planning de développement suggéré en section 16.3 du cahier des charges, en le structurant en 7 phases séquentielles et logiques. 
+Ce document définit l'ordre logique d'implémentation des fonctionnalités de la plateforme **CausePilotAI**. Il s'inspire directement du planning de développement suggéré en section 16.3 du cahier des charges, en le structurant en 7 phases séquentielles et logiques. 
 
 Chaque phase représente un macro-lot de développement qui sera ensuite décomposé en instructions détaillées pour Cursor. Nous commencerons par les fondations (Base de données, Admin) pour construire progressivement les modules plus complexes.
 

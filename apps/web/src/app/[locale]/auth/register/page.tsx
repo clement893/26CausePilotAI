@@ -20,7 +20,7 @@ import {
   PasswordStrengthIndicator,
 } from '@/components/auth';
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'Nucleus Cause';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'CausePilotAI';
 
 export default function RegisterPage() {
   const router = useRouter();

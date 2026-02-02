@@ -7,7 +7,7 @@
 
 ## Vue d'Ensemble
 
-La **Phase 1 - Fondations** constitue le socle de la plateforme Nucleus Cause. Elle comprend deux modules essentiels qui permettent de gérer la sécurité, les utilisateurs, et les donateurs. Cette phase doit être complétée avant de passer aux phases suivantes.
+La **Phase 1 - Fondations** constitue le socle de la plateforme CausePilotAI. Elle comprend deux modules essentiels qui permettent de gérer la sécurité, les utilisateurs, et les donateurs. Cette phase doit être complétée avant de passer aux phases suivantes.
 
 ---
 

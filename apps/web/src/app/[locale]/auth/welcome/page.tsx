@@ -55,7 +55,7 @@ export default function AuthWelcomePage() {
             </svg>
           </div>
           <h1 className="mb-2 text-2xl font-bold text-[var(--text-primary,#FFF)]">
-            Bienvenue sur Nucleus Cause !
+            Bienvenue sur CausePilotAI !
           </h1>
           <p className="mb-8 text-[var(--text-secondary,#A0A0B0)]">
             Votre compte a été créé avec succès. Vous pouvez maintenant commencer

@@ -19,7 +19,7 @@ import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { authAPI } from '@/lib/api';
 import { routing } from '@/i18n/routing';
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'Nucleus Cause';
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'CausePilotAI';
 
 export default function LoginPage() {
   const router = useRouter();
