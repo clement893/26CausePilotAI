@@ -97,8 +97,43 @@ export default function LoginPage() {
         setError('root', { message: 'Email ou mot de passe incorrect' });
         return;
       }
-      router.push(callbackUrl);
-      router.refresh();
+
+      // After successful NextAuth login, get JWT token from backend and set cookie
+      // This ensures the middleware can verify authentication via access_token cookie
+      try {
+        const loginResponse = await authAPI.login(data.email, data.password);
+        const { access_token, refresh_token, user: userData } = loginResponse.data;
+
+        // Transform user data to store format
+        const { transformApiUserToStoreUser } = await import('@/lib/auth/userTransform');
+        const userForStore = transformApiUserToStoreUser(userData);
+
+        // Store tokens securely (this also sets the access_token cookie)
+        await TokenStorage.setToken(access_token, refresh_token);
+
+        // Update Zustand store
+        const { login } = useAuthStore.getState();
+        await login(userForStore, access_token, refresh_token);
+
+        // Wait a bit to ensure cookie is set before redirecting
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      } catch (tokenError) {
+        // If token fetch fails, log but continue - NextAuth session might be enough
+        console.warn('Failed to get JWT token after NextAuth login:', tokenError);
+      }
+
+      // Use window.location.href for full page reload to ensure middleware sees the cookie
+      const base = typeof window !== 'undefined' ? window.location.origin : '';
+      const finalUrl = callbackUrl.startsWith('http')
+        ? callbackUrl
+        : `${base}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
+      
+      if (typeof window !== 'undefined') {
+        window.location.href = finalUrl;
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
     } catch {
       setError('root', { message: 'Une erreur est survenue. Veuillez réessayer.' });
     } finally {

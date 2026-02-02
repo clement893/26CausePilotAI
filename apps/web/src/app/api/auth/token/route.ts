@@ -41,9 +41,12 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ success: true });
 
     // Set access token cookie
+    // Use expiresIn if provided (in seconds), otherwise default to 7 days for better UX
+    // This prevents users from being logged out too frequently
+    const accessTokenMaxAge = expiresIn || 60 * 60 * 24 * 7; // Default 7 days
     response.cookies.set(ACCESS_TOKEN_COOKIE, accessToken, {
       ...cookieOptions,
-      maxAge: expiresIn || 60 * 60, // Default 1 hour
+      maxAge: accessTokenMaxAge,
     });
 
     // Set refresh token cookie if provided

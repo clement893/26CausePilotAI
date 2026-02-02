@@ -97,9 +97,11 @@ async function middlewareWithAuth(request: NextRequest) {
   // NextAuth v5: session from auth() wrapper (same cookie as after Google OAuth)
   const session = (request as NextRequest & { auth?: { user?: { role?: string } } }).auth;
   
-  // Also check for JWT token in cookie (for OAuth flow)
-  // This is needed because OAuth callback stores token in access_token cookie via /api/auth/token
-  // Check cookie even if session exists, as session might not be immediately available after OAuth
+  // Also check for JWT token in cookie (for OAuth flow and direct login)
+  // This is needed because:
+  // 1. OAuth callback stores token in access_token cookie via /api/auth/token
+  // 2. Direct login (credentials) also sets access_token cookie after NextAuth signIn
+  // Check cookie even if session exists, as session might not be immediately available after login
   let hasValidToken = false;
   const accessTokenCookie = request.cookies.get('access_token')?.value;
   if (accessTokenCookie) {
@@ -115,8 +117,13 @@ async function middlewareWithAuth(request: NextRequest) {
   
   if (!pathname.startsWith('/api/')) {
     // User is authenticated if they have either NextAuth session OR valid JWT token cookie
-    // Check both to handle cases where OAuth sets cookie but NextAuth session isn't ready yet
-    if (!session && !hasValidToken) {
+    // Check both to handle cases where:
+    // - OAuth sets cookie but NextAuth session isn't ready yet
+    // - Direct login sets cookie but NextAuth session isn't immediately available
+    // - NextAuth session expires but cookie is still valid
+    const isAuthenticated = !!session || hasValidToken;
+    
+    if (!isAuthenticated) {
       const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
       const loginUrl = new URL(`/${locale}/auth/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
