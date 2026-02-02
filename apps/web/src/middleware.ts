@@ -39,6 +39,16 @@ async function middlewareWithAuth(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // OAuth callback: skip intl middleware to avoid redirect loop between
+  // /auth/callback and /en/auth/callback (next-intl as-needed can redirect both ways)
+  const isAuthCallback =
+    pathname === '/auth/callback' ||
+    pathname === '/en/auth/callback' ||
+    pathname === '/fr/auth/callback';
+  if (isAuthCallback) {
+    return NextResponse.next();
+  }
+
   // Handle i18n routing first
   const response = intlMiddleware(request);
 
