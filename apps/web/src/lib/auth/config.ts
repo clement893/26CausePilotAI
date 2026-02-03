@@ -62,7 +62,7 @@ export const authConfig: NextAuthConfig = {
             name: name || undefined,
             firstName: user.first_name ?? null,
             lastName: user.last_name ?? null,
-            role: (user.role as 'ADMIN' | 'DIRECTOR' | 'MANAGER' | undefined) ?? undefined,
+            role: (user.role as 'ADMIN' | 'DIRECTOR' | 'MANAGER' | 'SUPER_ADMIN' | undefined) ?? undefined,
             organizationId: user.organization_id ?? undefined,
           } as import('next-auth').User;
         } catch (e) {
@@ -109,7 +109,7 @@ export const authConfig: NextAuthConfig = {
           ...token,
           userId: u.id ?? token.sub,
           email: u.email ?? token.email,
-          role: u.role as 'ADMIN' | 'DIRECTOR' | 'MANAGER' | undefined,
+          role: u.role as 'ADMIN' | 'DIRECTOR' | 'MANAGER' | 'SUPER_ADMIN' | undefined,
           organizationId: u.organizationId,
           firstName: u.firstName ?? null,
           lastName: u.lastName ?? null,
@@ -134,7 +134,7 @@ export const authConfig: NextAuthConfig = {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.userId ?? token.user?.id ?? (token.sub as string) ?? '';
-        session.user.role = token.role as 'ADMIN' | 'DIRECTOR' | 'MANAGER' | undefined;
+        session.user.role = token.role as 'ADMIN' | 'DIRECTOR' | 'MANAGER' | 'SUPER_ADMIN' | undefined;
         session.user.organizationId = token.organizationId;
         session.user.firstName = token.firstName ?? null;
         session.user.lastName = token.lastName ?? null;

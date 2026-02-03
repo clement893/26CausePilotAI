@@ -188,7 +188,8 @@ async function middlewareWithAuth(request: NextRequest) {
     }
     if (pathnameWithoutLocale.startsWith('/admin')) {
       const role = session?.user?.role;
-      if (role !== 'ADMIN') {
+      // Allow both ADMIN and SUPER_ADMIN to access admin routes
+      if (role !== 'ADMIN' && role !== 'SUPER_ADMIN') {
         const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
         return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));
       }
