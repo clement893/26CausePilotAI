@@ -32,9 +32,14 @@ const getCookieOptions = (isProduction: boolean, request?: NextRequest) => {
   // we still set secure=true because Railway terminates SSL externally
   const shouldBeSecure = isProduction || !!isBehindProxy || isHttps;
   
-  // Log cookie options for debugging (in production too, to diagnose redirect loop)
+  // For Railway/proxy environments, we may need to adjust sameSite
+  // 'lax' should work for same-site redirects, but if there are issues, we might need 'none'
+  // However, 'none' requires secure=true, which we already have in production
+  // Use 'none' for proxy environments to ensure cookies work across proxy boundaries
   const sameSiteValue: 'lax' | 'none' | 'strict' = 
     (isBehindProxy && shouldBeSecure) ? 'none' : 'lax';
+  
+  // Log cookie options for debugging (in production too, to diagnose redirect loop)
   console.log('[Token API] Cookie options:', {
     isProduction,
     isBehindProxy: !!isBehindProxy,
@@ -44,13 +49,6 @@ const getCookieOptions = (isProduction: boolean, request?: NextRequest) => {
     xForwardedProto: request?.headers.get('x-forwarded-proto'),
     url: request?.url,
   });
-  
-  // For Railway/proxy environments, we may need to adjust sameSite
-  // 'lax' should work for same-site redirects, but if there are issues, we might need 'none'
-  // However, 'none' requires secure=true, which we already have in production
-  // Try 'lax' first as it's more secure, but log if we're having issues
-  const sameSiteValue: 'lax' | 'none' | 'strict' = 
-    (isBehindProxy && shouldBeSecure) ? 'none' : 'lax';
   
   return {
     httpOnly: true, // Not accessible to JavaScript (XSS protection)
