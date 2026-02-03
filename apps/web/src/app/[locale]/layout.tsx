@@ -87,29 +87,24 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable} data-api-url={apiUrl} suppressHydrationWarning>
       <head>
-        {/* CRITICAL: Apply theme script FIRST, before any CSS, to prevent flash */}
-        {/* This script MUST execute synchronously and block rendering until theme is applied */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: themeCacheInlineScript,
-          }}
-        />
-
-        {/* Fix Next.js bug: script tags with CSS src (MIME "text/css" not executable). Convert to link[rel=stylesheet] before they run. */}
+        {/* MUST be first: prevent "Refused to execute script" MIME error when a script src points to .css. Convert such scripts to link[rel=stylesheet] via MutationObserver and periodic scan. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
 (function() {
   function isCssSrc(src) {
     if (!src) return false;
-    var s = src.toLowerCase().split('?')[0];
-    return s.slice(-4) === '.css';
+    var s = (src + '').toLowerCase().split('?')[0].split('#')[0];
+    return s.length >= 4 && s.slice(-4) === '.css';
   }
   function fixCssScript(script) {
-    if (!script.src || !isCssSrc(script.src)) return;
+    if (!script || !script.src || !isCssSrc(script.src)) return;
+    var href = script.src;
+    script.removeAttribute('src');
+    script.src = '';
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = script.src;
+    link.href = href;
     if (script.parentNode) {
       script.parentNode.insertBefore(link, script);
       script.remove();
@@ -117,31 +112,35 @@ export default async function LocaleLayout({
   }
   function run() {
     var scripts = document.querySelectorAll('script[src]');
-    var arr = [];
-    for (var i = 0; i < scripts.length; i++) arr.push(scripts[i]);
-    for (var j = 0; j < arr.length; j++) {
-      if (isCssSrc(arr[j].src)) fixCssScript(arr[j]);
+    for (var i = 0; i < scripts.length; i++) {
+      if (isCssSrc(scripts[i].src)) fixCssScript(scripts[i]);
     }
   }
-  run();
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  }
-  queueMicrotask(run);
-  setTimeout(run, 0);
-  setTimeout(run, 50);
   var obs = new MutationObserver(function(mutations) {
     for (var i = 0; i < mutations.length; i++) {
       var nodes = mutations[i].addedNodes;
       for (var j = 0; j < nodes.length; j++) {
         var n = nodes[j];
-        if (n.nodeType === 1 && n.tagName === 'SCRIPT' && isCssSrc(n.src)) fixCssScript(n);
+        if (n.nodeType === 1 && n.tagName === 'SCRIPT' && n.src && isCssSrc(n.src)) fixCssScript(n);
       }
     }
   });
-  obs.observe(document.documentElement, { childList: true, subtree: true });
+  if (document.documentElement) obs.observe(document.documentElement, { childList: true, subtree: true });
+  run();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  queueMicrotask(run);
+  setTimeout(run, 0);
+  setTimeout(run, 50);
+  setTimeout(run, 150);
+  setTimeout(run, 400);
 })();
             `.trim(),
+          }}
+        />
+        {/* Apply theme script after CSS fix so theme runs before any CSS */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeCacheInlineScript,
           }}
         />
 
