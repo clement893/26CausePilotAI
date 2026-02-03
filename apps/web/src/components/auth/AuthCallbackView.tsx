@@ -129,12 +129,12 @@ function CallbackContent() {
           tokenMatches: storedToken === accessToken,
         });
 
-        // Verify that cookie is set before redirecting (critical for middleware on next request)
-        // Without this, middleware may not see the cookie and redirect back to login
+        // Verify that cookie is set before redirecting (critical for middleware on next request).
+        // Without this, middleware may not see the cookie and redirect back to login (redirect loop).
         let cookieVerified = false;
         if (typeof window !== 'undefined') {
-          const maxAttempts = 8;
-          const delayMs = 250;
+          const maxAttempts = 12;
+          const delayMs = 300;
           for (let attempt = 1; attempt <= maxAttempts; attempt++) {
             await new Promise((resolve) => setTimeout(resolve, delayMs));
             try {
@@ -143,16 +143,21 @@ function CallbackContent() {
                 logger.debug('Cookie verified', { attempt });
                 break;
               }
-              if (attempt < maxAttempts) {
-                await TokenStorage.setToken(accessToken, refreshToken);
-              }
+              await TokenStorage.setToken(accessToken, refreshToken);
             } catch (e) {
               logger.warn('Cookie check failed', { attempt, error: e });
             }
           }
           if (!cookieVerified) {
-            logger.warn('Cookie not verified after retries, proceeding with redirect anyway');
-            cookieVerified = true;
+            logger.warn('Cookie not verified after retries - redirecting to login with callbackUrl so recovery can run', {
+              maxAttempts,
+            });
+            // Redirect to login with callbackUrl; login page will re-set cookie from localStorage and redirect again
+            const fallbackDest = callbackUrl || '/dashboard';
+            const pathMatch = window.location.pathname.match(/^\/(en|fr)\//);
+            const localePrefix = pathMatch ? `/${pathMatch[1]}` : '';
+            window.location.href = `${localePrefix}/auth/login?callbackUrl=${encodeURIComponent(fallbackDest)}&error=callback_cookie_failed`;
+            return;
           }
         }
 

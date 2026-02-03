@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
@@ -20,6 +21,8 @@ import { useAuthStore } from '@/lib/store';
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'CausePilotAI';
 
 export default function LoginPage() {
+  const params = useParams();
+  const locale = (params?.locale as string) || routing.defaultLocale;
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
 
@@ -179,10 +182,10 @@ export default function LoginPage() {
         sessionStorage.setItem('oauth_callback_url', callbackUrl);
       }
       
-      // Use backend custom OAuth instead of NextAuth to ensure proper token handling
+      // Use backend custom OAuth instead of NextAuth to ensure proper token handling.
+      // Use current page locale so we land on /fr/auth/callback when user started from /fr/auth/login (avoids redirect loop).
       const base = typeof window !== 'undefined' ? window.location.origin : '';
-      const locale = routing.defaultLocale;
-      const callbackPath = `/${locale}/auth/callback`;
+      const callbackPath = locale === routing.defaultLocale ? '/auth/callback' : `/${locale}/auth/callback`;
       const fullCallbackUrl = `${base}${callbackPath}`;
       
       // Get Google OAuth URL from backend with callback URL

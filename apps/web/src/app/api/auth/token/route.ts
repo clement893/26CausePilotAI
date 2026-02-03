@@ -80,14 +80,8 @@ export async function POST(request: NextRequest) {
       maxAge: accessTokenMaxAge,
     };
     
-    // Set cookie using both methods to ensure compatibility
-    // Method 1: Using response.cookies.set() (Next.js 13+)
+    // Set cookie via Next.js response.cookies (single Set-Cookie to avoid browser quirks)
     response.cookies.set(ACCESS_TOKEN_COOKIE, accessToken, finalCookieOptions);
-    
-    // Method 2: Also set via Set-Cookie header directly (fallback)
-    // This ensures the cookie is set even if cookies.set() has issues
-    const cookieString = `${ACCESS_TOKEN_COOKIE}=${accessToken}; Path=/; Max-Age=${accessTokenMaxAge}; HttpOnly; SameSite=Lax${finalCookieOptions.secure ? '; Secure' : ''}`;
-    response.headers.append('Set-Cookie', cookieString);
 
     // Set refresh token cookie if provided
     if (refreshToken) {
@@ -96,8 +90,6 @@ export async function POST(request: NextRequest) {
         maxAge: 60 * 60 * 24 * 30, // 30 days
       };
       response.cookies.set(REFRESH_TOKEN_COOKIE, refreshToken, refreshCookieOptions);
-      const refreshCookieString = `${REFRESH_TOKEN_COOKIE}=${refreshToken}; Path=/; Max-Age=${60 * 60 * 24 * 30}; HttpOnly; SameSite=Lax${refreshCookieOptions.secure ? '; Secure' : ''}`;
-      response.headers.append('Set-Cookie', refreshCookieString);
     }
 
     // Log cookie setting for debugging (including production to diagnose redirect loop)
@@ -105,11 +97,6 @@ export async function POST(request: NextRequest) {
       cookieName: ACCESS_TOKEN_COOKIE,
       cookieValueLength: accessToken.length,
       cookieOptions: finalCookieOptions,
-      cookieString: cookieString.substring(0, 100) + '...', // Log first 100 chars only
-      setCookieHeaders: response.headers.get('Set-Cookie'),
-      responseHeaders: Array.from(response.headers.entries()).filter(([key]) => 
-        key.toLowerCase() === 'set-cookie'
-      ),
     });
 
     return response;
