@@ -32,12 +32,20 @@ const getCookieOptions = (isProduction: boolean, request?: NextRequest) => {
   // we still set secure=true because Railway terminates SSL externally
   const shouldBeSecure = isProduction || !!isBehindProxy || isHttps;
   
-  // For Railway/proxy environments, we may need to adjust sameSite
-  // 'lax' should work for same-site redirects, but if there are issues, we might need 'none'
-  // However, 'none' requires secure=true, which we already have in production
-  // Use 'none' for proxy environments to ensure cookies work across proxy boundaries
-  const sameSiteValue: 'lax' | 'none' | 'strict' = 
-    (isBehindProxy && shouldBeSecure) ? 'none' : 'lax';
+  // For Railway/proxy environments, cookie sameSite behavior:
+  // - 'lax' works for same-site requests (same domain)
+  // - 'none' is needed for cross-site but requires secure=true
+  // Railway uses same domain, so 'lax' should work, but if there are proxy issues, try 'none'
+  // However, 'none' can cause issues with some browsers if not configured correctly
+  // Start with 'lax' and only use 'none' if explicitly needed
+  // Note: Railway should be same-site, so 'lax' is preferred for security
+  const sameSiteValue: 'lax' | 'none' | 'strict' = 'lax';
+  
+  // If we're behind a proxy and having cookie issues, we could try 'none'
+  // But for now, stick with 'lax' as Railway should be same-site
+  // Uncomment below if 'lax' doesn't work:
+  // const sameSiteValue: 'lax' | 'none' | 'strict' = 
+  //   (isBehindProxy && shouldBeSecure) ? 'none' : 'lax';
   
   // Log cookie options for debugging (in production too, to diagnose redirect loop)
   console.log('[Token API] Cookie options:', {
