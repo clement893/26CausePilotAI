@@ -37,13 +37,14 @@ async function middlewareWithAuth(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // OAuth callback: skip intl middleware to avoid redirect loop between
-  // /auth/callback and /en/auth/callback (next-intl as-needed can redirect both ways)
-  const isAuthCallback =
+  // OAuth callback and set-cookie: skip intl redirects so URL stays stable
+  const isAuthCallbackOrSetCookie =
     pathname === '/auth/callback' ||
     pathname === '/en/auth/callback' ||
-    pathname === '/fr/auth/callback';
-  if (isAuthCallback) {
+    pathname === '/fr/auth/callback' ||
+    pathname === '/auth/set-cookie' ||
+    pathname === '/fr/auth/set-cookie';
+  if (isAuthCallbackOrSetCookie) {
     return NextResponse.next();
   }
 
@@ -69,6 +70,7 @@ async function middlewareWithAuth(request: NextRequest) {
     '/auth/register',
     '/auth/signin',
     '/auth/callback', // OAuth callback - needs to be public to receive token
+    '/auth/set-cookie', // Sets cookie then redirects - used after OAuth callback
     '/auth/google/testing', // Google OAuth test page
     '/auth/google/diagnostic', // Google OAuth diagnostic page
     '/auth/forgot-password',

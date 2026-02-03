@@ -87,7 +87,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable} data-api-url={apiUrl} suppressHydrationWarning>
       <head>
-        {/* MUST be first: prevent "Refused to execute script" MIME error when a script src points to .css. Convert such scripts to link[rel=stylesheet] via MutationObserver and periodic scan. */}
+        {/* MUST be first: prevent "Refused to execute script" MIME error when a script src points to .css. Convert to link[rel=stylesheet] via MutationObserver and scans. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -98,13 +98,13 @@ export default async function LocaleLayout({
     return s.length >= 4 && s.slice(-4) === '.css';
   }
   function fixCssScript(script) {
-    if (!script || !script.src || !isCssSrc(script.src)) return;
-    var href = script.src;
-    script.removeAttribute('src');
-    script.src = '';
+    if (!script || !isCssSrc(script.src || script.getAttribute('src'))) return;
+    var href = script.src || script.getAttribute('src') || '';
     var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = href;
+    script.removeAttribute('src');
+    script.src = '';
     if (script.parentNode) {
       script.parentNode.insertBefore(link, script);
       script.remove();
@@ -121,17 +121,15 @@ export default async function LocaleLayout({
       var nodes = mutations[i].addedNodes;
       for (var j = 0; j < nodes.length; j++) {
         var n = nodes[j];
-        if (n.nodeType === 1 && n.tagName === 'SCRIPT' && n.src && isCssSrc(n.src)) fixCssScript(n);
+        if (n.nodeType === 1 && n.tagName === 'SCRIPT' && (n.src || n.getAttribute('src')) && isCssSrc(n.src || n.getAttribute('src'))) fixCssScript(n);
       }
     }
   });
   if (document.documentElement) obs.observe(document.documentElement, { childList: true, subtree: true });
   run();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
-  queueMicrotask(run);
   setTimeout(run, 0);
-  setTimeout(run, 50);
-  setTimeout(run, 150);
+  setTimeout(run, 100);
   setTimeout(run, 400);
 })();
             `.trim(),

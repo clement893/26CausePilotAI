@@ -129,38 +129,6 @@ function CallbackContent() {
           tokenMatches: storedToken === accessToken,
         });
 
-        // Verify that cookie is set before redirecting (critical for middleware on next request).
-        // Without this, middleware may not see the cookie and redirect back to login (redirect loop).
-        let cookieVerified = false;
-        if (typeof window !== 'undefined') {
-          const maxAttempts = 12;
-          const delayMs = 300;
-          for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-            await new Promise((resolve) => setTimeout(resolve, delayMs));
-            try {
-              cookieVerified = await TokenStorage.hasTokensInCookies();
-              if (cookieVerified) {
-                logger.debug('Cookie verified', { attempt });
-                break;
-              }
-              await TokenStorage.setToken(accessToken, refreshToken);
-            } catch (e) {
-              logger.warn('Cookie check failed', { attempt, error: e });
-            }
-          }
-          if (!cookieVerified) {
-            logger.warn('Cookie not verified after retries - redirecting to login with callbackUrl so recovery can run', {
-              maxAttempts,
-            });
-            // Redirect to login with callbackUrl; login page will re-set cookie from localStorage and redirect again
-            const fallbackDest = callbackUrl || '/dashboard';
-            const pathMatch = window.location.pathname.match(/^\/(en|fr)\//);
-            const localePrefix = pathMatch ? `/${pathMatch[1]}` : '';
-            window.location.href = `${localePrefix}/auth/login?callbackUrl=${encodeURIComponent(fallbackDest)}&error=callback_cookie_failed`;
-            return;
-          }
-        }
-
         // Detect current locale from URL (e.g., /fr/auth/callback -> 'fr', /auth/callback -> 'en')
         let currentLocale = routing.defaultLocale;
         if (typeof window !== 'undefined') {
@@ -170,60 +138,35 @@ function CallbackContent() {
           }
         }
         
-        logger.debug('Locale detection', {
-          pathname: typeof window !== 'undefined' ? window.location.pathname : 'N/A',
-          detectedLocale: currentLocale,
-          defaultLocale: routing.defaultLocale,
-        });
-        
-        // Build default dashboard URL with current locale
         const defaultDashboard = currentLocale === 'en' ? '/dashboard' : `/${currentLocale}/dashboard`;
-
         let redirectUrl = callbackUrl || defaultDashboard;
         
-        // If callbackUrl is a full URL, extract just the path
         if (redirectUrl.startsWith('http')) {
           try {
             const url = new URL(redirectUrl);
             redirectUrl = url.pathname + url.search;
           } catch {
-            // If URL parsing fails, use default dashboard
             redirectUrl = defaultDashboard;
           }
         }
         
-        // Ensure redirectUrl uses the correct locale if it's a relative path without locale prefix
         if (redirectUrl.startsWith('/') && !redirectUrl.startsWith('/en/') && !redirectUrl.startsWith('/fr/')) {
-          // If redirectUrl doesn't have locale prefix, add current locale (unless it's default 'en')
-          if (currentLocale !== 'en') {
-            redirectUrl = `/${currentLocale}${redirectUrl}`;
-          }
+          if (currentLocale !== 'en') redirectUrl = `/${currentLocale}${redirectUrl}`;
         }
         
-        if (redirectUrl.includes('/auth/callback') || redirectUrl.includes('/auth/login')) {
-          logger.warn('Preventing redirect loop - callbackUrl points to auth page, using default dashboard', {
-            callbackUrl,
-            redirectUrl: defaultDashboard,
-          });
+        if (redirectUrl.includes('/auth/callback') || redirectUrl.includes('/auth/login') || redirectUrl.includes('/auth/set-cookie')) {
           redirectUrl = defaultDashboard;
         }
 
-        logger.info('Redirecting after authentication', {
-          redirectUrl,
-          callbackUrl,
-          defaultDashboard,
-        });
+        // Always go via set-cookie page so the cookie is set and committed before we hit dashboard (avoids redirect loop).
+        const setCookiePath = currentLocale === 'en' ? '/auth/set-cookie' : `/${currentLocale}/auth/set-cookie`;
+        const setCookieUrl = `${setCookiePath}?redirect=${encodeURIComponent(redirectUrl)}`;
 
-        // Ensure cookie and storage are fully applied before full-page redirect
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        logger.info('Redirecting to set-cookie then dashboard', { redirectUrl, setCookieUrl });
+        await new Promise((resolve) => setTimeout(resolve, 300));
 
         const base = typeof window !== 'undefined' ? window.location.origin : '';
-        const finalRedirectUrl = redirectUrl.startsWith('http')
-          ? redirectUrl
-          : `${base}${redirectUrl.startsWith('/') ? redirectUrl : `/${redirectUrl}`}`;
-
-        logger.info('Performing final redirect', { finalRedirectUrl });
-        window.location.href = finalRedirectUrl;
+        window.location.href = base + setCookieUrl;
       } else {
         throw new Error('No user data received');
       }
