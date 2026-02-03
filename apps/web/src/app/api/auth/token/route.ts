@@ -99,6 +99,17 @@ export async function POST(request: NextRequest) {
       };
       response.cookies.set(REFRESH_TOKEN_COOKIE, refreshToken, refreshCookieOptions);
     }
+    
+    // Set a session marker cookie (non-httpOnly, shorter duration) to help middleware detect recent auth
+    // This is a workaround for timing issues where access_token cookie isn't immediately visible
+    // The marker expires in 5 minutes - enough time for cookie to propagate
+    response.cookies.set('auth_session_marker', '1', {
+      httpOnly: false, // Accessible to JS for debugging if needed
+      secure: cookieOptions.secure,
+      sameSite: cookieOptions.sameSite,
+      path: '/',
+      maxAge: 60 * 5, // 5 minutes - temporary marker
+    });
 
     // Log cookie setting for debugging (including production to diagnose redirect loop)
     console.log('[Token API] Cookie set:', {

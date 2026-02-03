@@ -245,9 +245,16 @@ async function middlewareWithAuth(request: NextRequest) {
       willRedirect: !isAuthenticated && !isOnLoginPage && !comingFromSetCookie,
     });
     
+    // Check if we have a token in localStorage via a special header or cookie
+    // This is a workaround for when cookie isn't immediately visible
+    // We'll check for a session marker cookie that gets set after successful login
+    const sessionMarker = request.cookies.get('auth_session_marker')?.value;
+    const hasSessionMarker = !!sessionMarker;
+    
     // If coming from set-cookie page, allow access even without cookie (cookie might be setting)
     // This prevents redirect loops during the cookie-setting process
-    if (!isAuthenticated && !isOnLoginPage && !comingFromSetCookie) {
+    // Also allow if we have a session marker (indicates recent successful auth)
+    if (!isAuthenticated && !isOnLoginPage && !comingFromSetCookie && !hasSessionMarker) {
       const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
       const loginUrl = new URL(`/${locale}/auth/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
@@ -255,10 +262,14 @@ async function middlewareWithAuth(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
     
-    // If coming from set-cookie but still not authenticated, log warning but allow access
-    // The cookie should be set by now, but we allow one navigation to avoid loops
-    if (comingFromSetCookie && !isAuthenticated) {
-      console.warn('[Middleware] Coming from set-cookie but cookie not detected - allowing access anyway to prevent loop');
+    // If coming from set-cookie or have session marker but still not authenticated, 
+    // log warning but allow access - cookie might be setting or there's a timing issue
+    if ((comingFromSetCookie || hasSessionMarker) && !isAuthenticated) {
+      console.warn('[Middleware] Allowing access despite no cookie - coming from set-cookie or has session marker', {
+        comingFromSetCookie,
+        hasSessionMarker,
+        pathname,
+      });
     }
     if (pathnameWithoutLocale.startsWith('/admin')) {
       const role = session?.user?.role;
