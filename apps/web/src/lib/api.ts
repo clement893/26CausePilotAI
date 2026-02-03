@@ -232,6 +232,12 @@ apiClient.interceptors.response.use(
             .catch(async (refreshError) => {
               // Refresh failed, clear tokens and redirect
               await TokenStorage.removeTokens();
+              try {
+                const { useAuthStore } = await import('@/lib/store');
+                useAuthStore.getState().logout();
+              } catch {
+                // ignore if store not available
+              }
 
               // Only redirect if we're on a protected page (not public pages)
               const isPublicPage =
@@ -242,13 +248,12 @@ apiClient.interceptors.response.use(
                   window.location.pathname.includes('/components') ||
                   window.location.pathname.includes('/pricing'));
 
-              // Prevent redirect loop - check if already on login page or public page
-              if (
-                typeof window !== 'undefined' &&
-                !isPublicPage &&
-                !window.location.pathname.includes('/auth/login')
-              ) {
-                window.location.href = '/auth/login?error=session_expired';
+              // Prevent redirect loop - never redirect when already on login or any auth page
+              if (typeof window !== 'undefined' && !isPublicPage) {
+                const pathname = window.location.pathname;
+                const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
+                const callbackUrl = encodeURIComponent(pathname + window.location.search);
+                window.location.href = `/${locale}/auth/login?callbackUrl=${callbackUrl}&error=session_expired`;
               }
               throw refreshError;
             })
@@ -273,6 +278,12 @@ apiClient.interceptors.response.use(
       } else {
         // No refresh token, clear tokens and redirect
         await TokenStorage.removeTokens();
+        try {
+          const { useAuthStore } = await import('@/lib/store');
+          useAuthStore.getState().logout();
+        } catch {
+          // ignore if store not available
+        }
 
         // Only redirect if we're on a protected page (not public pages)
         const isPublicPage =
@@ -283,13 +294,12 @@ apiClient.interceptors.response.use(
             window.location.pathname.includes('/components') ||
             window.location.pathname.includes('/pricing'));
 
-        // Prevent redirect loop - check if already on login page or public page
-        if (
-          typeof window !== 'undefined' &&
-          !isPublicPage &&
-          !window.location.pathname.includes('/auth/login')
-        ) {
-          window.location.href = '/auth/login?error=unauthorized';
+        // Prevent redirect loop - never redirect when already on login or any auth page
+        if (typeof window !== 'undefined' && !isPublicPage) {
+          const pathname = window.location.pathname;
+          const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
+          const callbackUrl = encodeURIComponent(pathname + window.location.search);
+          window.location.href = `/${locale}/auth/login?callbackUrl=${callbackUrl}&error=unauthorized`;
         }
       }
     }

@@ -129,33 +129,29 @@ function CallbackContent() {
           tokenMatches: storedToken === accessToken,
         });
 
-        // Verify that cookie is set before redirecting (important for middleware)
-        // The cookie is set via /api/auth/token, so we verify it's present
+        // Verify that cookie is set before redirecting (critical for middleware on next request)
+        // Without this, middleware may not see the cookie and redirect back to login
         let cookieVerified = false;
         if (typeof window !== 'undefined') {
-          try {
-            // Wait a bit more to ensure cookie is set
-            await new Promise((resolve) => setTimeout(resolve, 200));
-            
-            // Verify cookie is set via API
-            const cookieCheck = await TokenStorage.hasTokensInCookies();
-            cookieVerified = cookieCheck;
-            
-            if (!cookieVerified) {
-              logger.warn('Cookie not verified, retrying token storage...');
-              // Retry setting token
-              await TokenStorage.setToken(accessToken, refreshToken);
-              await new Promise((resolve) => setTimeout(resolve, 200));
+          const maxAttempts = 8;
+          const delayMs = 250;
+          for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            await new Promise((resolve) => setTimeout(resolve, delayMs));
+            try {
               cookieVerified = await TokenStorage.hasTokensInCookies();
+              if (cookieVerified) {
+                logger.debug('Cookie verified', { attempt });
+                break;
+              }
+              if (attempt < maxAttempts) {
+                await TokenStorage.setToken(accessToken, refreshToken);
+              }
+            } catch (e) {
+              logger.warn('Cookie check failed', { attempt, error: e });
             }
-            
-            logger.debug('Cookie verification', {
-              cookieVerified,
-              hasTokenInStorage: !!storedToken,
-            });
-          } catch (error) {
-            logger.warn('Failed to verify cookie, proceeding anyway', error);
-            // Continue even if cookie verification fails - token is in storage
+          }
+          if (!cookieVerified) {
+            logger.warn('Cookie not verified after retries, proceeding with redirect anyway');
             cookieVerified = true;
           }
         }
@@ -213,7 +209,8 @@ function CallbackContent() {
           defaultDashboard,
         });
 
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        // Ensure cookie and storage are fully applied before full-page redirect
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         const base = typeof window !== 'undefined' ? window.location.origin : '';
         const finalRedirectUrl = redirectUrl.startsWith('http')
