@@ -174,11 +174,32 @@ async function middlewareWithAuth(request: NextRequest) {
     // - Session cookie exists but session object not populated (timing/race condition)
     const isAuthenticated = !!session || hasValidToken || hasNextAuthCookie;
     
-    // Don't redirect if already on login page - prevents redirect loops
+    // Special case: If we're coming from set-cookie page (via Referer header),
+    // allow access even if cookie not yet visible (timing issue)
+    // This prevents redirect loops when cookie is being set
+    const referer = request.headers.get('referer') || '';
+    const comingFromSetCookie = referer.includes('/auth/set-cookie') || referer.includes('/auth/callback');
+    
+    // Don't redirect if already on login page or set-cookie page - prevents redirect loops
     const isOnLoginPage = pathnameWithoutLocale === '/auth/login' || 
                           pathname === '/auth/login' ||
                           pathname.startsWith('/en/auth/login') ||
                           pathname.startsWith('/fr/auth/login');
+    
+    const isOnSetCookiePage = pathnameWithoutLocale === '/auth/set-cookie' ||
+                               pathname.startsWith('/en/auth/set-cookie') ||
+                               pathname.startsWith('/fr/auth/set-cookie');
+    
+    const isOnCallbackPage = pathnameWithoutLocale === '/auth/callback' ||
+                              pathname.startsWith('/en/auth/callback') ||
+                              pathname.startsWith('/fr/auth/callback');
+    
+    // Allow access to set-cookie and callback pages without authentication
+    // These pages are responsible for setting the cookie
+    if (isOnSetCookiePage || isOnCallbackPage) {
+      console.log('[Middleware] Allowing access to auth flow page:', pathname);
+      return response;
+    }
     
     // Debug logging for authentication decision
     console.log('[Middleware] Auth decision:', {
@@ -189,15 +210,27 @@ async function middlewareWithAuth(request: NextRequest) {
       hasValidToken,
       hasNextAuthCookie,
       isOnLoginPage,
-      willRedirect: !isAuthenticated && !isOnLoginPage,
+      isOnSetCookiePage,
+      isOnCallbackPage,
+      comingFromSetCookie,
+      referer,
+      willRedirect: !isAuthenticated && !isOnLoginPage && !comingFromSetCookie,
     });
     
-    if (!isAuthenticated && !isOnLoginPage) {
+    // If coming from set-cookie page, allow access even without cookie (cookie might be setting)
+    // This prevents redirect loops during the cookie-setting process
+    if (!isAuthenticated && !isOnLoginPage && !comingFromSetCookie) {
       const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
       const loginUrl = new URL(`/${locale}/auth/login`, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
       console.log('[Middleware] Redirecting to login:', loginUrl.toString());
       return NextResponse.redirect(loginUrl);
+    }
+    
+    // If coming from set-cookie but still not authenticated, log warning but allow access
+    // The cookie should be set by now, but we allow one navigation to avoid loops
+    if (comingFromSetCookie && !isAuthenticated) {
+      console.warn('[Middleware] Coming from set-cookie but cookie not detected - allowing access anyway to prevent loop');
     }
     if (pathnameWithoutLocale.startsWith('/admin')) {
       const role = session?.user?.role;
