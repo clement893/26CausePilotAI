@@ -95,6 +95,42 @@ export default async function LocaleLayout({
           }}
         />
 
+        {/* Fix Next.js bug: script tags with CSS src (MIME "text/css" not executable). Convert to link[rel=stylesheet] before they run. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+(function() {
+  function fixCssScript(script) {
+    if (!script.src || !script.src.toLowerCase().endsWith('.css')) return;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = script.src;
+    script.parentNode && script.parentNode.insertBefore(link, script);
+    script.remove();
+  }
+  function run() {
+    document.querySelectorAll('script[src$=".css"], script[src$=".CSS"]').forEach(fixCssScript);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+  var obs = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(n) {
+        if (n.nodeType === 1 && n.tagName === 'SCRIPT' && n.src && n.src.toLowerCase().endsWith('.css')) {
+          fixCssScript(n);
+        }
+      });
+    });
+  });
+  obs.observe(document.documentElement, { childList: true, subtree: true });
+})();
+            `.trim(),
+          }}
+        />
+
         {/* CSS structure with default colors - applied AFTER script sets theme */}
         <style
           dangerouslySetInnerHTML={{
