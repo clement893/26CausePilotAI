@@ -96,7 +96,7 @@ async function middlewareWithAuth(request: NextRequest) {
 
   // NextAuth v5: session from auth() wrapper (same cookie as after Google OAuth)
   // In NextAuth v5, auth() wraps the middleware and sets request.auth
-  const session = (request as NextRequest & { auth?: { user?: { role?: string } } }).auth;
+  const session = (request as NextRequest & { auth?: { user?: { id?: string; email?: string; role?: string } } }).auth;
   
   // Also check for JWT token in cookie (for OAuth flow and direct login)
   // This is needed because:
