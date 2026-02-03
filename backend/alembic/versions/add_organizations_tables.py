@@ -7,6 +7,7 @@ Create Date: 2026-01-24
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import inspect
 from sqlalchemy.dialects import postgresql
 from typing import Union, Sequence
 
@@ -17,7 +18,15 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+def _table_exists(conn, name: str) -> bool:
+    return inspect(conn).has_table(name)
+
+
 def upgrade() -> None:
+    conn = op.get_bind()
+    if _table_exists(conn, 'organizations'):
+        return  # Already applied (e.g. table created elsewhere or previous partial run)
+
     # Create organizations table
     op.create_table(
         'organizations',
@@ -75,7 +84,10 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    # Drop tables in reverse order
-    op.drop_table('organization_members')
-    op.drop_table('organization_modules')
-    op.drop_table('organizations')
+    conn = op.get_bind()
+    if _table_exists(conn, 'organization_members'):
+        op.drop_table('organization_members')
+    if _table_exists(conn, 'organization_modules'):
+        op.drop_table('organization_modules')
+    if _table_exists(conn, 'organizations'):
+        op.drop_table('organizations')

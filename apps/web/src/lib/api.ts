@@ -354,6 +354,9 @@ export const authAPI = {
           timeout: 60000, // 60 seconds timeout for OAuth URL generation (increased from 30s)
         });
       },
+  forgotPassword: (email: string) => {
+    return apiClient.post('/v1/auth/forgot-password', { email });
+  },
 };
 
 export const usersAPI = {
