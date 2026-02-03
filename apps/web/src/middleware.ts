@@ -121,7 +121,7 @@ async function middlewareWithAuth(request: NextRequest) {
     hasNextAuthSessionCookie: !!nextAuthSessionCookie,
     pathname,
     hasSession: !!session,
-    sessionUser: session?.user ? { id: session.user.id, email: session.user.email } : null,
+    sessionUser: session?.user ? { id: session.user.id, email: session.user.email, role: session.user.role } : null,
     allCookies: Array.from(request.cookies.getAll()).map(c => c.name),
     nodeEnv: process.env.NODE_ENV,
   });
@@ -131,6 +131,11 @@ async function middlewareWithAuth(request: NextRequest) {
       const payload = await verifyToken(accessTokenCookie);
       if (payload && payload.exp && Date.now() < (payload.exp as number) * 1000) {
         hasValidToken = true;
+        console.log('[Middleware] Token is valid:', {
+          exp: payload.exp,
+          now: Date.now(),
+          expiresIn: (payload.exp as number) * 1000 - Date.now(),
+        });
       } else if (payload && payload.exp) {
         // Token expired
         console.log('[Middleware] Token expired:', {
@@ -138,11 +143,19 @@ async function middlewareWithAuth(request: NextRequest) {
           now: Date.now(),
           expired: Date.now() >= (payload.exp as number) * 1000,
         });
+      } else {
+        console.log('[Middleware] Token payload missing exp:', { payload });
       }
     } catch (error) {
       // Token invalid or expired, ignore
-      console.log('[Middleware] Token verification failed:', error instanceof Error ? error.message : String(error));
+      console.log('[Middleware] Token verification failed:', {
+        error: error instanceof Error ? error.message : String(error),
+        tokenLength: accessTokenCookie.length,
+        tokenPrefix: accessTokenCookie.substring(0, 20) + '...',
+      });
     }
+  } else {
+    console.log('[Middleware] No access_token cookie found');
   }
   
   // If we have a NextAuth session cookie but no session object, it might be a timing issue
@@ -189,7 +202,10 @@ async function middlewareWithAuth(request: NextRequest) {
     if (pathnameWithoutLocale.startsWith('/admin')) {
       const role = session?.user?.role;
       // Allow both ADMIN and SUPER_ADMIN to access admin routes
-      if (role !== 'ADMIN' && role !== 'SUPER_ADMIN') {
+      // If role is undefined, allow access and let client-side ProtectedRoute handle authorization
+      // This is necessary because the backend doesn't return role in login response
+      // and role is checked via API call in ProtectedRoute component
+      if (role && role !== 'ADMIN' && role !== 'SUPER_ADMIN') {
         const locale = pathname.match(/^\/(en|fr)/)?.[1] ?? 'fr';
         return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));
       }
