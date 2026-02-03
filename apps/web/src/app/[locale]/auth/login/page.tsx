@@ -5,7 +5,7 @@
  * React Hook Form + Zod, AuthCard/AuthInput/AuthButton, callbackUrl, design system
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,6 +22,30 @@ const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'CausePilotAI';
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
+
+  // Recover from redirect loop: if we have token in storage but landed on login (cookie was missing),
+  // re-set the cookie and redirect to callbackUrl so middleware sees the cookie on next request.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const callbackUrl = params.get('callbackUrl') || params.get('redirect');
+    if (!callbackUrl || callbackUrl.includes('/auth/login') || callbackUrl.includes('/auth/callback')) return;
+    const token = TokenStorage.getToken();
+    const refreshToken = TokenStorage.getRefreshToken();
+    if (!token) return;
+
+    let cancelled = false;
+    (async () => {
+      await TokenStorage.setToken(token, refreshToken ?? undefined);
+      if (cancelled) return;
+      const ok = await TokenStorage.hasTokensInCookies();
+      if (ok) {
+        const url = callbackUrl.startsWith('http') ? callbackUrl : `${window.location.origin}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
+        window.location.href = url;
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const {
     register,

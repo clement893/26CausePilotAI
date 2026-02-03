@@ -100,30 +100,44 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{
             __html: `
 (function() {
+  function isCssSrc(src) {
+    if (!src) return false;
+    var s = src.toLowerCase().split('?')[0];
+    return s.slice(-4) === '.css';
+  }
   function fixCssScript(script) {
-    if (!script.src || !script.src.toLowerCase().endsWith('.css')) return;
+    if (!script.src || !isCssSrc(script.src)) return;
     var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = script.src;
-    script.parentNode && script.parentNode.insertBefore(link, script);
-    script.remove();
+    if (script.parentNode) {
+      script.parentNode.insertBefore(link, script);
+      script.remove();
+    }
   }
   function run() {
-    document.querySelectorAll('script[src$=".css"], script[src$=".CSS"]').forEach(fixCssScript);
+    var scripts = document.querySelectorAll('script[src]');
+    var arr = [];
+    for (var i = 0; i < scripts.length; i++) arr.push(scripts[i]);
+    for (var j = 0; j < arr.length; j++) {
+      if (isCssSrc(arr[j].src)) fixCssScript(arr[j]);
+    }
   }
+  run();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
   }
+  queueMicrotask(run);
+  setTimeout(run, 0);
+  setTimeout(run, 50);
   var obs = new MutationObserver(function(mutations) {
-    mutations.forEach(function(m) {
-      m.addedNodes.forEach(function(n) {
-        if (n.nodeType === 1 && n.tagName === 'SCRIPT' && n.src && n.src.toLowerCase().endsWith('.css')) {
-          fixCssScript(n);
-        }
-      });
-    });
+    for (var i = 0; i < mutations.length; i++) {
+      var nodes = mutations[i].addedNodes;
+      for (var j = 0; j < nodes.length; j++) {
+        var n = nodes[j];
+        if (n.nodeType === 1 && n.tagName === 'SCRIPT' && isCssSrc(n.src)) fixCssScript(n);
+      }
+    }
   });
   obs.observe(document.documentElement, { childList: true, subtree: true });
 })();
