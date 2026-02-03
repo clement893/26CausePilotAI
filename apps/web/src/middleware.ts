@@ -14,12 +14,10 @@ export const config = {
     /*
      * Match all request paths except for the ones starting with:
      * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
+     * - _next (all Next.js internals: static, image, chunks, etc. - prevents MIME/asset issues)
+     * - favicon.ico, sitemap.xml, robots.txt, static assets
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|_next|favicon.ico|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
   ],
 };
 

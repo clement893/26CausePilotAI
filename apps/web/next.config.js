@@ -67,7 +67,8 @@ const nextConfig = {
       'recharts', // Optimize chart library imports
     ],
     // Enable faster refresh for better dev experience
-    optimizeCss: true,
+    // Disabled: optimizeCss can cause "Refused to execute script" MIME type errors (CSS served as script)
+    optimizeCss: false,
     // Note: buildTraces is not a valid experimental option in Next.js 16+
     // Build traces are automatically managed by Next.js
     // Enable partial prerendering for better performance
@@ -314,12 +315,22 @@ const nextConfig = {
         ],
       },
       {
-        // Ensure CSS files are served with correct Content-Type
+        // Ensure CSS files are served with correct Content-Type (prevents "execute script" MIME errors)
         source: '/_next/static/css/:path*',
         headers: [
           {
             key: 'Content-Type',
             value: 'text/css; charset=utf-8',
+          },
+        ],
+      },
+      {
+        // Ensure JS chunks are served as application/javascript
+        source: '/_next/static/chunks/:path*',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/javascript; charset=utf-8',
           },
         ],
       },
