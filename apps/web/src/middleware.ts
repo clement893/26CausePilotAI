@@ -106,6 +106,13 @@ async function middlewareWithAuth(request: NextRequest) {
   let hasValidToken = false;
   const accessTokenCookie = request.cookies.get('access_token')?.value;
   
+  // Also check Authorization header as fallback (for cases where cookie isn't set/visible)
+  // This helps when cookie isn't immediately available after setting
+  const authHeader = request.headers.get('authorization');
+  const tokenFromHeader = authHeader?.startsWith('Bearer ') 
+    ? authHeader.substring(7) 
+    : null;
+  
   // Also check for NextAuth session cookie (authjs.session-token or next-auth.session-token)
   const nextAuthSessionCookie = 
     request.cookies.get('authjs.session-token')?.value ||
@@ -119,6 +126,7 @@ async function middlewareWithAuth(request: NextRequest) {
     hasAccessTokenCookie: !!accessTokenCookie,
     accessTokenCookieLength: accessTokenCookie?.length,
     hasNextAuthSessionCookie: !!nextAuthSessionCookie,
+    hasTokenFromHeader: !!tokenFromHeader,
     pathname,
     hasSession: !!session,
     sessionUser: session?.user ? { id: session.user.id, email: session.user.email, role: session.user.role } : null,
@@ -126,19 +134,20 @@ async function middlewareWithAuth(request: NextRequest) {
     nodeEnv: process.env.NODE_ENV,
   });
   
+  // Try to verify token from cookie first
   if (accessTokenCookie) {
     try {
       const payload = await verifyToken(accessTokenCookie);
       if (payload && payload.exp && Date.now() < (payload.exp as number) * 1000) {
         hasValidToken = true;
-        console.log('[Middleware] Token is valid:', {
+        console.log('[Middleware] Token from cookie is valid:', {
           exp: payload.exp,
           now: Date.now(),
           expiresIn: (payload.exp as number) * 1000 - Date.now(),
         });
       } else if (payload && payload.exp) {
         // Token expired
-        console.log('[Middleware] Token expired:', {
+        console.log('[Middleware] Token from cookie expired:', {
           exp: payload.exp,
           now: Date.now(),
           expired: Date.now() >= (payload.exp as number) * 1000,
@@ -148,7 +157,7 @@ async function middlewareWithAuth(request: NextRequest) {
       }
     } catch (error) {
       // Token invalid or expired, ignore
-      console.log('[Middleware] Token verification failed:', {
+      console.log('[Middleware] Token verification from cookie failed:', {
         error: error instanceof Error ? error.message : String(error),
         tokenLength: accessTokenCookie.length,
         tokenPrefix: accessTokenCookie.substring(0, 20) + '...',
@@ -156,6 +165,25 @@ async function middlewareWithAuth(request: NextRequest) {
     }
   } else {
     console.log('[Middleware] No access_token cookie found');
+  }
+  
+  // Fallback: Try to verify token from Authorization header if cookie not available
+  if (!hasValidToken && tokenFromHeader) {
+    try {
+      const payload = await verifyToken(tokenFromHeader);
+      if (payload && payload.exp && Date.now() < (payload.exp as number) * 1000) {
+        hasValidToken = true;
+        console.log('[Middleware] Token from Authorization header is valid (fallback):', {
+          exp: payload.exp,
+          now: Date.now(),
+          expiresIn: (payload.exp as number) * 1000 - Date.now(),
+        });
+      }
+    } catch (error) {
+      console.log('[Middleware] Token verification from header failed:', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   }
   
   // If we have a NextAuth session cookie but no session object, it might be a timing issue
